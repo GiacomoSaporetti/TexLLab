@@ -1,0 +1,1245 @@
+(************************************************************************)
+(*                                                                      *)
+(*	Description: Definition of target variables and functions       *)
+(*                                                                      *)
+(************************************************************************)
+
+RESOURCE POWERZ_HMI ON PowerPC_E200
+
+	TASK Draw    ( INTERVAL := t#20ms, PRIORITY := 0 );
+	TASK Refresh ( INTERVAL := t#20ms, PRIORITY := 1 );
+
+END_RESOURCE
+
+(************************************************************************)
+(*                         									            *)
+(*   GLOBAL VARIABLES                                                   *)
+(*                                                                      *)
+(************************************************************************)
+
+
+VAR_GLOBAL 
+
+	{G:"Internal variables"}
+	sysLangID		AT %MW60003.0	: UINT;				{ DE:"HMI active Language ID" }
+	
+	{G:"System Timers"}                                                 				
+	sysTimer 		AT %MD60000.0 	: UDINT;			{ DE:"System timer [ms]"}
+	
+	{G:"Input and outputs"}
+	sysDigitalInputs		AT %IX0.0	: ARRAY[ 0..9 ] OF BOOL;	{ IO:"System digital inputs" }
+	sysDigitalOutputs		AT %QX0.0	: ARRAY[ 0..9 ] OF BOOL;	{ IO:"System digital outputs" }
+	sysAnalogInputs			AT %IW1.0	: ARRAY[ 0..2 ] OF UINT;	{ IO:"System analog inputs" }
+	
+	{G:"User mappings"}
+	sysUserDataBlock 	AT %MB0.0 	: ARRAY[ 0..1023 ] OF USINT;	{ DE:"Data block available for user data mapping"}
+
+END_VAR
+
+
+(***************************)
+(*                         *)
+(*   EMBEDDED FUNCTIONS    *)
+(*                         *)
+(***************************)
+
+FUNCTION Video_UpdatePageControls : BOOL
+	
+	VAR_INPUT
+	dmy : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_InitHMI_ZOrder : BOOL
+	
+	VAR_INPUT
+	dmy : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+	
+FUNCTION Video_LCDContrast : BOOL
+	
+	VAR_INPUT
+	more : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+FUNCTION Video_Switch : USINT
+	
+	VAR_INPUT
+	on : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+FUNCTION Video_DrawFrames : USINT
+	
+	VAR_INPUT
+	left : UINT;
+	top : UINT;
+	right : UINT;
+	bottom : UINT;
+	colBack : UDINT;
+	fBar : USINT;
+	pTitle : UDINT;
+	fResStr : BOOL;
+	fSysBtn : USINT;
+	style : USINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_InitPage : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	pTitle : UDINT;
+	wData : UINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_ClrRect : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_ClrScreen : BOOL
+	
+	VAR_INPUT
+	dummy : USINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SaveRect : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_WriteFromBuff : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	END_VAR
+		   
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetPageColors : USINT
+	
+	VAR_INPUT
+	colFore : UDINT;
+	colBack : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetWndSysProps : USINT
+	
+	VAR_INPUT
+	pFont	: UDINT;
+	colFore : UDINT;
+	colBack : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetEditKey : USINT
+	
+	VAR_INPUT
+	id : USINT;
+	code : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_AddFont : USINT
+	
+	VAR_INPUT
+	pFont : UDINT;
+	charLen : USINT;
+	charHei : USINT;
+	offs : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_AddFontUnicode : USINT
+	
+	VAR_INPUT
+	pFont : UDINT;
+	charLen : UINT;
+	charHei : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetFont : USINT
+	
+	VAR_INPUT
+	fontPtr : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_LoadExternalFont : UDINT
+	{ DE:"Load an external font from PLK file on disk" }
+	VAR_INPUT
+	filename : STRING;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION Video_SetColors : USINT
+	
+	VAR_INPUT
+	colForeTxt : UDINT;
+	colBackTxt : UDINT;
+	colForeSel : UDINT;
+	colBackSel : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_Line : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	pts : USINT;
+	color : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_Rectangle : USINT
+	
+	VAR_INPUT
+	x1 : UINT;
+	y1 : UINT;
+	x2 : UINT;
+	y2 : UINT;
+	pts : USINT;
+	transp : USINT;
+	bordCol : UDINT;
+	fillCol : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_PrintStr : USINT
+	
+	VAR_INPUT
+	str : STRING;
+	x : UINT;
+	y : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+FUNCTION Video_PrintResStr : USINT
+	
+	VAR_INPUT
+	idRes : UINT;
+	x : UINT;
+	y : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+FUNCTION Video_PrintResStrByName : USINT
+	
+	VAR_INPUT
+	resName : STRING;
+	x : UINT;
+	y : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+	
+FUNCTION Video_PrintNChar : USINT
+	
+	VAR_INPUT
+	str : STRING;
+	accMode : USINT;
+	x : UINT;
+	y : UINT;
+	nChar : USINT;
+	format : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_CalcStringWidthWithFont : UINT
+	
+	VAR_INPUT
+	str : STRING;
+	pFont: UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_PrintBitmap : USINT
+
+	VAR_INPUT
+		ptrBmp : UDINT;
+		x : UINT;
+		y : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_DelBitmap : USINT
+
+	VAR_INPUT
+		ptrBmp : UDINT;
+		x : UINT;
+		y : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_DrawBorder : USINT
+
+	VAR_INPUT
+		style : USINT;
+		x1 : UINT;
+		y1 : UINT;
+		x2 : UINT;
+		y2 : UINT;
+		pts : USINT;
+		color : UDINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_DelBorder : USINT
+
+	VAR_INPUT
+		style : USINT;
+		x1 : UINT;
+		y1 : UINT;
+		x2 : UINT;
+		y2 : UINT;
+		pts : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SendEvent : USINT
+	
+	VAR_INPUT
+	msgID : UINT;
+	wParam : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_GetEvent : UDINT
+	
+	VAR_INPUT
+	dmy : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_EnterEdit : USINT
+	
+	VAR_INPUT
+	wHnd : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_EnterEditSel : USINT
+	
+	VAR_INPUT
+	wHnd : UINT;
+	onlySelect : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_NextEdit : UINT
+	
+	VAR_INPUT
+	fRWOnly : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_FirstLastEdit : INT
+	
+	VAR_INPUT
+	fRWOnly : BOOL;
+	last : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+
+
+FUNCTION Video_PrevEdit : UINT
+	
+	VAR_INPUT
+	fRWOnly : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_PushButton : USINT
+	
+	VAR_INPUT
+	wHnd : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_Lock : USINT
+	
+	VAR_INPUT
+	res : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_Unlock : USINT
+	
+	VAR_INPUT
+	res : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_Sleep : USINT
+	
+	VAR_INPUT
+	msec : UINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_ResetMaps : USINT
+	
+	VAR_INPUT
+	res : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+	
+FUNCTION Video_LoadLanguage : USINT
+	
+	VAR_INPUT
+	pResStrings : UDINT;	{DE:"Pointer to resource strings of active language"}
+	pEnums : UDINT;			{DE:"Pointer to enumerated types of active language"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_EvNotify : USINT
+	
+	VAR_INPUT
+	evId : UINT;	{DE:"Event ID"}
+	data0 : UDINT;			{DE:"Event custom data0"}
+	data1 : UDINT;			{DE:"Event custom data1"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+
+FUNCTION Video_InitBmpTreeRefresh : UDINT
+	
+	VAR_INPUT
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+
+FUNCTION Video_EndBmpTreeRefresh : USINT
+	
+	VAR_INPUT
+	pDC : UDINT; {DE:"Pointer to the device context"}
+	x1  : UINT;  {DE:"X-coordinate of the upper-left corner"}
+	y1  : UINT;  {DE:"Y-coordinate of the upper-left corner"}
+	x2  : UINT;  {DE:"X-coordinate of the lower-right corner"}
+	y2  : UINT;  {DE:"Y-coordinate of the lower-right corner"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+
+FUNCTION Video_ForceRefresh : BOOL
+
+	VAR_INPUT
+	dummy : USINT;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetStrAndEnumsOnTgt : BOOL
+	{ DE:"Set the resource on target" }
+	VAR_INPUT
+	enable : BOOL;	{ DE:"Enable the resource on the target " }
+	END_VAR	
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+FUNCTION Video_SetBitmapsOnTgt: BOOL
+    { DE:"Set the bitmaps on target" }
+    VAR_INPUT
+    enable : BOOL;    { DE:"Enable the bitmaps on the target " }
+    END_VAR   
+    { CODE:EMBEDDED }
+END_FUNCTION
+
+FUNCTION Video_AddExternalBmp: BOOL
+	{ DE:"Add a bitmap in code as external bitmap" }
+    VAR_INPUT
+	name : STRING; { DE:"Name of the bitmap" } 
+    addr : UDINT;    { DE:"Address of the bitmap" }
+    END_VAR   
+    { CODE:EMBEDDED }
+END_FUNCTION
+
+FUNCTION SetTgtLangFile: BOOL
+	{ DE:"Set the language file on target" }
+    VAR_INPUT
+    dest : STRING; { DE:"Destination file" } 
+    END_VAR   
+    { CODE:EMBEDDED }
+END_FUNCTION
+
+FUNCTION Video_SetDeviceCfg : BOOL
+
+	VAR_INPUT
+	idxDevice 	: USINT;	{DE:"index of device"}
+	res 		: USINT;	{DE:"0 - local device, 1 - Modbus RTU, 2 - Modbus TCP, 3 - CANopen"}
+	address		: UDINT;	{DE:"Modbus RTU/CANopen node address"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_GetParamBckgnd : UINT
+	
+	VAR_INPUT
+	idxDevice 	: USINT;	{DE:"index of device"}
+	idxParam 	: UINT; 	{DE:"index of param"}
+	subIdxParam : USINT; 	{DE:"sub index of param"}
+	
+	pVal : UDINT;			{DE:"Pointer to value of parameter"}
+	type : USINT; 			{DE:"Data type of the associated variable"}
+	aux  : UDINT;			{DE:"Reserved for future use"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetParam : UINT
+	
+	VAR_INPUT
+	idxDevice 	: USINT;	{DE:"index of device"}
+	idxParam 	: UINT; 	{DE:"index of param"}
+	subIdxParam : USINT; 	{DE:"sub index of param"}
+	
+	pVal : UDINT;			{DE:"Pointer to value of parameter"}
+	type : USINT; 			{DE:"Data type of the associated variable"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_GetParam : UINT
+	
+	VAR_INPUT
+	idxDevice 	: USINT;	{DE:"index of device"}
+	idxParam 	: UINT; 	{DE:"index of param"}
+	subIdxParam : USINT; 	{DE:"sub index of param"}
+	
+	pVal : UDINT;			{DE:"Pointer to value of parameter"}
+	type : USINT; 			{DE:"Data type of the associated variable"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION sysHmi_Message : BOOL
+	{ DE:"Open a Message window on display" }
+	VAR_INPUT
+	    id	:  USINT; { DE:"User Message window ID [1..99]" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION Video_DrawStaticControls : BOOL
+	
+	VAR_INPUT
+	staticMode	: BOOL;		{DE:"Activate or deactivate static control drawing"}
+	END_VAR
+	
+	{CODE:EMBEDDED}
+
+END_FUNCTION
+
+FUNCTION Video_SetUseBitmapsColorDepth : BOOL
+	VAR_INPUT
+	useColorDepth : BOOL;
+	END_VAR
+	
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+	(***************************)
+	(*                         *)
+	(*  EMBEDDED FUN. BLOCKS   *)
+	(*                         *)
+	(***************************)
+
+
+FUNCTION_BLOCK Video_GetPageColors
+
+	VAR_OUTPUT
+	color : UDINT;	{DE:"Actual page foreground color"}
+	back : UDINT;	{DE:"Actual page background color"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+	
+	
+	(***************************)
+	(*                         *)
+	(*         OBJECTS         *)
+	(*                         *)
+	(***************************)
+
+FUNCTION_BLOCK Static02
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	accMode : USINT; {DE:"Access mode"}
+	fResStr : BOOL; {DE:"Flag for resource strings"}
+	pString : UDINT; {DE:"Address of the string"}
+	pFont : UDINT; {DE:"Address of the font"}
+	foreCol : UDINT; {DE:"Foreground color"}
+	bckCol : UDINT; {DE:"Background color"}
+	pVisVar : UDINT; {DE:"Address of the visibility flag"}
+	format : UINT; {DE:"Alignment of static"}
+	style : USINT; {DE:"Appearence"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+        selBackCol : UDINT; {DE:"Selction background"}
+        selForeCol : UDINT; {DE:"Selection foreground"}
+	pRefrVar: UDINT; {DE:"Address of the refresh variable"}
+	pSelVar : UDINT; {DE:"Address of the selection variable"}
+        numChars : UINT; {DE:"Number of printable chars"}
+	END_VAR
+
+	VAR
+	memVis : BOOL; {DE:"Visibility status"}
+	pActString: UDINT; {DE:" Address of the string of the resource"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Line01
+
+	VAR_INPUT
+	x1 : UINT; {DE:"X-coordinate of the upper-left point"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left point"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right point"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right point"}
+	accMode : USINT; {DE:"Access mode"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Rect01
+
+	VAR_INPUT
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	accMode : USINT; {DE:"Access mode"}
+	transp : USINT;	{DE:"Transparent background"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	bckCol : UDINT; {DE:"Background color"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Image02
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	px1 	 : UDINT; {DE:"Address of the variable X-coordinate of the upper-left corner"}
+	py1 	 : UDINT; {DE:"Address of the variable Y-coordinate of the upper-left corner"}
+	type_x 	 : USINT; {DE:"Data type of the X-coordinate variable"}
+	type_y 	 : USINT; {DE:"Data type of the Y-coordinate variable"}
+	dx : UINT; {DE:"X-coordinate of the lower-right corner"}
+	dy : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	style : USINT; {DE:"Appearence"}
+	floating : BOOL; {DE:"Floating style enabled"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	bordSelCol : UDINT; {DE:"Border selection color"}
+	accMode : USINT; {DE:"Access mode"}
+	pBmp : UDINT; {DE:"Address of the main bitmap"}
+	pVisVar : UDINT; {DE:"Address of the visibility variable"}
+	END_VAR
+
+	VAR_OUTPUT
+	reqRefr : BOOL; {DE:"Request of refresh"}
+	abs_x1 : UINT; {DE:"Absolute X-coordinate"}
+	abs_y1 : UINT; {DE:"Absolute Y-coordinate"}
+	mem_x1 : UINT; {DE:"Past absolute X-coordinate"}
+	mem_y1 : UINT; {DE:"Past absolute Y-coordinate"}
+	END_VAR
+
+	VAR
+	memVis : BOOL; {DE:"Visibility status"}
+	pActualBmp : UDINT; {DE:"Visibility status"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Animation02
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	style : USINT; {DE:"Appearence"}
+	bordPts  : USINT; {DE:"Border thickness"}
+	bordCol  : UDINT; {DE:"Border color"}
+	accMode  : USINT; {DE:"Access mode"}
+	pBmpArr  : UDINT; {DE:"Address of the first element of the bitmap array"}
+	pCaseArr : UDINT; {DE:"Address of the first element of the selection array"}
+	nArrEl   : USINT; {DE:"Number of elements of the image list"}
+	pBmpDef  : UDINT; {DE:"Address of the default bitmap"}
+	pSelVar  : UDINT; {DE:"Address of the selection variable"}
+	type 	 : USINT; {DE:"Data type of the selection variable"}
+	pVisVar  : UDINT; {DE:"Address of the visibility variable"}
+	END_VAR
+
+	VAR
+	mempBmp : UDINT; {DE:"Pointer to the bitmap drawn at the prev. iteration"}	
+	pActualBmpArr : UDINT;	{DE:"Address of the first element of the bitmap array "}
+	pActualBmp: UDINT;	{DE:"Address of the actual bitmap"}
+	pActualBmpDef: UDINT;	{DE:"Address of the actual default bitmap"}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Button05
+
+VAR_INPUT
+	wHnd : UINT;		{DE:"Object handle"}
+	x1 : UINT;			{DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT;			{DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT;			{DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT;			{DE:"Y-coordinate of the lower-right corner"}
+	pText : UDINT;		{DE:"Address of the foreground string"}
+	pImage : UDINT;		{DE:"Address of the foreground picture"}
+	pFont : UDINT;		{DE:"Address of the font"}
+	style : USINT;		{DE:"Appearence"}
+	bordPts : USINT;	{DE:"Border thickness"}
+	textCol : UDINT;	{DE:"Text color"}
+	bordCol : UDINT;	{DE:"Border color"}
+	fillCol : UDINT;	{DE:"Fill color"}
+	textSelCol : UDINT;	{DE:"Text selection color"}
+	bordSelCol : UDINT;	{DE:"Border selection color"}
+	fillSelCol : UDINT;	{DE:"Fill selection color"}
+	accMode : USINT;	{DE:"Access mode"}
+	pVisVar : UDINT;	{DE:"Address of the visibility variable"}
+	pPressVar : UDINT;	{DE:"Address of the pressure variable"}
+	pSelVar : UDINT;	{DE:"Address of the selection variable"}
+	pSelText : UDINT;	{DE:"Address of the selection string"}
+	pSelImage : UDINT;	{DE:"Address of the selection picture"}
+	format : UINT;		{DE:"Control word"}
+	order : UINT;		{DE:"Selection Order"}
+	type : USINT;		{DE:"Type (normal, toggle)"}
+END_VAR
+
+VAR
+	memVis : BOOL;		{DE:"Visibility status"}
+	memSel : BOOL;		{DE:"Transparency status"}
+	pActSelText: UDINT; {DE:" Address of the selection string now "}
+	pActText: UDINT;	{DE:" Address of the foreground string now"}
+	pActImage: UDINT;	{DE:" Address of the foreground picture "}
+	pActSelImage: UDINT; {DE:" Address of the selection picture "}
+END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK CheckBox02
+
+	VAR_INPUT
+		pVar : UDINT;		{ DE:"Address of the associated variable" }
+		pVisVar : UDINT;	{ DE:"Address of the visibility variable" }
+		pSelVar : UDINT;	{ DE:"Address of the selectability variable" }
+		foreCol : UDINT;	{ DE:"Foreground color" }
+		bckCol : UDINT;		{ DE:"Background color" }
+		foreSelCol : UDINT;	{ DE:"Foreground selection color" }
+		bckSelCol : UDINT;	{ DE:"Background selection color" }
+		bordCol : UDINT;	{ DE:"Border color" }
+		wHnd : UINT;		{ DE:"Object handle" }
+		x1 : UINT;		{ DE:"X-coordinate of the upper-left corner" }
+		y1 : UINT;		{ DE:"Y-coordinate of the upper-left corner" }
+		x2 : UINT;		{ DE:"X-coordinate of the lower-right corner" }
+		y2 : UINT;		{ DE:"Y-coordinate of the lower-right corner" }
+		style : USINT;		{ DE:"Appearence" }
+		tickStyle : USINT;	{ DE:"Tick style" }
+		bordPts : USINT;	{ DE:"Border thickness" }
+		order : USINT;		{ DE:"Selection order" }
+		accMode : USINT;	{ DE:"Access mode" }
+		rw : USINT;		{ DE:"Flag of write-mode enabled" }
+		isParam : USINT;	{ DE:"Parameter/Normal variable" }
+	END_VAR
+
+	VAR
+		memValue : USINT;	{ DE:"Preceding value" }
+		memVis : USINT;		{ DE:"Visibility status" }
+		memSel : USINT;		{ DE:"Selection status" }
+		spare8 : USINT;		{ DE:"Spare data" }
+		pValue : UDINT;		{ DE: "Pointer to the value - only for HMIRuntimeCore" }
+		pInfoRec : UDINT;	{ DE: "Pointer to the record with remote param info - only for HMIRuntimeCore" }
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK EditBox03
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	pFont : UDINT; {DE:"Address of the font"}
+	style : USINT; {DE:"Appearence"}
+	foreCol : UDINT; {DE:"Foreground color"}
+	bckCol : UDINT; {DE:"Background color"}
+	foreSelCol : UDINT; {DE:"Foreground selection color"}
+	bckSelCol : UDINT; {DE:"Background selection color"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	rw : BOOL; {DE:"Flag of write-mode enabled"}
+	refr : BOOL; {DE:"Flag of refresh required"}
+	pVar : UDINT; {DE:"Address of the associated variable"}
+	type : USINT; {DE:"Data type of the associated variable"}
+	pVarMin : UDINT; {DE:"Address of the lower limit variable"}
+	pVarMax : UDINT; {DE:"Address of the higher limit variable"}
+	format : UDINT; {DE:"Format code"}
+	pVisVar : UDINT; {DE:"Address of the visibility variable"}
+	pCanSel : UDINT; {DE:"Address of the selectability variable"}
+	order : USINT; {DE:"Selection order"}
+	accMode : USINT; {DE:"Access mode"}
+	pLabel : UDINT; {DE:"Description"}
+	pEnumId: UDINT; {DE:"Enum id"}
+	END_VAR
+
+	VAR_OUTPUT
+	outKey : SINT; {DE:"Key pressed to exit the edit mode"}
+	END_VAR
+
+	VAR
+	memVis : BOOL; {DE:"Visibility status"}
+	pValue : UDINT; {DE: "Pointer to the value - only for HMIRuntimeCore" }
+	pInfoRec : UDINT; {DE: "Pointer to the record with remote param info - only for HMIRuntimeCore" }
+	pEnumRec : UDINT; {DE: "Pointer to the record of enum selected" }
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK ComboBox03
+
+	VAR_INPUT
+		pVar : UDINT;		{ DE:"Address of the associated variable" }
+		pVisVar : UDINT;	{ DE:"Address of the visibility variable" }
+		pSelVar : UDINT;	{ DE:"Address of the selectability variable" }
+		pFont : UDINT;		{ DE:"Address of the font" }
+		foreCol : UDINT;	{ DE:"Foreground color" }
+		bckCol : UDINT;		{ DE:"Background color" }
+		foreSelCol : UDINT;	{ DE:"Foreground selection color" }
+		bckSelCol : UDINT;	{ DE:"Background selection color" }
+		bordCol : UDINT;	{ DE:"Border color" }
+		wHnd : UINT;		{ DE:"Object handle" }
+		x1 : UINT;		{ DE:"X-coordinate of the upper-left corner" }
+		y1 : UINT;		{ DE:"Y-coordinate of the upper-left corner" }
+		x2 : UINT;		{ DE:"X-coordinate of the lower-right corner" }
+		y2 : UINT;		{ DE:"Y-coordinate of the lower-right corner" }
+		style : USINT;		{ DE:"Appearence" }
+		bordPts : USINT;	{ DE:"Border thickness" }
+		order : USINT;		{ DE:"Selection order" }
+		accMode : USINT;	{ DE:"Access mode" }
+		rw : USINT;		{ DE:"Flag of write-mode enabled" }
+		isParam : USINT;	{ DE:"Parameter/Normal variable" }
+		type : USINT;	{ DE:"Data type of the associated variable" }
+		pEnumId: UDINT;	{ DE:" Pointer to the strings of the id enum" }
+	END_VAR
+
+	VAR_OUTPUT
+		outKey : SINT;		{ DE:"Key pressed to exit the edit mode" }
+	END_VAR
+
+	VAR
+		memValue : DINT;	{ DE:"Preceding value" }
+		memVis : USINT;		{ DE:"Visibility status" }
+		memSel : USINT;		{ DE:"Selection status" }
+		spare16 : UINT;		{ DE:"Spare data" }
+		pValue : UDINT;		{ DE: "Pointer to the value - only for HMIRuntimeCore" }
+		pInfoRec : UDINT;	{ DE: "Pointer to the record with remote param info - only for HMIRuntimeCore" }
+		pEnumRec: UDINT;	{ DE:"Pointer to the record of the selected enum" }
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Progress02
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	style : USINT; {DE:"Appearence"}
+	barCol : UDINT; {DE:"Bar color"}
+	bckCol : UDINT; {DE:"Background color"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	pVar : UDINT; {DE:"Address of the associated variable"}
+	type : USINT; {DE:"Data type of the associated variable"}
+	pMin : UDINT; {DE:"Address of the lower bound"}
+	pMax : UDINT; {DE:"Address of the higher bound"}
+	format : UDINT; {DE:"Format code"}
+	pVisVar : UDINT; {DE:"Address of the visibility variable"}
+	accMode : USINT; {DE:"Access mode"}
+	END_VAR
+
+	VAR
+	memVal : UDINT; {DE:"Progress status"}
+	memVis : BOOL; {DE:"Visibility status"}
+	pValue : UDINT; {DE: "Pointer to the value - only for HMIRuntimeCore" }
+	pInfoRec : UDINT; {DE: "Pointer to the record with remote param info - only for HMIRuntimeCore" }
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Chart02
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	pFont : UDINT; {DE:"Address of the font"}
+	style : USINT; {DE:"Appearence"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	backCol : UDINT; {DE:"Background color"}
+	tyNSamples : UINT; {DE:"Type of Number of samples"}
+	pNSamples :  UDINT; {DE:"Number of samples"}
+	tyXOffset : UINT;  {DE:"Type of X Offset"}
+	pXOffset: UDINT; {DE:"X Offset"}
+	tyTrackRight : UINT; {DE:"Right label track type"}
+	pTrackRight : UDINT; {DE:"Right label track"}
+	tyTrackLeft : UINT; {DE:"Left label track type"}
+	pTrackLeft : UDINT; {DE:"left label track"}
+	formatLeft :  UDINT; {DE:"format of Y label left"}
+	formatRight :  UDINT; {DE:"format of Y label right "}
+	fGrid : BOOL; {DE:"Flag for grid display"}
+	iDivGridX : UINT; {DE:"Horizontal divisions"}
+	iDivGridY : UINT; {DE:"Vertical divisions"}
+	accMode : USINT; {DE:"Access mode"}
+	iXLabelDiv : UINT; {DE:"How many x label"}
+	tyXScaleType : UINT; {DE:"X Scale type"}
+	pXScale : UDINT; {DE:"X Scale"}
+	pClearVar : UDINT; {DE:"Variabile di clear dei dati"}
+	pVisVar : UDINT; {DE:"Address of the visibility variable"}
+	pRefrVar: UDINT; {DE:"Address of the refresh variable"}
+	format :  UDINT; {DE:"format of X labels"}
+	pXData :  UDINT; {DE:"pointer to X data"}
+	tyXData : UINT; {DE:"type of X data"}
+	XLabelCol : UDINT;{DE:"Color of X label"}
+	iDotStep: UINT; {DE:"distance between points of grid"}
+	iSampleBuffer: UDINT; {DE:" size of sample buffer "}
+	arXBars :  ARRAY [0..2] OF UDINT; {DE:"X Bars"}
+	arXBarsType : ARRAY [0..2] OF UINT; {DE:"Type of data of X Bars"}
+	arXBarsCol: ARRAY [0..2] OF UDINT; {DE:"Bars colors"}
+        GridCol : UDINT;	{DE:"Grid color "}
+        BorderGridCol : UDINT;	{DE:"Border grid color "}
+	arTrkData : ARRAY [0..7] OF UDINT; {DE:"Array of track data addresses"}
+	arTrkType : ARRAY [0..7] OF USINT; {DE:"Data type of the associated variable"}
+	arTrkCol : ARRAY [0..7] OF UDINT; {DE:"Array of track colors"}
+	arTrkScaleY : ARRAY [0..7] OF UDINT;   {DE:"Array of track scale"}
+	arTrkScaleYType: ARRAY [0..7] OF UINT; {DE:"Array of track scale type"}
+        arTrkOffset: ARRAY [0..7] OF UDINT;    {DE:"Array of track offset"}
+	arTrkOffsetType: ARRAY [0..7] OF UINT; {DE:"Array of track offset type"}
+	arTrkVis : ARRAY [0..7] OF UDINT; {DE:"Array of track visibility variables"}
+	iYLabelDiv: ARRAY [0..7] OF UINT; {DE:"Array of vertical label"}
+	arTrkBarValue: ARRAY [0..23] OF UDINT; {DE:"Array of value of horizontal bar"}
+	arTrkBarValueType: ARRAY [0..23] OF UINT; {DE:"Array of value of horizontal bar"}
+	arTrkBarName: ARRAY [0..23] OF UDINT; {DE:"Array of names of horizontal bar"}
+	arTrkBarCol: ARRAY [0..23] OF UDINT; {DE:"Array of colors of horizontal bar"}
+	arTrkMinScale: ARRAY [0..7] OF UDINT; {DE:"Array of min scale y acceptable"}
+	arTrkLineWidth: ARRAY [0..7] OF USINT; {DE:"Array of track line widths"}
+	rulerXBigMarks: UINT; {DE:"Number of big marks on the X axis"}
+	rulerXSmallMarks: UINT; {DE:"Number of small marks on the X axis"}
+	rulerYBigMarks: UINT; {DE:"Number of big marks on the Y axis"}
+	rulerYSmallMarks: UINT; {DE:"Number of small marks on the Y axis"}
+	bEmbeddedXFormat : BOOL; {DE:"Use embedded formats for X labels"}
+	bShowAcquisitions : BOOL; {DE:"Show acquisition points on the line"}
+	XAxisMode : USINT;   {DE:"X scale mode: 0=scale/offset 1=min/max"}
+	arTrkYAxisMode : ARRAY [0..7] OF USINT;   {DE:"Array of track Y scale mode: 0=scale/offset 1=min/max"}
+	maxNSamples: UDINT; {DE:"Max number of samples allowed"}
+	END_VAR	
+
+	VAR
+	memVis : BOOL; {DE:"Visibility status"} 
+	grx1 : UINT; {DE:"X-coordinate of the upper-left corner of the active area"}
+	gry1 : UINT; {DE:"Y-coordinate of the upper-left corner of the active area"}
+	grx2 : UINT; {DE:"X-coordinate of the lower-right corner of the active area"}
+	gry2 : UINT; {DE:"Y-coordinate of the lower-right corner of the active area"}
+	pChart : DWORD; {DE:"Address of the chart"}
+	lastIdxSamples: UDINT; {DE:" last index of the array of samples "}
+
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK Trend
+
+	VAR_INPUT
+	wHnd : UINT; {DE:"Object handle"}
+	x1 : UINT; {DE:"X-coordinate of the upper-left corner"}
+	y1 : UINT; {DE:"Y-coordinate of the upper-left corner"}
+	x2 : UINT; {DE:"X-coordinate of the lower-right corner"}
+	y2 : UINT; {DE:"Y-coordinate of the lower-right corner"}
+	pFont : UDINT; {DE:"Address of the font"}
+	style : USINT; {DE:"Appearence"}
+	bordPts : USINT; {DE:"Border thickness"}
+	bordCol : UDINT; {DE:"Border color"}
+	backCol : UDINT; {DE:"Background color"}
+	tyNSamples : UINT; {DE:"Tipe of sampling time"}
+	pNSamples :  UDINT; {DE:"Sampling time in seconds"}
+	tyXOffset : UINT;  {DE:"Type of X Offset"}
+	pXOffset: UDINT; {DE:"X Offset"}
+	tyTrackRight : UINT; {DE:"Right label track type"}
+	pTrackRight : UDINT; {DE:"Right label track"}
+	tyTrackLeft : UINT; {DE:"Left label track type"}
+	pTrackLeft : UDINT; {DE:"left label track"}
+	formatLeft :  UDINT; {DE:"format of Y label left"}
+	formatRight :  UDINT; {DE:"format of Y label right "}
+	fGrid : BOOL; {DE:"Flag for grid display"}
+	iDivGridX : UINT; {DE:"Horizontal divisions"}
+	iDivGridY : UINT; {DE:"Vertical divisions"}
+	accMode : USINT; {DE:"Access mode"}
+	iXLabelDiv : UINT; {DE:"How many x label"}
+	tyXScaleType : UINT; {DE:"X Scale type"}
+	pXScale : UDINT; {DE:"X Scale"}
+	pClearVar : UDINT; {DE:"Variabile di clear dei dati"}
+	pVisVar : UDINT; {DE:"Address of the visibility variable"}
+	pRefrVar: UDINT; {DE:"Address of the refresh variable"}
+	format :  UDINT; {DE:"format of X labels"}
+	XLabelCol : UDINT;{DE:"Color of X label"}
+	iDotStep: UINT; {DE:"distance between points of grid"}
+	iSampleBuffer: UINT; {DE:" size of sample buffer "}
+	arXBars :  ARRAY [0..2] OF UDINT; {DE:"X Bars"}
+	arXBarsType : ARRAY [0..2] OF UINT; {DE:"Type of data of X Bars"}
+	arXBarsCol: ARRAY [0..2] OF UDINT; {DE:"Bars colors"}
+    GridCol : UDINT;	{DE:"Grid color "}
+    BorderGridCol : UDINT;	{DE:"Border grid color "}
+	arTrkData : ARRAY [0..7] OF UDINT; {DE:"Array of track data addresses"}
+	arTrkType : ARRAY [0..7] OF USINT; {DE:"Data type of the associated variable"}
+	arTrkCol : ARRAY [0..7] OF UDINT; {DE:"Array of track colors"}
+	arTrkScaleY : ARRAY [0..7] OF UDINT;   {DE:"Array of track scale"}
+	arTrkScaleYType: ARRAY [0..7] OF UINT; {DE:"Array of track scale type"}
+    arTrkOffset: ARRAY [0..7] OF UDINT;    {DE:"Array of track offset"}
+	arTrkOffsetType: ARRAY [0..7] OF UINT; {DE:"Array of track offset type"}
+	arTrkVis : ARRAY [0..7] OF UDINT; {DE:"Array of track visibility variables"}
+	iYLabelDiv: ARRAY [0..7] OF UINT; {DE:"Array of vertical label"}
+	arTrkBarValue: ARRAY [0..23] OF UDINT; {DE:"Array of value of horizontal bar"}
+	arTrkBarValueType: ARRAY [0..23] OF UINT; {DE:"Array of value of horizontal bar"}
+	arTrkBarName: ARRAY [0..23] OF UDINT; {DE:"Array of names of horizontal bar"}
+	arTrkBarCol: ARRAY [0..23] OF UDINT; {DE:"Array of colors of horizontal bar"}
+	arTrkMinScale: ARRAY [0..23] OF UDINT; {DE:"Array of min scale y acceptable"}
+	END_VAR	
+
+	VAR
+	memVis : BOOL; {DE:"Visibility status"} 
+	grx1 : UINT; {DE:"X-coordinate of the upper-left corner of the active area"}
+	gry1 : UINT; {DE:"Y-coordinate of the upper-left corner of the active area"}
+	grx2 : UINT; {DE:"X-coordinate of the lower-right corner of the active area"}
+	gry2 : UINT; {DE:"Y-coordinate of the lower-right corner of the active area"}
+	pChart : DWORD; {DE:"Address of the chart"}
+	firstSamplingTimeS : UDINT; {DE:"First time of sampling in seconds"}
+	firstSamplingTimeMS : UINT; {DE:"milliseconds of first time"}
+	lastSamplingTimeS: UDINT; {DE:" last time of sampling in seconds "}
+	lastSamplingTimeMS: UINT; {DE:" milliseconds of last time "}
+	initDraw : BOOL; {DE:"indicate if it's just do the first time of draw "}
+	END_VAR
+
+	{CODE:EMBEDDED}
+
+END_FUNCTION_BLOCK
+

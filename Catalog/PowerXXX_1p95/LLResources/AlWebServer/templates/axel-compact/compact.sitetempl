@@ -1,0 +1,212 @@
+﻿<sitetemplate>
+
+<!-- page header: uses placeholder TITLE, FILENAME, REFRESH, EXTRAHEADER -->
+<pageheader><![CDATA[
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>%TITLE%</title>
+	<!-- dipendenze scaricate dal website -->
+	<link rel='	shortcut icon' href='base.ico'>
+	<link rel='stylesheet' type='text/css' href='compact.css'>
+
+	<!-- dipendenze comuni JS -->
+	<script type='text/javascript' src='../js/LLWebServer.js'></script>
+	<script type='text/javascript' src='../js/base.js'></script>
+	<script type='text/javascript' src='../external/jquery.slim.min.js'></script>
+	<script type='text/javascript' src='../external/file-tree/js/file-explore.js'></script>
+
+	<!-- dipendenze comuni CSS -->
+	<link rel='stylesheet' type='text/css' href='../style/common.css'>
+	<link rel='stylesheet' type='text/css' href='../external/file-tree/css/file-explore.css'>
+	<link rel='stylesheet' type='text/css' href='../external/fontawesome/css/fontawesome.min.css'>
+	<link rel='stylesheet' type='text/css' href='../external/fontawesome/css/solid.min.css'>
+	%EXTRAHEADER%
+</head>
+<body>
+]]>
+</pageheader>
+
+
+
+<!-- header of navigation tabs: uses placeholder TITLE, FILENAME, PAGEPATH -->
+<tabheader><![CDATA[
+	<div id="navigationBar">
+		<span id="headButtonContainer">
+			<button class="head-button" title="home" onclick="window.location = '../'">
+				<img src="/img/home.png" alt="home">
+			</button>
+			<button id="menuIcon" class="head-button" title="menu" onclick="openNav()">
+				<i style="color: #4b4b4b" class="fas fa-angle-double-right fa-3x"></i>
+			</button>
+		</span>
+
+
+		<span class="head-right-container">
+			<img id="loginStatusImg">
+
+			<!-- qui vengono appese immagini programmaticamente -->
+			<span id="customLogoArea">
+			</span>
+		</span>
+	</div>
+
+	<p class='title'>%TITLE%</p>
+	<div class="body">
+
+	<div class="menu column1">
+		<div id="menuContent" class="menu-container">
+			<a href="javascript:void(0)" class="closebtn" style="color: black" onclick="closeNav()">
+				<i class="fas fa-times fa-s"></i>
+			</a>
+
+			<!-- menu content -->
+			<div class="menu-content">
+				<ul id="menuContainer" id="menu" class="file-tree file-list"> ]]>
+</tabheader>
+
+<!-- tab active: uses placeholder CAPTION, LINK -->
+<tabactive><![CDATA[
+					<li><a data-parent-link-active="true" href="%LINK%">%CAPTION%</a> ]]>
+</tabactive>
+
+<!-- tab inactive: uses placeholder CAPTION, LINK -->
+<tabinactive><![CDATA[
+					<li><a data-parent-link-active="false" href="%LINK%">%CAPTION%</a> ]]>
+</tabinactive>
+
+<tabclose><![CDATA[ </li> ]]>
+</tabclose>
+
+<!-- footer of navigation tabs: uses placeholder TITLE, FILENAME, PAGEPATH -->
+<tabfooter><![CDATA[
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="column2">
+	<form action='%FILENAME%.htm' method='get' id='form1' name='form1' onsubmit='return false'>
+	<div class='pagebody'>
+]]>
+</tabfooter>
+
+
+
+<!-- drop-down menus -->
+<menuheader><![CDATA[
+		<ul>
+]]>
+</menuheader>
+
+<!-- menu item, uses placeholder CAPTION, LINK -->
+<menuitem><![CDATA[
+		<li><a data-child-link="%LINK%" href="%LINK%">%CAPTION%</a> ]]>
+</menuitem>
+
+<menuclose><![CDATA[ </li> ]]>
+</menuclose>
+
+<menufooter><![CDATA[
+		</ul>
+]]>
+</menufooter>
+
+
+
+<!-- section header: uses placeholder SECTION -->
+<sectionheader><![CDATA[
+	<div class='section-container'>
+		<span class='sectiontitle'>%SECTION%</span>
+		<table class='table'>
+]]>
+</sectionheader>
+
+
+
+<!-- single parameter record: uses placeholder ADDRESS, LABEL, CTRL, UM -->
+<param><![CDATA[
+			<tr>
+				<td>%LABEL%</td>
+				<td>%CTRL%</td>
+			</tr> ]]>
+</param>
+
+
+
+<!-- section footer -->
+<sectionfooter><![CDATA[
+		</table>
+	</div>
+]]>
+</sectionfooter>
+
+
+
+<!-- page footer: uses placeholder TITLE, FILENAME, REFRESH -->
+<pagefooter><![CDATA[
+	</div>
+	</form>
+	</div>
+	</div>
+	<script type='text/javascript'>
+	if (typeof LLWebServer !== 'undefined')
+		LLWebServer.AutoRefreshStart(%REFRESH%);
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~ gestione user loggato e loghi ~~~~~~~~~~~~~~~~~~~~~~~~~
+	showNavbarLogos();
+	showLoginStatus();
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~ gestione selezione menu corrente ~~~~~~~~~~~~~~~~~~~~~~~~
+	// il nome della cartella del sito coincide con quello definito nel plugin
+	const WEBSITE_FOLDER_NAME = "website";
+	const WEBSITE_FOLDER_PATH = "/" + WEBSITE_FOLDER_NAME + "/";
+	let activeFound = false;
+	// tutti i figli di qualunque livello
+	let allChildren = document.querySelectorAll("[data-child-link]");
+	for (let children of allChildren) {
+		// se l'url corrente del browser e' uguale a quello nell'attributo dell'<a>, seleziono l'<a> corrente
+		if (WEBSITE_FOLDER_PATH + children.getAttribute("data-child-link") == window.location.pathname) {
+			children.classList.add("selected");
+			activeFound = true;
+			break;
+		}
+	}
+	// se non ho trovato un figlio attivo, allora lo e' il padre
+	if (!activeFound) {
+		let activeParent = document.querySelector("[data-parent-link-active='true']");
+		activeParent.classList.add("selected");
+	}
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ gestione menu responsive ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// gestione menu a scomparsa
+	function openNav()
+	{
+		document.getElementById("menuContent").classList.add("collapsed-menu-open");
+	}
+
+	function closeNav()
+	{
+		document.getElementById("menuContent").classList.remove("collapsed-menu-open");
+	}
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	</script>
+</body>
+</html>
+]]>
+</pagefooter>
+
+
+
+<!-- supplementary files to be copied as-is -->
+<files>
+	<file>compact.css</file>  <!-- CSS is linked in <pageheader> in tag <link rel='stylesheet' ...>  -->
+	<file>base.ico</file>  <!-- favicon is linked in <pageheader> in tag <link rel='shortcut icon' ....> -->
+</files>
+
+</sitetemplate>

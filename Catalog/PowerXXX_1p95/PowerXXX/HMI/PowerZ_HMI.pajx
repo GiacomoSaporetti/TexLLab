@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagProject name="PowerZ_HMI">
+	<comm>GDB:0,1000#TCPIP:10.0.0.88/5000</comm>
+</pagProject>

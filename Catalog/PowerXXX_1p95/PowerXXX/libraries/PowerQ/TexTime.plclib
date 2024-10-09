@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="" name="TexTime" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexTime" excludeFromBuildIfNotDef="">
+				<Definition name="TM_DATE"/>
+				<Definition name="LTM_DATE"/>
+				<Pou name="TM_TO_DATE_AND_TIME"/>
+				<Definition name="LTM_TIME"/>
+				<Definition name="LTM_DATE_AND_TIME"/>
+				<Pou name="TM_TO_TIME"/>
+				<Pou name="TM_TO_DATE"/>
+				<Pou name="DATE_AND_TIME_TO_TM"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions>
+			<function name="TM_TO_DATE_AND_TIME" version="1.0.0" creationDate="1727174997" lastModifiedDate="1727175014">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="LTM" type="UDINT">
+							<descr>time in second from 1.janauary.1970</descr>
+						</var>
+						<var name="TM" type="PVOID">
+							<descr>pointer to DATE_AND_TIME object</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TM_TO_DATE_AND_TIME: BOOL		(* convert LTM (time in second from 1.janauary.1970) in DATE_AND_TIME object *)
+
+VAR_INPUT
+	LTM 	: UDINT;					(* time in second from 1.janauary.1970 *)
+	TM		: PVOID;					(* pointer to DATE_AND_TIME object *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TM_TO_TIME" version="1.0.0" creationDate="1727175191" lastModifiedDate="1727255231">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="LTM" type="UDINT">
+							<descr>time in second from 1.janauary.1970</descr>
+						</var>
+						<var name="TM" type="PVOID">
+							<descr>pointer to TIME object</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TM_TO_TIME: BOOL				(* convert LTM (time in second from 1.janauary.1970) to TIME object *)
+
+VAR_INPUT
+	LTM 	: UDINT;					(* time in second from 1.janauary.1970 *)
+	TM		: PVOID;					(* pointer to TIME object *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TM_TO_DATE" version="1.0.0" creationDate="1727175231" lastModifiedDate="1727175267">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="LTM" type="UDINT">
+							<descr>time in second from 1.janauary.1970</descr>
+						</var>
+						<var name="TM" type="PVOID">
+							<descr>pointer to DATE_AND_TIME object</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TM_TO_DATE: BOOL		(* convert LTM (time in second from 1.janauary.1970) in DATE_AND_TIME object *)
+
+VAR_INPUT
+	LTM 	: UDINT;			(* time in second from 1.janauary.1970 *)
+	TM		: PVOID;			(* pointer to DATE_AND_TIME object *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="DATE_AND_TIME_TO_TM" version="1.0.0" creationDate="1727255715" lastModifiedDate="1727255729">
+				<returnValue>UDINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="TM" type="PVOID">
+							<descr>pointer to DATE_AND_TIME object</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION DATE_AND_TIME_TO_TM: UDINT			(* convert DATE_AND_TIME object to LTM (time in second from 1.janauary.1970) *)
+
+VAR_INPUT
+	TM 	: PVOID;							(* pointer to DATE_AND_TIME object *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="LTM_DATE" version="1.0.0">
+				<vars>
+					<var name="year" type="INT"/>
+					<var name="month" type="INT"/>
+					<var name="day" type="INT"/>
+					<var name="weekday" type="INT"/>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[LTM_DATE: STRUCT
+	year	:	INT;
+	month	:	INT;
+	day		:   INT;
+	weekday	:	INT;
+END_STRUCT;
+]]>
+				</iecDeclaration>
+			</struct>
+			<struct name="LTM_TIME" version="1.0.0">
+				<vars>
+					<var name="hours" type="INT"/>
+					<var name="minutes" type="INT"/>
+					<var name="seconds" type="INT"/>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[LTM_TIME: STRUCT
+	hours	:	INT;
+	minutes	:	INT;
+	seconds	:   INT;
+END_STRUCT;
+
+]]>
+				</iecDeclaration>
+			</struct>
+			<struct name="LTM_DATE_AND_TIME" version="1.0.0">
+				<vars>
+					<var name="year" type="INT"/>
+					<var name="month" type="INT"/>
+					<var name="day" type="INT"/>
+					<var name="weekday" type="INT"/>
+					<var name="hours" type="INT"/>
+					<var name="minutes" type="INT"/>
+					<var name="seconds" type="INT"/>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[LTM_DATE_AND_TIME: STRUCT
+	year	:	INT;
+	month	:	INT;
+	day		:   INT;
+	weekday	:	INT;
+	hours	:	INT;
+	minutes	:	INT;
+	seconds	:   INT;
+END_STRUCT;
+]]>
+				</iecDeclaration>
+			</struct>
+		</structs>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

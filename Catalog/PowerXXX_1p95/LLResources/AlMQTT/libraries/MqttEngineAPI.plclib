@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="MqttEngineAPI" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="MqttEngine" excludeFromBuildIfNotDef="">
+			</folder>
+		</libWorkspace>
+		<globalVars>			
+		</globalVars>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration>
+			<group name="MqttEngine_Variables">
+				<iecDeclaration active="FALSE"/>
+			</group>
+		</iecVarsDeclaration>
+		<functions/>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

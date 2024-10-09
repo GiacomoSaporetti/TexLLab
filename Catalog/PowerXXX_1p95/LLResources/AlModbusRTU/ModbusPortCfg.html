@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Modbus Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" >
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var RS485_MODE_OFF = 0
+	var RS485_MODE_MASTER = 1
+	var RS485_MODE_SLAVE = 2
+	var PROTOCOL_MODBUSRTU_MASTER = "ModbusRTU_master"
+	//  SerCfg serial configuration mode
+	//  Serial is configured with parameters read from database
+	var SERCFG_BY_DATABASE      = 0;
+	//  Serial is configured with open channel function parameters (by PLC code, default)
+	var SERCFG_BY_FUNCTION_CALL = 1;
+	
+    //  impostazioni di visualizzazione di default
+	var SHOW_EDIT_SERCFG = false						//	see showEditSerCfg port property
+	var SHOW_PHYSICAL_TARGET_PORT_NAME = true			//	see showPhysicalTargetPortName port property
+	var SHOW_EDIT_PHYSICAL_TARGET_PORT = false			//	see showEditPortSettings port property
+	var SHOW_EDIT_RSMODE = false						//	see rsmodeEditable port property
+	
+	function InitPage()
+	{	
+		var path = _DATAPATH
+		
+//		pageTitle.innerText = app.DataGet(path + "@name", 0) + " Configuration"
+
+		var setting = app.DataGet(path + "@showEditSerCfg", 0)
+		if (setting != undefined)
+		    SHOW_EDIT_SERCFG = genfuncs.ParseBoolean(setting);
+
+		var setting = app.DataGet(path + "@showPhysicalTargetPortName", 0)
+		if (setting != undefined)
+		    SHOW_PHYSICAL_TARGET_PORT_NAME = genfuncs.ParseBoolean(setting);
+
+		var setting = app.DataGet(path + "@showEditPortSettings", 0)
+		if (setting != undefined)
+		    SHOW_EDIT_PHYSICAL_TARGET_PORT = genfuncs.ParseBoolean(setting);
+
+		var setting = app.DataGet(path + "@rsmodeEditable", 0)
+		if (setting != undefined)
+		    SHOW_EDIT_RSMODE = genfuncs.ParseBoolean(setting);
+
+		SearchError(path)
+		
+		Update(undefined, undefined)
+	}
+
+	function Mode_OnClick(mode)
+	{
+		Update(mode, undefined)
+	}
+	
+	function Cfg_OnClick(serCfg)
+	{
+		Update(undefined, serCfg);
+	}
+	
+	function Update(mode, serCfg)
+	{
+		var path = _DATAPATH
+		if (mode === undefined)
+			mode = app.DataGet(path + "/@mode", 0);
+		if (serCfg === undefined)
+			serCfg = app.DataGet(path + "/@serCfg", 0);
+		
+		// tenta di leggere gli override specifici per master / slave, essendo opzionali toglie logmask
+		var oldMask = app.LogMask;
+		app.LogMask = 0;
+		
+		var serCfgMaster = app.DataGet(path + "/@serCfgMaster", 0);
+		if (!serCfgMaster)
+			serCfgMaster = serCfg;
+		var serCfgSlave = app.DataGet(path + "/@serCfgSlave", 0);
+		if (!serCfgSlave)
+			serCfgSlave = serCfg;
+			
+		app.LogMask = oldMask;
+		
+		fldCfgParam.style.display = (mode != RS485_MODE_OFF && SHOW_EDIT_SERCFG) ? "" : "none"
+		
+		var vis = (mode == RS485_MODE_MASTER && serCfgMaster == SERCFG_BY_FUNCTION_CALL) || (mode == RS485_MODE_SLAVE && serCfgSlave == SERCFG_BY_FUNCTION_CALL);
+		
+		fldBaudRate.style.display = vis ? "" : "none"
+		fldSerialMode.style.display = vis ? "" : "none"
+
+		fldSerialPort.style.display = (vis && SHOW_PHYSICAL_TARGET_PORT_NAME) ? "" : "none"
+
+		fldSerialPortEdit.style.display = (vis && SHOW_EDIT_PHYSICAL_TARGET_PORT) ? "" : "none";
+
+		fldModbusSlave.style.display = (mode == RS485_MODE_SLAVE && serCfgSlave == SERCFG_BY_FUNCTION_CALL ) ? "" : "none"
+		
+		fldRSModeEdit.style.display = (vis && SHOW_EDIT_RSMODE) ? "" : "none";
+		
+		
+		var protocol
+		if (mode == RS485_MODE_OFF)
+			protocol = ""
+		else if (mode == RS485_MODE_MASTER)
+			protocol = PROTOCOL_MODBUSRTU_MASTER
+		else if (mode == RS485_MODE_SLAVE)
+			protocol = ""
+		
+		app.DataSet(_DATAPATH + "/@protocol", 0, protocol)
+		
+		// aggiorna il list control del catalogo
+		var query = "//deviceinfo[protocols/protocol = '" + protocol + "']"
+		app.CallFunction("catalog.UpdateCatalogListCtrl", query)
+	}
+</script>
+
+</head>
+
+<body>
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle"><t:t>Modbus Configuration</t:t></td>
+	</tr>
+	<tr>
+		<td class="Sfondo">
+		
+			<fieldset style="width:300px">
+				<legend ><t:t>Mode</t:t></legend>
+				<input type="radio" id="mode1" name=".D(@mode)" value="0" onclick="Mode_OnClick(this.value)">
+				<label for="mode1"><t:t>Not used</t:t></label>
+				<br>
+				<input type="radio" id="mode2" name=".D(@mode)" value="1" onclick="Mode_OnClick(this.value)">
+				<label for="mode2"><t:t>Modbus RTU Master</t:t></label>
+				<br>
+				<input type="radio" id="mode3" name=".D(@mode)" value="2" onclick="Mode_OnClick(this.value)">
+				<label for="mode3"><t:t>Modbus RTU Slave</t:t></label>
+			</fieldset>
+			<fieldset id="fldCfgParam" style="width:300px">
+				<legend><t:t>Serial configuration source</t:t></legend>
+				<input type="radio" id="conf1" name=".D(@serCfg)" value="1" onclick="Cfg_OnClick(this.value)">
+				<label for="conf1"><t:t>Use configuration specified here</t:t></label>
+				<br>
+				<input type="radio" id="conf2" name=".D(@serCfg)" value="2" onclick="Cfg_OnClick(this.value)">
+				<label for="conf2"><t:t>Use embedded configuration</t:t></label>
+			</fieldset>
+			<fieldset id="fldSerialPort" style="width:300px" disabled>
+				<legend ><t:t>Physical Port</t:t></legend>
+				<select name=".D(@COMnumber)">
+					<option value="1">UART1</option>
+					<option value="2">UART2</option>
+					<option value="3">UART3</option>
+					<option value="4">UART4</option>
+				</select>
+			</fieldset>
+			<fieldset id="fldSerialPortEdit" style="width:300px">
+				<legend ><t:t>Physical Port</t:t></legend>
+				<label for="COMnumber"><t:t>Port number:</t:t></label> <input type="text" id="COMnumber" name=".D(@COMnumber)" size="5"> <br>
+			</fieldset>
+			<fieldset id="fldRSModeEdit" style="width:300px">
+				<legend><t:t>Port type</t:t></legend>
+				<input type="radio" id="rsmode1" name=".D(@rsmode)" value="1"> <label for="rsmode1"><t:t>RS485</t:t></label> <br>
+				<input type="radio" id="rsmode2" name=".D(@rsmode)" value="2"> <label for="rsmode2"><t:t>RS422</t:t></label> <br>
+				<input type="radio" id="rsmode3" name=".D(@rsmode)" value="3"> <label for="rsmode3"><t:t>RS232</t:t></label> <br>
+			</fieldset>
+			<fieldset id="fldBaudRate" style="width:300px">
+				<legend><t:t>Baud rate</t:t></legend>
+				<input type="radio" id="baud1" name=".D(@baudRate)" value="600"> <label for="baud1"><t:t>600 b/s</t:t></label> <br>
+				<input type="radio" id="baud2" name=".D(@baudRate)" value="1200"> <label for="baud2"><t:t>1200 b/s</t:t></label> <br>
+				<input type="radio" id="baud3" name=".D(@baudRate)" value="2400"> <label for="baud3"><t:t>2400 b/s</t:t></label> <br>
+				<input type="radio" id="baud4" name=".D(@baudRate)" value="4800"> <label for="baud4"><t:t>4800 b/s</t:t></label> <br>
+				<input type="radio" id="baud5" name=".D(@baudRate)" value="9600"> <label for="baud5"><t:t>9600 b/s</t:t></label> <br>
+				<input type="radio" id="baud6" name=".D(@baudRate)" value="19200"> <label for="baud6"><t:t>19200 b/s</t:t></label> <br>
+				<input type="radio" id="baud7" name=".D(@baudRate)" value="38400"> <label for="baud7"><t:t>38400 b/s</t:t></label> <br>
+				<input type="radio" id="baud8" name=".D(@baudRate)" value="57600"> <label for="baud8"><t:t>57600 b/s</t:t></label> <br>
+				<input type="radio" id="baud9" name=".D(@baudRate)" value="76800"> <label for="baud9"><t:t>76800 b/s</t:t></label> <br>
+				<input type="radio" id="baud10" name=".D(@baudRate)" value="115200"> <label for="baud10"><t:t>115200 b/s</t:t></label> <br>
+			</fieldset>
+			<fieldset id="fldSerialMode" style="width:300px">
+				<legend ><t:t>Serial Mode</t:t></legend>
+				<select name=".D(@serialMode)">
+					<option value="none,8,1">N,8,1  (No parity, 8 data bits, 1 stop bit)</option>
+					<option value="even,8,1">E,8,1  (Even parity, 8 data bits, 1 stop bit)</option>
+					<option value="odd,8,1" >O,8,1  (Odd parity, 8 data bits, 1 stop bit)</option>
+					<!--<option value="space,8,1" >S,8,1  (Space parity, 8 data bits, 1 stop bit)</option>-->
+					<!--<option value="mark,8,1" >M,8,1  (Mark parity, 8 data bits, 1 stop bit)</option>-->
+					<option value="none,8,2">N,8,2  (No parity, 8 data bits, 2 stop bits)</option>
+					<option value="even,8,2">E,8,2  (Even parity, 8 data bits, 2 stop bits)</option>
+					<option value="odd,8,2">O,8,2  (Odd parity, 8 data bits, 2 stop bits)</option>
+					<!--<option value="space,8,2" >S,8,2  (Space parity, 8 data bits, 2 stop bit)</option>-->
+					<!--<option value="mark,8,2" >M,8,2  (Mark parity, 8 data bits, 2 stop bit)</option>-->					
+				</select>
+			</fieldset>
+			<fieldset id="fldModbusSlave" style="width:300px">
+				<legend><t:t>Slave settings</t:t></legend>
+				<label for="slaveAddress"><t:t>Modbus address (1..247):</t:t></label> <input type="text" id="slaveAddress" name=".D(@slaveAddress)" size="5"> <br>
+			</fieldset>
+		</td>
+	</tr>
+</table>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

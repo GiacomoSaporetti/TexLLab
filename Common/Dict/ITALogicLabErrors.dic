@@ -1,0 +1,1325 @@
+# ITA Italiano
+
+<Aborted by user
+>Interrotto dall'utente
+
+<Access to array as scalar - assuming index 0
+>Accesso ad array come scalare, si assume elemento 0
+
+<Accumulator - operand sign mismatch
+>Accumulatore, differenza di segno tra gli operandi
+
+<Accumulator cast to 16 bits
+>Conversione accumulatore a 16 bit
+
+<Accumulator cast to boolean
+>Conversione accumulatore a booleano
+
+<Accumulator conversion
+>Conversione accumulatore
+
+<Accumulator extension
+>Estensione accumulatore
+
+<Accumulator undefined
+>Accumulatore non definito
+
+<Address of explicit constant not defined
+>Indirizzo di costante esplicita non definito
+
+<Ambiguous enum value, <enum># prefix will be requested
+>Valore enumerativo ambiguo, richiesto prefisso <enum>#
+
+<Ambiguous network evaluation
+>Valutazione ambigua della rete
+
+<Application name is longer than 10 characters: only the first 10 characters will be downloaded into the target
+>Il nome dell'applicazione è più lungo di 10 caratteri, solamente i primi 10 caratteri saranno inviati al sistema
+
+<Assembler error
+>Errore dell'assemblatore
+
+<Bad parameters specified or wrong parameters number
+>Parametro non corretto o numero errato di parametri
+
+<BOOL arrays on functions cannot exceed 16 elements
+>Gli array di BOOL nelle funzioni non possono eccedere 16 elementi
+
+<Boolean accumulator required
+>Richiesto accumulatore BOOL
+
+<Boolean index not supported
+>Indice BOOL non supportato
+
+<Boolean operand required
+>Richiesto operando BOOL
+
+<Boolean operand(s) required
+>Richiesti operando/i BOOL
+
+<Boolean parameter required
+>Richiesto parametro BOOL
+
+<Branch higher of 32 MB
+>Salto con offset maggiore di 32 bit
+
+<Can't allocate code buffer
+>Impossibile allocare area codice
+
+<Can't convert to/from string
+>Impossibile convertire da/verso stringa
+
+<Can't copy file
+>Impossibile copiare il file
+
+<Can't create code file
+>Impossibile creare il file codice
+
+<Can't create directory
+>Impossibile creare la cartella
+
+<Can't create listing file
+>Impossibile creare il file listato
+
+<Can't create parameters file
+>Impossibile creare il file parametri
+
+<Can't create symbols file
+>Impossibile creare il file dei simboli
+
+<Can't create the target binary file
+>Impossibile creare il file binario del sistema
+
+<Can't open auxiliary source file
+>Impossibile aprire il file sorgente ausiliario
+
+<Can't open file
+>Impossibile aprire il file
+
+<Can't open library file
+>Impossibile aprire la libreria
+
+<Can't open parameters file
+>Impossibile aprire il file parametri
+
+<Can't open source project
+>Impossibile aprire il progetto sorgente
+
+<Can't open template project
+>Impossibile aprire il progetto template
+
+<Can't read file
+>Impossibile leggere il file
+
+<Can't save file
+>Impossibile salvare il file
+
+<Cannot load the address of an explicit constant
+>Impossibile caricare l'indirizzo da una costante esplicita
+
+<Cannot use a function block containing external variables with process image in more than one task
+>Non è possibile usare function block contenenti riferimenti esterni con immagini di processo da più task
+
+<Cannot use complex variables in functions. Not implemented
+>Impossibile usare variabili complesse nelle funzioni (non implementato)
+
+<Code buffer overflow
+>Overflow dell'area di memoria
+
+<CODE GENERATOR INTERNAL ERROR
+>ERRORE INTERNO DEL GENERATORE DI CODICE
+
+<Code write failure
+>Errore di scrittura del codice
+
+<Communication device unavailable
+>Dispositivo di comunicazione non disponibile
+
+<Communication timeout
+>Time-out di comunicazione
+
+<Comparison between a boolean and a non-boolean is not implemented
+>Comparazione tra BOOL e non BOOL non implementata
+
+<Comparison between signed and unsigned
+>Comparazione tra elementi con segno e senza segno
+
+<Comparison of unsigned type and signed type
+>Comparazione tra elementi con segno e senza segno
+
+<Constant not admitted
+>Costante non ammessa
+
+<Constant not initialized
+>Costante non inizializzata
+
+<Conversion data types mismatch, possible loss of data
+>Conversione tra tipi di dato, possibile perdita di dati
+
+<Conversion may result in loss or corruption of data
+>La conversione può generare deterioramento o perdita di dati
+
+<Converting a number into a string
+>Conversione di un numero in una stringa
+
+<Converting a string into a number
+>Conversione di una stringa in un numero
+
+<Could not find the associate program code
+>Codice del programma associato non reperibile
+
+<Could not find the condition code
+>Codice della condizione non trovato
+
+<Cyclic declaration of function blocks
+>Uso ricorsivo di blocchi funzionali
+
+<Cyclic declaration of structures
+>Uso ricorsivo di strutture
+
+<Cyclic declaration of typedefs
+>Uso ricorsivo di typedef
+
+<Cyclic definition of data type
+>Uso ricorsivo di tipi di dato
+
+<Data conversion
+>Conversione del dato
+
+<Destination may be too small to store current result
+>Il tipo destinazione può essere troppo piccolo per contenere il risultato
+
+<Destination must be a register
+>La destinazione deve essere un registro
+
+<Division by zero
+>Divisione per zero
+
+<Does not apply to accumulator of type string
+>L'operazione non si applica a tipi stringa
+
+<Does not apply to boolean accumulator
+>L'operazione non si applica al tipo BOOL
+
+<Does not apply to boolean operand(s)
+>L'operazione non si applica a operandi BOOL
+
+<Does not support boolean accumulator
+>Non è supportato l'uso di tipo BOOL
+
+<Does not support float accumulator
+>Non è supportato l'uso di un tipo REAL
+
+<Double pointers are not supported
+>Il doppio puntatore non è supportato
+
+<Duplicate function block name
+>Nome del blocco funzionale duplicato
+
+<Duplicate function name
+>Nome della funzione duplicato
+
+<Duplicate label
+>Etichetta duplicata
+
+<Duplicate macro name
+>Nome della macro duplicato
+
+<Duplicate macro parameter name
+>Nome del parametro della macro duplicato
+
+<Duplicate program name
+>Nome del programma duplicato
+
+<Duplicate variable name
+>Nome della variabile duplicato
+
+<Duplicates action. Same SFC action cannot be used in more than one step
+>Nome di azione duplicato
+
+<Element not defined
+>Elemento non definito
+
+<Error while extending operand(s)
+>Errore nell'estensione del tipo degli operandi
+
+<Error while extending parameters
+>Errore nell'estensione del tipo dei parametri
+
+<Error while loading current line number
+>Errore nel caricamento del numero di linea
+
+<Error while uploading source code from target device
+>Error durante il caricamento dei sorgenti dal sistema
+
+<Every output pin of a transition must be connected to a step/jump block
+>Ogni connettore di una transizione deve essere collegato ad un passo o salto
+
+<Exceeding dimensions in typedef
+>Dimensioni eccedenti nella definizione del tipo
+
+<Extension error
+>Errore di estensione
+
+<External variable not found
+>Variabile esterna non trovata
+
+<Far data allowed only for load/store operations in PROGRAMs
+>L'uso di dati FAR può essere utilizzato sono nei PROGRAM
+
+<Find
+>Cerca
+
+<Flash erase failure
+>Errore di cancellazione FLASH
+
+<Floating point data type not supported
+>Tipi REAL non supportati
+
+<Floating point parameter not allowed
+>Parametri di tipo REAL non supportati
+
+<FPU stack empty
+>Lo stack REAL è vuoto
+
+<FPU stack full
+>Lo stack REAL è pieno
+
+<FPU stack size error
+>Errore di dimensione dello stack REAL
+
+<Function block invocation of a non-function block instance
+>Invocazione di un blocco funzionale non istanziato
+
+<Function block must be instanciated
+>Il blocco funzionale deve essere istanziato
+
+<Function block not defined
+>Il blocco funzionale non è definito
+
+<Function block with process image variables can't be used in event tasks
+>Blocco funzionale con immagine di processo non può essere utilizzato in task evento
+
+<Function not defined
+>Funzione non definita
+
+<Function parameter doesn't exist
+>Parametro di funzione non esistente
+
+<Function parameter not defined
+>Parametro di funzione non definito
+
+<Function result of type string requires store to variable
+>Il risultato di una funzione stringa richiede l'assegnamento a variabile
+
+<Function return value ignored
+>Valore di ritorno della funzione ignorato
+
+<Generic file error
+>Errore generico nel file
+
+<Generic SFC error
+>Errore SFC generico
+
+<Generic ST error
+>Errore ST generico
+
+<Illegal access to variable through function
+>Accesso illegale a variabile mediante funzione
+
+<Illegal comparison
+>Comparazione non valida
+
+<Illegal conversion
+>Conversione non valida
+
+<Illegal negation of a real parameter
+>Negazione di parametro REAL non valida
+
+<Illegal reference to address of variable accessible through function
+>Riferimento non consentito a variabile con funzione di accesso
+
+<Illegal reference to the address of a register
+>Riferimento non consentito ad indirizzo di un registro
+
+<Incompatible external declaration
+>Dichiarazione EXTERNAL non compatibile
+
+<Incompatible target version
+>Versione di sistema non compatibile
+
+<Inconsistent network
+>Rete non consistente
+
+<Index exceeding array size
+>L'indice eccede la dimensione dell'array
+
+<Index exceeds array size
+>L'indice eccede la dimensione dell'array
+
+<Initial step missing
+>Passo iniziale non definito
+
+<Initialization exceeding string size
+>L'inizializzazione eccede la dimensione della stringa
+
+<Invalid access through function
+>Accesso non valido mediante funzione
+
+<Invalid access to variable
+>Accesso non valido a variabile
+
+<Invalid address expression
+>Espressione di indirizzo non valida
+
+<Invalid array base
+>Base di array non valida
+
+<Invalid array dimension
+>Dimensione di array non valida
+
+<Invalid assignment
+>Assegnamento non valido
+
+<Invalid assignment, := expected
+>Assegnamento non valido, atteso :=
+
+<Invalid binary constant
+>Costante binaria non valida
+
+<Invalid code file
+>File codice non valido
+
+<Invalid command
+>Comando non valido
+
+<Invalid connection (incomplete, more than a source etc.)
+>Connessione non valida (incompleta, sorgenti multiple ecc.)
+
+<Invalid constant string
+>Costante stringa non valida
+
+<Invalid data block index
+>Indice di data block non valido
+
+<Invalid data type
+>Tipo di dato non valido
+
+<Invalid data type for initialization
+>Tipo di dato non valido per l'inizializzaizione
+
+<Invalid database information address
+>Indirizzo informazioni database non valido
+
+<Invalid decimal constant
+>Costante decimale non valida
+
+<Invalid destination
+>Destinazione invalida
+
+<Invalid element
+>Elemento invalido
+
+<Invalid expression
+>Espressione invalida
+
+<Invalid expression or missing BY
+>Espressione invalida o persa BY
+
+<Invalid expression or missing DO
+>Espressione invalida o persa DO
+
+<Invalid expression or missing THEN
+>Espressione invalida o persa THEN
+
+<Invalid expression or missing TO
+>Espressione invalida o persa TO
+
+<Invalid file specification
+>Specifica del file non valida
+
+<Invalid function index
+>Indice funzione invalido
+
+<Invalid function parameter(s) specification
+>Specifica parametro(i) funzione invalida
+
+<Invalid function type
+>Tipo funzione invalido
+
+<Invalid hexadecimal constant
+>Costante esadecimale non valida
+
+<Invalid index
+>Indice invalido
+
+<Invalid index data type
+>Tipo di dati dell'indice invalido
+
+<Invalid index for variable accessible through function
+>Indice non valido per la variabile accessibile attraverso la funzione
+
+<Invalid instruction with non-empty FPU stack
+>Istruzione non valida con stack FPU non vuoto
+
+<Invalid location index specification
+>Specifica posizione indice invalida
+
+<Invalid location prefix
+>Prefisso posizione invalido
+
+<Invalid location specification
+>Specifica posizione non valida
+
+<Invalid location type
+>Tipo posizione invalida
+
+<Invalid network
+>Rete non valida
+
+<Invalid number of parameters in macro call
+>Numero non valido di parametri nella chiamata della macro
+
+<Invalid object connected to power rail
+>Oggetto non valido collegato alla linea di alimentazione
+
+<Invalid octal constant
+>Costante ottale non valida
+
+<Invalid operand
+>Tipo di operando non valido
+
+<Invalid operand number
+>Numero di operandi non valido
+
+<Invalid operand type
+>Tipo di operando non valido
+
+<Invalid operator
+>Operatore non corretto
+
+<Invalid operator value
+>Valore operatore non corretto
+
+<Invalid or undefined initialization constant
+>Inizializzazione di costante non valida o mancante
+
+<Invalid parameter passing
+>Passaggio parametri non corretto
+
+<Invalid pointer arithmetic operation
+>Operazione di aritmetica puntatori non valida
+
+<Invalid pragma
+>PRAGMA non valido
+
+<Invalid pragma value
+>Valore non valido in costrutto PRAGMA
+
+<Invalid processor type
+>Tipo di processore non corretto
+
+<Invalid repetition in initialization
+>Iteratore di inizializzazione non valido
+
+<Invalid resource definition: two or more tasks have the same ID
+>Configurazione sistema non valida: più di un task con il medesimo ID
+
+<Invalid size expression
+>Espressione di dimensione non valida
+
+<Invalid ST statement
+>Istruzione ST non valida
+
+<Invalid statement or missing UNTIL
+>Istruzione non valida o UNTIL mancante
+
+<Invalid string size
+>Dimensione di stringa non valida
+
+<Invalid target information
+>Informazioni di allocazione sul sistema non valide
+
+<Invalid target information address
+>Informazioni sugli indirizzi di sistema non valide
+
+<Invalid task
+>Task non valido
+
+<Invalid time constant
+>Costante di tipo TIME non valida
+
+<Invalid token
+>Stringa non valida
+
+<Invalid use of pin negation (ADR operator does not allow negated input
+>Uso improprio di negazione del connettore (ADR o SIZEOF)
+
+<Invalid use of pin negation (SIZEOF operator does not allow negated input
+>Uso improprio di negazione del connettore (ADR o SIZEOF)
+
+<Invalid variable type
+>Tipo di dato non valido
+
+<Label not defined
+>Etichetta non definita
+
+<Less than 10% of free bit data
+>^Spazio per dati bit disponibile minore del 10%
+
+<Less than 10% of free code
+>^Spazio codice disponibile minore del 10%
+
+<Less than 10% of free data
+>^Spazio dati disponibile minore del 10%
+
+<Less than 10% of free ext/aux data
+>^Spazio dati ausiliario disponibile minore del 10%
+
+<Less than 10% of free retain data
+>^Spazio dati ritentivi disponibile minore del 10%
+
+<Long data not supported
+>Dato LONG non supportato
+
+<Long jump (> 64K) not supported
+>Salto LONG (> 64K) non supportato
+
+<Long real data not supported
+>Tipo di dato LREAL non supportato
+
+<Maximum number of subscripts exceeded
+>Nuomero massimo di subscript superato
+
+<Missing END_FOR
+>Omissione di END_FOR
+
+<Missing END_IF
+>Omissione di END_IF
+
+<Missing END_REPEAT
+>Omissione di END_REPEAT
+
+<Missing END_WHILE
+>Omissione di END_WHILE
+
+<Missing;
+>Omissione di ;
+
+<Modulo not allowed on REAL
+>Operazione di modulo non ammessa con operandi REAL
+
+<More than one network per block
+>Più di una rete nel blocco corrente
+
+<Multidimensional variables not supported
+>Variabili multidimensionali non supportate
+
+<Multiple assignment not allowed (in accordance with IEC 61131-3)
+>Assegnamento multiplo non ammesso (in accordo con standard IEC 61131-3)
+
+<Negation of a non-boolean operand
+>Negazione di un operando non BOOL
+
+<Negation of a non-boolean parameter
+>Negazione di un parametro non BOOL
+
+<Negation without condition
+>Negazione senza corrispondente condizione
+
+<Negative operand not supported
+>Operandi negativi non ammessi
+
+<No enumerative elements
+>Non ci sono elementi enumerativi
+
+<No iteration to exit from
+>Nessun costrutto di iterazione per l'istruzione EXIT
+
+<No room for source file on the target
+>Il sistema non ha spazio per il codice sorgente
+
+<No task defined for the application
+>L'applicazione non ha task definiti
+
+<Not implemented
+>Non implementato
+
+<Number of indexes not matching the var size
+>Il numero degli indici non corrisponde alla dimensione della variabile
+
+<Object already exist in project
+>L'oggetto è già definito nel progetto
+
+<Only 0 admitted here
+>Ammesso solamente il valore zero
+
+<Only constant index allowed
+>Ammessi solamente indici costanti
+
+<Operand extension
+>Estensione del tipo dell'operando
+
+<Operand type not admitted for the operation
+>Tipo di operando non ammesso per questa operazione
+
+<Operation allowed on real parameters only
+>Operazione ammessa solamente con operandi REAL
+
+<Operation not allowed on a string
+>Operazione non ammessa su stringhe
+
+<Operation not allowed on a string or a real
+>Operazione non ammessa con tipi stringa o REAL
+
+<Operation not allowed on boolean
+>Operazione non ammessa con tipo BOOL
+
+<Operation not allowed on pointers
+>Operazione non ammessa con puntatotri
+
+<Operation not allowed on real
+>Operazione non ammessa con tipo REAL
+
+<Operation not implemented
+>Operazione non implementata
+
+<Operators have mismatching type
+>Gli operatori hanno tipi non concordi
+
+<Output connection missing
+>Connessione d'uscita non presente
+
+<Parser non specified
+>Errore interno di parser non specificato
+
+<Parser not inizialized
+>Errore interno di parser non inizializzato
+
+<Parser tabel error
+>Errore interno di parsing
+
+<Process image variables can't be used in event tasks
+>Le variabili con immagine di processo non possono essere abbinate a task evento
+
+<Program already assigned to a task
+>Il programma è già stato associato ad un task
+
+<Program is not assigned to a task
+>Il programma non è associato ad alcun task
+
+<Program not found
+>Programma non trovato
+
+<Project is in the old PPJ format. It will be saved in the actual PPJX format
+>Il progetto è nel precedente formato PPJ, sarà salvato nel nuovo formato PPJX
+
+<Real data not supported
+>Dati REAL non supportati
+
+<Rebuild required
+>Ricompilazione richiesta
+
+<Reference to object not defined
+>Riferimento ad un oggetto non definito
+
+<Reserved keyword
+>Parola chiave riservata
+
+<Return not allowed from programs
+>Istruzione RETURN non ammessa nei programmi
+
+<Save project error
+>Errore nel salvataggio del progetto
+
+<Short integer data not supported
+>Il tipo di dato SINT/USINT
+
+<Signed/unsigned mismatch
+>Mancata corrispondenza tra tipi con e senza segno
+
+<ST preprocessor buffer overflow
+>Memoria non disponibile per il pre-processore ST
+
+<Step or jump expected
+>Atteso un salto o un passo
+
+<String operand not allowed
+>Operando stringa non ammesso
+
+<Support for processor isn't available
+>Il supporto per questo processore non è disponibile
+
+<Target function not found
+>Funzione non presente nel sistema
+
+<Task not found in resources
+>Task non trovato nelle risorse
+
+<Temporary variables allocation error
+>Errore nell'allocazione di variabili temporanee
+
+<The output pin must be connected to a transition
+>Il connettore di uscita deve essere connesso ad una transizione
+
+<The sources will be downloaded without a password
+>Il codice sorgente sarà scaricato privo di password
+
+<To be implemented
+>Non implementato
+
+<Too many expressions nested
+>Troppe espressioni annidate
+
+<Too many macro calls nested
+>Troppe chiamate di macro annidate
+
+<Too many parameters in macro call
+>Troppi parametri nell'invocazione della macro
+
+<Transition expected
+>Necessità di una transizione
+
+<Trying to load 32 bits into a 16-bit register
+>Tentativo di caricamento a 32 bit in un registro di 16 bit
+
+<Two variables with the same handle
+>Più variabili hanno lo stesso handle
+
+<Type definition has exceedin array dimensions
+>La definizione di tipo eccede le dimensioni dell'array
+
+<Type definition of unknown data type
+>Definizione di tipo basata su tipo non definito
+
+<Unable to allocate compiler internal data
+>Impossibile allocare dati ad uso del compilatore
+
+<Unbalanced parentheses
+>Parentesi non bilanciate
+
+<Unconnected pin
+>Connettore non collegato
+
+<Unexpected end of file
+>Fine del file non prevista
+
+<Unknown-type transition
+>Transizione di tipo sconosciuto
+
+<Unknown function
+>Funzione sconosciuta
+
+<Unresolved definition of typedef
+>Definizione di tipo non risolta
+
+<Useless expression
+>Espressione priva di utilità
+
+<Using a boolean index to access an element of array
+>Uso di un valore BOOL come indice di array
+
+<Variable not defined
+>Variabile non definita
+
+<Writing a real value into an integer variable
+>Scrittura di un valore REAL in una variabile intera
+
+<Writing a signed value into an unsigned variable
+>Scrittura di un valore consegno in una variabile senza segno
+
+<Writing an integer value into a real variable
+>Scrittura di un valore intero in una variabile REAL
+
+<Writing an unsigned value into a signed variable
+>Scrittura di un valore senza segno in una variabile con segno
+
+<16-bit variables must be aligned to a 16-bit boundary
+>Variabili a 16 bit devono essere allineate ad un limite di 16 bit
+
+<32-bit variables must be aligned to a 32-bit boundary
+>Variabili a 32 bit devono essere allineate ad un limite di 32 bit
+
+<Absolute value of an unsigned quantity has no effects
+>Valore assoluto di una quantità senza segno non ha effetti
+
+<Ambiguous enum value, <enum># prefix required
+>Ambiguo valore enum, richiesto prefisso <enum>#
+
+<Application-level communication protocol error: PLC run-time was not able to understand the received command
+>Errore protocollo di comunicazione a livello applicativo: Il run time PLC non è stato in grado di comprendere il comando ricevuto
+
+<Arithmetic operations require numerical operands
+>L'operazione aritmetica richiede un operando numerico
+
+<Array size mismatch in assignment
+>La dimensione dell'array non coincide con l'assegnamento
+
+<Auto vars space exhausted
+>Spazio vars Auto esaurito
+
+<Base object not found
+>Oggetto base non trovato
+
+<Bit access allowed only on bit string data types (BYTE, WORD, DWORD)
+>Accesso Bit consentito solo su tipi di dati stringa di bit (BYTE, WORD, DWORD)
+
+<Bit datatype not allowed
+>Tipo di dati Bit non permesso
+
+<Bit vars space exhausted
+>Spazio vars Bit esaurito
+
+<Bitwise logical operations require bitstring/integer operands
+>Operazioni logiche Bitwise richiedono bitstring/operandi interi
+
+<BOOL (bit) pointers not allowed
+>Puntatori (bit) BOOL non permessi
+
+<Boolean matrices not supported
+>Matrici booleane non supportate
+
+<Broken library link
+>Collegamento a libreria mancante
+
+<Can't perform modulo with long values
+>Impossibile eseguire modulo con valori lunghi
+
+<Can't use arrays with set/reset operators
+>Non è possibile utilizzare gli array con gli operatori ser/reset
+
+<Cannot create PLC application binary file
+>Impossibile creare file binari per l'applicazione PLC
+
+<Cannot load library! Project private copy of this library was missing and the original path to the library is invalid: library has been dropped
+>Impossibile caricare la libreria! La copia privata della libreria del progetto è stata persa e il percorso originale per la libreria non è valido: la libreria è stata eliminata
+
+<Cannot take the address of a bit variable
+>Impossibile prendere l'indirizzo di una variabile bit
+
+<Cannot use directly represented variables with process image in function blocks (not implemented)
+>Non è possibile utilizzare le variabili direttamente rappresentate nell'immagine di processo nei blocchi funzione (non implementato)
+
+<Casting to the same type has no effects
+>Fondere allo stesso tipo non ha effetti
+
+<Code generator internal error
+>Errore interno del generatore di codice
+
+<Code space exhausted
+>Spazio codice esaurito
+
+<Comparison operations require elementary (i.e., not user-defined) operands
+>L'operazione di comparazione necessita operatori elementari (non user-defined) 
+
+<Complex variables cannot have process image
+>Le variabili complesse non possono avere immagini di processo
+
+<Conditional jump destination is too far (exceeds +/-32KB limit): shorten the conditionally executed code block to avoid this error
+>La destinazione del salto condizionale è troppo lontana (supera +/- limite 32KB ): ridurre il blocco di codice eseguito sotto condizione per evitare questo errore
+
+<Constant without init values
+>Costante senza valori di inizializzazione
+
+<Copy of array or structures not supported
+>Copia di array o strutture non supportata
+
+<Copy of data having a large size (see threshold in project options)
+>Copia di dati aventi una grande dimensione (vedi soglia in opzioni di progetto)
+
+<Data block not found
+>Blocco dati non trovato
+
+<Data size mismatch in assignment
+>Formato di dati non corrispondente in assegnazione
+
+<Debug symbols package (for following download to the target device) not created
+>Pacchetto simboli di debug (per seguire il download per il device target) non creato
+
+<Deferred real operations not supported
+>Operazioni real differite non supportate
+
+<Double pointer indirection not allowed
+>Indiretto puntatore doppio non permesso
+
+<Downloadable PLC application binary file not created
+>File binario scaricabile dell'applicazione PLC non creato
+
+<Downloadable source code file is not password-protected
+>File scaricabile del codice sorgente non è protetto da password
+
+<Duplicate type name
+>Nome tipo duplicato
+
+<Element not found
+>Elemento non trovato
+
+<Embedded functions do not support arrays as input variables
+>Le funzioni integrate non supportano gli array come le variabili di input
+
+<Embedded target function not found
+>Funzione target integrata non trovata
+
+<Empty array init value
+>Valore iniziale array vuoto
+
+<Empty init value
+>Valore iniziale vuoto
+
+<Ext/aux auto vars space exhausted
+>Spazio variabili auto Ext/aux esaurito
+
+<Function block instance not allowed
+>istanza blocco funzionale non consentita
+
+<Function block instance required
+>Istanza blocco funzionale richiesta
+
+<Function block shares global data and is used by more tasks
+>Il blocco funzionale condivide dati globali ed è utiizzato da più tasks
+
+<Function not found
+>Funzione non trovata
+
+<Function parameter extension
+>Estensione parametri funzione
+
+<Function parameters wrong number
+>Numero errato parametri funzione
+
+<Generic communication failure
+>Errore di comunicazione generico
+
+<Image variable requested
+>Richiesta variabile immagine
+
+<Implicit cast of target function parameters not implemented. Please use explicit cast operators
+>Cast implicito dei parametri della funzione del target non implementato. Si prega di utilizzare gli operatori cast espliciti
+
+<Implicit conversion from double to single precision
+>Conversione implicita da double a precisione singola
+
+<Implicit conversion from single to double precision
+>Conversione implicita da single a precisione doppia
+
+<Implicit type conversion of boolean to integer
+>Conversione tipo implicita di booleano a intero
+
+<Implicit type conversion of boolean to real
+>Conversione tipo implicita di booleano a real
+
+<Implicit type conversion of integer to boolean
+>Conversione tipo implicita di intero a booleano
+
+<Implicit type conversion of real to boolean
+>Conversione tipo implicita di real a booleano
+
+<Implicit type conversion of real to integer
+>Conversione tipo implicita di real a integer
+
+<Improper init value
+>Valore iniziale improprio
+
+<Incremental build failed, perform a full build command
+>Build incrementale fallita, eseguire un comando completo di build
+
+<Index truncated to the least significant 16 bits
+>Indice troncato ai più piccoli significativi 16 bits
+
+<Indexing of boolean constants not allowed
+>Indicizzazione delle costanti booleane non ammesse
+
+<Init value object not found
+>Valore iniziale oggetto non trovato
+
+<Init value type mismatch
+>Tipo di valore init non corrispondente
+
+<Initial value not defined
+>valore iniziale non definito
+
+<Instruction has constant result
+>L'istruzione ha risultato costante
+
+<Instruction is a NOP
+>L'istruzione è un NOP
+
+<Integer parameter required
+>Richiesti parametri integer
+
+<Invalid (incomplete) string
+>Stringa non valida (incompleta)
+
+<Invalid access to private member
+>Accesso non valido ai membri privati
+
+<Invalid accumulator type
+>Tipo accumulatore invalido
+
+<Invalid array delimiters (brakets)
+>Delimitatori di array non valida (parentesi)
+
+<Invalid assignment to pointer
+>Assegnazione non valida a puntatore
+
+<Invalid base object type
+>Tipo oggetto base non valido
+
+<Invalid binary file for initialization
+>File binario non valido per l'inizializzazione
+
+<Invalid bit access syntax
+>Sintassi di accesso bit non valida
+
+<Invalid bit index
+>Indice bit non valido
+
+<Invalid bit offset
+>Offset bit non valido
+
+<Invalid constant operand
+>Operando costante non valido
+
+<Invalid EEPROM data type. Only 16- or 32-bit variables are supported
+>Tipo di dati EEPROM non valido. Sono supportate solo le variabili di 16- o 32-bit
+
+<Invalid element name in structure init value
+>Nome di elemento non valido nel valore init della struttura
+
+<Invalid index in data block
+>Indice non valido nel blocco dati
+
+<Invalid init element
+>Elemento iniziale non valido
+
+<Invalid init value
+>Valore iniziale non valido
+
+<Invalid initial value
+>Valore iniziale non valido
+
+<Invalid initialization definition
+>Definizione di inizializzazione non valida
+
+<Invalid operand value
+>Valore operando non valido
+
+<Invalid or incoherent task period
+>Periodo di task incorretto o non valido
+
+<Invalid repeated init value
+>Valore iniziale
+
+<Invalid target function table entry
+>Valore non valido nella tabella delle funzioni target
+
+<Invalid task definition
+>Definizione del task non valida
+
+<Jump to non existing label
+>Salto a etichetta non esistente
+
+<Label not found
+>Etichetta non trovata
+
+<Listing file not created
+>File listato non creato
+
+<Memory read error
+>Errore lettura memoria
+
+<Memory write error
+>Errore scrittura memoria
+
+<Missing '(' in structure init value
+>'(' mancante nel valore iniziale della struttura
+
+<Missing ':=' in structure init value
+>':=' mancante nel valore iniziale della struttura
+
+<Missing array delimiters (brakets)
+>Mancano i delimitatori dell'array (parentesi)
+
+<Missing comma
+>Virgola mancante
+
+<Missing END_WAITING
+>END_WAITING mancante
+
+<Missing index(es)
+>Indice(i) mancante(i)
+
+<No far data allowed in function block calls
+>Dati far non permessi nelle chiamate a function block
+
+<No room for debug symbols on the target
+>Non c'è spazio per i simboli di debug sul target
+
+<Not a function block instance
+>Non una istanza del blocco funzionale
+
+<Not a pointer
+>Non un puntatore
+
+<Not a structure instance
+>Non un'istanza di struttura
+
+<Not a structured type
+>Non un tipo strutturato
+
+<Not a variable
+>Non una variabile
+
+<Not an array
+>Non un'array
+
+<Not enough space available on the target device for the PLC application binary
+>Non c'è abbastanza spazio disponibile sul device target per l'applicazione binaria PLC
+
+<Object not found
+>Oggetto non trovato
+
+<Only first byte of the operand will be considered (as unsigned value)
+>Sarà considerato solo il primo byte dell'operando (come valore senza segno)
+
+<Operation cannot have a multi-byte operand
+>L'operazione non può avere un operando multi-byte
+
+<Operation not allowed on real accumulator
+>Operazione non consentita su accumulatori real
+
+<Operation not allowed with real operands
+>Operazione non consentita con operandi real
+
+<Operators must be of the same type
+>Gli operatori devono essere dello stesso tipo
+
+<PLC variables export file not created
+>File di esportazione variabili PLC non creato
+
+<Pointers are assumed to point to RAM addresses: when dereferencing the pointer, the EEPROM is not accessed
+>Si assume che i pointer puntino a indirizzi in RAM: quando si dereferenzia il pointer, non si accede alla EEPROM
+
+<Project private copy of this library was missing and has been replaced with a new copy of the library (from the original path)
+>La copia privata della libreria nel progetto mancava ed è stato sostituita con una nuova copia della libreria (dal percorso originale)
+
+<Real accumulator must be reloaded
+>L'accumulatore real deve essere ricaricato
+
+<Real accumulator not stored
+>Accumulatore real non ordinato
+
+<Real operator or accumulator not supported
+>Operatore o accumulatore real non supportato
+
+<Recursive type declaration
+>Dichiarazione tipo ricorsiva
+
+<Retentive vars space exhausted
+>Spazio variabili ritentive esaurite
+
+<Simple variable required
+>Richiesta variabile semplice
+
+<Source code package (for following download to the target device) not created
+>Pacchetto codice sorgente (per i download seguenti dal device target) non creato
+
+<Specified value is not allowed
+>Il valore specificato non è consentito
+
+<String data not supported
+>Dato stringa non supportato
+
+<String will be truncated
+>La stringa verrà troncata
+
+<Structure not allowed
+>Struttura non consentita
+
+<Symbol table file not created
+>File tabella dei simboli non creato
+
+<Symbolic initilalization of constants not supported
+>Inizializzazione simbolica di costante non supportata 
+
+<Syntax error
+>Errore sintassi
+
+<Temporary string variable allocation error. Instruction shall be split.
+>Errore sull'allocazione della variabile stringa temporanea. L'istruzione deve essere divisa.
+
+<The TriCore Architecture requires 16-bit data (or greater) to be aligned on halfword boundaries (i.e., on even memory addresses)
+>L'architettura TriCore richiede dati a 16-bit (o superiore) per essere allineata su halfword boundaries (anche indirizzi di memoria)
+
+<Too less initializer for variable
+>Inizializzatori non sufficiente per la variabile
+
+<Too many bit parameters (maximum 16 bit parameters allowed)
+>Troppi parametri bit (sono permessi al massimo parametri a 16 bit)
+
+<Too many indexes
+>Troppi indici
+
+<Too many initializer for variable
+>Troppi inizializzatori per la variabile
+
+<Too many parameters input to embedded function
+>Troppi parametri input nella funzione integrata
+
+<Type conversion applies only to registers
+>Conversione di tipo applicata solo ai registri
+
+<Type mismatch in assignment
+>Tipo non corrispondente in assegnazione
+
+<Unable to calculate variable offset
+>Impossibile calcolare l'offset della variabile
+
+<Unable to generate MUX with REAL constants
+>Impossibile generare MUX con costante REAL
+
+<Undefined coil
+>Coil indefinito
+
+<Undefined constant
+>Costante indefinita
+
+<Undefined contact
+>Contatto indefinito
+
+<Undefined jump destination
+>Destinazione jump indefinita
+
+<Undefined variable
+>Variabile indefinita
+
+<Unsupported data type
+>Tipo di dati non supportato
+
+<Variable bit access not supported
+>Accesso bit variabile non supportato
+
+<Variable exceeds data block space
+>La variabile supera lo spazio del blocco dati
+
+<Wrong initial value. Conversion data types mismatch, possible loss of data
+>Valore iniziale errato. La conversione tipi di dato non corrisponde, possibile perdita di dati
+
+<Wrong initial value. Signed/unsigned mismatch
+>Valore iniziale errato. Con segno/senza segno mancata corrispondenza
+
+<Invalid range in CASE definition
+>Range non valido nella definizione di CASE
+
+<Too less initializers for variable
+>Troppo pochi valori di inizializzazione per la variabile
+
+<Too many initializers for variable
+>Troppi valori di inizializzazione per la variabile
+
+<Type definition has exceeding array dimensions
+>La definizione del tipo ha dimensioni troppo grandi per l'array
+
+<Value overlap in CASE definition
+>Valore duplicato nella definizione del CASE
+

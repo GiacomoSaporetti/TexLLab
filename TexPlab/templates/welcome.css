@@ -1,0 +1,200 @@
+.sfondo {
+  padding: 40px;
+  background: url(./img/sfondo.png) no-repeat top right;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+}
+.column {
+  max-width: none;
+  min-width: 450px;
+}
+.column:nth-child(n+2) {
+  margin-left: 10px;
+}
+* {
+  font-family: Arial;
+}
+.box {
+  border: 1px solid lightgray;
+}
+.box > .title {
+  font-size: 15px;
+  color: white;
+  background-color: #f47a27;
+  height: 35px;
+  line-height: 35px;
+  padding-left: 15px;
+  text-transform: uppercase;
+}
+.box > .title.singlebox {
+  width: 729px;
+}
+.box .new-prj-container {
+  width: 370px;
+  min-width: 370px;
+  padding-bottom: 1px;
+}
+.box .new-prj-container .list-catalog-table {
+  overflow-y: auto;
+  max-height: 600px;
+  display: block;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+.box .new-prj-container .list-catalog-table tbody {
+  display: block;
+}
+.box .new-prj-container .list-catalog-table tr {
+  display: block;
+}
+.box .new-prj-container .list-catalog-table tr:nth-child(n+2):nth-child(even) {
+  background-color: #fef8f4;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item {
+  padding: 5px;
+  display: flex;
+  cursor: pointer;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item:hover {
+  background-color: #fbcaaa;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item.disabled {
+  background-color: #fff;
+  cursor: auto;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item > img {
+  max-width: 50px;
+  max-height: 50px;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item > div {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  overflow: hidden;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item > div > span:first-child {
+  font-weight: bold;
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item.target > div > span:nth-child(2) {
+  margin-top: 3px;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item.target > div > span:nth-child(2)::before {
+  content: "Version: ";
+  font-weight: normal;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item.target > div > span:nth-child(3) {
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.7em;
+}
+.box .new-prj-container .list-catalog-table td.catalog-item.template > div > span:nth-child(2) {
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8em;
+}
+.box .new-prj-container .list-catalog-table .list-item-selected {
+  background-color: #f9b384 !important;
+}
+.box.noborder {
+  border: none;
+}
+.box.box-targets {
+  background-color: #fff;
+}
+.mruTable {
+  font-size: 12px;
+  border-collapse: collapse;
+  width: 744px;
+}
+.mruTable#mru tr:nth-child(n+2):hover {
+  cursor: pointer;
+  background-color: #fbcaaa;
+}
+.mruTable tr {
+  background-color: #fff;
+  min-height: 25px;
+}
+.mruTable tr:first-child {
+  background-color: #d4d4d4;
+}
+.mruTable tr:first-child td {
+  border-color: #d4d4d4;
+}
+.mruTable tr:nth-child(even) {
+  background-color: #fef8f4;
+}
+.mruTable tr td {
+  text-align: center;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #c9c9c9;
+  color: black;
+}
+.mruTable.hide-extra-columns:not(#examples) tr:nth-child(2) {
+  display: none;
+}
+.mruTable.hide-extra-columns:not(#examples) td:nth-child(n+2) {
+  display: none;
+}
+.mruTable.hide-extra-columns:not(#examples) td {
+  text-align: left;
+  padding-left: 10px;
+}
+.hoverButton,
+.hoverButton:link,
+.hoverButton:visited {
+  text-decoration: none;
+  width: 200px;
+  height: 57px;
+  display: inline-block;
+}
+.hoverButton img {
+  border-style: none;
+  position: relative;
+  top: 8px;
+  left: 10px;
+}
+.hoverButton span {
+  position: relative;
+  top: -16px;
+  left: 15px;
+  font: bold 14px Arial;
+  color: white;
+}
+#mruFilterContainer {
+  float: right;
+  display: none;
+  font-size: 0.8em;
+  font-weight: normal;
+  text-transform: none;
+}
+#mruFilterContainer .filter {
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 10px;
+  background-color: #869098;
+  color: white;
+  font-weight: bold;
+}
+#mruFilterContainer .filter > span:nth-child(n+2) {
+  margin-left: 4px;
+  cursor: pointer;
+  font-size: 1.4em;
+  font-weight: normal;
+}

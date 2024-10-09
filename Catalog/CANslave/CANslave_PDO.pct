@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!-- #DEFINE PREFIX CANSLAVE_PDO_1p0 -->
+<devicetemplate>
+	<deviceinfo caption="PDO" name="PDO" icon="pdo.ico" version="1.0" deviceid="PREFIX">
+		<description>CANopen slave PDO</description>
+		<protocols>
+			<protocol>CANopen_slavePDO</protocol>
+		</protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<form type="html" link="%APPPATH%\templates\GenericList.html" xsize="420" ysize="320" modal="true">paramsList_CAN</form>
+			<window type="html" link="html\CANpdo.html" helpContext="CANpdo">CANPdoWindow</window>			
+			<tree name="tree1">
+				<node name="PREFIX" caption="PDO" icon="pdo.ico" menu="menuRemoveEnableDisable" datalink="PREFIX" window="CANPdoWindow" captionedit="false"/>
+			</tree>
+		</hmi>
+		
+		<templatedata>
+			<PDO_entry>
+				<index>0</index>
+				<subindex>0</subindex>
+				<BitStart>0</BitStart>
+			</PDO_entry>
+			<PREFIX enabled="true">
+				<PDO_config>
+					<PDO_entryList/>
+					<Number>0</Number>
+					<COBID>0</COBID>
+					<TransmissionMode>0</TransmissionMode>
+					<TransmissionType>255</TransmissionType>
+					<EventTimer>0</EventTimer>
+				</PDO_config>
+			</PREFIX>
+		</templatedata>
+		
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				
+				<xs:complexType name="TPDO_entry">
+					<xs:sequence>
+						<xs:element name="index" type="xs:string" default="0"/>
+						<xs:element name="subindex" type="xs:integer" default="0"/>
+						<xs:element name="BitStart" type="xs:integer" default="0"/>
+					</xs:sequence>
+					<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+				</xs:complexType>
+				
+				<xs:complexType name="TPDO_config"> 
+					<xs:sequence>				
+						<xs:element name="PDO_entryList">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="PDO_entry" type="TPDO_entry"/>
+								</xs:sequence>
+								<xs:attribute name="locationPage" type="xs:string" fixed="CANPdoWindow" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Number" type="xs:integer"/>
+						<xs:element name="COBID" type="xs:integer"/>
+						<xs:element name="TransmissionMode" type="xs:integer"/>
+						<xs:element name="TransmissionType" type="xs:integer"/>
+						<xs:element name="EventTimer" type="xs:integer"/>
+					</xs:sequence>
+					<xs:attribute name="locationPage" type="xs:string" fixed="CANPdoWindow" />
+				</xs:complexType>
+			
+				<xs:complexType name="TCANslave_PDO">
+					<xs:complexContent>	<xs:extension base="insertableDevice">
+						<xs:sequence>
+							<xs:element name="PDO_config" type="TPDO_config"/>
+						</xs:sequence>
+						<xs:attribute name="ExtensionName" type="xs:string" fixed="CANslave_PDO"/>
+						<xs:attribute name="oncreatenode" type="xs:string" fixed="CANslave_PDO.OnCreateNode"/>
+						<xs:attribute name="onloadnode" type="xs:string" fixed="CANslave_PDO.OnLoadNode"/>
+						<xs:attribute name="onpastenode" type="xs:string" fixed="CANslave_PDO.OnPasteNode"/>
+						<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+						<xs:attribute name="noAutoGenCaption" type="xs:boolean" fixed="true" />
+						<xs:attribute name="canBeDisabled" type="xs:boolean" fixed="true"/>
+						<xs:attribute name="enabled" type="xs:boolean"/>
+					</xs:extension>	</xs:complexContent>
+				</xs:complexType>
+				
+				<xs:element name="PREFIX" type="TCANslave_PDO"/>
+			</xs:schema>
+		</datadef>
+		
+		<extensions>
+			<script alias="CANslave_PDO">CANslave_PDO.js</script>
+		</extensions>
+	</plcconfig>
+</devicetemplate>

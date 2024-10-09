@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<window type="html" link="VarsReport\index.html" ownFrame="true" title="Variables report">LLUtils_VarsReport</window>
+		<form type="html" link="VarsReport\FindParameters.html" xsize="300" ysize="265" modal="true">LLUtils_FindParametersReport</form>
+		<form type="html" link="VarsReport\PrintGrid.html" modal="true" resizable="true">LLUtils_PrintGridReport</form>
+
+		<window type="html" link="UnusedVarsReport\index.html" ownFrame="true" title="Unused variables report">LLUtils_UnusedVarsReport</window>
+		<form type="html" link="UnusedVarsReport\FindParameters.html" xsize="300" ysize="265" modal="true">LLUtils_FindUnusedVarsReport</form>
+		<form type="html" link="UnusedVarsReport\PrintGrid.html" modal="true" resizable="true">LLUtils_PrintUnusedVarsReport</form>
+
+		<window type="html" link="UnusedPOUsReport\index.html" ownFrame="true" title="Unused POUs report">LLUtils_UnusedPOUsReport</window>
+		<form type="html" link="UnusedPOUsReport\FindParameters.html" xsize="300" ysize="240" modal="true">LLUtils_FindUnusedPOUsReport</form>
+		<form type="html" link="UnusedPOUsReport\PrintGrid.html" modal="true" resizable="true">LLUtils_PrintUnusedPOUsReport</form>
+
+		<window type="html" link="DependenciesReport\index.html" ownFrame="true" title="Dependencies Report">LLUtils_DependenciesReport</window>
+
+		<window type="html" link="ProjectsCompare\index.html" ownFrame="true" title="Projects compare">LLUtils_ProjectsCompare</window>
+		<form type="html" link="ProjectsCompare\ExtDiffToolConfig.html" xsize="440" ysize="140" modal="true">LLUtils_ProjectsCompareExtDiffToolConfig</form>
+		<form type="html" link="ProjectsCompare\DiffView.html" xsizeMin="755" xsize="750" ysizeMin="455" ysize="450" modal="false" resizable="true" icon="ProjectsCompare\icons\exportWnd.ico">LLUtils_ProjectsCompareDiffView</form>
+
+		<menu resourceName="&amp;Code analysis">
+			<separator/>
+			<command caption="Globals variables report" handler="LLUtils.ShowVarsReport" statusmsg="Open globals variables report"/>
+			<command caption="Unused variables report" handler="LLUtils.ShowUnusedVarsReport" statusmsg="Open unused variables report"/>
+			<command caption="Unused POUs report" handler="LLUtils.ShowUnusedPOUsReport" statusmsg="Open unused POUs report"/>
+			<separator/>
+			<command caption="Dependency Viewer" handler="LLUtils.ShowDependenciesReport" statusmsg="Open dependencies report"/>
+			<separator/>
+		</menu>
+	</hmi>
+	
+	<extensions>
+		<script alias="LLUtils">LLUtils.js</script>
+	</extensions>
+</template>

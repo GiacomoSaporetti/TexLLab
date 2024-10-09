@@ -1,0 +1,372 @@
+//***************************************************************************************************
+//*      non produce un CSS standalone ma viene incluso in style.less e compilato in style.css      *
+//***************************************************************************************************
+
+&.Sfondo {
+	padding: 40px;
+}
+
+.row {
+	padding: 0;
+	overflow: hidden;
+}
+
+.column {
+	max-width: none;
+	min-width: 450px;
+}
+
+.column:nth-child(n+2) {
+	margin-left: 10px;
+}
+
+& {
+	font-family: Arial;
+}
+
+@table-background: #ff1818;
+@table-even-background: #edf6fc;
+@table-hover-background: #7ec0e3;
+@table-header-color: #062e6c;
+@table-item-selected: #8abee3;
+
+.box {
+	border: 1px solid lightgray;
+
+	// titolo dei box
+	> .title {
+		font-size: 15px;
+		color: white;
+		background-color: @table-header-color;
+		height: 35px;
+		line-height: 35px;
+		padding-left: 15px;
+		text-transform: uppercase;
+
+		&.singlebox {
+			width: 729px;
+		}
+	}
+
+	// box "new project"
+	.new-prj-container {
+		width: 370px;
+		min-width: 370px;
+		padding-bottom: 1px;	// altrimenti finisce di netto
+
+		> #showAllVersionsContainer {
+			height: 26px;
+			padding-top: 3px;
+			padding-left: 10px;
+			background-color: #EDF6FC;
+			text-align: initial;
+			border-bottom: 1px solid lightgray;
+		}
+
+		// stile comune per la lista dei target e dei template
+		.list-catalog-table {
+			overflow-y: auto;
+			// min-height serve per chi ha un solo target, altrimenti le righe del target e del template hanno altezze differenti ed e' graficamente brutto
+			min-height: 125px;
+			max-height: 1000px;
+			display: block;
+			overflow-x: hidden;
+			background-color: @table-background;		// per non vedere lo sfondo
+
+			tbody {
+				display: block;
+			}
+
+			tr {
+				display: block;		// per fargli occupare tutta la riga
+
+				&:nth-child(n+2):nth-child(even) {
+					background-color: @table-even-background;
+				}
+			}
+
+			td.catalog-item {
+				padding: 5px;
+				display: flex;
+				cursor: pointer;
+
+				&:hover {
+					background-color: @table-hover-background;
+				}
+
+				&.disabled {
+					background-color: @table-background;
+					cursor: auto;
+				}
+
+				> img {
+					max-width: 75px;
+					max-height: 75px;
+				}
+
+				// stile comune per lista target e lista template
+				> div {
+					display: flex;
+					flex-direction: column;
+					margin-left: 10px;
+					overflow: hidden;		// serve per fare funzionare l'overflow ellipsis
+
+					// titolo
+					> span:first-child {
+						font-weight: bold;
+						font-size: 0.9em;
+						// le tre regole seguenti servono per fare funzionare l'overflow ellipsis
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+				}
+
+				// stile per la descrizione
+				.target-templ-descr() {
+					margin-top: 3px;
+					// le tre regole seguenti servono per fare funzionare l'overflow ellipsis
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				// stile per lista target
+				&.target > div {
+					// versione
+					> span:nth-child(2) {
+						margin-top: 3px;
+						font-size: 0.75em;
+						font-weight: bold;
+
+						&::before {
+							content: "Version: ";
+							font-weight: normal;
+						}
+					}
+
+					// descrizione
+					> span:nth-child(3) {
+						.target-templ-descr;
+						font-size: 0.70em;
+					}
+				}
+
+				// stile per lista template
+				&.template > div {
+					// qui c'e' solamente la descrizione
+					> span:nth-child(2) {
+						.target-templ-descr;
+						font-size: 0.8em;
+					}
+				}
+			}
+
+			.list-item-selected {
+				background-color: @table-item-selected !important;
+			}
+		}
+	}
+
+	&.noborder {
+		border: none
+	}
+
+	&.box-targets {
+		background-color: @table-background;	// serve per non mostrare l'immagine di sfondo sotto alla tabella
+	}
+}
+
+// classe usata per lo scan e per i mru
+.mruTable {
+	font-size: 12px;
+	border-collapse: collapse;
+	width: 744px;		// e' la stessa lunghezza del target selection e template selection
+
+	// la prima riga e' dell'header
+	&#mru tr:nth-child(n+2):hover {
+		cursor: pointer;
+		background-color: @table-hover-background;
+	}
+
+	// la prima riga e' dell'header
+	&#scanResult tr:nth-child(n+2):hover {
+		// nello scan non c'e' il cursor pointer perche' ci sono i bottoni nella tabella
+		background-color: @table-hover-background;
+	}
+
+	tr {
+		background-color: @table-background;		// per non vedere lo sfondo
+		min-height: 25px;
+
+		// header della tabella
+		&:first-child {
+			background-color: #d4d4d4;
+
+			td {
+				border-color: #d4d4d4;
+			}
+		}
+
+		&:nth-child(even) {
+			background-color: @table-even-background;
+		}
+
+		td {
+			text-align: center;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgb(201, 201, 201);
+			color: black;
+		}
+	}
+
+	// gestione mru nel caso manchino informazioni extra riguardanti i progetti
+	&.hide-extra-columns:not(#scanResult):not(#examples) {
+		tr:nth-child(2) {
+			// nasconde riga intestazione
+			display: none;
+		}
+
+		td:nth-child(n+2) {
+			// nasconde colonne aggiuntive
+			display: none;
+		}
+
+		td {
+			// allinea il testo a sinistra
+			text-align: left;
+			padding-left: 10px;
+		}
+	}
+}
+
+// bottoni grandi "new project", "open project" e "scan"
+.hoverButton, .hoverButton:link, .hoverButton:visited {
+	text-decoration: none;
+	width: 200px;
+	height: 57px;
+	display: inline-block;
+}
+
+.hoverButton {
+	img {
+		border-style: none;
+		position: relative;
+		top: 8px;
+		left: 10px;
+	}
+
+	span {
+		position: relative;
+		top: -16px;
+		left: 15px;
+		font: bold 14px Arial;
+		color: white;
+	}
+}
+
+// filtro dei progetti recenti
+#mruFilterContainer, #scanFilterContainer {
+	float: right;
+	display: none;
+	font-size: 0.80em;
+	font-weight: normal;
+	text-transform: none;
+
+	.filter {
+		// serve specificare l'altezza altrimenti deforma l'interfaccia
+		height: 22px;
+		line-height: 22px;
+		margin-top: 10px;
+		border-radius: 5px;
+		padding: 5px;
+		margin-right: 10px;
+		background-color: rgb(134, 144, 152);
+		color: white;
+		font-weight: bold;
+
+		// x per rimuovere il filtro
+		> span:nth-child(n+2) {
+			margin-left: 4px;
+			cursor: pointer;
+			font-size: 1.4em;
+			font-weight: normal;
+		}
+	}
+}
+
+#scanResultContainer {
+	visibility: hidden;
+}
+
+@media screen and (max-width: 1590px) {
+	.row.zero {
+		flex-direction: column;
+	}
+
+	.column:nth-child(n+2) {
+		margin-left: 0;
+		margin-top: 10px;
+		margin-bottom: 10px;	// serve da padding per il body
+	}
+}
+
+// stile dark. grazie alla classe "dark" applicata allo Sfondo viene automaticamente ereditato da tutti gli elementi figli!
+&.Sfondo.dark {
+	@table-background-dark: #3c3b40;
+	@table-even-background-dark: #000000;
+	@table-hover-background-dark: #0079ce;
+
+	.mruTable {
+		// la prima riga e' dell'header
+		&#mru tr:nth-child(n+2):hover {
+			background-color: @table-hover-background-dark;
+		}
+
+		tr {
+			background-color: @table-background-dark;		// per non vedere lo sfondo
+
+			// header della tabella
+			&:first-child {
+				background-color: #3C3B40;
+			}
+
+			&:nth-child(n+2):nth-child(even) {
+				background-color: @table-even-background-dark;
+			}
+
+			td {
+				border-color: gray;
+				color: whitesmoke;
+			}
+		}
+	}
+
+	.box {
+		border-color: gray;
+		color: whitesmoke;
+
+		.new-prj-container .list-catalog-table {
+			background-color: @table-background-dark;
+
+			tr:nth-child(n+2):nth-child(even) {
+				background-color: @table-even-background-dark;
+			}
+
+			td.catalog-item {
+				&:hover {
+					background-color: @table-hover-background-dark;
+				}
+
+				&.disabled {
+					background-color: @table-background-dark;
+				}
+			}
+		}
+
+		&.box-targets {
+			background-color: @table-background-dark;	// serve per non mostrare l'immagine di sfondo sotto alla tabella
+		}
+	}
+}

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0"?>
+<!-- #DEFINE PREFIX GenericRTU -->
+<devicetemplate>
+	<deviceinfo caption="Generic Modbus" name="Generic Modbus" version="1.0" icon="img\GenericRTU.ico" image="" deviceid="GenericRTU" >
+		<description>Generic Modbus node</description>
+		<protocols>
+			<protocol>ModbusRTU_master</protocol>
+			<protocol>ModbusTCP_master</protocol>
+		</protocols>
+	</deviceinfo> 
+
+	<plcconfig>
+		<hmi>
+			<window type="html" link="html/GenericRTU_cfg.html" helpContext="GenericModbusPage">win_GenericRTU_config</window>
+
+			<tree name="tree1">
+				<node name="PREFIX" caption="Modbus node" icon="img\GenericRTU.ico" window="win_GenericRTU_config" datalink="PREFIX" menu="menuAddRemoveEnableDisable" captionedit="yes"/>
+			</tree>
+		</hmi>
+
+		<extensions>
+			<script alias="PREFIX">GenericRTU.js</script>
+			<script alias="ModbusFC">ModbusFC.js</script>
+		</extensions>
+
+		<templatedata>
+			<PREFIX enabled="true">
+				<PREFIX_config>
+					<modbusAddress>1</modbusAddress>
+					<nodeNumber>-1</nodeNumber>
+					<ip/>
+					<sendParams/>
+					<minPollTime>1</minPollTime>
+					<addressType>modbus</addressType>
+					<swapWordsMode>0</swapWordsMode>
+					<slaveAddressConfigMode>0</slaveAddressConfigMode>
+					<dynamicSlaveAddress></dynamicSlaveAddress>
+				</PREFIX_config>
+			</PREFIX>
+		</templatedata>
+
+		<datadef version="4.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+			
+				<xs:element name="PREFIX_config">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="modbusAddress" type="xs:integer"/>
+							<xs:element name="nodeNumber" type="xs:integer"/>
+							<xs:element name="ip" type="xs:string"/>
+							<xs:element name="sendParams">
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="sendParam" type="TsendParam"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="minPollTime" type="xs:integer"/>
+							<xs:element name="addressType" type="xs:string"/>
+							<xs:element name="swapWordsMode" type="xs:integer"/>
+							<!-- 0: static mode (standard)
+								 1: dynamic mode by variable name
+								 2: dynamic mode by 16bit key
+								 4: dynamic mode by 32bit key -->
+							<xs:element name="slaveAddressConfigMode" type="xs:integer"/>
+							<!-- this field is used for both modbus RTU and TCP in non static mode -->
+							<xs:element name="dynamicSlaveAddress" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>	
+							<xs:extension base="masterInsertableDevice">
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="PREFIX.OnCreateNode"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="ModbusCustom.UnassignAllPLCVarsFromDevice"/>
+								<xs:attribute name="onpastenode"  type="xs:string" fixed="ModbusCustom.OnPasteNode"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="PREFIX.OnLoadNode"/>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="PREFIX"/>
+								<xs:attribute name="protocol" type="xs:string" fixed="modbus_message"/>
+								<xs:attribute name="RefactorFunc" type="xs:string" fixed="PREFIX.Refactor"/>
+								<xs:attribute name="canBeDisabled"  type="xs:boolean" fixed="true"/>
+								<xs:attribute name="enabled"  type="xs:boolean"/>
+							</xs:extension>	
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

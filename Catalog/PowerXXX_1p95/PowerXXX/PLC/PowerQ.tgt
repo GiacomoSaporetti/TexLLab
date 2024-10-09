@@ -1,0 +1,67 @@
+(************************************************************************)
+(*                                                                      *)
+(*	Description: Definition of target variables and functions           *)
+(*                                                                      *)
+(************************************************************************)
+
+
+
+
+(************************************************************************)
+(*                                                                      *)
+(*   GLOBAL VARIABLES                                                   *)
+(*                                                                      *)
+(************************************************************************)
+
+VAR_GLOBAL
+
+	{G:"System Timers"}
+	sysTimer 		AT %MD60000.0 	: UDINT;	{ DE:"System timer [ms]"}
+
+	{G:"Input and outputs"}
+	sysDigitalInputs		AT %IX0.0	: ARRAY[ 0..9 ] OF BOOL;	{ IO:"System digital inputs" }
+	sysDigitalOutputs		AT %QX0.0	: ARRAY[ 0..9 ] OF BOOL;	{ IO:"System digital outputs" }
+	sysAnalogInputs			AT %IW1.0	: ARRAY[ 0..2 ] OF UINT;	{ IO:"System analog inputs" }
+	sysAnalogOutputs		AT %QW1.0	: ARRAY[ 0..2 ] OF UINT;	{ IO:"System analog outputs" }
+	
+	{G:"User mappings"}
+	sysUserDataBlock		AT %MB0.0	: ARRAY[ 0..1023 ] OF USINT;	{ IO:"Data block available for user data mapping"}
+
+END_VAR
+
+
+(************************)
+(*                      *)
+(*      STRUCTURES      *)
+(*                      *)
+(************************)
+
+
+
+(************************************************************************)    
+(*                                                                      *)    
+(*   EMBEDDED FUNCTIONS                                                 *)    
+(*                                                                      *)    
+(************************************************************************)   
+
+
+FUNCTION sysLogWriteMsg : BOOL
+	{DE:"Writes a log to LogicLab 'Debug' output pane"}
+	VAR_INPUT
+		level: UINT;
+		msg: STRING;
+		info1: DINT;
+		info2: DINT;
+		info3: DINT;
+		info4: DINT;
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sampleEmbeddedFunc : BOOL
+	VAR_INPUT
+		par1 : INT;
+		par2 : REAL;
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION

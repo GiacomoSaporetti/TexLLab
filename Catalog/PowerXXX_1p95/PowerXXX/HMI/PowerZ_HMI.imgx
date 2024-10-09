@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<targetImage fileVersion="1.1" is64bit="false">
+	<compilerSupport deviceFeatures="0x8EFFFDFF" extendedDeviceFeatures="0xFFFFFF"/>
+	<info targetID="0x8F0021AF" memoryID="0x5DA4" fullMemoryID="0xE0A8">
+		<features deviceFeatures="0x8F0021AF" extendedDeviceFeatures="0x410081"/>
+		<codeArea address="0x20072F78" size="0x80000" addrArea1="0x20072F78" addrArea2="0x0"/>
+		<dataArea address="0x200B2F78" size="0x8000"/>
+		<auxDataArea address="0x0" size="0x0"/>
+		<bitDataArea address="0x0" size="0x0"/>
+		<retainDataArea address="0x0" size="0x0"/>
+		<debug address="0x0" size="0x0" traceAreaAddress="0x0" traceAreaSize="0x0"/>
+		<stack limit="0x0"/>
+		<functionTable address="0x0"/>
+		<sourceCode supported="0" address="0x0" size="0x0"/>
+	</info>
+	<tasks controlBitsAddress="0x20021AEC">
+		<task index="0" name="Draw" flags="0x0" period="0"/>
+		<task index="1" name="Refresh" flags="0x0" period="0"/>
+	</tasks>
+	<dataBlocks address="0xA853E0" size="11">
+		<dataBlock index="0" type="memory" address="0x2006C9C8" image="0" size="1024" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="0" type="input" address="0x20021468" image="0" size="10" elementSize="1" access="read" flags="0x00"/>
+		<dataBlock index="0" type="output" address="0x20021472" image="0" size="10" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="1" type="input" address="0x2002147C" image="0" size="3" elementSize="2" access="read" flags="0x00"/>
+		<dataBlock index="200" type="memory" address="0x2006CDC8" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="201" type="memory" address="0x2006D1C8" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="60000" type="memory" address="0x20021440" image="0" size="1" elementSize="4" access="read" flags="0x00"/>
+		<dataBlock index="60002" type="input" address="0x20021628" image="0" size="1" elementSize="48" access="read" flags="0x00"/>
+		<dataBlock index="60004" type="input" address="0x20021664" image="0" size="1" elementSize="20" access="read" flags="0x00"/>
+		<dataBlock index="60005" type="input" address="0x20021658" image="0" size="1" elementSize="12" access="read" flags="0x00"/>
+		<dataBlock index="60003" type="memory" address="0x20021334" image="0" size="1" elementSize="2" access="readWrite" flags="0x00"/>
+	</dataBlocks>
+	<functions address="0xA85490" size="106" userSize="52">
+		<function name="strncpy" address="0xB5DF5C"/>
+		<function name="Video_LCDContrast" address="0xAF0B9C"/>
+		<function name="Video_Switch" address="0xAF0BA4"/>
+		<function name="Video_InitHMI_ZOrder" address="0xAF0BAC"/>
+		<function name="Video_DrawFrames" address="0xAF0C6C"/>
+		<function name="Video_InitPage" address="0xAF2420"/>
+		<function name="Video_ClrScreen" address="0xAF2898"/>
+		<function name="Video_ClrRect" address="0xAEC5B8"/>
+		<function name="Video_SetPageColors" address="0xAF28E4"/>
+		<function name="Video_SetWndSysProps" address="0xAF2924"/>
+		<function name="Video_SetEditKey" address="0xAF2964"/>
+		<function name="Video_AddFont" address="0xAF2988"/>
+		<function name="Video_AddFontUnicode" address="0xAF29FC"/>
+		<function name="Video_SetFont" address="0xAED718"/>
+		<function name="Video_SetColors" address="0xAF2C48"/>
+		<function name="Video_Line" address="0xAF0C04"/>
+		<function name="Video_Rectangle" address="0xAF2C98"/>
+		<function name="Video_PrintStr" address="0xAF2DF4"/>
+		<function name="Video_PrintResStr" address="0xAF2EAC"/>
+		<function name="Video_CalcStringWidthWithFont" address="0xAF06F8"/>
+		<function name="Video_PrintNChar" address="0xAF2FC0"/>
+		<function name="Video_PrintBitmap" address="0xAF312C"/>
+		<function name="Video_DelBitmap" address="0xAF31B0"/>
+		<function name="Video_DrawBorder" address="0xAF20B4"/>
+		<function name="Video_DelBorder" address="0xAF3350"/>
+		<function name="Video_SendEvent" address="0xAF00C0"/>
+		<function name="Video_GetEvent" address="0xAECE74"/>
+		<function name="Video_EnterEdit" address="0xAF35D8"/>
+		<function name="Video_EnterEditSel" address="0xAF33FC"/>
+		<function name="Video_NextEdit" address="0xAF3600"/>
+		<function name="Video_FirstLastEdit" address="0xAF37C8"/>
+		<function name="Video_PrevEdit" address="0xAF38BC"/>
+		<function name="Video_PushButton" address="0xAF3A90"/>
+		<function name="Video_Lock" address="0xAF0354"/>
+		<function name="Video_Unlock" address="0xAF035C"/>
+		<function name="Video_Sleep" address="0xAECE6C"/>
+		<function name="Video_ResetMaps" address="0xAF3D2C"/>
+		<function name="Video_LoadLanguage" address="0xAF3E0C"/>
+		<function name="Video_EvNotify" address="0xAF41C0"/>
+		<function name="Video_GetPageColors" address="0xAF41C8"/>
+		<function name="Static02" address="0xAF9FFC"/>
+		<function name="Image02" address="0xAF9308"/>
+		<function name="Animation02" address="0xAF4C44"/>
+		<function name="Button05" address="0xAF5158"/>
+		<function name="CheckBox02" address="0xAF5908"/>
+		<function name="EditBox03" address="0xAF67A4"/>
+		<function name="Progress02" address="0xAF9900"/>
+		<function name="Line01" address="0xAFA8C8"/>
+		<function name="Rect01" address="0xAFAA18"/>
+		<function name="Video_ForceRefresh" address="0xAF66E8"/>
+		<function name="Video_SetUseBitmapsColorDepth" address="0xAF4A9C"/>
+		<function name="Video_UpdatePageControls" address="0xAECD00"/>
+		<function name="UDINT_TO_REAL" address="0xA8307C"/>
+		<function name="DINT_TO_REAL" address="0xA83084"/>
+		<function name="REAL_TO_UDINT" address="0xA8308C"/>
+		<function name="REAL_TO_DINT" address="0xA83094"/>
+		<function name="ADD_REAL" address="0xA8309C"/>
+		<function name="SUB_REAL" address="0xA830A4"/>
+		<function name="MUL_REAL" address="0xA830AC"/>
+		<function name="DIV_REAL" address="0xA830B4"/>
+		<function name="GT_REAL" address="0xA830BC"/>
+		<function name="GE_REAL" address="0xA830D4"/>
+		<function name="EQ_REAL" address="0xA830E8"/>
+		<function name="LT_REAL" address="0xA83100"/>
+		<function name="LE_REAL" address="0xA83118"/>
+		<function name="NE_REAL" address="0xA8312C"/>
+		<function name="ST_STRING" address="0xA83140"/>
+		<function name="EQ_STRING" address="0xA832E8"/>
+		<function name="NE_STRING" address="0xA83310"/>
+		<function name="LE_STRING" address="0xA83338"/>
+		<function name="LT_STRING" address="0xA83360"/>
+		<function name="GE_STRING" address="0xA83388"/>
+		<function name="GT_STRING" address="0xA833B0"/>
+		<function name="LEN" address="0xA831EC"/>
+		<function name="LEFT" address="0xA83490"/>
+		<function name="RIGHT" address="0xA835D4"/>
+		<function name="MID" address="0xA83744"/>
+		<function name="CONCAT" address="0xA8383C"/>
+		<function name="INSERT" address="0xA839F8"/>
+		<function name="DELETE" address="0xA83B64"/>
+		<function name="REPLACE" address="0xA83C9C"/>
+		<function name="FIND" address="0xA83D08"/>
+		<function name="INT_TO_STRING" address="0xA83E08"/>
+		<function name="REAL_TO_STRING" address="0xA83F04"/>
+		<function name="STRING_TO_INT" address="0xA83FA8"/>
+		<function name="STRING_TO_UINT" address="0xA840A8"/>
+		<function name="STRING_TO_REAL" address="0xA8426C"/>
+		<function name="ST_STRING_SAFE" address="0xA8318C"/>
+		<function name="ABS_REAL" address="0xA8433C"/>
+		<function name="SQRT" address="0xA84344"/>
+		<function name="LN" address="0xA84364"/>
+		<function name="LOG" address="0xA84384"/>
+		<function name="EXP" address="0xA843A4"/>
+		<function name="POW" address="0xA843C4"/>
+		<function name="SIN" address="0xA843E4"/>
+		<function name="COS" address="0xA84404"/>
+		<function name="TAN" address="0xA84424"/>
+		<function name="ASIN" address="0xA84444"/>
+		<function name="ACOS" address="0xA84464"/>
+		<function name="ATAN" address="0xA84484"/>
+		<function name="ATAN2" address="0xA844A4"/>
+		<function name="SINH" address="0xA844C4"/>
+		<function name="COSH" address="0xA844E4"/>
+		<function name="TANH" address="0xA84504"/>
+		<function name="CEIL" address="0xA84524"/>
+		<function name="FLOOR" address="0xA84544"/>
+	</functions>
+</targetImage>

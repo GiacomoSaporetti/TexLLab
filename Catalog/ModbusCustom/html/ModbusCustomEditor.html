@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Main page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+			gridParametrization.SetDarkTheme(m_darkTheme);
+			gridInput.SetDarkTheme(m_darkTheme);
+			gridOutput.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png'
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png'
+		imgNew.src = csspath + imgPathPrefix + 'new.png'
+		imgOpen.src = csspath + imgPathPrefix + 'open.png'
+		imgSave.src = csspath + imgPathPrefix + 'save.png'
+		imgClose.src = csspath + imgPathPrefix + 'close.png'
+		imgUp.src = csspath + imgPathPrefix + 'arrowUp.png'
+		imgDown.src = csspath + imgPathPrefix + 'arrowDown.png'
+
+		imgPlus2.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus2.src = csspath + imgPathPrefix + 'minus.png';
+		imgUp2.src = csspath + imgPathPrefix + 'arrowUp.png';
+		imgDown2.src = csspath + imgPathPrefix + 'arrowDown.png';
+		imgPlus3.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus3.src = csspath + imgPathPrefix + 'minus.png';
+		imgUp3.src = csspath + imgPathPrefix + 'arrowUp.png';
+		imgDown3.src = csspath + imgPathPrefix + 'arrowDown.png';
+		imgPlus4.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus4.src = csspath + imgPathPrefix + 'minus.png';
+		imgUp4.src = csspath + imgPathPrefix + 'arrowUp.png';
+		imgDown4.src = csspath + imgPathPrefix + 'arrowDown.png';
+
+		if (app.TempVar("ModbusCustomEditor_singleFileEdit"))
+		{
+			spanNew.style.display = "none";
+			spanOpen.style.display = "none";
+		}
+		
+		// abilita il checkbox solo se esiste il nodo <protocol> corretto
+/*		var nodelist = app.SelectNodesXML("/deviceinfo/protocols/protocol[. = 'FreeEvolution_ModbusRTU_master']")
+		chkModbusRTU.checked = nodelist.length != 0
+		var nodelist = app.SelectNodesXML("/deviceinfo/protocols/protocol[. = 'modbus_tcp']")
+		chkModbusTCP.checked = nodelist.length != 0*/
+	}
+	
+/*	function BrowseIcon()
+	{
+		var value = app.CallFunction("extfunct.ShowOpenFileDlg", "Icon files (*.ICO)\0*.ICO\0All files\0*.*\0")
+		if (!value) return
+		
+		if (value.substr(0, app.CatalogPath.length).toLowerCase() == app.CatalogPath.toLowerCase())
+			value = "%CATALOG%" + value.substr(app.CatalogPath.length - 1)
+		
+		txtIcon.focus()
+		txtIcon.value = value
+		txtIcon.blur()
+	}
+	*/
+	
+	var m_oldName
+	var m_oldVersion
+	
+	function OnEditName()
+	{
+		if (txtName.value == m_oldName && txtVersion.value == m_oldVersion)
+			return
+		
+		// rigenera deviceid
+		var deviceid = app.CallFunction("common.NormalizeName", txtName.value + "_" + txtVersion.value)
+		txtDeviceID.value = deviceid
+
+		// reset filename, il prossimo save sarà saveas
+		ResetFileName()
+
+		m_oldName = txtName.value
+		m_oldVersion = txtVersion.value
+	}
+	
+	// funzioni invocate dal ModbusCustomEditor_win.js per set/get valori dei campi
+	function GetField(id)
+	{
+		var elem = document.getElementById(id)
+		if (elem)
+		{
+			if (elem.type == "checkbox" || elem.type == "radio")
+				return elem.checked
+			else
+				return elem.value
+		}
+	}
+	function SetField(id, value)
+	{
+		var elem = document.getElementById(id)
+		if (elem)
+		{
+			if (elem.type == "checkbox" || elem.type == "radio")
+				elem.checked = value
+			else
+				elem.value = value
+		}
+	}
+	
+	// gestione comandi
+	function DoClose()
+	{
+		if (!PromptForSaving(true))
+			// annulla chiusura se errore salvataggio
+			return
+
+		CloseDlg();
+	}
+
+	function OnLoadPage()
+	{
+		var filename = app.TempVar("ModbusCustomEditor_filename")
+		if (filename)
+		{
+			if (!Open(filename))
+				New()
+				
+			var newDeviceName = app.TempVar("ModbusCustomEditor_newDeviceName");
+			if (newDeviceName)
+			{
+				txtName.value = newDeviceName;
+				OnEditName();
+				SetModifiedFlag();
+			}
+		}
+		else
+			New()
+
+		// griglia "Dictionary"
+		InitGrid()
+		// griglie "Parametrization", "Input" e "Output"
+		InitGrids();
+	}
+
+	function OnUnloadPage()
+	{
+		PromptForSaving(false)
+		// non si può annullare la chiusura...
+	}
+
+	function InitGrids() {
+		InitGridParametrization();
+		InitGridOutput();
+		InitGridInput();
+	}
+	</script>
+
+	<script type="text/javascript" src="ModbusCustomEditor.js"></script>
+	<script type="text/javascript" src="ModbusCustomEditor_grid.js"></script>
+	<script type="text/javascript" src="..\ModbusCustom_common.js"></script>
+
+	<script src="ModbusCustomEditor_gridParametrization.js"></script>
+	<script src="ModbusCustomEditor_gridInputOutput.js"></script>
+
+	<style>
+	label {
+		font-weight: bold;
+		display: inline-block;
+	}
+
+	fieldset {
+		width: 550px;
+	}
+	</style>
+</head>
+
+<body onload="OnLoadPage()" onunload="OnUnloadPage()" scroll="no" class="html5">
+
+<input type="hidden" id="txtDeviceID">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Modbus Custom Editor</t:t></span>
+	</div>
+	<div class="tableHeader" style="display: flex; justify-content: space-between;">
+		<div>
+			<button class="ll-button" id="spanNew" onClick="New()">
+				<img id="imgNew" alt="New Modbus Custom Device">
+				<span class="label"><t:t>New</t:t></span>
+			</button>
+			<button class="ll-button" id="spanOpen" onClick="DoOpen()" style="margin-left:20px">
+				<img id="imgOpen" alt="Open Modbus Custom Device">
+				<span class="label"><t:t>Open</t:t></span>
+			</button>
+			<button class="ll-button" id="spanSave" onClick="DoSave()" style="margin-left:20px">
+				<img id="imgSave" alt="Save Modbus Custom Device">
+				<span class="label"><t:t>Save</t:t></span>
+			</button>
+			<span id="spnModif"></span>
+		</div>
+		<div>
+			<button class="ll-button" onClick="DoClose()">
+				<img id="imgClose" alt="Close Modbus Custom Device" name="button">
+				<span class="label"><t:t>Close</t:t></span>
+			</button>
+		</div>
+	</div>
+
+	<div class="menu">
+		<div id="tab1" onclick="ChangeTab(1)" class="menu_on"><a href="#"><t:t>General</t:t></a></div>
+		<div id="tab2" onclick="ChangeTab(2)" class="menu_off"><a href="#"><t:t>Dictionary</t:t></a></div>
+		<div id="tab3" onclick="ChangeTab(3)" class="menu_off"><a href="#"><t:t>Parametrization</t:t></a></div>
+		<div id="tab4" onclick="ChangeTab(4)" class="menu_off"><a href="#"><t:t>Input</t:t></a></div>
+		<div id="tab5" onclick="ChangeTab(5)" class="menu_off"><a href="#"><t:t>Output</t:t></a></div>
+	</div>
+
+	<!-- #region General -->
+	<div id="page1" class="fill-height-container">
+		<div style="vertical-align: top; padding: 20px;">
+			<fieldset>
+				<legend><t:t>Device Version</t:t></legend>
+				<div>
+					<label style="width:100px" for="txtName"><t:t>Name</t:t>:</label>
+					<input type="text" id="txtName" size="30" onkeyup="OnEditName()" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:100px" for="txtVersion"><t:t>Version</t:t>:</label>
+					<input type="text" id="txtVersion" size="5" onkeyup="OnEditName()" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:100px" for="txtComment"><t:t>Description</t:t>:</label>
+					<input type="text" id="txtComment" size="50" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:100px" for="chkModbusRTU"><t:t>Modbus RTU</t:t></label>
+					<input id="chkModbusRTU" type="checkbox" onclick="EnableProtocol(PROTOCOL_MODBUSRTU, this.checked)">
+				</div>
+				<div>
+					<label style="width:100px" for="chkModbusTCP"><t:t>Modbus TCP</t:t></label>
+					<input id="chkModbusTCP" type="checkbox" onclick="EnableProtocol(PROTOCOL_MODBUSTCP, this.checked)">
+				</div>
+			</fieldset>
+
+			<fieldset class="mt-m">
+				<legend><t:t>Device Info</t:t></legend>
+				<div>
+					<label style="width:250px" for="txtMaxBit"><t:t>Max message size (bit):</t:t></label>
+					<input type="text" id="txtMaxBit" size="5" onkeyup="this.value = this.value.replace(/[^\d]/,'')" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:250px" for="txtMaxReg"><t:t>Max message size (reg.):</t:t></label>
+					<input type="text" id="txtMaxReg" size="5" onkeyup="this.value = this.value.replace(/[^\d]/,'')" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:250px" for="chkOverlappedBitRegMaps"><t:t>Enable overlap of Bit and Reg maps</t:t></label>
+					<input type="checkbox" id="chkOverlappedBitRegMaps" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:250px" for="chkUseWriteSingleCoil"><t:t>Use 'Write single coil' (if msg size=1)</t:t></label>
+					<input type="checkbox" id="chkUseWriteSingleCoil" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:250px" for="chkUseWriteSingleReg"><t:t>Use 'Write single reg' (if msg size=1)</t:t></label>
+					<input type="checkbox" id="chkUseWriteSingleReg" onchange="SetModifiedFlag()">
+				</div>
+				<div>
+					<label style="width:250px"><t:t>Address type:</t:t></label>
+					<input type="radio" id="radAddressTypeModbus" name="addressType" onchange="SetModifiedFlag()">
+					<label for="radAddressTypeModbus" style="width:50px" title="Range: 1..65536"><t:t:>Modbus</t:t:></label>
+					<input type="radio" id="radAddressTypeJbus"   name="addressType" onchange="SetModifiedFlag()">
+					<label for="radAddressTypeJbus"   style="width:50px" title="Range: 0..65535"><t:t:>Jbus</t:t:></label>
+				</div>
+				<div>
+					<label for="cmbSwapWordsMode" style="width:250px"><t:t>Swap words mode:</t:t></label>
+					<select id="cmbSwapWordsMode" name="swapWordsMode" onchange="SetModifiedFlag()">
+						<option value="0">Little endian compliant (No words swapping)</option>
+						<option value="1">Big endian compliant (32/64bits int values only)</option>
+						<option value="2">Big endian compliant (32/64bits float values only)</option>
+						<option value="3">Big endian compliant (all 32/64bits types)</option>
+					</select>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<!-- #endregion -->
+	<!-- #region Dictionary -->
+	<div style="display: none;" class="fill-height-container" id="page2">
+		<div class="tableHeader">
+			<button class="ll-button" onClick="AddRow()">
+				<img id="imgPlus" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="DeleteRow()">
+				<img id="imgMinus" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveUp(grid, gridDatapath, SelectNodes)">
+				<img id="imgUp" alt="Up">
+				<span class="label"><t:t>Up</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveDown(grid, gridDatapath, SelectNodes)">
+				<img id="imgDown" alt="Down">
+				<span class="label"><t:t>Down</t:t></span>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" style="margin:0px">
+				<param name="margin" value="50">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+	<!-- #endregion -->
+	<!-- #region Parametrization -->
+	<div style="display: none;" class="fill-height-container" id="page3">
+		<div class="tableHeader">
+			<button class="ll-button" onClick="AddRowParametrization()">
+				<img id="imgPlus2" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="DeleteRowParametrization()">
+				<img id="imgMinus2" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveUp(gridParametrization, gridParametrizationDatapath, SelectNodes)">
+				<img id="imgUp2" alt="Up">
+				<span class="label"><t:t>Up</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveDown(gridParametrization, gridParametrizationDatapath, SelectNodes)">
+				<img id="imgDown2" alt="Down">
+				<span class="label"><t:t>Down</t:t></span>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="gridParametrization" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" style="margin:0px">
+				<param name="margin" value="50">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+	<!-- #endregion -->
+	<!-- #region Input -->
+	<div style="display: none;" class="fill-height-container" id="page4">
+		<div class="tableHeader">
+			<button class="ll-button" onClick="AddRowInput()">
+				<img id="imgPlus3" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="DeleteRowInput()">
+				<img id="imgMinus3" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveUp(gridInput, gridInputDatapath, SelectNodes)">
+				<img id="imgUp3" alt="Up">
+				<span class="label"><t:t>Up</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveDown(gridInput, gridInputDatapath, SelectNodes)">
+				<img id="imgDown3" alt="Down">
+				<span class="label"><t:t>Down</t:t></span>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="gridInput" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" style="margin:0px">
+				<param name="margin" value="50">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+	<!-- #endregion -->
+	<!-- #region Output -->
+	<div style="display: none;" class="fill-height-container" id="page5">
+		<div class="tableHeader">
+			<button class="ll-button" onClick="AddRowOutput()">
+				<img id="imgPlus4" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="DeleteRowOutput()">
+				<img id="imgMinus4" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveUp(gridOutput, gridOutputDatapath, SelectNodes)">
+				<img id="imgUp4" alt="Up">
+				<span class="label"><t:t>Up</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="GridMoveDown(gridOutput, gridOutputDatapath, SelectNodes)">
+				<img id="imgDown4" alt="Down">
+				<span class="label"><t:t>Down</t:t></span>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="gridOutput" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" style="margin:0px">
+				<param name="margin" value="50">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+	<!-- #endregion -->
+</div>
+
+<script type="text/javascript" src="ModbusCustomEditor_grid_events.js"></script> 
+<script src="ModbusCustomEditor_gridParametrization_events.js"></script>
+<script src="ModbusCustomEditor_gridInputOutput_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- #DEFINE PREFIX $ID$ -->
+<devicetemplate>
+	<deviceinfo caption="$NAME$" name="$NAME$" version="1.0" icon="$ICON$" deviceid="$ID$" editingEnabled="true">
+		<description></description>
+		<protocols>
+			<protocol>ModbusRTU_master</protocol>
+			<protocol>ModbusTCP_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<deviceconfig>
+		<parameters nextIpa="0">
+<!--		<par ipa="1" readonly="no" name="Example" typepar="short" typetarg="short" defval="0" scale="1" offs="0" um="" form="" descr="Example parameter" min="0" max="9999" shortdescr=""/>
+				<protocol name="Modbus" commaddr="1" commsubindex="0"/>
+			</par> -->
+		</parameters>
+		<enums/>
+	</deviceconfig>
+
+	<plcconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="Generic" icon="$ICON$" datalink="PREFIX" menu="menuModbusCustomSlave" window="ModbusCustomMain"/>
+			</tree>
+		</hmi>
+
+		<templatedata>
+			<PREFIX enabled="true">
+				<ModbusCustom_config>
+					<modbusAddress>1</modbusAddress>
+					<nodeNumber>-1</nodeNumber>
+					<pollTime>0</pollTime>
+					<timeout>1000</timeout>
+					<ip/>
+					<inputs/>
+					<outputs/>
+					<turnAround>0</turnAround>
+					<sendParams/>
+					<minPollTime>1</minPollTime>
+					<inputsOutputs/>
+				</ModbusCustom_config>
+			</PREFIX>
+		</templatedata>
+
+		<datadef version="2.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>	<xs:extension base="TModbusCustom">
+							<xs:attribute name="overlappedBitRegMaps" type="xs:boolean" fixed="false"/>
+							<xs:attribute name="maxMsgSizeReg" type="xs:integer" fixed="120"/>
+							<xs:attribute name="maxMsgSizeBit" type="xs:integer" fixed="2000"/>
+							<xs:attribute name="useWriteSingleCoil" type="xs:boolean" fixed="false"/>
+							<xs:attribute name="useWriteSingleReg" type="xs:boolean" fixed="false"/>
+							<xs:attribute name="addressType" type="xs:string" fixed="modbus"/>
+							<xs:attribute name="swapWordsMode" type="xs:integer" fixed="0"/>
+						</xs:extension> </xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

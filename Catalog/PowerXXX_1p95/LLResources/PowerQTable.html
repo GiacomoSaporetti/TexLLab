@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+    <!--<link rel="stylesheet" href="../../../Common/CSS/style_dark.css">-->
+    <script type="text/javascript">
+        try
+        { csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+        catch (e)
+        { csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+    
+        document.write("<LINK href='" + csspath + "iso_bootstrap.min.css' rel='stylesheet' type='text/css'>")
+        document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+        document.write("<LINK href='" + csspath + "license.css' rel='stylesheet' type='text/css'>")
+        document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+        document.write("<SCRIPT src='" + csspath + "../script/commonlicense.js' type='text/javascript'></" + "SCRIPT>")
+    </script>
+</head>
+<body>
+
+
+<table class="customTableChild" >
+	<tr  class="customTableChild">
+        <th colspan="2"> CPU RISC 32 BIT</th>
+    </tr>
+    <tr  class="customTableChild">
+        <th> Clock</th>
+        <td> 264Mhz</td>
+    </tr>
+    <tr  class="customTableChild">
+        <th> Axis Management</th>
+        <td> 15uS</td>
+    </tr>
+    <tr  class="customTableChild">
+        <th> Flash EPROM</th>
+        <td> 24MB</td>
+    </tr>
+	<tr  class="customTableChild">
+        <th> Flash EPROM (for graphics)</th>
+        <td> 128MB</td>
+    </tr>
+    <tr class="customTableChild">
+        <th> RAM Buffered</th>
+        <td> 8MB</td>
+    </tr>
+    <tr class="customTableChild">
+        <th> RAM Magnetic</th>
+        <td id="info"> 4MB</td>
+    </tr>
+</table>
+
+
+</body>

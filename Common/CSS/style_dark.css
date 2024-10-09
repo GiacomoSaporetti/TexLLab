@@ -1,0 +1,199 @@
+/*
+questo CSS viene applicato IN AGGIUNTA a quello di base, quindi sovrascrive le regole definite nel CSS base.
+
+per ragioni di ordine, questo CSS dovra' contenere SOLAMENTE le regole da sovrascrivere (ad esempio i colori; margini,
+dimensioni, ecc. nel 99% dei casi rimangono gli stessi sia in light che dark theme).
+*/
+
+label {
+	color: white;
+}
+
+a:link, a:active, a:hover, a:visited {
+	color: #569CD6;
+}
+
+fieldset {
+	border: 1px solid #7160e8;
+}
+
+legend {
+	color: #FFFFFF;
+}
+
+html, body {
+	color: white;
+}
+
+.Textual {
+	color: #FFFFFF;
+}
+
+.Textual_big {
+	color: #FFFFFF;
+}
+
+.menu {
+	background: #1f1f1f;
+	border-bottom: 1px solid #7160e8;
+}
+
+.menu .menu_off {
+	background-color: #2e2e2e;
+	border-bottom: 1px solid #7160e8;
+}
+
+.menu .menu_off a {
+	color: #b2b2b2;
+}
+
+.menu .menu_off a:hover {
+	background-color: #3d3d3d;
+	color: whitesmoke;
+}
+
+.menu .menu_on a {
+	color: white;
+}
+
+.menu .menu_on {
+	background-color: #3d3d3d;
+	border-top-color: #7160e8;
+	border-left-color: #7160e8;
+	border-right-color: #7160e8;
+}
+
+.TitlePag {
+	background-color: #007acc;
+	/* piu' corto di 5px */
+	height: 35px;
+	/* piu' piccolo di 2px */
+	font-size: 22px;
+	color: whitesmoke;
+}
+
+button.ll-button {
+	border-color: #999999;
+	background-color: #2d2d30;
+	color: whitesmoke;
+}
+
+button.ll-button:not([disabled]):hover {
+	border-color: #d4d4d4;
+	background-color: #7b7b7b;
+	color: white;
+}
+
+button.ll-button[disabled] {
+	background-color: #838383;
+}
+
+/* testo di pseudo-bottoni sopra le griglie */
+.buttonText {
+	color: white;
+}
+
+
+/*pannello Bootstrap*/
+.panel-default {
+	background: #3C3B40;
+}
+
+/* la classe bootstrap e' usata in Isolated Bootstrap */
+.bootstrap {
+	background-color: #3C3B40;
+	color: white;
+}
+
+.bootstrap > * {
+	background-color: #3C3B40;
+	color: white;
+}
+
+.bootstrap * a:link, .bootstrap * a:active, .bootstrap * a:hover, .bootstrap * a:visited {
+	color: #569CD6;
+}
+
+/* toggle switch */
+.switch .slider {
+	background-color: #868686;
+}
+
+.switch .slider:before {
+	background-color: whitesmoke;
+}
+
+.switch input:checked + .slider {
+	background-color: #7160e8;
+}
+
+/* drop area sezione licenze */
+.drop-file-zone {
+	background-color: #616068;
+	border: #ccc 4px dashed;
+}
+
+.drop-file-zone * {
+	background-color: #616068;
+}
+
+/* intestazione tabella stato licenza */
+table.lic-tbl > * td.tab-head {
+	color: #007ACC;
+	font-weight: bold;
+}
+
+
+/* Tabelle info target (Giacomo Saporetti)*/
+.customTableChild {
+	margin-top: 25px;
+/*border: 1px solid rgb(255, 255, 255);*/
+width: 100%;
+font-size: 1em;
+font-family: Arial, Helvetica, sans-serif;
+text-align: center;
+border-collapse: collapse;
+color:rgb(255, 255, 255);
+
+}
+.customTableChild th {
+/*border: 1px solid rgb(255, 255, 255);*/
+text-align:left;
+}
+
+.customTableChild th{
+	text-align: left;
+  }
+  
+  .customTableChild td{
+	font-weight: bold;
+  }
+  
+  .customTableChild tr{
+	height: 27px;
+  }
+  
+  .customTableChild tr:nth-child(even) {
+  /*border: 1px solid rgb(0, 0, 0);*/
+  background-color: #3A3A3A;
+  }
+  
+  .customTableChild tr:nth-child(odd) {
+	/*border: 1px solid rgb(0, 0, 0);*/
+	background-color: #171717;
+	}
+  
+	.customTableChild tr:first-child {
+	font-size: 1.2em;
+	}
+
+	.titleBox{
+	color:white; 
+	background-color: #007ACC; 
+	font-weight: bold;
+	}
+
+	.SaveECATButt {
+	background-color: #171717;
+	color: #ffffff;
+	}

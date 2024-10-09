@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- #DEFINE PREFIX CANgeneric -->
+<devicetemplate>
+	<deviceinfo caption="Generic CANopen device" name="Generic CANopen" icon="generic.ico" version="1.0" deviceid="PREFIX" importedFromEDS="false">
+		<description>Generic CANopen device</description>
+		<protocols>
+			<protocol>CANopen_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<form type="html" link="html\newVar_CAN.html" xsize="420" ysize="270" modal="true">newVar_CAN</form>
+			
+			<window type="html" link="html\generic1.html" helpContext="CANgenericPage">CANgeneric1</window>
+			<window type="html" link="html\generic2.html" helpContext="CANgenericPage">CANgeneric2</window>
+			<window type="html" link="html\generic4.html" helpContext="CANgenericPage">CANgeneric4</window>
+			<window type="html" link="html\generic5.html" helpContext="CANgenericPage">CANgeneric5</window>
+			<window type="html" link="html\generic6.html" helpContext="CANgenericPage">CANgeneric6</window>
+			
+			<tree name="tree1">
+				<node name="PREFIX" caption="Generic CANopen device" icon="generic.ico" menu="menuRemoveEnableDisable" datalink="PREFIX" window="CANgeneric1" captionedit="false"/>
+			</tree>
+		</hmi>
+		<extensions>
+			<script alias="CANgeneric">CANgeneric.js</script>
+			<eventhandler event="OnLoadTemplate">CANgeneric.OnLoadTemplate_CANgeneric</eventhandler>
+		</extensions>
+		<templatedata>
+			<PREFIX enabled="true">
+				<CANgeneric_config>
+					<nodeNumber>1</nodeNumber>
+					<nodeGuardPeriod>200</nodeGuardPeriod>
+					<lifeTimeFactor>3</lifeTimeFactor>
+					<SDOsetList/>
+					<PDOTxMappingList/>
+					<PDORxMappingList/>
+					<PDOTxTransmission>-1</PDOTxTransmission>
+					<PDOTxCyclicTime>0</PDOTxCyclicTime>
+					<PDORxTransmission>-1</PDORxTransmission>
+					<BootTime>10000</BootTime>
+					<NodeHbPTime>0</NodeHbPTime>
+					<NodeHbCTime>0</NodeHbCTime>
+					<MasterHbCTime>0</MasterHbCTime>
+					<identityObjectCheck>0</identityObjectCheck>
+					<MandatorySlave>0</MandatorySlave>
+					<PDOAutoMapping>0</PDOAutoMapping>
+					<identityObjectCheckVendorID>0x0</identityObjectCheckVendorID>
+					<identityObjectCheckDeviceTypeID>0x0</identityObjectCheckDeviceTypeID>
+					<identityObjectCheckProductCode>0x0</identityObjectCheckProductCode>
+					<identityObjectCheckRevision>0x0</identityObjectCheckRevision>
+					<identityObjectCheckSerial>0x0</identityObjectCheckSerial>
+					<waitBootUpMsg>1</waitBootUpMsg>
+					<SDOscheduling/>
+					<PDORxCycleNum>0</PDORxCycleNum>
+					<dyncfgNodeNumber>false</dyncfgNodeNumber>
+					<nodeNumberVar></nodeNumberVar>
+				</CANgeneric_config>
+			</PREFIX>
+		</templatedata>
+		<datadef version="5.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			
+				<!-- *********************************** CAN GENERIC ****************************** -->
+				
+				<xs:complexType name="TCANgeneric_config"> 
+					<xs:sequence>
+						<xs:element name="nodeNumber" type="xs:integer"/>
+						<xs:element name="nodeGuardPeriod" type="xs:integer"/>
+						<xs:element name="lifeTimeFactor" type="xs:integer"/>
+						
+						<xs:element name="SDOsetList">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="SDOset" type="TSDOset"/>
+								</xs:sequence>
+								<xs:attribute name="locationPage" type="xs:string" fixed="CANgeneric2" />
+							</xs:complexType>
+						</xs:element>
+
+						<xs:element name="PDOTxMappingList">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="PDOmapping" type="TPDOmapping"/>
+								</xs:sequence>
+								<xs:attribute name="locationPage" type="xs:string" fixed="CANgeneric4" />
+							</xs:complexType>
+						</xs:element>
+						
+						<xs:element name="PDORxMappingList">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="PDOmapping" type="TPDOmapping"/>
+								</xs:sequence>
+								<xs:attribute name="locationPage" type="xs:string" fixed="CANgeneric5" />
+							</xs:complexType>
+						</xs:element>
+						
+						<xs:element name="PDOTxTransmission" type="xs:integer"/>
+						<xs:element name="PDOTxCyclicTime" type="xs:integer"/>
+						<xs:element name="PDORxTransmission" type="xs:integer"/>
+						<xs:element name="BootTime" type="xs:integer"/>
+						<xs:element name="NodeHbPTime" type="xs:integer"/>
+						<xs:element name="NodeHbCTime" type="xs:integer"/>
+						<xs:element name="MasterHbCTime" type="xs:integer"/>
+						<xs:element name="identityObjectCheck" type="xs:boolean"/>
+						<xs:element name="MandatorySlave" type="xs:boolean"/>
+						<xs:element name="PDOAutoMapping" type="xs:boolean"/>
+						<xs:element name="identityObjectCheckVendorID" type="xs:string"/>
+						<xs:element name="identityObjectCheckDeviceTypeID" type="xs:string"/>
+						<xs:element name="identityObjectCheckProductCode" type="xs:string"/>
+						<xs:element name="identityObjectCheckRevision" type="xs:string"/>
+						<xs:element name="identityObjectCheckSerial" type="xs:string"/>
+						<xs:element name="waitBootUpMsg" type="xs:boolean"/>
+						<xs:element name="SDOscheduling">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="SDOscheduled" type="TSDOscheduled"/>
+								</xs:sequence>
+								<xs:attribute name="locationPage" type="xs:string" fixed="CANgeneric6" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="PDORxCycleNum" type="xs:integer"/>
+						<xs:element name="dyncfgNodeNumber" type="xs:boolean"/>
+						<xs:element name="nodeNumberVar" type="xs:string"/>
+					</xs:sequence>
+					<xs:attribute name="locationPage" type="xs:string" fixed="CANgeneric1" />
+				</xs:complexType>
+			
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+									<xs:element name="CANgeneric_config" type="TCANgeneric_config"/>
+								</xs:sequence>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="CANgeneric"/>
+								<xs:attribute name="ValidateFunc" type="xs:string" fixed="CANgeneric.Validate"/>
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="CANgeneric.OnCreateNode"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="CANgeneric.OnLoadNode"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="script.UnassignAllPLCVarsFromDevice"/>
+								<xs:attribute name="onpastenode"  type="xs:string" fixed="script.ClearAllPLCVarsFromDevice"/>
+								<xs:attribute name="canBeDisabled"  type="xs:boolean" fixed="true"/>
+								<xs:attribute name="enabled"  type="xs:boolean"/>
+								<xs:attribute name="RefactorFunc" type="xs:string" fixed="CANgeneric.Refactor"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+	<deviceconfig>
+		<parameters/>
+	</deviceconfig>
+	<customconfig>
+		<canopen hasDynamicPDO="1" granularity="8"/>
+	</customconfig>
+</devicetemplate>

@@ -1,0 +1,2004 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Logic modules" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Logic modules" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="BCDC_TO_INT"/>
+				<Pou name="BIT_LOAD_W"/>
+				<Pou name="BIT_LOAD_W2"/>
+				<Pou name="BIT_LOAD_B2"/>
+				<Pou name="BIT_LOAD_B"/>
+				<Pou name="BIT_OF_DWORD"/>
+				<Pou name="BIT_LOAD_DW2"/>
+				<Pou name="BIT_TOGGLE_B"/>
+				<Pou name="BIT_LOAD_DW"/>
+				<Pou name="BIT_TOGGLE_DW"/>
+				<Pou name="BIT_TOGGLE_W"/>
+				<Pou name="BYTE_OF_BIT"/>
+				<Pou name="BYTE_OF_DWORD"/>
+				<Pou name="BYTE_TO_GRAY"/>
+				<Pou name="BYTE_TO_BITS"/>
+				<Pou name="CHECK_PARITY"/>
+				<Pou name="CHK_REAL"/>
+				<Pou name="CRC_GEN"/>
+				<Pou name="DEC_8"/>
+				<Pou name="DEC_2"/>
+				<Pou name="DEC_4"/>
+				<Pou name="DW_TO_REAL"/>
+				<Pou name="MUX_2"/>
+				<Pou name="REFLECT"/>
+				<Pou name="WORD_OF_DWORD"/>
+				<Pou name="REVERSE"/>
+				<Pou name="SHL1"/>
+				<Pou name="SWAP_BYTE"/>
+				<Pou name="PIN_CODE"/>
+				<Pou name="SWAP_BYTE2"/>
+				<Pou name="INT_TO_BCDC"/>
+				<Pou name="MATRIX"/>
+				<Pou name="MUX_4"/>
+				<Pou name="GRAY_TO_BYTE"/>
+				<Pou name="REAL_TO_DW"/>
+				<Pou name="WORD_OF_BYTE"/>
+				<Pou name="PARITY"/>
+				<Pou name="SHR1"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="BCDC_TO_INT" version="1.0.0" creationDate="0" lastModifiedDate="1635507486" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Converts a BCD to Integer</title>
+				<descr>BCDC_TO_INT converts a BCD coded input BYTE in an integer value</descr>
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE">
+							<descr>BCD coded input</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1 30. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+this function converts a two digit bcd number into an integer.
+
+*)
+
+
+BCDC_TO_INT := (in AND 16#0F) + TO_BYTE((SHR(in,4) * 10));
+
+(* revision history
+hm	13.12.2007	rev 1.0
+	original version
+
+hm	30.6.2008	rev 1.1
+	changed name BCD_TO_INT to BCDC_TO_INT to avoid collision with util.lib
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_W" version="1.0.0" creationDate="0" lastModifiedDate="1635514406" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>copies the bit at input VAL to the bit in position N in WORD IN</title>
+				<descr>BIT_LOAD_W copies the bit at input VAL to the bit in position N in WORD IN.
+						The least signifcant bit B0 is described by the position 0.</descr>
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="WORD">
+							<descr>Input</descr>
+						</var>
+						<var name="VAL" type="BOOL">
+							<descr>Value of bit to be loaded</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>Position of the bit to be loaded</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads a bit into a Word at position pos.
+ *)
+
+IF val THEN
+	BIT_LOAD_W := in OR TO_WORD(SHL(1,pos));
+ELSE
+	BIT_LOAD_W := in AND TO_WORD((NOT SHL(1,pos)));
+END_IF;
+
+
+(* revision history
+hm	29. feb 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	change input bit to val for compatibility reasons
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_W2" version="1.0.0" creationDate="0" lastModifiedDate="1635514208" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Set or delete multiple bits in a WORD</title>
+				<descr>&lt;HTML&gt;BIT_LOAD_W2 can set or delete multiple bits in a WORD at the same time.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The position is indicated with 0 for Bit 0 and 15 for Bit 15.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;N specifes how many bits from the specifed location can be changed.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;If N = 0, no bits are changed. &lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;If P and N is specifed that the bits to be written goes over the highest bit (bit 15), so it starts again at bit 0.&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;
+						&lt;br&gt;
+						Examples, see BIT_LOAD_B2</descr>
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="I" type="WORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="D" type="BOOL">
+							<descr>Value of bits to be loaded</descr>
+						</var>
+						<var name="P" type="INT">
+							<descr>Position of bits to be loaded</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of bits that are loaded from position P</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads N bits of D at pos P in WORD I
+
+*)
+
+IF D THEN
+	BIT_LOAD_W2 := TO_WORD( ROL(TO_WORD(SHR(WORD#65535, 16 - N)) OR ROR(i, P), P));
+ELSE
+	BIT_LOAD_W2 := TO_WORD( ROL(TO_WORD(SHL(WORD#65535, N)) AND ROR(I, P), P));
+END_IF;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_B2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Can set or delete multiple bits</title>
+				<descr>&lt;HTML&gt;BIT_LOAD_B2 can set or delete multiple bits in a byte at the same time.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The position is indicated with 0 for Bit0 and 7 for Bit7.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;N specifes how many bits from the specifed location can be changed.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;If N = 0, no bits are changed.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;If the P and N is specifed that the bits to be written goes over the highest bit (bit 7), so it starts again at bit 0.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;BIT_LOAD_B2(2#11110000, TRUE, 1, 2) = 2#11110110&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;BIT_LOAD_B2(2#11111111, FALSE, 7, 2) = 2#01111110&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="I" type="BYTE">
+							<descr>Input value</descr>
+						</var>
+						<var name="D" type="BOOL">
+							<descr>Value of bits to be loaded</descr>
+						</var>
+						<var name="P" type="INT">
+							<descr>Position of the bits to be loaded</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of bits that are loaded from position P</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads N bits of D at pos P in Byte I
+
+*)
+
+IF D THEN
+	BIT_LOAD_B2 := ROL(SHR(BYTE#255, 8 - N) OR ROR(i, P), P);
+ELSE
+	BIT_LOAD_B2 := ROL(SHL(BYTE#255, N) AND ROR(I, P), P);
+END_IF;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_B" version="1.0.0" creationDate="0" lastModifiedDate="1635511451" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Copies the bit at VAL to the bit in the position N in byte IN</title>
+				<descr>BIT_LOAD_B copies the bit at VAL to the bit in the position N in byte IN.
+						The least signifcant bit B0 is described by the position 0.</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE">
+							<descr>Input value</descr>
+						</var>
+						<var name="VAL" type="BOOL">
+							<descr>Value of bits to be loaded</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>Position of the bits to be loaded</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads a bit into a byte at position pos.
+ *)
+IF VAL THEN
+	BIT_LOAD_B := in OR TO_BYTE(SHL(1,pos));
+ELSE
+	BIT_LOAD_B := in AND TO_BYTE((NOT SHL(1,pos)));
+END_IF;
+
+
+(* revision history
+hm	29. feb 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	change input bit to val for compatibility reasons
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_OF_DWORD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Extracts a bit from a DWORD</title>
+				<descr>BIT_OF_DWORD extracts a bit of the DWORD at the input IN.
+						Bit0 for N=0, Bit1 for N=1 and so on.</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of bit to extract</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	6. jun. 2008
+programmer 	hugo
+tested by	tobias
+
+this function extracts a single bit from the nth position from right (right is lowest bit)
+the lowest Bit (Bit0 from in) is selected with N=0.
+ *)
+
+BIT_OF_DWORD := (SHR(in,N) AND 16#00000001) > 0;
+
+
+(* old code used before rev 1.1
+temp := SHR(in,n);
+Bit_of_Dword := temp.0;
+*)
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	29. feb 2008	rev 1.1
+	improved performance
+
+hm	6. jun. 2008	rev 1.2
+	changes type of input N from byte to int
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_DW2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>set or delete multiple bits in a DWORD at the same time</title>
+				<descr>&lt;HTML&gt;BIT_LOAD_DW2 can set or delete multiple bits in a DWORD at the same time.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The position is indicated with 0 for Bit0 and 31 for Bit 31.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt; N specifes how many bits from the specifed location can be changed.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;If N = 0, no bits are changed.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt; If P and N is specifed that the bits to be written goes over the highest bit (bit 31), so it starts again at bit 0.&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;&lt;br&gt;
+						Examples, see BIT_LOAD_B2&lt;br&gt;</descr>
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="I" type="DWORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="D" type="BOOL">
+							<descr>Value of bits to be loaded</descr>
+						</var>
+						<var name="P" type="INT">
+							<descr>Position of the bits to be loaded</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of bits that are loaded from position P</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads N bits of D at pos P in DWORD I
+
+*)
+
+IF D THEN
+	BIT_LOAD_DW2 := ROL(SHR(DWORD#4294967295, 32 - N) OR ROR(i, P), P);
+ELSE
+	BIT_LOAD_DW2 := ROL(SHL(DWORD#4294967295, N) AND ROR(I, P), P);
+END_IF;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_TOGGLE_B" version="1.0.0" creationDate="0" lastModifiedDate="1635516960" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Inverts a specifed bit</title>
+				<descr>BIT_TOGGLE_B inverts a specifed bit at IN.
+						BIT_TOGGLE_W(2#00001111, 2) = 2#00001011
+						BIT_TOGGLE_W(2#00001111, 7) = 2#10001111</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE">
+							<descr>Input data</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>position</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function toggles a bit of a BYTE at position pos.
+
+*)
+
+BIT_TOGGLE_B := TO_BYTE(SHL(BYTE#1, POS)) XOR IN;
+
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_LOAD_DW" version="1.0.0" creationDate="0" lastModifiedDate="1635512562" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Copies the VAL bit at the input to the bit in position N in DWORD</title>
+				<descr>BIT_LOAD_DW copies the VAL bit at the input to the bit in position N in DWORD IN.
+						The least signifcant bit B0 is described by the position 0.</descr>
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="DWORD">
+							<descr>Input</descr>
+						</var>
+						<var name="VAL" type="BOOL">
+							<descr>Value of bit to be loaded</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>Position of the bit to be loaded</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+this function loads a bit into a DWord at position pos.
+ *)
+
+IF val THEN
+	BIT_LOAD_DW := in OR SHL(1,pos);
+ELSE
+	BIT_LOAD_DW := in AND (NOT SHL(1,pos));
+END_IF;
+
+
+(* revision history
+hm	29. feb 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	change input bit to val for compatibility reasons
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_TOGGLE_DW" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Inverts a specifed bit at IN</title>
+				<descr>BIT_TOGGLE_DW inverts a specifed bit at IN.
+						BIT_TOGGLE_DW(2#00001111, 2) = 2#00001011
+						BIT_TOGGLE_DW(2#00001111, 7) = 2#10001111</descr>
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="DWORD">
+							<descr>Input</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>Position</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function toggles a bit of a WORD at position pos.
+
+*)
+
+BIT_TOGGLE_DW := SHL(DWORD#1, POS) XOR IN;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BIT_TOGGLE_W" version="1.0.0" creationDate="0" lastModifiedDate="1635517259" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Inverts a specifed bit POS at IN.</title>
+				<descr>BIT_TOGGLE_W inverts a specifed bit POS at IN.
+						BIT_TOGGLE_W(2#00001111, 2) = 2#00001011
+						BIT_TOGGLE_W(2#00001111, 7) = 2#10001111</descr>
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="WORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="POS" type="INT">
+							<descr>Position</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0 18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+this function toggles a bit of a WORD at position pos.
+
+*)
+
+BIT_TOGGLE_W := TO_WORD(SHL(WORD#1, POS)) XOR IN;
+
+
+
+(* revision history
+hm	18. oct. 2008	rev 1.0
+	original version
+
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BYTE_OF_BIT" version="1.0.0" creationDate="0" lastModifiedDate="1635518642" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Generates BYTE from 8 BITS</title>
+				<descr>BYTE_OF_BIT uses one byte of 8 individual bits (B0 .. B7) together.</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="B0" type="BOOL">
+							<descr>Input bit 0</descr>
+						</var>
+						<var name="B1" type="BOOL">
+							<descr>Input bit 1</descr>
+						</var>
+						<var name="B2" type="BOOL">
+							<descr>Input bit 2</descr>
+						</var>
+						<var name="B3" type="BOOL">
+							<descr>Input bit 3</descr>
+						</var>
+						<var name="B4" type="BOOL">
+							<descr>Input bit 4</descr>
+						</var>
+						<var name="B5" type="BOOL">
+							<descr>Input bit 5</descr>
+						</var>
+						<var name="B6" type="BOOL">
+							<descr>Input bit 6</descr>
+						</var>
+						<var name="B7" type="BOOL">
+							<descr>Input bit 7</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	 18. feb 2006
+programmer 	hugo
+tested by		tobias
+
+this function creates a byte from 8 individual bits
+
+*)
+
+Byte_of_bit := SHL(SHL(SHL(SHL(SHL(SHL(SHL(TO_BYTE(B7),1) OR TO_BYTE(B6),1) OR TO_BYTE(B5),1) OR TO_BYTE(B4),1)
+	OR TO_BYTE(B3),1) OR TO_BYTE(B2),1) OR TO_BYTE(B1),1) OR TO_BYTE(B0);
+
+
+(* revision history
+
+hm	4. aug 2006		rev 1.0
+	original version
+
+hm	18. feb. 2008	rev 1.1
+	improved performance
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="BYTE_OF_DWORD" version="1.0.0" creationDate="0" lastModifiedDate="1635840017" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Extracts a byte (B0 .. B3) a DWORD</title>
+				<descr>BYTE_OF_DWORD extracts a byte (B0 .. B3) a DWORD.
+						The individual bytes are selected with 0-3 at the input IN.</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input</descr>
+						</var>
+						<var name="N" type="BYTE">
+							<descr>Byte position to extract (from right)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	30. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function extracts a single byte from the nth position from right (right is lowest byte) 
+the lower byte (starting with Bit0 from in) is selected with N=0.
+*)
+
+
+BYTE_OF_DWORD := TO_BYTE(SHR(in,TO_BYTE(SHL(n,3))));
+
+(* revision history
+hm	17. jan 2007	rev 1.0
+	original version
+
+hm	2. jan 2008		rev 1.1
+	improved performance
+
+hm	30. oct. 2008	rev 1.2
+	improved performance
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="BYTE_TO_GRAY" version="1.0.0" creationDate="0" lastModifiedDate="1635840560" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Converts a byte value (IN) in the Gray code.</title>
+				<descr>BYTE_TO_GRAY converts a byte value (IN) in the Gray code.</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE">
+							<descr>Input byte</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	9. nov. 2009
+programmer 	hugo
+tested by		oscat
+
+this function converts a binary to gray code
+
+*)
+
+
+BYTE_TO_GRAY := IN XOR TO_BYTE(SHR(IN,1));
+
+(* revision history
+hm	9. nov. 2009	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CHECK_PARITY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Checks an input byte IN and an associated paritybit</title>
+				<descr>CHECK_PARITY checks an input byte IN and an associated paritybit P to even parity.
+						The output is TRUE if the number of bits in the byte IN have the value TRUE together with the parity-bit results is an even number</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input</descr>
+						</var>
+						<var name="p" type="BOOL">
+							<descr>Parity bit</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.3	18 feb 2008
+programmer 	hugo
+tested by	tobias
+
+this function checks for an even partity for a dword and partity bit.
+
+*)
+
+CHECK_PARITY := NOT p;
+WHILE in > 0 DO
+	CHECK_PARITY := CHECK_PARITY XOR in.0 XOR in.1 XOR in.2 XOR in.3;
+	in := SHR(in,4);
+END_WHILE;
+
+(* code before rev 1.2
+WHILE in > 0 DO
+	IF in.0 THEN cnt := cnt + 1; END_IF;
+	in := SHR(in,1);
+END_WHILE;
+check_parity := even(cnt) XOR P;
+*)
+
+
+(* revision history
+
+rev 1.0 HM  1.oct.2006
+
+rev 1.1 hm	10.sep.2007
+	changed algorithm to improove performance
+
+rev 1.2	hm	8 dec 2007
+	changed algorithm to improove performance
+
+rev 1.3 hm	18. feb 2008
+	changed algorithm to improove performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CHK_REAL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL"/>
+					</inputVars>
+					<localVars>
+						<var name="pt" type="@DWORD"/>
+						<var name="tmp" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	20. jan. 2011
+programmer 	hugo
+tested by		tobias
+
+this function checks a floating point variable of type real (IEEE754-32Bits) for NAN and infinity
+RETURN values: #0 = normal value, #20 = +infinity, #40 = -infinty, #80 = NAN
+
+*)
+
+
+pt := ADR(X);				(* move real to dword, real_to_dword does not work becasze it treats dword as a number on many systems *)
+tmp := ROL(@pt,1);			(* rotate left foir easy checking, sign will be at lease significant digit *)
+IF tmp < 16#FF000000 THEN
+	CHK_REAL := 16#00;		(* normalized and denormalized numbers *)
+ELSIF tmp = 16#FF000000 THEN
+	CHK_REAL := 16#20;		(* X is +infinity see IEEE754 *)
+ELSIF tmp = 16#FF000001 THEN
+	CHK_REAL := 16#40;		(* X is -infinity see IEEE754 *)
+ELSE
+	CHK_REAL := 16#80;		(* X is NAN see IEEE754 *)
+END_IF;
+
+
+(* revision history
+hm	 20. jan. 2011	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CRC_GEN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="PT" type="@BYTE"/>
+						<var name="SIZE" type="INT"/>
+						<var name="PL" type="INT"/>
+						<var name="PN" type="DWORD"/>
+						<var name="INIT" type="DWORD"/>
+						<var name="REV_IN" type="BOOL"/>
+						<var name="REV_OUT" type="BOOL"/>
+						<var name="XOR_OUT" type="DWORD"/>
+					</inputVars>
+					<localVars>
+						<var name="pos" type="INT"/>
+						<var name="shift" type="INT"/>
+						<var name="dx" type="BYTE"/>
+						<var name="bits" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.0	16.Jan. 2011
+programmer 	hugo
+tested by		tobias
+
+CRC_GEN generates a CRC checksum from a block of data and returns  the checksum in a DWORD to be connected to the data for transmission.
+the CRC Polynom is specified with the config variable PN and the length of the Polynom is specified by PL
+A Polynom x4 + X + 1 is represented by 0011 with length 4, the highest order bit is not specified at all..
+The input data is an array of byte of any size, the function is called by CRC_GEN(ADR(array),SIZEOF(array), ....).
+
+*)
+
+
+(* align polygon *)
+shift := 32 - PL;
+PN := SHL(PN, shift);
+
+(* load first 4 bytes into register minimum message size is 4 bytes
+	for smaller messages fill with 0#s at the beginning*)
+FOR pos := 0 TO 3 DO
+	IF REV_IN THEN CRC_GEN := SHL(CRC_GEN, 8) OR REVERSE(@PT[pos]); ELSE CRC_GEN := SHL(CRC_GEN, 8) OR @PT[pos]; END_IF;
+END_FOR;
+pos := 4;
+
+(* xor with init value *)
+CRC_GEN := CRC_GEN XOR SHL(init, shift);
+
+(* calculate CRC for each byte *)
+WHILE pos < size DO
+	IF REV_IN THEN DX := REVERSE(@PT[pos]); ELSE DX := @PT[pos]; END_IF;
+	pos := pos + 1;
+	(* crc calculation for one byte *)
+	FOR bits := 0 TO 7 DO
+		IF CRC_GEN.31 THEN
+			CRC_GEN := (SHL(CRC_GEN, 1) OR TO_DWORD(DX.7)) XOR PN;
+		ELSE
+			CRC_GEN := SHL(CRC_GEN, 1) OR TO_DWORD(DX.7);
+		END_IF;
+		dx := SHL(dx, 1);
+	END_FOR;
+END_WHILE;
+
+(* all bytes are processed, need to finish the registers 32 bits *)
+FOR bits := 0 TO 31 DO
+	IF CRC_GEN.31 THEN
+		CRC_GEN := (SHL(CRC_GEN, 1) OR TO_DWORD(DX.7)) XOR PN;
+	ELSE
+		CRC_GEN := SHL(CRC_GEN, 1) OR TO_DWORD(DX.7);
+	END_IF;
+END_FOR;
+
+(* final XOR *)
+CRC_GEN := SHR(CRC_GEN, shift) XOR XOR_OUT;
+
+(* reverse the crc_out put if necessary *)
+IF REV_OUT THEN CRC_GEN := REFLECT(CRC_GEN, PL); END_IF;
+
+
+(* typical crc polynoms
+
+CRC-4-ITU 			x4 + x + 1 					(ITU G.704, p. 12) 	0x3 or 0xC (0x9)
+CRC-5-ITU 			x5 + x4 + x2 + 1 			(ITU G.704, p. 9) 	0x15 or 0x15 (0x0B) Bluetooth
+CRC-5-USB 			x5 + x2 + 1 				(use: USB token packets) 	0x05 or 0x14 (0x9)
+CRC-6-ITU 			x6 + x + 1 					(ITU G.704, p. 3) 	0x03 or 0x30 (0x21)
+CRC-7 				x7 + x3 + 1 				(use: telecom systems, MMC) 	0x09 or 0x48 (0x11)
+CRC-8-ATM 			x8 + x2 + x + 1 				(use: ATM HEC) 	0x07 or 0xE0 (0xC1)
+CRC-8-CCITT 		x8 + x7 + x3 + x2 + 1 		(use: 1-Wire bus) 	0x8D or 0xB1 (0x63)
+CRC-8-Dallas/Maxim 	x8 + x5 + x4 + 1 			(use: 1-Wire bus) 	0x31 or 0x8C (0x19)
+CRC-8 				x8 + x7 + x6 + x4 + x2 + 1 	0xD5 or 0xAB (0x57)
+CRC-8-SAE J1850 	x8 + x4 + x3 + x2 + 1 		0x1D or 0xB8
+CRC-10 				x10 + x9 + x5 + x4 + x + 1 	0x233 or 0x331 (0x263)
+CRC-12 				x12 + x11 + x3 + x2 + x + 1 (use: telecom systems) 	0x80F or 0xF01 (0xE03)
+CRC-15-CAN 			x15 + x14 + x10 + x8 + x7 + x4 + x3 + 1 	0x4599 or 0x4CD1 (0x19A3)
+CRC-16-Fletcher 	Not a CRC; see Fletcher's checksum 	Used in Adler-32 A & B CRCs
+CRC-16-CCITT 	x16 + x12 + x5 + 1 (XMODEM,X.25, V.41, Bluetooth, PPP, IrDA; known as CRC-CCITT) 	0x1021 or 0x8408 (0x0811)
+CRC-16-IBM 	x16 + x15 + x2 + 1 (USB, many others; also known as CRC-16) 	0x8005 or 0xA001 (0x4003)
+CRC-24-Radix-64 	x24 + x23 + x18 + x17 + x14 + x11 + x10 + x7 + x6 + x5 + x4 + x3 + x + 1 	0x864CFB or 0xDF3261 (0xBE64C3)
+CRC-32-Adler 	Not a CRC; see Adler-32 	See Adler-32
+CRC-32-MPEG2 	x32 + x26 + x23 + x22 + x16 + x12 + x11 + x10 + x8 + x7 + x5 + x4 + x2 + x + 1 	0x04C11DB7 or 0xEDB88320 (0xDB710641) Also used in IEEE 802.3
+CRC-32-IEEE 802.3 	x32 + x26 + x23 + x22 + x16 + x12 + x11 + x10 + x8 + x7 + x5 + x4 + x2 + x + 1 (V.42) 	0x04C11DB7 or 0xEDB88320 (0xDB710641)
+CRC-32C (Castagnoli) 	x32 + x28 + x27 + x26 + x25 + x23 + x22 + x20 + x19 + x18 + x14 + x13 + x11 + x10 + x9 + x8 + x6 + 1 	0x1EDC6F41 or 0x82F63B78 (0x05EC76F1)
+CRC-64-ISO 	x64 + x4 + x3 + x + 1 (use: ISO 3309) 	0x000000000000001B or 0xD800000000000000 (0xB000000000000001)
+CRC-64-ECMA-182 	x64 + x62 + x57 + x55 + x54 + x53 + x52 + x47 + x46 + x45 + x40 + x39 + x38 + x37 + x35 + x33 + x32 + x31 + x29 + x27 + x24 + x23 + x22 + x21 + x19 + x17 + x13 + x12 + x10 + x9 + x7 + x4 + x + 1
+(as described in ECMA-182 p.63) 	0x42F0E1EBA9EA3693 or 0xC96C5795D7870F42 (0x92D8AF2BAF0E1E85)
+*)
+
+
+
+(* revision history
+
+hm	9.6.2007		rev 1.0		
+	original version 
+
+hm	11.9.2007		rev 1.1
+	deleted unused variable i
+
+hm	9. oct 2007 	rev 1.2
+	added init code for crc and xor_out
+	added refelct in and reflect_out (rev_in und Rev_out)
+
+hm	2. jan 2008	rev 1.3
+	small changes for performance improvements
+
+hm	16. mar. 2008	rev 1.4
+	changed type of input size to uint
+
+hm	10. mar. 2009	rev 1.5
+	removed nested comments
+
+hm	16. jan. 2011	rev 2.0
+	new version
+*)
+
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="DW_TO_REAL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="DWORD"/>
+					</inputVars>
+					<localVars>
+						<var name="pt" type="@REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	18. apr. 2008
+programmer 	hugo
+tested by		tobias
+
+this function converts a DWORD to REAL in a bitwise manner.
+*)
+
+
+pt := ADR(X);
+DW_TO_REAL := @pt;
+
+(* revision history
+hm	18. apr. 2008
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MUX_2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="D0" type="BOOL"/>
+						<var name="D1" type="BOOL"/>
+						<var name="A0" type="BOOL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.2	16. oct. 2008
+	programmer 	hugo
+	tested BY	oscat
+
+	dual input multiplexer
+	depending on the value of A0, D0 or D1 will be switched to the Output
+
+	executioin TIME on wago 750-841 = 7us
+*)
+
+MUX_2 := SEL(A0, D0, D1);
+
+
+(*
+revision history:
+hm	5.10.2006		rev 1.1
+	changed to ST Langage for better portability.
+
+hm	16. oct. 2008	rev 1.2
+	improved performance
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="REFLECT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="D" type="DWORD"/>
+						<var name="L" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.0	16. jan 2011
+	programmer 	hugo
+	tested BY		tobias
+
+This function reverses the specified amount of bits from bit 0 to bit n within a dword  while L specifies the amount of Bits to be reflected.
+
+*)
+
+
+REFLECT := 0;
+FOR i := 1 TO L DO
+	REFLECT := SHL(REFLECT, 1) OR TO_DWORD(D.0);
+	D := SHR(D, 1);
+END_FOR;
+REFLECT := REFLECT OR SHL(D, L);
+
+(* revision history
+hm	 16. jan 2011
+	new module
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="WORD_OF_DWORD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD"/>
+						<var name="N" type="BYTE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	30. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function extracts a single word from the nth position from right (right is lowest byte)
+the lower word (starting with Bit0 from in) is selected with N=0.
+*)
+
+
+WORD_OF_DWORD := TO_WORD(SHR(in,SHL(n,4)));
+
+(* revision history
+hm	17. jan 2007	rev 1.0
+	original version
+
+hm	2. jan 2008		rev 1.1
+	improved performance
+
+hm	30. oct. 2008	rev 1.2
+	improved performance
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="REVERSE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.1	18. feb 2008
+	programmer 	hugo
+	tested BY		tobias
+
+This function reverses the bits of a byte so that after execution bit 7 is at bit 0 location and so forth.
+
+*)
+
+REVERSE := SHL(in,7) OR SHR(in,7) OR (ROR(in,3) AND 2#01000100) OR (ROL(in,3) AND 2#00100010)
+	OR (SHL(in,1) AND 2#00010000) OR (SHR(in,1) AND 2#00001000);
+
+
+(* revision history
+hm		9.oct 2007		rev 1.0
+	original version
+
+hm		18. feb 2008	rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SHL1" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="DWORD"/>
+						<var name="N" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	27 dec 2007
+programmer 	hugo
+tested by		tobias
+
+SHL1 shifts N bits to the left filling the new bits with 1
+
+*)
+
+SHL1 := SHR(temp,32-N) OR SHL(IN,N);
+
+
+(* revision history
+hm	14.9.2007		rev 1.0
+	original version
+
+hm	27. dec 2007	rev 1.1
+	changed code for better performance
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SWAP_BYTE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	4 feb 2008
+programmer 	hugo
+tested by		tobias
+
+This function swaps the high and low byte of the word in.
+
+*)
+
+SWAP_BYTE := ROL(in,8);
+
+
+(* revision history
+hm		4. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SWAP_BYTE2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="DWORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	4 feb 2008
+programmer 	hugo
+tested by		tobias
+
+This function reverses the byte order in the dword.
+
+*)
+
+Swap_Byte2 := (ROR(in,8) AND 16#FF00FF00) OR (ROL(in,8) AND 16#00FF00FF);
+
+(* revision history
+hm		4. feb 2008	rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="INT_TO_BCDC" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	30. jun. 2008
+programmer 	hugo
+tested by		tobias
+
+this function converts an integer into a two digit bcd number.
+*)
+
+
+INT_TO_BCDC := SHL(TO_BYTE(IN / INT#10),4) OR TO_BYTE(in MOD INT#10);
+
+(* revision history
+hm	13.12.2007
+	original version
+
+hm	30.6.2008	rev 1.1
+	changed name INT_TO_BCD to INT_TO_BCDC to avoid collision with util.lib
+	corrected error in code
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MUX_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="D0" type="BOOL"/>
+						<var name="D1" type="BOOL"/>
+						<var name="D2" type="BOOL"/>
+						<var name="D3" type="BOOL"/>
+						<var name="A0" type="BOOL"/>
+						<var name="A1" type="BOOL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	16. oct. 2008
+programmer 	hugo
+tested BY	oscat
+
+quad input multiplexer
+depending on the value of A0 and A1, one of the 4 inputs will be switched to the Output
+
+
+*)
+
+IF A1 THEN
+	MUX_4 := SEL(A0, D2, D3);
+ELSE
+	MUX_4 := SEL(A0, D0, D1);
+END_IF;
+
+
+(*
+revision history:
+hm 	5.10.2006		rev 1.1
+	rewritten to ST for better portability
+
+hm	16. oct. 2008	rev 1.2
+	improved performance
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="GRAY_TO_BYTE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	9. nov. 2009
+programmer 	hugo
+tested by		oscat
+
+this function converts a gray code into binary
+
+*)
+
+
+GRAY_TO_BYTE := SHR(IN,4) XOR IN;
+GRAY_TO_BYTE := SHR(GRAY_TO_BYTE,2) XOR GRAY_TO_BYTE;
+GRAY_TO_BYTE := SHR(GRAY_TO_BYTE,1) XOR GRAY_TO_BYTE;
+
+(* revision history
+hm	9. nov. 2009	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="REAL_TO_DW" version="1.0.0" creationDate="0" lastModifiedDate="1634738934" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="pt" type="@DWORD"/>
+						<var name="tmp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	18. apr. 2008
+programmer 	hugo
+tested by		tobias
+
+this function converts a 32 Bit Real to a dword in a bitwise manner.
+*)
+
+tmp := x;
+pt := ADR(tmp);
+REAL_TO_DW := @pt;
+
+(* revision history
+hm	18. apr. 2008
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="WORD_OF_BYTE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="B1" type="BYTE"/>
+						<var name="B0" type="BYTE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.4	18. jul. 2009
+programmer 	hugo
+tested by		tobias
+
+this function creates a word from 2 individual bytes
+
+*)
+
+WORD_OF_BYTE := SHL(TO_WORD(B1),8) OR TO_WORD(B0);
+
+(* revision history
+hm	24. jan 2007	rev 1.0
+	original version
+
+hm	2. jan 2008	rev 1.1
+	improved performance
+
+hm	19. feb 2008	rev 1.2
+	replaced and with or for better compatibility
+
+hm	23. apr. 2008	rev 1.3
+	reverse order of inputs to be more logical
+
+hm	18. jul. 2009	rev 1.4
+	added type conversions for compatibility reasons
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="PARITY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.3	18 feb 2008
+	programmer 	hugo
+	tested BY		hans
+
+this function calculates the even parity of an input Dword
+the output will be true if the amount of high bits are an odd number.
+
+*)
+
+
+WHILE in > 0 DO
+	PARITY := PARITY XOR in.0 XOR in.1 XOR in.2 XOR in.3;
+	in := SHR(in,4);
+END_WHILE;
+
+(* code before rev 1.2
+WHILE in > 0 DO
+	IF in.0 THEN cnt := cnt +1; END_IF;
+	in := SHR(in,1);
+END_WHILE;
+IF (cnt MOD 2) = 1 THEN parity := TRUE; ELSE parity := FALSE; END_IF;
+*)
+
+(* revision history
+
+rev 1.0 hm 1 sep 2006
+	original version
+
+rev 1.1 hm 10.9.2007
+	changed algorithm to improve performance
+
+rev 1.2	hm	8 dec 2007
+	changed algorithm to improve performance
+
+rev 1.3	hm	18 feb 2008
+	changed algorithm to improve performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SHR1" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="DWORD"/>
+						<var name="N" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	27 dec 2007
+programmer 	hugo
+tested by		tobias
+
+SHR1 shifts N bits to the right filling the new bits with 1
+
+*)
+
+SHR1 := SHL(temp,32-N) OR SHR(IN,N);
+
+(* revision history
+hm	14.9.2007		rev 1.0
+	original version
+
+hm	27. dec 2007	rev 1.1
+	changed code for better performance
+
+*)
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="BYTE_TO_BITS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Split a byte (IN) into its individual bits (B0 .. B7).</title>
+				<descr>BYTE_TO_BITS split a byte (IN) into its individual bits (B0 .. B7).
+						The input IN is defined as a DWORD to handle either byte, word, or DWORD at the input.
+						If a Word or DWORD used at the input, only the bits 0th .7 are processed.
+						A DWORD can then, using the default command SHR , be shifted by 8 bits to the right and then the next byte can be processed.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BYTE">
+							<descr>Input byte</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="B0" type="BOOL">
+							<descr>Output bit 0</descr>
+						</var>
+						<var name="B1" type="BOOL">
+							<descr>Output bit 1</descr>
+						</var>
+						<var name="B2" type="BOOL">
+							<descr>Output bit 2</descr>
+						</var>
+						<var name="B3" type="BOOL">
+							<descr>Output bit 3</descr>
+						</var>
+						<var name="B4" type="BOOL">
+							<descr>Output bit 4</descr>
+						</var>
+						<var name="B5" type="BOOL">
+							<descr>Output bit 5</descr>
+						</var>
+						<var name="B6" type="BOOL">
+							<descr>Output bit 6</descr>
+						</var>
+						<var name="B7" type="BOOL">
+							<descr>Output bit 7</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this Function Block extracts the 8 Bits from a byte
+
+
+*)
+
+B0 := IN.0;
+B1 := IN.1;
+B2 := IN.2;
+B3 := IN.3;
+B4 := IN.4;
+B5 := IN.5;
+B6 := IN.6;
+B7 := IN.7;
+
+(* revision history
+hm		4. aug 2006	rev 1.0
+	original version
+
+hm		16. mar 2008	rev 1.1
+	renamed from byte_to_bit to byte_to_bits for compatibility reasons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DEC_8" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="D" type="BOOL"/>
+						<var name="A0" type="BOOL"/>
+						<var name="A1" type="BOOL"/>
+						<var name="A2" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+						<var name="Q3" type="BOOL"/>
+						<var name="Q4" type="BOOL"/>
+						<var name="Q5" type="BOOL"/>
+						<var name="Q6" type="BOOL"/>
+						<var name="Q7" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="X" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	28. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+a bit input will be decoded to one of the 8 outputs
+dependent on the Adress on A0, A1 and A2
+
+
+*)
+
+X.0 := A0; X.1 := A1; X.2 := A2;
+
+Q0 := FALSE;
+Q1 := FALSE;
+Q2 := FALSE;
+Q3 := FALSE;
+Q4 := FALSE;
+Q5 := FALSE;
+Q6 := FALSE;
+Q7 := FALSE;
+
+CASE X OF
+	0 : Q0 := D;
+	1 : Q1 := D;
+	2 : Q2 := D;
+	3 : Q3 := D;
+	4 : Q4 := D;
+	5 : Q5 := D;
+	6 : Q6 := D;
+	7 : Q7 := D;
+END_CASE;
+
+
+
+(* revision history
+hm 3. mar. 2007	rev 1.1
+	rewritten in ST for better compatibility
+
+hm	26. oct. 2008	rev 1.2
+	code optimized
+
+hm	28. mar. 2009	rev 1.3
+	replaced multiple assignments
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DEC_2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="D" type="BOOL"/>
+						<var name="A" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	3 Mar 2007
+programmer 	hugo
+tested by		tobias
+
+a bit input will be decoded to the two outputs Q0 or Q1
+dependent on the value of A
+A=0 decodes to Q0 and A=1 decodes to Q1
+
+*)
+
+Q0 := D AND NOT A;
+Q1 := D AND A;
+
+(* revision history
+hm 3.3.2007	rev 1.1
+	rewritten in ST for better compatibility
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DEC_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="D" type="BOOL"/>
+						<var name="A0" type="BOOL"/>
+						<var name="A1" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+						<var name="Q3" type="BOOL"/>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	3 Mar 2007
+programmer 	hugo
+tested by		tobias
+
+a bit input will be decoded to one of the 4 outputs
+dependent on the Adress on A0 and A1
+
+executioin TIME on wago 750-841 = 9us
+*)
+
+Q0 := D AND NOT A0 AND NOT A1;
+Q1 := D AND A0 AND NOT A1;
+Q2 := D AND NOT A0 AND A1;
+Q3 := D AND A0 AND A1;
+
+(* revision history
+hm 3.3.2007	rev 1.1
+	rewritten in ST for better compatibility
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="PIN_CODE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="CB" type="BYTE"/>
+						<var name="E" type="BOOL"/>
+						<var name="PIN" type="STRING" length="8"/>
+					</inputVars>
+					<outputVars>
+						<var name="TP" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="POS" type="INT">
+							<initValue>1</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	30. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+MATRIX_CODE scans the input of a key_pad (MATRIX) for a sequence of characters.
+
+*)
+
+tp := FALSE;
+IF e THEN
+	IF CB = CODE(pin, pos) THEN
+		pos := pos + 1;
+		IF pos > LEN(PIN) THEN
+			(* proper code is detected *)
+			TP := TRUE;
+			pos := 1;
+		END_IF;
+	ELSE
+		pos := 1;
+	END_IF;
+END_IF;
+
+
+(* revision history
+hm	30. oct. 2008	rev 1.0		
+	original version 
+
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MATRIX" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="x1" type="BOOL"/>
+						<var name="x2" type="BOOL"/>
+						<var name="x3" type="BOOL"/>
+						<var name="x4" type="BOOL"/>
+						<var name="X5" type="BOOL"/>
+						<var name="Release" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="code" type="BYTE"/>
+						<var name="TP" type="BOOL"/>
+						<var name="y1" type="BOOL">
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="y2" type="BOOL"/>
+						<var name="y3" type="BOOL"/>
+						<var name="y4" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="line" type="BYTE"/>
+						<var name="X" type="BYTE" dim0="4">
+							<descr>scan line inputs</descr>
+						</var>
+						<var name="L" type="BYTE" dim0="4">
+							<descr>scan line status</descr>
+						</var>
+						<var name="i" type="INT"/>
+						<var name="temp" type="BYTE"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	26 oct. 2008
+programmer 	hugo
+tested by	oscat
+
+MATRIX is a matrix keyboard encoder for 4 rows and up to 5 columns.
+matrix can send a code while a key is pressed and it sends another code while a key is released when the setup variable 'release' is set to true.
+the setup variable release is false the code is only sent when the key is pressed.
+the output byte holds the 5 columns in the lowest bits 0..2  and the row number in bits 4..6, while bit 7 is true for a key pressed and false for a key released.
+
+*)
+
+TP := FALSE;
+CODE := 0;
+(* read scan lines *)
+X[line].0 := X1;
+X[line].1 := X2;
+X[line].2 := X3;
+X[line].3 := X4;
+X[line].4 := X5;
+
+(* compare for change *)
+FOR i := 0 TO 3 DO
+	IF X[i] <> L[i] THEN
+		(* scan line information has changed code need to be found and generated *)
+		temp := x[i] XOR L[i];
+		IF temp.0 THEN
+			CODE := 1;
+			code.7 := X[i].0;
+			L[i].0 := X[i].0;
+		ELSIF temp.1 THEN
+			code := 2;
+			code.7 := X[i].1;
+			L[i].1 := X[i].1;
+		ELSIF temp.2 THEN
+			code := 3;
+			code.7 := X[i].2;
+			L[i].2 := X[i].2;
+		ELSIF temp.3 THEN
+			CODE := 4;
+			CODE.7 := X[i].3;
+			L[i].3 := X[i].3;
+		ELSIF temp.4 THEN
+			CODE := 5;
+			CODE.7 := X[i].4;
+			L[i].4 := X[i].4;
+		END_IF;
+		TP := TRUE;
+		CODE.4 := Line.0;
+		CODE.5 := Line.1;
+		CODE.6 := Line.2;
+
+		(* check if release codes need to be killed *)
+		IF NOT release AND CODE < 127 THEN
+			CODE := 0;
+			TP := FALSE;
+		END_IF;
+		EXIT;
+	END_IF;
+END_FOR;
+
+(* increment scan line every cycle *)
+line := (line + 1) AND 2#0000_0011;
+temp := SHL(BYTE#1,line);
+Y1 := temp.0;
+Y2 := temp.1;
+Y3 := temp.2;
+Y4 := temp.3;
+
+
+
+
+(* revision history
+hm		10.6.2007	rev 1.0		
+	original version 
+
+
+hm		11.9.2007	rev 1.1		
+	deleted unused variables k and old_code
+
+hm		23.12.2007	rev 1.2
+	added exit statement in for loop instead of i:=5
+
+hm		26. oct. 2008	rev 1.3
+	code optimized
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

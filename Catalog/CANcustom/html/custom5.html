@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>CAN Custom Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+	
+	var m_importFunc
+	var m_hasDynPDO
+	var m_hasDynNodeID
+	var WINDOW_NAME = "CANcustom5"
+	var m_isPDOTx = false
+	
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png';
+		imgOut.src = csspath + imgPathPrefix + 'arrowOut.png';
+		imgIn.src = csspath + imgPathPrefix + 'arrowIn.png';
+
+		// setta titolo e salva pagina corrente
+		var path = window.external.GetCurrentWindowData()
+		pageTitle.innerText = window.external.DataGet(path + "@name", 0) + " Configuration"
+//		SaveActiveWindow(WINDOW_NAME)
+		
+		// i bottoni + e - sono visibili solo se il device supporta il pdo dinamico
+		var id = GetLastPathElement(path)
+		var devinfo = app.CallFunction("CANcustom.GetCANCustomDeviceInfo", id)
+		if (!devinfo) return
+		
+		m_hasDynPDO = devinfo.hasDynamicPDO
+		if (!m_hasDynPDO)
+			spanAddRemove.style.display = "none"
+		
+		m_hasDynNodeID = ParseBoolean( app.DataGet(path + "/CANcustom_config[1]/dyncfgNodeNumber", 0) )
+		
+/*		var nodelist = window.external.SelectNodesXML(path + "@PDOImportFunc")
+		if (nodelist.length != 0)
+			m_importFunc = nodelist[0].nodeTypedValue
+		else
+			butImport.style.display = "none"*/
+
+		//	target device supporta SDO scheduling?
+		current_device = app.SelectNodesXML(window.external.GetCurrentWindowData() + ".")[0]
+		var targetDevice  = current_device.selectSingleNode(XPATH_ROOTDEVICE)
+		if ( parseInt(targetDevice.getAttribute( "CANopenSDOSchedulingSupported" )) > 0 )
+			SDOSchedulingSupported.style.display = "block";
+		else
+			SDOSchedulingSupported.style.display = "none";
+
+		FixStyleForGrids();
+	}
+	
+/*	function Import()
+	{
+		var nodelist = window.external.SelectNodesXML(datapath.value.slice(0,-1))
+		if (nodelist.length == 0) return
+		window.external.CallFunction(m_importFunc, nodelist[0])
+		// aggiornamento setlist per PDO sia Tx che Rx
+		app.CallFunction("CANcustom.UpdatePDOTxTransmission", m_device)
+		app.CallFunction("CANcustom.UpdatePDORxTransmission", m_device)
+		history.go(0)   // per forzare il refresh della pagina
+	}*/
+	</script>
+
+	<script type="text/javascript" src="grid_pdo.js"></script>
+</head>
+
+<body onload="InitGrid(datapath.value)" onunload="OnUnload()" class="html5">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle">CAN Custom Configuration</span>
+	</div>
+
+	<div class="menu">
+		<div class="menu_off"> <a href="custom1.html"><t:t>General</t:t></a> </div>
+		<div class="menu_off"> <a href="custom2.html"><t:t>Parametrization</t:t></a> </div>
+		<div class="menu_off"> <a href="custom4.html"><t:t>PDO Tx - Input</t:t></a> </div>
+		<div class="menu_on"> <a href="#"><t:t>PDO Rx - Output</t:t></a> </div>
+		<div class="menu_off" id="SDOSchedulingSupported"> <a href="custom6.html"><t:t>SDO scheduling</t:t></a> </div>
+	</div>
+
+	<div class="tableHeader">
+		<span id="spanAddRemove">
+			<button class="ll-button" onClick="CANAddRow()">
+				<img id="imgPlus" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+	
+			<button class="ll-button" onClick="grid_DeleteRowXML()">
+				<img id="imgMinus" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+		</span>
+
+		<button class="ll-button" onClick="Assign()">
+			<img id="imgIn" alt="Assign">
+			<span class="label"><t:t>Assign</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="UnAssign()">
+			<img id="imgOut" alt="UnAssign">
+			<span class="label"><t:t>UnAssign</t:t></span>
+		</button>
+	</div>
+
+	<div class="fill-height">
+		<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+			<param name="margin" value="50">
+			<param name="multiselect" value="0">
+		</object>
+	</div>
+</div>
+
+<script type="text/javascript" src="grid_pdo_events.js"></script>
+
+<script>
+	// le pagine di PDOTx e PDORx hanno lo script in comune, l'unica parte diversa sono queste due costanti
+	var tablePath = "CANcustom_config[1]/PDORxMappingList[1]"		// path relativo della tabella
+	var IO_INOUT = "out"
+	var VARSLIST_FLAGS = FLAG_ONLY_PDOMAPPING | FLAG_NO_RO | FLAG_NO_RWR
+	
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+</body>
+</html>

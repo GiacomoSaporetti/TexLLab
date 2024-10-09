@@ -1,0 +1,48 @@
+/************************************************************************************
+*                                                                                   *
+*                   !!!! MODIFICARE IL FILE .less E NON .css !!!!                   *
+*                                                                                   *
+*************************************************************************************/
+.status.on:before {
+  background-color: #94e185;
+  border-color: #82dc71;
+  box-shadow: 0px 0px 4px 1px #94e185;
+}
+.status.unknown:before {
+  background-color: #ffc182;
+  border-color: #ffb468;
+  box-shadow: 0px 0px 4px 1px #ffc182;
+}
+.status.off:before {
+  background-color: #c9404d;
+  border-color: #bb3541;
+  box-shadow: 0px 0px 4px 1px #c9404d;
+}
+.status:before {
+  content: ' ';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+  border: 1px solid #000;
+  border-radius: 7px;
+}
+.status.empty:before {
+  border-color: transparent;
+}
+table.diagno-tbl {
+  border-collapse: collapse;
+}
+table.diagno-tbl > * td {
+  border-bottom: 1px solid #ddd;
+  padding-right: 25px;
+}
+table.diagno-tbl > * td.tab-head {
+  font-weight: bold;
+}
+table.diagno-tbl > * .separator {
+  border-top: 2px solid gray;
+}
+.hide {
+  display: none;
+}

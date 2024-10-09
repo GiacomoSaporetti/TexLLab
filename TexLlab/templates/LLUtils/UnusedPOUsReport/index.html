@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Unused Variables report</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var app = window.external;
+	var m_fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject")
+	var m_prjPath;
+	var m_prjName;
+
+	const TAB_RESOURCES = 3;
+
+	const UNUSED_SUFFIX = ".unu.xml";
+
+	var m_gridRows;
+
+	const AUX_NAME = "main";
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch (err) {}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		imgPrint.src = csspath + imgPathPrefix + "print.png";
+		imgReload.src = csspath + imgPathPrefix + "reload.png";
+		imgDelete.src = csspath + imgPathPrefix + "delete.png";
+
+		m_prjPath = app.CallFunction("logiclab.get_ProjectPath");
+		m_prjName = m_fso.GetFileName(m_prjPath);
+
+		// imposto qui il titolo per avere i tooltip dei bottoni con la stringa tradotta
+		btnPrint.title = app.Translate("Print");
+		btnReload.title = app.Translate("Reload");
+		btnDeleteSelected.title = app.Translate("Delete selected");
+
+		FixStyleForGrids();
+
+		// impostazioni custom da grid_varReport_settings.js
+		if (typeof InitCustomSettings === "function")
+			InitCustomSettings();
+	}
+	</script>
+
+	<script type="text/javascript" src="grid_varReport.js"></script>
+	<script type="text/javascript" src="grid_varReport_settings.js"></script>
+
+	<style>
+		#spanSearch {
+			position: absolute;
+			right: 10px;
+		}
+
+		#spanFilters {
+			position: absolute;
+			right: 10px;
+		}
+	</style>
+
+</head>
+
+<body onload="InitGrid()" onunload="OnUnload()">
+
+<div class="fill-height-container html5">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Unused POUs Report</t:t></span>
+
+		<span id="spanSearch">
+			<button id="btnClearFilter" class="FlatButton" style="visibility:hidden;" onclick="ClearFilter()"><t:t>Clear search</t:t></button>
+			<button id="btnFilter" class="FlatButton" onclick="FilterParameters()" style="margin-left: 2px;"><t:t>Search</t:t></button>
+		</span>
+	</div>
+
+	<div class="tableHeader hideOnPrint">
+		<span>
+			<button class="ll-button" id="btnPrint" onclick="PrintWindow()">
+				<img id="imgPrint"/>
+				<span class="label"><t:t>Print</t:t></span>
+			</button>
+			<button class="ll-button" id="btnReload" onclick="ReloadCurrentWindow()">
+				<img id="imgReload"/>
+				<span class="label"><t:t>Reload</t:t></span>
+			</button>
+			<button class="ll-button" id="btnDeleteSelected" onclick="DeleteSelected()" style="display: none">
+				<img id="imgDelete"/>
+				<span class="label"><t:t>Delete selected</t:t></span>
+			</button>
+		</span>
+
+		<span id="spanFilters">
+			<label for="pouTypeSel"><t:t>Type</t:t>: </label>
+			<select id="pouTypeSel" onchange="LoadGridContents(m_filterCriteria)">
+				<option value=""><t:t>All</t:t></option>
+				<option value="Program"><t:t>Program</t:t></option>
+				<option value="Function"><t:t>Function</t:t></option>
+				<option value="Function block"><t:t>Function block</t:t></option>
+			</select>
+
+			<label style="margin-left: 20px;" for="varLocationSel"><t:t>Location</t:t>: </label>
+			<!-- i valori della select sono gli stessi della costante SYM_LOCATION -->
+			<select id="varLocationSel" onchange="LoadGridContents(m_filterCriteria)">
+				<option value="All"><t:t>All</t:t></option>
+				<option value="Project"><t:t>Project</t:t></option>
+				<option value="Target"><t:t>Target</t:t></option>
+				<option value="Library"><t:t>Library</t:t></option>
+			</select>
+		</span>
+	</div>
+
+	<div class="fill-height">
+		<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+			<param name="margin" value="40">
+			<param name="multiselect" value="1">
+		</object>
+	</div>
+</div>
+
+<script type="text/javascript" src="grid_varReport_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

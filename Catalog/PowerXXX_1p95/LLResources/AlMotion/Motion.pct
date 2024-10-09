@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- #DEFINE PREFIX Motion -->
+<template>
+	<hmi>
+		<menu name="menu_llMotionAddAxes">
+			<command caption="Add Axis" handler="PREFIX.AddAxis" />
+			<separator/>
+			<command caption="Paste Axis" handler="PREFIX.PasteAxis" />
+		</menu>
+		<menu name="menu_motionEnableDisable">
+			<command caption="Enable / Disable" handler="PREFIX.EnableDisableAxis"/>
+			<separator/>
+			<command caption="Rename Axis" handler="common.RenameNode" />
+			<command caption="Delete Axis" handler="PREFIX.DeleteAxis" />
+			<command caption="Copy Axis" handler="PREFIX.CopyAxis" />
+		</menu>
+
+		<window type="html" link="html\config.html">llMotionAxis</window>
+		<!-- <window type="html" link="html\homepage.html">llMotionHome</window> -->
+
+		<tree name="tree1">
+			<node name="PREFIX_axis" icon="Img\axis.ico" datalink="llMotionAxis" window="llMotionAxis" menu="menu_motionEnableDisable" captionedit="true" onendcaptionedit="PREFIX.OnAxisEdit"/>
+		</tree>
+	</hmi>
+
+	<extensions>
+		<script alias="PREFIX">PREFIX.js</script>
+	</extensions>
+
+	<templatedata>
+		<llMotionAxis caption="New Axis" fieldbus="" driver="" type="0" module="1" lengthUnit="m" timeUnit="s" axisEnabled="1" roundSteps="65536" roundUnit="1" ratioDen="1" ratioNum="1"
+			minimumPositionEnabled = "0" minimumPositionValue = "-100"
+			maximumPositionEnabled = "0" maximumPositionValue = "100"
+			maximumVelocityEnabled = "0" maximumVelocityValue = "1"
+			maximumAccelerationEnabled = "0" maximumAccelerationValue = "1"
+			maximumDecelerationEnabled = "0" maximumDecelerationValue = "1"
+			referenceVelocity = "0" defaultAcceleration = "1" defaultDeceleration = "1" defaultJerk = "1"
+			homingMethod="0" homingSearchSwitchVelocity="1" homingSearchZeroVelocity="1" homingAcceleration="1" />
+
+		<PREFIX/>
+    </templatedata>
+
+    <datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:simpleType name="llMotion_positiveDecimal">
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0"/>
+				</xs:restriction>
+			</xs:simpleType>
+
+			<xs:simpleType name="llMotion_positiveDecimalGt0">
+				<xs:restriction base="xs:decimal">
+					<xs:minExclusive value="0"/>
+				</xs:restriction>
+			</xs:simpleType>
+
+            <xs:complexType name="TPREFIX_Axis">
+				<!-- limits -->
+				<xs:attribute name="minimumPositionEnabled" type="xs:boolean"/>
+				<xs:attribute name="minimumPositionValue" type="xs:decimal"/>
+				<xs:attribute name="maximumPositionEnabled" type="xs:boolean"/>
+				<xs:attribute name="maximumPositionValue" type="xs:decimal"/>
+				<xs:attribute name="maximumVelocityEnabled" type="xs:boolean"/>
+				<xs:attribute name="maximumVelocityValue" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="maximumAccelerationEnabled" type="xs:boolean"/>
+				<xs:attribute name="maximumAccelerationValue" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="maximumDecelerationEnabled" type="xs:boolean"/>
+				<xs:attribute name="maximumDecelerationValue" type="llMotion_positiveDecimal"/>
+
+				<!-- axis parameters -->
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="fieldbus" type="xs:string"/>
+				<xs:attribute name="driver" type="xs:string"/>
+				<xs:attribute name="type" type="xs:integer"/>
+				<xs:attribute name="module" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="lengthUnit" type="xs:string"/>
+				<xs:attribute name="timeUnit" type="xs:string"/>
+				<xs:attribute name="axisEnabled" type="xs:boolean"/>
+
+				<!-- coupling -->
+				<xs:attribute name="roundSteps" type="xs:nonNegativeInteger"/>
+				<xs:attribute name="roundUnit" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="ratioNum" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="ratioDen" type="llMotion_positiveDecimalGt0"/>
+
+				<!-- defaults -->
+				<xs:attribute name="referenceVelocity" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="defaultAcceleration" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="defaultDeceleration" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="defaultJerk" type="llMotion_positiveDecimal"/>
+
+				<!-- homing -->
+				<xs:attribute name="homingAcceleration" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="homingSearchZeroVelocity" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="homingSearchSwitchVelocity" type="llMotion_positiveDecimal"/>
+				<xs:attribute name="homingMethod" type="xs:nonNegativeInteger"/>
+
+				<xs:attribute name="uniqueID" type="xs:integer"/>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="onloadnode" type="xs:string" fixed="PREFIX.OnLoadAxis"/>
+			</xs:complexType>
+
+            <xs:complexType name="TPREFIX">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="llMotionAxis" type="TPREFIX_Axis"/>
+				</xs:sequence>
+				<!-- permette l'aggancio del nodo al proprio template di riferimento e abilita gli aggiornamenti -->
+				<xs:attribute name="ExtensionName" type="xs:string" fixed="PREFIX"/>
+				<xs:attribute name="template" type="xs:string"/>
+				<xs:attribute name="version" type="xs:decimal"/>
+			</xs:complexType>
+		</xs:schema>
+	</datadef>
+</template>

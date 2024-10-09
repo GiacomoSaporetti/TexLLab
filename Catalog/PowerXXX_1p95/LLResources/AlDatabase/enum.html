@@ -1,0 +1,105 @@
+<html>
+<head>
+	<title>Enumeratives</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" >
+	
+	<script type="text/javascript" src="grid_enum.js"></script>
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	var gentypes = window.external.CallFunction("common.GetGeneralTypes")
+	
+	var m_isSysEnum
+	
+	function InitPage()
+	{
+		imgAdd.src = csspath + '../img/plus2.gif'
+		imgDelete.src = csspath + '../img/minus2.gif'
+		//imgImport.src = csspath + '../img/arrowIn.png'
+		//imgExport.src = csspath + '../img/arrowOut.png'
+		imgUp.src = csspath + '../img/arrowUp.gif'
+		imgDown.src = csspath + '../img/arrowDown.gif'
+		
+		var path = _DATAPATH
+		pageTitle.innerText = window.external.DataGet(path + "@caption", 0)
+	    //app.TempVar("CurrentGrid_getCurValueFunc") = CopyGetCurValue
+		
+		var enumNode = app.SelectNodesXML( path + "." )[0]
+		var enumsNode = enumNode.parentNode
+		if ( enumsNode.baseName == "sysenums" )
+			m_isSysEnum = true
+		else
+			m_isSysEnum = false
+		
+		if ( m_isSysEnum )
+		{
+			enum_commands_row.style.display = "none"
+		}
+
+		//app.TempVar("PasteInfo") =  "enum"		
+		SearchError(path)
+	}
+	</script>
+
+</head>
+
+<body onload="InitGrid(datapath.value)">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle"></td>
+	</tr>
+	<tr id="enum_commands_row">
+		<td class="tableHeader hideOnPrint">
+			<span style="margin-left:20px" title="Add enumerative value" onClick="grid_AddRowXML()">
+				<img id="imgAdd" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Add</t:t></span>
+			</span>
+			<span style="margin-left:5px" title="Remove enumerative value" onClick="grid_DeleteRowXML()">
+				<img id="imgDelete" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Remove</t:t></span>
+			</span>
+<!--		<span style="margin-left:5px" title="Import enumerative values" onClick="grid_Import()">
+				<img id="imgImport" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Import</t:t></span>
+			</span>
+			<span style="margin-left:5px" title="Export enumerative values" onClick="grid_Export()">
+				<img id="imgExport" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Export</t:t></span>
+			</span>-->
+			<span onClick="GridMoveUp(grid, gridDatapath)">
+				<img id="imgUp" alt="Add" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Up</t:t></span>
+			</span>
+			<span onClick="GridMoveDown(grid, gridDatapath)">
+				<img id="imgDown" alt="Add" src="" class="buttonImg">
+				<span class="Titles_table buttonText"><t:t>Down</t:t></span>
+			</span>
+		</td>
+	</tr>
+	<tr style="height:100%">
+		<td valign="top">
+			<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" class="hideOnPrint">
+				<param name="margin" value="40">
+				<param name="multiselect" value="0">
+			</object>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript" src="grid_enum_events.js"></script>
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.9.5" name="TexHMI" fullXml="true">
+		<descr>HMI library</descr>
+		<libWorkspace>
+			<folder name="TexHMI" excludeFromBuildIfNotDef="">
+				<Pou name="TexHMI_closePMT"/>
+				<Pou name="TexHMI_openPMT"/>
+				<Pou name="TexHMI_infoPMT"/>
+				<Pou name="TexHMI_setPixel"/>
+				<Pou name="TexHMI_rectangle"/>
+				<Pou name="TexHMI_gcursor"/>
+				<Pou name="TexHMI_color"/>
+				<Pou name="TexHMI_font"/>
+				<Pou name="TexHMI_screen"/>
+				<Pou name="TexHMI_openToPMT"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions>
+			<function name="TexHMI_closePMT" version="1.0.0" creationDate="1722344472" lastModifiedDate="1722344537">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pageNumber" type="WORD">
+							<descr>PMT page number</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_closePMT: WORD
+
+VAR_INPUT
+	pageNumber		: WORD;			(* PMT page number *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_openPMT" version="1.0.0" creationDate="1722344483" lastModifiedDate="1722344676">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pageNumber" type="WORD">
+							<descr>PMT page number</descr>
+						</var>
+						<var name="suspend" type="BOOL">
+							<descr>open PMT as suspended</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_openPMT: WORD
+
+
+VAR_INPUT
+	pageNumber 					: WORD;			(* PMT page number *)
+	suspend						: BOOL;			(* open PMT as suspended *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_infoPMT" version="1.0.0" creationDate="1722344495" lastModifiedDate="1722344594">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pageOpenAsActive" type="PVOID">
+							<descr>s224 (word) - page actually open</descr>
+						</var>
+						<var name="pageOpenNotActive" type="PVOID">
+							<descr>info 0088 - number of pages actually open and not active</descr>
+						</var>
+						<var name="pageMostRecentlyNonActive" type="PVOID">
+							<descr>info 0089 - parametric page most recently made not active</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_infoPMT: WORD
+
+VAR_INPUT
+	pageOpenAsActive			: PVOID;			(* s224 (word) - page actually open *)
+	pageOpenNotActive			: PVOID;			(* info 0088 - number of pages actually open and not active *)
+	pageMostRecentlyNonActive	: PVOID;			(* info 0089 - parametric page most recently made not active *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_setPixel" version="1.0.0" creationDate="1722525221" lastModifiedDate="1722853225">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="WORD"/>
+						<var name="Y" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_setPixel: WORD
+
+VAR_INPUT
+	X : WORD;
+	Y : WORD;
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_rectangle" version="1.0.0" creationDate="1722852771" lastModifiedDate="1722852831">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X1" type="WORD"/>
+						<var name="Y1" type="WORD"/>
+						<var name="X2" type="WORD"/>
+						<var name="Y2" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_rectangle: WORD
+
+VAR_INPUT
+	X1 : WORD;
+	Y1 : WORD;
+	X2 : WORD;
+	Y2 : WORD;
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_gcursor" version="1.0.0" creationDate="1722852861" lastModifiedDate="1722852889">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="WORD"/>
+						<var name="Y" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_gcursor: WORD
+
+VAR_INPUT
+	X : WORD;
+	Y : WORD;
+END_VAR
+
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_color" version="1.0.0" creationDate="1722852926" lastModifiedDate="1722852944">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="color" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_color: WORD
+
+VAR_INPUT
+	color : WORD;
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_font" version="1.0.0" creationDate="1722852962" lastModifiedDate="1722852978">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="font" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_font: WORD
+
+VAR_INPUT
+	font : WORD;
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_screen" version="1.0.0" creationDate="1722852995" lastModifiedDate="1722853010">
+				<descr>La funzione permettere all'applicativo di utilizzare direttamente dei moduli presenti nel sistema operativo per ottenere delle gestioni complesse di interfaccia utente.
+
+Sono disponibili i seguenti moduli:
+0: Ambiente movimentazione assi in jog
+1: Ambiente menù manuale
+2: Gestione disco
+3: Editor macro
+4: Caricamento da disco di un file gruppo di variabili (*.VRP)
+5: Caricamento da disco di un file macro o ISO (*.MAC o *.ISO)
+6: Salvataggio su disco di un file (*.VRP o *.CSV)con un gruppo di variabili
+7: Lista gruppi utilizzabili da CALLG
+8: Caricamento da disco di un file CNC (*.CNC) (con compilazione)
+9: Caricamento da disco di un file CNC (*.CNC) (senza compilazione)
+10: Caricamento da disco di un file SED (*.SED)
+13: Backup o restore parziale senza selezione del nome del file.
+15: Apertura di una finestra di selezione file
+16: Apertura di una finestra di selezione file con possibilità di inserimento del nome
+17: Accesso alla memoria Flash (volume F:/)
+21: Selezione di una cartella a partire da un percorso dato.
+28: Apertura di una finestra di selezione dei programmi CNC
+99: Apertura della finestra di dialogo per lo zoom in simulazione grafica CNC</descr>
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="screen" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_screen: WORD
+
+VAR_INPUT
+	screen : WORD;
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexHMI_openToPMT" version="1.0.0" creationDate="1722853312" lastModifiedDate="1723120680">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="channel" type="WORD">
+							<descr>graphic chanel</descr>
+						</var>
+						<var name="pageNumber" type="WORD">
+							<descr>PMT page number</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexHMI_openToPMT: WORD
+
+VAR_INPUT
+	channel						: WORD;			(* graphic chanel *)
+	pageNumber 					: WORD;			(* PMT page number *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

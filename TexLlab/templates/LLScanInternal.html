@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change commString from LLScan</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript">
+
+        try
+        { csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+        catch (e)
+        { csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+        document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+        document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		
+        var CURRENT_IP_BKGCOLOR = "#adebad"
+        var CURRENT_IP_COLOR = "#050505";        // serve per il dark theme
+
+        var app = window.external
+        var m_darkTheme = false;
+        var MSGBOX;
+        var m_scanResult = [];
+        var m_currPrjCommString_obj;
+        var m_currSourceCodeID;
+        var m_currentAddress;
+		var m_currentProtocol;
+
+        var NOTAVAILABLE_STR = "N/A";
+		
+		var LLSCANSETTINGS = { enable: false, vendorID: "" };
+		var LLScan_settings_File = app.GetApplicationPath() + "templates\\LLScan_settings.js"		
+		document.write("<SCRIPT src='" + LLScan_settings_File + "' type='text/javascript'></" + "SCRIPT>")
+
+        try
+        {
+            m_darkTheme = app.IsDarkTheme();
+        }
+        catch (err) { }
+
+        // overide con stile dark
+        if (m_darkTheme)
+            document.write("<LINK href='" + csspath + "style_dark.css' rel='stylesheet' type='text/css'>")
+
+
+        function Init()
+        {
+            // tipi per messagebox
+            var gentypes = app.CallFunction("common.GetGeneralTypes")
+            MSGBOX = gentypes.MSGBOX
+
+            // recupero il code ID e source code id del progetto corrente
+            m_currSourceCodeID = app.CallFunction("logiclab.GetSourceCodeID");
+
+            // recupero la commString attualmente in uso
+            m_currPrjCommString_obj = app.CallFunction("common.SplitCommString", app.CallFunction("logiclab.CommString"));
+            m_currentAddress = m_currPrjCommString_obj.address;
+            if (m_currentAddress.toLowerCase() == "localhost")
+                m_currentAddress = "127.0.0.1"
+			m_currentProtocol = m_currPrjCommString_obj.protocol
+
+			ctrl_currentProt.innerText = m_currentProtocol
+			ctrl_currentIp.innerText = m_currentAddress
+
+            // style tabella per gestione dark theme
+            commString_table.className = m_darkTheme ? "csTable_dark" : "csTable";
+
+            // eseguo la chiamata alla dll dello scan, torna una stringa JSON
+            var res = app.CallFunction("LLScan.Scan", LLSCANSETTINGS.vendorID);
+
+            var resultList = JSON.parse(res);
+
+            if (!resultList || resultList.length === 0)
+            {
+                app.MessageBox(app.Translate("No device answered to scan function"), "", MSGBOX.MB_OK | MSGBOX.MB_ICONEXCLAMATION);
+                CloseDlg();
+                return;
+            }
+
+            // target id del progetto attuale
+            var prjTargetID = app.CallFunction("logiclab.get_TargetID");
+            scanResultTitle.innerText = app.Translate("Scan result for") + " " + prjTargetID;
+
+            // scorro tutti i target e verifico che siano noti e della stessa famiglia del target che chiama questa funzione
+            for (var i = 0; i < resultList.length; i++)
+            {
+                var LLScanResult_obj = resultList[i];
+
+                // verifico che il target sia noto
+                var nodelist = app.CallFunction("extfunct.QueryCatalog", "//deviceinfo[@deviceid = '" + LLScanResult_obj.targetID + "']")
+
+                if (!nodelist || nodelist.length == 0)
+                    continue;
+
+                // verifico la famiglia di appartenenza del target trovato
+                if (LLScanResult_obj.targetID != prjTargetID)
+                    continue;
+
+                m_scanResult.push(LLScanResult_obj);
+            }
+
+            // se array ancora vuoto finisce qui con mex di errore
+            if (m_scanResult.length == 0)
+            {
+                app.MessageBox(app.Translate("No valid devices found"), "", MSGBOX.MB_OK | MSGBOX.MB_ICONEXCLAMATION);
+                CloseDlg();
+                return;
+            }
+
+            // aggiungo i risultati in tabella
+            for (var i = 0; i < m_scanResult.length; i++)
+            {
+                var LLScanResult_obj = m_scanResult[i];
+
+                var codeID = 0;
+                if (LLScanResult_obj.codeId)
+                    codeID = LLScanResult_obj.codeId >>> 0;
+
+                var newRow = commString_table.insertRow(-1);
+                newRow.style.height = "23"
+
+                // commstring
+                td = newRow.insertCell(-1);
+                td.innerHTML = LLScanResult_obj.commAddress;
+				var currentIpSelected = false
+				if ( (	LLScanResult_obj.commAddress == m_currentAddress && 
+						LLScanResult_obj.commProtocol == m_currentProtocol && 
+						m_currPrjCommString_obj.portNum == 502 && 
+						m_currPrjCommString_obj.protocolOptions == "M" ))
+				{
+					currentIpSelected = true
+				}
+
+                if (currentIpSelected)
+                {
+                    td.style.backgroundColor = CURRENT_IP_BKGCOLOR;
+                    td.style.color = CURRENT_IP_COLOR;
+                }
+                td.align = "center";
+
+                // controllo PLC
+                td = newRow.insertCell(-1);
+                td.align = "center";
+
+                // default no code
+                var className = "noCode";
+                var text = app.Translate("NO CODE");
+
+                if (codeID > 0)
+                {
+                    if (codeID == m_currSourceCodeID)
+                    {
+                        text = app.Translate("SOURCE OK");
+                        className = "sourceOk";
+                    }
+                    else
+                    {
+                        text = app.Translate("DIFF. CODE");
+                        className = "diffCode";
+                    }
+                }
+
+                td.className = className;
+                td.innerText = text;
+
+                // AppName
+                var td = newRow.insertCell(-1);
+                td.align = "center";
+                td.innerText = LLScanResult_obj.appName == "" ? NOTAVAILABLE_STR : LLScanResult_obj.appName;
+                if (currentIpSelected)
+                {
+                    td.style.color = CURRENT_IP_COLOR;
+                    td.style.backgroundColor = CURRENT_IP_BKGCOLOR;
+                }
+
+                // appVerMajor + appVerMinor
+                td = newRow.insertCell(-1);
+                td.align = "center";
+                var text = m_scanResult[i].appName == "" ? NOTAVAILABLE_STR : m_scanResult[i].appVerMajor + "." + m_scanResult[i].appVerMinor;
+                td.innerText = text;
+                if (currentIpSelected)
+                {
+                    td.style.color = CURRENT_IP_COLOR;
+                    td.style.backgroundColor = CURRENT_IP_BKGCOLOR;
+                }
+
+                td = newRow.insertCell(-1);
+                td.align = "center";
+                // se sto scrivendo una comm string uguale a quella già impostata nel progetto le preseleziono
+                if (currentIpSelected)
+                {
+                    td.innerHTML = "<input type='radio' name='commString_options' value='" + i + "' checked />";
+                    td.style.backgroundColor = CURRENT_IP_BKGCOLOR;
+                    td.style.color = CURRENT_IP_COLOR;
+                }
+                else
+                    td.innerHTML = "<input type='radio' name='commString_options' value='" + i + "' />";
+            }
+        }
+
+        function onOK()
+        {
+            var selectedCommIdx = -1;
+
+            // recupero l'elemento selezionato
+            var radioElems = document.getElementsByName("commString_options");
+            if (!radioElems || radioElems.length == 0)
+            {
+                app.MessageBox(app.Translate("Change commString operation failed"), "", MSGBOX.MB_OK | MSGBOX.MB_ICONEXCLAMATION);
+                CloseDlg();
+                return;
+            }
+
+            for (var i = 0; i < radioElems.length; i++)
+                if (radioElems[i].checked)
+                    selectedCommIdx = radioElems[i].value;
+
+            if (selectedCommIdx == -1)
+			{
+                app.MessageBox(app.Translate("Please choose one of the results to continue"), "", MSGBOX.MB_ICONEXCLAMATION);
+				return;
+			}
+
+            // assegna comm string selezionata
+            var newIP = m_scanResult[selectedCommIdx].commAddress;
+			var protocol = m_scanResult[selectedCommIdx].commProtocol;
+
+            // imposto la nuova commstring solo se l'ip è effettivamente cambiato
+            if ( !(	newIP == m_currentAddress && 
+					protocol == m_currentProtocol &&
+					m_currPrjCommString_obj.portNum == 502 &&
+					m_currPrjCommString_obj.protocolOptions == "M" ))
+            {
+                // rimpiazzio nella commstring corrente il nuovo ip
+				m_currPrjCommString_obj.protocol = protocol
+				if ( protocol == "ModbusTCP" )
+				{
+					m_currPrjCommString_obj.address = newIP;
+					m_currPrjCommString_obj.portType = "TCPIP"
+					m_currPrjCommString_obj.portNum = 502
+					m_currPrjCommString_obj.baud = undefined
+					m_currPrjCommString_obj.lineConf = "5000,x"
+					m_currPrjCommString_obj.protocolOptions = "M"
+				}
+                else {
+                    // TODO: in questo modo non setta tutti i parametri di rete se parto da una configurazione completamente diversa
+                    m_currPrjCommString_obj.address = newIP;
+                }
+
+                var newCommString = app.CallFunction("common.BuildCommString2", m_currPrjCommString_obj);
+
+                // faccio la set commstring del progetto
+                app.CallFunction("logiclab.CommString", newCommString);
+                app.CallFunction("logiclab.CommStringSaved", newCommString);
+                app.MessageBox(app.Translate("Project IP address changed"), "", MSGBOX.MB_ICONINFORMATION);
+
+                // modifica stato progetto com "da salvare"
+                app.ModifiedFlag = true;
+            }
+
+            CloseDlg();
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 12px;
+        }
+		
+        #ctrl_currentProt {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #ctrl_currentIp {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .disabledBG {
+            background: #dddddd;
+        }
+
+        .csTable {
+            font-family: Arial;
+            font-size: 12px;
+            color: #45A1DE;
+            border-collapse: collapse;
+        }
+
+        .csTable_dark {
+            font-family: Arial;
+            font-size: 12px;
+            color: #45A1DE;
+            border-collapse: collapse;
+            width: 400px;
+        }
+
+        .csTable a:link {
+            color: #002157;
+            text-decoration: none
+        }
+        /* unvisited link */
+        .csTable a:visited {
+            color: #002157;
+            text-decoration: none
+        }
+        /* visited link */
+        .csTable a:hover {
+            color: #9cbdcc;
+            text-decoration: none
+        }
+        /* mouse over link */
+        .csTable a:active {
+            color: #9cbdcc;
+            text-decoration: none
+        }
+        /* selected link */
+
+        .csTable th {
+            font-family: Arial;
+            font-size: 14px;
+            color: white;
+            background: #45A1DE;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .csTable_dark th {
+            font-family: Arial;
+            font-size: 14px;
+            color: white;
+            background: #45A1DE;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+        .csTable td {
+            border-width: 1px;
+            border-style: solid;
+            border-color: gray;
+            background-color: white;
+            color: black;
+            padding: 5px;
+        }
+
+        .csTable_dark td {
+            border-width: 1px;
+            border-style: solid;
+            border-color: gray;
+            background-color: #2D2D30;
+            color: lightgrey;
+            padding: 5px;
+        }
+
+        .sourceOk {
+            background-color: #008C00 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .diffCode {
+            background-color: #FFD200 !important;
+            color: black !important;
+            font-weight: bold;
+        }
+
+        .noCode {
+            background-color: #81A2FF !important;
+            color: black !important;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body class="Sfondo">
+    <div style="text-align:center">
+		<label><t:t><b>Current project settings</b></t:t></label><br><br>
+        <label for="ctrl_currentProt"><t:t>Protocol:</t:t></label>
+        <span class="disabledBG" readonly="yes" type="text" id="ctrl_currentProt" style="margin-left:15px; width:250px"></span><br>
+        <label for="ctrl_currentIp"><t:t>Address:</t:t></label>
+        <span class="disabledBG" readonly="yes" type="text" id="ctrl_currentIp" style="margin-left:15px; width:250px"></span>
+    </div>
+
+    <hr>
+
+    <div>
+        <table id="commString_table" class="csTable" style="width:100%; margin-top:15px; margin-bottom:15px">
+            <tr style="height:30px">
+                <th colspan="5" id="scanResultTitle"><t:t>Scan result</t:t></th>
+            </tr>
+            <tr>
+                <td width="30%" style="text-align:center"><b><t:t>IP address</t:t></b></td>
+                <td width="20%" style="text-align:center"><b><t:t>Source code info</t:t></b></td>
+                <td width="20%" style="text-align:center"><b><t:t>Application Name</t:t></b></td>
+                <td width="20%" style="text-align:center"><b><t:t>Application Ver</t:t></b></td>
+                <td width="10%" style="text-align:center"><b><t:t>Select</t:t></b></td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div align="center" style="margin-top:15px">
+        <button style="width: 120px" onclick="onOK()" class="FlatButton"><b><t:t>Confirm</t:t></b></button>
+        <button style="width: 120px; margin-left:15px" onclick="CloseDlg()" class="FlatButton"><b><t:t>Cancel</t:t></b></button>
+    </div>
+
+
+    <script>
+        Init()
+    </script>
+
+</body>
+</html>

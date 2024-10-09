@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Global Variables report</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var app = window.external;
+	var m_fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject")
+	var m_prjName;
+
+	const ATTVAR = {
+		NONE: 0,
+		RETAIN: 1,
+		CONST: 2,
+		UNDEFINED: 3
+	};
+
+	const TAB_RESOURCES = 3;
+
+	var m_gridRows;
+	var m_globalVars;
+	var m_auxVars;
+	var m_targetVars;
+	var m_libariesVars;
+	var PLC_LIB_FILE_EXTS = ".plclib, .pll";	
+	var m_libFilter = app.Translate("All PLC library files (*.plclib;*.pll)|*.plclib;*.pll|Full XML library files (*.plclib)|*.plclib|PLC library files (*.pll)|*.pll||");
+
+	const AUX_NAME = "main";
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch (err) {}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		imgPrint.src = csspath + imgPathPrefix + "print.png";
+		imgReload.src = csspath + imgPathPrefix + "reload.png";
+		imgSelectall.src = csspath + imgPathPrefix + "selectall.png";
+		imgExport.src = csspath + imgPathPrefix + "export.png";
+		imgDelete.src = csspath + imgPathPrefix + "delete.png";
+
+		m_prjName = m_fso.GetFileName(app.CallFunction("logiclab.get_ProjectPath"));
+
+		m_globalVars = app.CallFunction("logiclab.GetProjectVariables");
+		if (AUX_NAME !== "")
+			m_auxVars = app.CallFunction("logiclab.GetAuxSrcVariables", AUX_NAME);
+		m_targetVars = app.CallFunction("logiclab.GetTargetVariables");
+		m_libariesVars = app.CallFunction("logiclab.GetLibraryVariables", "");
+
+		// imposto qui il titolo per avere i tooltip dei bottoni con la stringa tradotta
+		btnPrint.title = app.Translate("Print");
+		btnReload.title = app.Translate("Reload");
+		btnExportSelected.title = app.Translate("Export selected");
+		btnSelectAll.title = app.Translate("Select all");
+		btnDeleteSelected.title = app.Translate("Delete selected");
+
+		FixStyleForGrids();
+
+		// impostazioni custom da grid_varReport_settings.js
+		if (typeof InitCustomSettings === "function")
+			InitCustomSettings();
+	}
+
+	function DeleteSelected()
+	{
+		var selections = app.CallFunction("common.GridGetSelections", grid);
+		if(selections.lenght == 0)
+			return;
+
+		var res = 0;
+
+		var msg = genfuncs.FormatMsg(app.Translate("Deleting %1 variables..."), selections.length);
+		app.CallFunction("logiclab.ShowProgressDlg", msg, selections.length)
+		for (var i = 0; i < selections.length; i++)
+		{
+			let selection = selections[i];
+			var rowData = m_gridRows[selection];
+			if(!rowData)
+				continue;
+
+			var name = rowData.name;
+
+			let originAttr = rowData.location;
+			if (originAttr && originAttr != SYM_LOCATION.PROJECT)
+			{
+				app.PrintMessage(genfuncs.FormatMsg(app.Translate("Could not delete '%1' since it's a %2 variable"), name, originAttr));
+				app.CallFunction("extfunct.SelectOutputTab", TAB_RESOURCES);
+				continue;
+			}
+
+			if(app.CallFunction("logiclab.DeleteGlobalObject", name))
+				res++;
+
+			app.CallFunction("logiclab.UpdateProgressDlg", i);
+		}
+
+		app.CallFunction("logiclab.HideProgressDlg");
+		if(res == 0)
+			return;
+
+		var msg = genfuncs.FormatMsg(app.Translate("%1 variables correctly removed from project"), res);
+		app.MessageBox(msg, "", gentypes.MSGBOX.MB_ICONINFORMATION);
+		app.ModifiedFlag = true;
+
+		// richiedo la lista delle variabili globali perche' viene modificata quando faccio una cancellazione
+		m_globalVars = app.CallFunction("logiclab.GetProjectVariables");
+		LoadGridContents();
+	}
+
+	function ExportToLibrary()
+	{
+		var SIDList = [];
+		var selections = app.CallFunction("common.GridGetSelections", grid);
+		if(selections.lenght == 0)
+		{
+			app.MessageBox(app.Translate("No rows selected.\nNothing to export."), "", gentypes.MSGBOX.MB_ICONINFORMATION);
+			return;
+		}
+
+		var filename = app.CallFunction("commonDLL.ShowSaveFileDlg", m_libFilter, PLC_LIB_FILE_EXTS, "", "");
+		if(!filename)
+			return;
+
+		var msg = genfuncs.FormatMsg(app.Translate("Exporting %1 variables..."), selections.length);
+		app.CallFunction("logiclab.ShowProgressDlg", msg, selections.length)
+
+		for (var i = 0, j = grid.NumRows; i < j; i++)
+		{
+			var currRow = grid.GetSortedRow(i);
+			// controllo se la riga corrente e' tra le selezionate
+			for (var y = 0, z = selections.length; y < z; y++)
+			{
+				if (selections[y] == currRow)
+				{
+					var rowData = m_gridRows[currRow];
+					SIDList.push(rowData.SID);
+					break;
+				}
+			}
+
+			app.CallFunction("logiclab.UpdateProgressDlg", i);
+		}
+
+		var SIDSafeArr = genfuncs.ToSafeArray(SIDList);
+		var res = app.CallFunction("logiclab.ExportObjectsToLibrary", SIDSafeArr, filename);
+
+		app.CallFunction("logiclab.HideProgressDlg");
+
+		if(res)
+			app.MessageBox(app.Translate("The library has been generated correctly."), "", gentypes.MSGBOX.MB_ICONINFORMATION);
+		else
+			app.MessageBox(app.Translate("Error generating library."), "", gentypes.MSGBOX.MB_ICONERROR);
+	}
+	</script>
+
+	<script type="text/javascript" src="grid_varReport.js"></script>
+	<script type="text/javascript" src="grid_varReport_settings.js"></script>
+
+	<style>
+		#spanSearch	{
+			position: absolute;
+			right: 10px;
+		}
+
+		#spanFilters {
+			position: absolute;
+			right: 10px;
+		}
+	</style>
+
+</head>
+
+<body onload="InitGrid()" onunload="OnUnload()" class="html5">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Global Variables Report</t:t></span>
+
+		<span id="spanSearch">
+			<button id="btnClearFilter" class="FlatButton" style="visibility:hidden;" onclick="ClearFilter()"><t:t>Clear search</t:t></button>
+			<button class="FlatButton" onclick="FilterParameters()" style="margin-left: 2px;"><t:t>Search</t:t></button>
+		</span>
+	</div>
+
+	<div class="tableHeader hideOnPrint">
+		<span>
+			<button class="ll-button" id="btnPrint" onclick="PrintWindow()">
+				<img id="imgPrint"/>
+				<span class="label"><t:t>Print</t:t></span>
+			</button>
+			<button class="ll-button" id="btnReload" onclick="ReloadCurrentWindow()">
+				<img id="imgReload"/>
+				<span class="label"><t:t>Reload</t:t></span>
+			</button>
+			<button class="ll-button" id="btnSelectAll" onclick="grid.SelectAllRows(); grid.focus()">
+				<img id="imgSelectall"/>
+				<span class="label"><t:t>Select all</t:t></span>
+			</button>
+			<button class="ll-button" id="btnExportSelected" onclick="ExportToLibrary()">
+				<img id="imgExport"/>
+				<span class="label"><t:t>Export selected</t:t></span>
+			</button>
+			<button class="ll-button" id="btnDeleteSelected" onclick="DeleteSelected()" style="display: none">
+				<img id="imgDelete"/>
+				<span class="label"><t:t>Delete selected</t:t></span>
+			</button>
+		</span>
+
+		<span id="spanFilters">
+			<label for="varTypeSel"><t:t>Type</t:t>: </label>
+			<select id="varTypeSel" onchange="LoadGridContents(m_filterCriteria)">
+				<option value="All"><t:t>All</t:t></option>
+			</select>
+
+			<label style="margin-left: 20px;" for="varLocationSel"><t:t>Location</t:t>: </label>
+			<!-- i valori della select sono gli stessi della costante SYM_LOCATION -->
+			<select id="varLocationSel" onchange="LoadGridContents(m_filterCriteria)">
+				<option value="All"><t:t>All</t:t></option>
+				<option value="Project"><t:t>Project</t:t></option>
+				<option value="Target"><t:t>Target</t:t></option>
+				<option value="Library"><t:t>Library</t:t></option>
+				<option value="Aux"><t:t>Aux. sources</t:t></option>
+			</select>
+		</span>
+	</div>
+
+	<div class="fill-height">
+		<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+			<param name="margin" value="40">
+			<param name="multiselect" value="1">
+		</object>
+	</div>
+</div>
+
+<script type="text/javascript" src="grid_varReport_common.js"></script>
+<script type="text/javascript" src="grid_varReport_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

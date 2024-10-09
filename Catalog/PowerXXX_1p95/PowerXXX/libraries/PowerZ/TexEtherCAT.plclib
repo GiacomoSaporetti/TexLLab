@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="TexEtherCAT" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexEtherCAT">
+				<folder name="slave">
+					<Pou name="TexECAT_slaveGetName"/>
+				</folder>
+				<folder name="master">
+					<Pou name="TexECAT_masterLink"/>
+					<Pou name="TexECAT_masterInformation"/>
+					<Pou name="TexECAT_masterFrame"/>
+					<Pou name="TexECAT_masterResetNetwork"/>
+				</folder>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="TexECAT_slaveGetName" version="1.0.0" creationDate="1713518847" lastModifiedDate="1715611294">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute reset network operation</descr>
+						</var>
+						<var name="index" type="BOOL">
+							<descr>slave's address</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="slaveName" type="STRING" length="16">
+							<descr>network name</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorID" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexECAT_masterLink" version="1.0.0" creationDate="1713518847" lastModifiedDate="1715004510">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="cableConnected" type="BOOL"/>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexECAT_masterLink
+
+VAR_INPUT
+	execute : BOOL;	(* execute getting operation *)
+END_VAR
+
+VAR_OUTPUT
+	cableConnected : BOOL;
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexECAT_masterInformation" version="1.0.0" creationDate="1713518904" lastModifiedDate="1715004502">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="networkName" type="STRING" length="32">
+							<descr>network name</descr>
+						</var>
+						<var name="stateMachine" type="WORD"/>
+						<var name="slavesConfigured" type="WORD"/>
+						<var name="slavesActive" type="WORD"/>
+						<var name="timeSlice" type="WORD"/>
+						<var name="timeEthercatCycle" type="WORD"/>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexECAT_masterInformation
+
+VAR_INPUT
+	execute 					: BOOL;	(* execute getting operation *)
+END_VAR
+
+VAR_OUTPUT
+	networkName 				: STRING[ 32 ];	(* network name *)
+	stateMachine				: WORD;
+	slavesConfigured 			: WORD;
+	slavesActive 				: WORD;
+	timeSlice					: WORD;
+	timeEthercatCycle			: WORD;
+	done 						: BOOL;			(* operation was executed *)
+	error 						: BOOL;			(* signals that an error has occurred within the Function Block *)
+	errorId 					: WORD;			(* error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexECAT_masterFrame" version="1.0.0" creationDate="1713518969" lastModifiedDate="1715004690">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="receivedFrames_wrong" type="WORD"/>
+						<var name="receivedFrames_notEtherCAT" type="WORD"/>
+						<var name="receivedFrames_lost" type="WORD"/>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexECAT_masterFrame
+
+VAR_INPUT
+	execute 					: BOOL;	(* execute getting operation *)
+END_VAR
+
+VAR_OUTPUT
+	receivedFrames_wrong		: WORD;
+	receivedFrames_notEtherCAT	: WORD;
+	receivedFrames_lost			: WORD;
+	done 						: BOOL;			(* operation was executed *)
+	error 						: BOOL;			(* signals that an error has occurred within the Function Block *)
+	errorId 					: WORD;			(* error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexECAT_masterResetNetwork" version="1.0.0" creationDate="1713518847" lastModifiedDate="1715004520">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute reset network operation</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexECAT_masterResetNetwork
+
+VAR_INPUT
+	execute : BOOL;	(* execute reset network operation *)
+END_VAR
+
+VAR_OUTPUT
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

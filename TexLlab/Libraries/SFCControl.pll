@@ -1,0 +1,120 @@
+﻿	(********************)
+	(*                  *)
+	(*      MACROS      *)
+	(*                  *)
+	(********************)
+
+MACRO SFCHOLD
+
+{ DE:"SFCHOLD should be used to put an SFC block into the hold state, that is it freezes the execution
+
+Usage:
+
+- from inside the block (e.g. Sequence): SFCHOLD( Sequence );
+- from inside the block to control an its own action (e.g. Sub): SFCHOLD( Sequence_Sub );
+- from outside the block (Sequence has an instance named Block): SFCHOLD( Block.Sequence ); or SFCHOLD( Block.Sequence_Sub );" }
+
+	PAR_MACRO
+	block; {DE:"SFC POU name, if nestetd SFC will be father_child_..."}
+	END_PAR
+
+	{ CODE:ST }
+
+	(*	Move the hold flag *)
+	#block_HOLD_SFC := TRUE;
+END_MACRO
+
+MACRO SFCKILL
+
+{ DE:"SFCKILL should be used to reset the state of an SFC block and put it into a non-execution state
+
+Usage:
+
+- from inside the block (e.g. Sequence): SFCKILL( Sequence );
+- from inside the block to control an its own action (e.g. Sub): SFCKILL( Sequence_Sub );
+- from outside the block (Sequence has an instance named Block): SFCKILL( Block.Sequence ); or SFCKILL( Block.Sequence_Sub );" }
+
+	PAR_MACRO
+	block; {DE:"SFC POU name, if nestetd SFC will be father_child_..."}
+	END_PAR
+
+	{ CODE:ST }
+
+	(*	Move the reset flag *)
+	#block_RESET_SFC := TRUE;
+
+	(*	Move the hold flag *)
+	#block_HOLD_SFC := TRUE;
+
+	
+
+END_MACRO
+
+MACRO SFCRESET
+
+{ DE:"SFCRESET should be used to reset the state of an SFC block, the block will restart immediately from its initial state
+
+Usage:
+
+- from inside the block (e.g. Sequence): SFCRESET( Sequence );
+- from inside the block to control an its own action (e.g. Sub): SFCRESET( Sequence_Sub );
+- from outside the block (Sequence has an instance named Block): SFCRESET( Block.Sequence ); or SFCRESET( Block.Sequence_Sub );" }
+
+	PAR_MACRO
+	block; {DE:"SFC POU name, if nestetd SFC will be father_child_..."}
+	END_PAR
+
+	{ CODE:ST }
+
+	(*	Move the reset flag *)
+	#block_RESET_SFC := TRUE;
+	
+
+END_MACRO
+
+MACRO SFCRESTART
+
+{ DE:"SFCRESTART shold be used to restart the execution of an SFC block that was previously killed or placed into hold state
+
+Usage:
+
+- from inside the block (e.g. Sequence): SFCRESTART( Sequence );
+- from inside the block to control an its own action (e.g. Sub): SFCRESTART( Sequence_Sub );
+- from outside the block (Sequence has an instance named Block): SFCRESTART( Block.Sequence ); or SFCRESTART( Block.Sequence_Sub );" }
+
+	PAR_MACRO
+	block; {DE:"SFC POU name, if nestetd SFC will be father_child_..."}
+	END_PAR
+
+	{ CODE:ST }
+
+	(*	Move the reset flag *)
+	#block_RESET_SFC := TRUE;
+
+	(*	Move the hold flag *)
+	#block_HOLD_SFC := FALSE;
+	
+
+END_MACRO
+
+MACRO SFCRUN
+
+{ DE:"SFCRUN should be used to put an SFC block in run state after that the same block was in hold state
+
+Usage:
+
+- from inside the block (e.g. Sequence): SFCRUN( Sequence );
+- from inside the block to control an its own action (e.g. Sub): SFCRUN( Sequence_Sub );
+- from outside the block (Sequence has an instance named Block): SFCRUN( Block.Sequence ); or SFCRUN( Block.Sequence_Sub );" }
+
+	PAR_MACRO
+	block; {DE:"SFC POU name, if nestetd SFC will be father_child_..."}
+	END_PAR
+
+	{ CODE:ST }
+
+	(*	Move the hold flag *)
+	#block_HOLD_SFC := FALSE;
+
+END_MACRO
+

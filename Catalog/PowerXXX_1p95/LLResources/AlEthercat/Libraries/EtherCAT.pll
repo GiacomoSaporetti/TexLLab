@@ -1,0 +1,459 @@
+﻿	(****************************)
+	(*                          *)
+	(*     GLOBAL VARIABLES     *)
+	(*                          *)
+	(****************************)
+
+        VAR_GLOBAL
+	{G:"Global_vars"}
+sysEcatSlaveMonitor AT %IB60080.0 : ECATSLAVEMONITOR;	{ DE:"Can be placed in watch to monitor the particular status of any slave. You can select the slave to monitor by writing its index (in the network, starting from 0) in the field idx_requested" }
+sysEcatMasterStatus AT %IB60081.0 : ECATMASTERSTATUS;	{ DE:"General view of the status of the EtherCAT master and network" }
+sysECATEventId AT %MB60082.0 : ECATEVENTID;	{ DE:"ID of the last encountered event" }
+sysECATEmcyEvent AT %MB60084.0 : ECATEMCYEVENT;	{ DE:"Last Emergency event sent by a CoE slave" }
+sysECATErrorEvent AT %MB60083.0 : ECATERROREVENT;	{ DE:"Last error event detected on the EtherCAT" }
+sysECATNodeStatusChangedEvent AT %MB60085.0 : ECATNODESTATUSEVENT;	{ DE:"Last change of status of a slave" }
+sysECATResyncInfo AT %MB60088.0 : ECATRESYNCINFO;
+sysECATDCStatusChangedEvent AT %MB60086.0 : ECATDCSTATUSEVENT;	{ DE:"Last variation of the master state, related to its synchronization with the Distributed Clock" }
+sysECATNetworkRecoveryEvent AT %MB60087.0 : ECATNETWORKRECOVERYEVENT;	{ DE:"Last event of Network Recovery" }
+	END_VAR
+
+	(*********************)
+	(*                   *)
+	(*     FUNCTIONS     *)
+	(*                   *)
+	(*********************)
+
+
+FUNCTION sysECAT_GetSlaveDiagByIndex : @ECATSLAVESTATUS
+
+	{ DE:"This function returns a pointer to the ECATSLAVESTATUS structure for the slave selected by positional index in the network.
+It returns a value of type @ECATSLAVESTATUS, or NULL in case of error" }
+
+        VAR_INPUT
+index : UINT;	{ DE:"Slave Index" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlaveDiagByAddress : @ECATSLAVESTATUS
+
+	{ DE:"This function returns a pointer to the ECATSLAVESTATUS structure for the slave selected by its physical address.
+It returns a value of type @ECATSLAVESTATUS, or NULL in case of error" }
+
+        VAR_INPUT
+address : UINT;	{ DE:"Slave Physical Address" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlaveCfgByIndex : BOOL
+
+	{ DE:"This function returns the field 'cfg' of the ECATSLAVESTATUS structure for the slave selected by positional index in the network" }
+
+        VAR_INPUT
+index : UINT;	{ DE:"Slave Index" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlaveCfgByAddress : BOOL
+
+	{ DE:"This function returns the field 'cfg' of the ECATSLAVESTATUS structure for the slave selected by its physical address" }
+
+        VAR_INPUT
+address : UINT;	{ DE:"Slave Physical Address" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlavePresByIndex : BOOL
+
+	{ DE:"This function returns the field 'connected' of the ECATSLAVESTATUS structure for the slave selected by positional index in the network" }
+
+        VAR_INPUT
+index : UINT;	{ DE:"Slave Index" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlavePresByAddress : BOOL
+
+	{ DE:"This function returns the field 'connected' of the ECATSLAVESTATUS structure for the slave selected by its physical address" }
+
+        VAR_INPUT
+address : UINT;	{ DE:"Slave Physical Address" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlaveStateByIndex : ECATSTATE
+
+	{ DE:"This function returns the field 'state' of the ECATSLAVESTATUS structure for the slave selected by positional index in the network" }
+
+        VAR_INPUT
+index : UINT;	{ DE:"Slave Index" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_GetSlaveStateByAddress : ECATSTATE
+
+	{ DE:"This function returns the field 'state' of the ECATSLAVESTATUS structure for the slave selected by its physical address" }
+
+        VAR_INPUT
+address : UINT;	{ DE:"Slave Physical Address" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysECAT_Recovery : BOOL
+
+	{ DE:"Recover EtherCAT Network" }
+
+        VAR_INPUT
+dummy : UINT;	{ DE:"Dummy" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+	(***************************)
+	(*                         *)
+	(*     FUNCTION BLOCKS     *)
+	(*                         *)
+	(***************************)
+
+
+FUNCTION_BLOCK sysECAT_Sdo_Write
+
+	{ DE:"This function block can be used to write object values in a slave supporting CoE protocol with SDO commands.
+It can not be called from a timed task, it can be called from the background task or from an event callback task.
+Only object lengths <= 4 bytes are supported
+" }
+
+        VAR_INPUT
+slave_address : UINT;	{ DE:"Slave Physical Address" }
+index : UINT;	{ DE:"Object Index" }
+sindex : USINT;	{ DE:"Object Subindex" }
+filler : ARRAY[ 0..2 ] OF BYTE;
+len : UDINT;	{ DE:"Object Length" }
+value : DINT;	{ DE:"Value to be written" }
+	END_VAR
+
+        VAR_OUTPUT
+errorCode : DINT;	{ DE:"Error code" }
+result : BOOL;	{ DE:"TRUE if write success" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK sysECAT_Sdo_Read
+
+	{ DE:"This function block can be used to read object values in a slave supporting CoE protocol with SDO commands.
+It can not be called from a timed task, it can be called from the background task or from an event callback task.
+Only object lengths <= 4 bytes are supported. " }
+
+        VAR_INPUT
+slave_address : UINT;	{ DE:"Slave Physical Address" }
+index : UINT;	{ DE:"Object Index" }
+sindex : USINT;	{ DE:"Object Subindex" }
+filler : ARRAY[ 0..2 ] OF BYTE;
+len : UDINT;	{ DE:"Object Length" }
+	END_VAR
+
+        VAR_OUTPUT
+value : DINT;	{ DE:"Value read" }
+errorCode : DINT;	{ DE:"Error code" }
+result : BOOL;	{ DE:"TRUE if read success" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION_BLOCK
+
+	(************************)
+	(*                      *)
+	(*      STRUCTURES      *)
+	(*                      *)
+	(************************)
+
+TYPE
+
+	ECATMASTERSTATUS: STRUCT	{ DE:"Describes the state of the EtherCAT master, and gives some information about the whole EtherCAT network. The only instance is the variable sysEcatMasterStatus" }
+		error_code : INT;	{ DE:"Last error code in the initialization phase of the master stack (see ECATINITERRORCODE enum)" }
+		ecat_enable : BOOL;	{ DE:"EtherCAT stack enabled" }
+		data_exch_enable : BOOL;	{ DE:"Data exchange enabled: when a valid mapping has been made between the exchanged objects and the associated PLC vars. This is optional, the network can even go into operational mode without configuring the objects" }
+		chn : USINT := 0;	{ DE:"Channel number, for systems with more than one EtherCAT network" }
+		eni_ok : BOOL := FALSE;	{ DE:"ENI read and parsed succesfully" }
+		xml_ok : BOOL := FALSE;	{ DE:"XML with additional configuration read and parsed succesfully" }
+		init_ok : BOOL := FALSE;	{ DE:"Init of the stack completed succesfully" }
+		num_slaves : UINT := 0;	{ DE:"Number of defined slaves" }
+		dc_sync_master : UINT := 0;	{ DE:"Distributed Clock Sync Master's Physical Address" }
+		net_stat : ECATSTATE := ECAT_STATE_UNKNOWN;	{ DE:"Current network state" }
+		target_net_stat : ECATSTATE := ECAT_STATE_UNKNOWN;	{ DE:"State that the master set for all the slaves, regardless of they reached it or not" }
+		dc_stat : ECATDCSTATE := ECAT_DCSTATE_IDLE;	{ DE:"Master sync state with sync master (only if DC is used). Master must be in 3-COMPENSATING before slaves can reach SAFEOP/OP states" }
+		use_dc : BOOL := FALSE;	{ DE:"DC is in use and set for at least one slave" }
+		drivesClock : BOOL;	{ DE:"EtherCAT stack gives the clock to whole system including PLC. Important to detect failure in the first slave, because in that case the EtherCAT stack may lose packets and synchronization with the network" }
+		num_slaves_cfg : UINT := 0;	{ DE:"Number of slaves correctly configured by init commands" }
+		num_pdo_tx : UDINT := 0;	{ DE:"Number of transmit PDOs" }
+		num_pdo_rx : UDINT := 0;	{ DE:"Number of receive PDOs" }
+		network_ok : BOOL := 0;	{ DE:"EtherCAT Network is running with no errors: all the slaves reach the OP state. In case of any error will switch to false" }
+		network_starting : BOOL := 0;	{ DE:"EtherCAT Network is still starting" }
+	END_STRUCT;
+
+	ECATSLAVESTATUS: STRUCT	{ DE:"It is the type returned by many diagnostic functions, and is the main field of the ECATSLAVEMONITOR structure. There is an instance for each slave in ENI file, and represents its status." }
+		cfg : BOOL := FALSE;	{ DE:"Configured: slave has received all the init commands" }
+		connected : BOOL := FALSE;	{ DE:"Present and physically connected" }
+		address : UINT := 0;	{ DE:"Physical address, assigned by default from master or configured by user" }
+		state : ECATSTATE := ECAT_STATE_UNKNOWN;	{ DE:"Current state of the slave" }
+		error_cnt : UDINT := 0;	{ DE:"Number of errors detected" }
+		vendor_id : UDINT := 0;	{ DE:"Vendor ID; valid only if  Check VendorID  or  Always read identification information  is enabled" }
+		product_code : UDINT := 0;	{ DE:"Product code; valid only if  Check ProductCode  or  Always read identification information  is enabled" }
+		revision_number : UDINT := 0;	{ DE:"Revision Number; valid only if  Check RevisionNo  or  Always read identification information  is enabled" }
+		serial_number : UDINT := 0;	{ DE:"Serial Number; valid only if  Check SerialNo  or  Always read identification information  is enabled" }
+		lastEmergencyCode : UINT := 0;	{ DE:"Last Emergency Code" }
+		lastEmergencyReg : USINT := 0;	{ DE:"Last Emergency Register" }
+		lastEmergencyData : ARRAY[0..4] OF USINT;	{ DE:"Emergency Data" }
+		index : UINT := 0;	{ DE:"Position in network" }
+		name : STRING[ 32 ];	{ DE:"Name" }
+		lastErrorCode : UINT := 0;	{ DE:"Last Error Code" }
+		lastErrorReg : USINT := 0;	{ DE:"Last Error Register" }
+		lastErrorData : ARRAY[0..4] OF USINT;	{ DE:"Error specific Data" }
+		AlStatuscode: UINT := 0; { DE: "AlStatusCode register" }
+	END_STRUCT;
+
+	ECATSLAVEMONITOR: STRUCT
+		idx_requested : UINT := 65535;	{ DE:"Writable field to select the slave to monitor" }
+		idx_actual : UINT := 65535;	{ DE:"If the value in idx_requested is valid, this field will assume the same value, and the relative status structure is monitored; otherwise if idx_requested is not valid, will assume the value 65535" }
+		status : ECATSLAVESTATUS;	{ DE:"Actual state of slave of idx_actual" }
+	END_STRUCT;
+
+	ECATEMCYEVENT: STRUCT	{ DE:"It's the type of the variable sysECATEmcyEvent; it is filled when an emergency event occurs, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"This value is fixed: 2, corresponding to EMERGENCY" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+		node : UINT;	{ DE:"Pphysical address of the slave that signaled the event" }
+		emcyCode : UINT;	{ DE:"CoE Emergency Code" }
+		emcyReg : USINT;	{ DE:"CoE Emergency Register" }
+		emcyData : ARRAY[0..4] OF USINT;	{ DE:"Emergency Data" }
+	END_STRUCT;
+
+	ECATERROREVENT: STRUCT	{ DE:"It's the type of the variable sysECATErrorEvent, it is filled when an error event occurs, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"Its value is fixed: 1, corresponding to ERROR" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+		node : UINT;	{ DE:"The slave's physical address that signaled the event. If the error is an error from the master, this field assumes the value 0. " }
+		errorCode : ECATERROR;	{ DE:"Error Code" }
+		iP1 : DINT;	{ DE:"Error specific code parameters" }
+		iP2 : DINT;	{ DE:"Error specific code parameters" }
+		iP3 : DINT;	{ DE:"Error specific code parameters" }
+	END_STRUCT;
+
+	ECATNODESTATUSEVENT: STRUCT	{ DE:"It's the type of the variable sysECATNodeStatusChangedEvent, it is filled when a slave changes its state, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"Its value is fixed: 3, corresponding to NODESTATUSCHANGED" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+		node : UINT;	{ DE:"The slave's physical address that signaled the event" }
+		from : UINT;	{ DE:"Previous State" }
+		to : UINT;	{ DE:"Actual State" }
+	END_STRUCT;
+
+	ECATRESYNCINFO: STRUCT	{ DE:"It's the type of the variable sysECATResyncInfo, it is filled when the master or a slave are ready to enter in operational mode, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"Its value can be 6 or 7: depending respectively of which is ready to enter in operational state: network/master or a slave" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+		node : UINT;	{ DE:"The slave's physical address that signaled the event" }
+		is_master : BOOL;	{ DE:"TRUE if it is a NETWORKRESYNC event, FALSE if it is a SLAVERESYNC event" }
+		ready_to_start : BOOL;	{ DE:"FALSE if there is an error inhibiting the slave to goes in operational state" }
+	END_STRUCT;
+
+	ECATDCSTATUSEVENT: STRUCT	{ DE:"It's the type of the variable sysECATDCStatusChangedEvent, it is filled when the master changes its state, in tracking the DistributedClock, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"Its value is fixed: 4 corresponding to DCSTATUSCHANGED" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+		from : USINT;	{ DE:"Previous State" }
+		to : USINT;	{ DE:"Actual State" }
+	END_STRUCT;
+
+	ECATNETWORKRECOVERYEVENT: STRUCT	{ DE:"'s the type of the variable sysECATNetworkRecoveryEvent, it is filled when the master have been restarted to recover from a critical error, in that case also the sysECATEventId is updated properly and the callbacks functions or tasks are invoked" }
+		event_id : SINT;	{ DE:"Its value is fixed: 8 which corresponds to NETWORKRECOVERY" }
+		ecat_chn : USINT;	{ DE:"Master channel, for multi-master devices" }
+	END_STRUCT;
+
+END_TYPE
+
+	(************************)
+	(*                      *)
+	(*        ENUMS         *)
+	(*                      *)
+	(************************)
+
+TYPE
+
+	ECATERROR: (	{ DE:"EtherCAT Specific Errors" }
+
+		ECAT_ERROR_KE00000_ERROR_OK := 0,	{ DE:"No errors" }
+		ECAT_ERROR_KE10000_FRAME_CORRUPTED := 10000,	{ DE:"Corrupted frame" }
+		ECAT_ERROR_KE10001_MASTER_NETWORK_CHECK := 10001,	{ DE:"Master found network check error" }
+		ECAT_ERROR_KE10002_FRAME_CORRUPTED_WCK := 10002,	{ DE:"Corrupted frame, error in Wkc" }
+		ECAT_ERROR_KE10003_REGISTER_ACCESS := 10003,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10004_SLAVE_NOT_FOUND := 10004,	{ DE:"Slave not found for variable" }
+		ECAT_ERROR_KE10005_CONFIG_FILE_NOT_FOUND := 10005,	{ DE:"Configuration file not found" }
+		ECAT_ERROR_KE10006_CONFIG_FILE_PARSE := 10006,	{ DE:"Configuration parsing error" }
+		ECAT_ERROR_KE10007_SDO_RESPONSE := 10007,	{ DE:"Failed to get SDO response" }
+		ECAT_ERROR_KE10008_INTERNAL := 10008,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10009_SDO_INTERNAL := 10009,	{ DE:"SDO internal error" }
+		ECAT_ERROR_KE10010_SDO_WRITE := 10010,	{ DE:"SDO Write error" }
+		ECAT_ERROR_KE10011_SDO_WRITE := 10011,	{ DE:"SDO Write error" }
+		ECAT_ERROR_KE10012_SDO_RESPONSE := 10012,	{ DE:"Failed to get SDO response" }
+		ECAT_ERROR_KE10013_PDO_RX_MAPPING := 10013,	{ DE:"RX PDO mapping error" }
+		ECAT_ERROR_KE10014_PDO_TX_MAPPING := 10014,	{ DE:"TX PDO mapping error" }
+		ECAT_ERROR_KE10015_PDO_RX_MAPPING_CNT := 10015,	{ DE:"RX PDO mapping error setting mapped object count" }
+		ECAT_ERROR_KE10016_PDO_TX_MAPPING_CNT := 10016,	{ DE:"TX PDO mapping error setting mapped object count" }
+		ECAT_ERROR_KE10017_PDO_ASSIGN_SMANAG := 10017,	{ DE:"Failed to assign SyncManager to PDO" }
+		ECAT_ERROR_KE10018_PDO_CNT_SMANAG := 10018,	{ DE:"Failed to set SyncManager mapped PDO count" }
+		ECAT_ERROR_KE10019_SDO_WRITE := 10019,	{ DE:"SDO Write error" }
+		ECAT_ERROR_KE10020_SLAVE_STATE_CHANGE := 10020,	{ DE:"Slave failed to change state" }
+		ECAT_ERROR_KE10021_EOE_VIRTUAL_MAC := 10021,	{ DE:"EOE: VirtualMAC not assigned" }
+		ECAT_ERROR_KE10022_EOE_INITCMD := 10022,	{ DE:"EOE: InitCmd failed" }
+		ECAT_ERROR_KE10023_EOE_IP_MAC := 10023,	{ DE:"EOE: error setting IP and MAC" }
+		ECAT_ERROR_KE10024_EOE_PARAMS := 10024,	{ DE:"EOE: error setting params" }
+		ECAT_ERROR_KE10025_EOE_MISS_PREVF := 10025,	{ DE:"EOE: previous fragment missing" }
+		ECAT_ERROR_KE10026_EOE_FRAGMENT_LEN := 10026,	{ DE:"EOE: fragment exceeds maximum length" }
+		ECAT_ERROR_KE10027_EOE_UNKNOWN := 10027,	{ DE:"EOE: unknown frame" }
+		ECAT_ERROR_KE10028_EOE_CHANGE_STATE := 10028,	{ DE:"EOE: failed to change state" }
+		ECAT_ERROR_KE10029_FOE_TIMEOUT := 10029,	{ DE:"FOE: timeout" }
+		ECAT_ERROR_KE10030_FOE_TIMEOUT := 10030,	{ DE:"FOE: timeout" }
+		ECAT_ERROR_KE10031_FOE_SEQUENCE := 10031,	{ DE:"FOE: sequence error" }
+		ECAT_ERROR_KE10032_FOE_GENERAL := 10032,	{ DE:"FOE: general error" }
+		ECAT_ERROR_KE10033_FOE_OPCODE := 10033,	{ DE:"FOE: invalid opCode" }
+		ECAT_ERROR_KE10034_FOE_TIMEOUT := 10034,	{ DE:"FOE: timeout" }
+		ECAT_ERROR_KE10035_INTERNAL := 10035,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10036_SSC := 10036,	{ DE:"SSC write error" }
+		ECAT_ERROR_KE10037_MAILBOX_REPLY := 10037,	{ DE:"Mailbox error reply during polling" }
+		ECAT_ERROR_KE10038_MAILBOX_UNKNOWN := 10038,	{ DE:"Mailbox unknown protocol" }
+		ECAT_ERROR_KE10039_MAC := 10039,	{ DE:"Error retrieving network mac address" }
+		ECAT_ERROR_KE10040_JOIN_MULTICAST := 10040,	{ DE:"Error joining multicast address" }
+		ECAT_ERROR_KE10041_NET_IFACE := 10041,	{ DE:"Error opening network interface" }
+		ECAT_ERROR_KE10042_NET_GLB_STAT := 10042,	{ DE:"Global network status not found in any cyclic frame" }
+		ECAT_ERROR_KE10043_MASTER_INITCMD := 10043,	{ DE:"Master initCmd validation failed" }
+		ECAT_ERROR_KE10044_MASTER_ACYCLIC := 10044,	{ DE:"Master received a wrong acyclic frame" }
+		ECAT_ERROR_KE10045_REGISTER_ACCESS := 10045,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10046_MASTER_WKC := 10046,	{ DE:"Master detected a Wkc mismatch for the SyncUnit" }
+		ECAT_ERROR_KE10047_MASTER_PROP_DELAY := 10047,	{ DE:"Master couldn't calculate propagation delays properly" }
+		ECAT_ERROR_KE10048_REGISTER_ACCESS := 10048,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10049_MASTER_DC_DELAY := 10049,	{ DE:"Master delay calculation for Distributed Clock failed: wrong net configuration" }
+		ECAT_ERROR_KE10050_MASTER_PROP_DELAYS := 10050,	{ DE:"Master detected a propagation delay calculation error for slave" }
+		ECAT_ERROR_KE10051_MASTER_PROP_DELAYS := 10051,	{ DE:"Master detected a propagation delay calculation error for slave" }
+		ECAT_ERROR_KE10052_MASTER_PROP_DELAYS := 10052,	{ DE:"Master detected a propagation delay calculation error for slave" }
+		ECAT_ERROR_KE10053_REGISTER_ACCESS := 10053,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10054_REGISTER_ACCESS := 10054,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10055_REGISTER_ACCESS := 10055,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10056_REGISTER_ACCESS := 10056,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10057_REGISTER_ACCESS := 10057,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10058_NET_SYNC_ACYCLIC := 10058,	{ DE:"The network has NOT been synchronized after # acyclic frames" }
+		ECAT_ERROR_KE10059_REGISTER_ACCESS := 10059,	{ DE:"Register access failed" }
+		ECAT_ERROR_KE10060_MASTER_CLOCK_64 := 10060,	{ DE:"Master detected an error while reading 64bit clock acyclically" }
+		ECAT_ERROR_KE10061_RESET_COUNT := 10061,	{ DE:"Reset procedure failed" }
+		ECAT_ERROR_KE10062_MASTER_INITCMD := 10062,	{ DE:"Master initCmd: failed to change state" }
+		ECAT_ERROR_KE10063_MASTER_SLAVES_COUNT := 10063,	{ DE:"Master detected wrong number of slaves" }
+		ECAT_ERROR_KE10064_SLAVE_PARENT := 10064,	{ DE:"Cannot find slave parent" }
+		ECAT_ERROR_KE10065_SLAVE_PORT := 10065,	{ DE:"Slave port not opened but required as previous port from slave" }
+		ECAT_ERROR_KE10067_MASTER_INITCMD := 10067,	{ DE:"Master initCmd validation failed" }
+		ECAT_ERROR_KE10068_MASTER_INITCMD := 10068,	{ DE:"Master initCmd validation failed" }
+		ECAT_ERROR_KE10069_SLAVE_MISSING := 10069,	{ DE:"Slave missing" }
+		ECAT_ERROR_KE10070_FILE_TRANF_ACCESS := 10070,	{ DE:"File transfer access error" }
+		ECAT_ERROR_KE10071_INTERNAL := 10071,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10072_SLAVE_MISSING_ERROR := 10072,	{ DE:"Slave comes back from missing with an error" }
+		ECAT_ERROR_KE10073_SLAVE_LEN := 10073,	{ DE:"Slave requires a wrong length read command for the mailbox" }
+		ECAT_ERROR_KE10074_SLAVE_RESET := 10074,	{ DE:"Slave reset failed" }
+		ECAT_ERROR_KE10075_SLAVE_DC := 10075,	{ DE:"Slave has been configured to use DC but doesn't support DC" }
+		ECAT_ERROR_KE10077_INTERNAL := 10077,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10078_INTERNAL := 10078,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10079_INTERNAL := 10079,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10080_INTERNAL := 10080,	{ DE:"Internal error" }
+		ECAT_ERROR_KE10081_ACYCLIC := 10081,	{ DE:"Acyclic frame has not been received yet" }
+		ECAT_ERROR_KE10082_SLAVE_COUNT := 10082,	{ DE:"Slave count mismatch" }
+		ECAT_ERROR_KE10083_EOE_OVER_EOE := 10083,	{ DE:"Error sending EoE packet through EoE service for slave" }
+		ECAT_ERROR_KE10084_MASTER_DC_SYNCM := 10084,	{ DE:"Master uses DC but SyncMaster not found" }
+		ECAT_ERROR_KE10085_INTERNAL := 10085,	{ DE:"Internal error" }
+		ECAT_ERROR_KE19999_INTERNAL := 19999	{ DE:"Internal error" }
+	);
+
+	ECATSTATE: (	{ DE:"EtherCAT Slave or Network State" }
+
+		ECAT_STATE_UNKNOWN := 0,	{ DE:"Unknown State" }
+		ECAT_STATE_INIT := 1,	{ DE:"Init State" }
+		ECAT_STATE_PREOP := 2,	{ DE:"PreOperational State" }
+		ECAT_STATE_BOOT := 3,	{ DE:"Boot State" }
+		ECAT_STATE_SAFEOP := 4,	{ DE:"SafeOperational State" }
+		ECAT_STATE_OP := 8,	{ DE:"Operational State" }
+		ECAT_STATE_FATAL := 255	{ DE:"Fatal State" }
+	);
+
+	ECATDCSTATE: (	{ DE:"Master Distributed Clock State" }
+
+		ECAT_DCSTATE_IDLE := 0,	{ DE:"The master clock is completely independent from the slaves" }
+		ECAT_DCSTATE_SYNCHRONIZING := 1,	{ DE:"The master is making preliminary measurements to synchronize with the slaves" }
+		ECAT_DCSTATE_WAITING_START_TIME := 2,	{ DE:"After the master has synced with the slaves, you have to wait for the START_TIME, which is the first time the slaves implement I/O" }
+		ECAT_DCSTATE_COMPENSATING := 3,	{ DE:"If the master clock is synchronous with that of the slaves and after START_TIME has passed, the management goes into this state, which means that the Master is constantly tracking the clocks of the ne" }
+		ECAT_STATE_NOT_SYNCHRONIZED := 4	{ DE:"If for any reason the master fails to follow the network clock, then management goes into this state and all the slaves involved go to the SAFE_OP state" }
+	);
+
+	ECATEVENTID: (	{ DE:"Enumeration of all type of events that can be signaled from the EtherCAT master" }
+
+		ECAT_EVENT_NONE := 0,	{ DE:"NO Event" }
+		ECAT_EVENT_ERROR := 1,	{ DE:"Error from a slave or from the master" }
+		ECAT_EVENT_EMERGENCY := 2,	{ DE:"Emergency event from a CoE slave" }
+		ECAT_EVENT_NODESTATUSCHANGED := 3,	{ DE:"Signaled when a slave changes its state" }
+		ECAT_EVENT_DCSTATUSCHANGED := 4,	{ DE:"Signaled when the master changes its state while tracking the Distributed Clock" }
+		ECAT_EVENT_NETWORKRECOVERY := 5,	{ DE:"Network restarted, to recover from a very critical error" }
+		ECAT_EVENT_NETWORKRESYNC := 6,	{ DE:"Signaled when all the slaves are ready to enter in operational state" }
+		ECAT_EVENT_SLAVERESYNC := 7	{ DE:"Signaled when a slave is ready to enter in operational state" }
+	);
+
+	ECATINITERRORCODE: (
+		ECAT_INITERR_OK := 0,	{ DE:"No error" }
+		ECAT_INITERR_DISABLED := 500,	{ DE:"EtherCAT is disabled" }
+		ECAT_INITERR_SYS := 501,	{ DE:"Internal system error" }
+		ECAT_INITERR_XML := 502,	{ DE:"Error in the XML parsing phase" }
+		ECAT_INITERR_EMPTYCFG := 503,	{ DE:"Empty configuration file" }
+		ECAT_INITERR_OUTOFMEMORY := 504,	{ DE:"Memory exhausted" }
+		ECAT_INITERR_FILE := 505,	{ DE:"I/O error in reading" }
+		ECAT_INITERR_NO_CONFIG := 506,	{ DE:"Config node not present" }
+		ECAT_INITERR_NO_ENINAME := 507,	{ DE:"No ENI name" }
+		ECAT_INITERR_NO_DBTYPE := 508,	{ DE:"No datablock type" }
+		ECAT_INITERR_NO_DBNUM := 509,	{ DE:"No datablock index" }
+		ECAT_INITERR_NO_DBOFF := 510,	{ DE:"No datablock offset" }
+		ECAT_INITERR_NO_BITLEN := 511,	{ DE:"Missing length in bits" }
+		ECAT_INITERR_NO_DBBYTEOFF := 512,	{ DE:"Missing byte offset" }
+		ECAT_INITERR_DBMAPDBTYPEINV := 513,	{ DE:"Invalid I/O mapping" }
+		ECAT_INITERR_ENIVARINV := 514,	{ DE:"Configured variable doesn't match with ENI file" }
+		ECAT_INITERR_TOOMANYVARIABLES := 515,	{ DE:"Max number of variables exceeded" }
+		ECAT_INITERR_DC_UNSUPPORTED := 516	{ DE:"Distributed clock is not supported" }
+	);
+
+END_TYPE

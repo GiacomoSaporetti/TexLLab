@@ -1,0 +1,2076 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- #DEFINE PREFIX CANcustom_TexIoCAN_1 -->
+<devicetemplate>
+	<deviceinfo caption="TexIoCAN" name="TexIoCAN" icon="img/TexIoCAN.ico" image="img/TexIoCAN.png" version="1" deviceid="CANcustom_TexIoCAN_1" importedFromEDS="false">
+		<description>Tex IO CANopen</description>
+		<protocols>
+			<protocol>CANopen_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="TexIoCAN" icon="img/TexIoCAN.ico" menu="menuRemoveEnableDisable" datalink="PREFIX" window="CANcustom1" captionedit="true"/>
+			</tree>
+		</hmi>
+		<templatedata>
+			<PREFIX enabled="true">
+				<CANcustom_config>
+					<nodeNumber>1</nodeNumber>
+					<nodeGuardPeriod>200</nodeGuardPeriod>
+					<lifeTimeFactor>3</lifeTimeFactor>
+					<SDOsetList/>
+					<PDOTxMappingList/>
+					<PDORxMappingList/>
+					<PDOTxTransmission>-1</PDOTxTransmission>
+					<PDOTxCyclicTime>0</PDOTxCyclicTime>
+					<PDORxTransmission>-1</PDORxTransmission>
+					<BootTime>10000</BootTime>
+					<NodeHbPTime>0</NodeHbPTime>
+					<NodeHbCTime>0</NodeHbCTime>
+					<MasterHbCTime>0</MasterHbCTime>
+					<identityObjectCheck>1</identityObjectCheck>
+					<MandatorySlave>0</MandatorySlave>
+					<PDOAutoMapping>0</PDOAutoMapping>
+				</CANcustom_config>
+			</PREFIX>
+			<!-- altri nodi per feature successive aggiunti via codice da OnLoadNode! -->
+		</templatedata>
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX" type="TCANcustom"/>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+	<deviceconfig>
+		<parameters>
+			<par ipa="0" readonly="true" name="Device Type" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1000" min="0" max="4294967295" defval="197009" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4096" commsubindex="0"/>
+				<option optid="AccessType">const</option>
+			</par>
+			<par ipa="1" readonly="true" name="Error Register" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1001" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4097" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="2" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1018sub0" min="1" max="4" defval="4" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="3" readonly="true" name="Vendor Id" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub1" min="0" max="4294967295" defval="5531000" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="4" readonly="true" name="Product Code" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub2" min="0" max="4294967295" defval="1" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="2"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="5" readonly="true" name="Revision Number" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub3" min="0" max="4294967295" defval="1" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="3"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="6" readonly="true" name="Serial Number" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="4"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="7" readonly="false" name="Number of Errors" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1003sub0" min="0" max="254" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4099" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="8" readonly="true" name="Standard Error Field" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1003sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4099" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="9" readonly="false" name="COB-ID SYNC" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1005" min="1" max="4294967295" defval="128" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4101" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="10" readonly="false" name="Guard Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="100C" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4108" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="11" readonly="false" name="Life Time Factor" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="100D" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4109" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="12" readonly="false" name="COB-ID EMCY" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1014" defval="$NODEID+0x80" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4116" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="13" readonly="false" name="Producer Heartbeat Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1017" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4119" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="14" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1400sub0" min="2" max="5" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="15" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1400sub1" min="1" max="4294967295" defval="$NODEID+0x200" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="16" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1400sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="17" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1401sub0" min="2" max="5" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="18" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1401sub1" min="1" max="4294967295" defval="$NODEID+0x300" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="19" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1401sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="20" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1402sub0" min="2" max="5" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="21" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1402sub1" min="1" max="4294967295" defval="$NODEID+0x400" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="22" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1402sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="23" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1403sub0" min="2" max="5" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="24" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1403sub1" min="1" max="4294967295" defval="$NODEID+0x500" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="25" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1403sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="26" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1404sub0" min="2" max="5" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="27" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1404sub1" min="1" max="4294967295" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="28" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1404sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="29" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1600sub0" min="0" max="255" defval="8" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="30" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub1" min="0" max="4294967295" defval="1644167432" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="31" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub2" min="0" max="4294967295" defval="1644167688" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="32" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub3" min="0" max="4294967295" defval="1644167944" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="33" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub4" min="0" max="4294967295" defval="1644168200" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="34" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub5" min="0" max="4294967295" defval="1644168456" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="35" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub6" min="0" max="4294967295" defval="1644168712" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="36" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub7" min="0" max="4294967295" defval="1644168968" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="37" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub8" min="0" max="4294967295" defval="1644169224" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="38" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1601sub0" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="39" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="40" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="41" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="42" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="43" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="44" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="45" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="46" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="47" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1602sub0" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="48" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="49" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="50" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="51" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="52" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="53" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="54" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="55" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="56" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1603sub0" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="57" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="58" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="59" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="60" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="61" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="62" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="63" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="64" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="65" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1604sub0" min="0" max="255" defval="4" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="66" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub1" min="0" max="4294967295" defval="1644169480" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="67" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub2" min="0" max="4294967295" defval="1644169736" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="68" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub3" min="0" max="4294967295" defval="1644169992" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="69" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub4" min="0" max="4294967295" defval="1644170248" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="70" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="71" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="72" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="73" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="74" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1800sub0" min="2" max="5" defval="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="75" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1800sub1" min="1" max="4294967295" defval="$NODEID+0x180" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="76" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1800sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="77" readonly="false" name="Inhibit Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1800sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="78" readonly="false" name="Compatibility Entry" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1800sub4" min="0" max="255" defval="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="79" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1800sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="80" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1801sub0" min="2" max="5" defval="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="81" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1801sub1" min="1" max="4294967295" defval="$NODEID+0x280" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="82" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1801sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="83" readonly="false" name="Inhibit Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1801sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="84" readonly="false" name="Compatibility Entry" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1801sub4" min="0" max="255" defval="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="85" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1801sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="86" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1802sub0" min="2" max="5" defval="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="87" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1802sub1" min="1" max="4294967295" defval="$NODEID+0x380" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="88" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1802sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="89" readonly="false" name="Inhibit Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1802sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="90" readonly="false" name="Compatibility Entry" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1802sub4" min="0" max="255" defval="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="91" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1802sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="92" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1803sub0" min="2" max="5" defval="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="93" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1803sub1" min="1" max="4294967295" defval="$NODEID+0x480" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="94" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1803sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="95" readonly="false" name="Inhibit Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1803sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="96" readonly="false" name="Compatibility Entry" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1803sub4" min="0" max="255" defval="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="97" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1803sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="98" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1804sub0" min="2" max="5" defval="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="99" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1804sub1" min="1" max="4294967295" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="100" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1804sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="101" readonly="false" name="Inhibit Time" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1804sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="102" readonly="false" name="Compatibility Entry" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1804sub4" min="0" max="255" defval="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="103" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1804sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="104" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A00sub0" min="0" max="255" defval="8" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="105" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub1" min="0" max="4294967295" defval="1610613000" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="106" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub2" min="0" max="4294967295" defval="1610613256" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="107" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub3" min="0" max="4294967295" defval="1610613512" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="108" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub4" min="0" max="4294967295" defval="1610613768" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="109" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub5" min="0" max="4294967295" defval="1610614024" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="110" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub6" min="0" max="4294967295" defval="1610614280" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="111" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub7" min="0" max="4294967295" defval="1610614536" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="112" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub8" min="0" max="4294967295" defval="1610614792" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="113" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A01sub0" min="0" max="255" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="114" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub1" min="0" max="4294967295" defval="1677787408" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="115" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub2" min="0" max="4294967295" defval="1677787664" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="116" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="117" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="118" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="119" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="120" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="121" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="122" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A02sub0" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="123" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="124" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="125" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="126" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="127" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="128" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="129" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="130" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="131" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A03sub0" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="132" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="133" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="134" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub3" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="135" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub4" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="136" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="137" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="138" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="139" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="140" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A04sub0" min="0" max="255" defval="4" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="141" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub1" min="0" max="4294967295" defval="1610615048" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="142" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub2" min="0" max="4294967295" defval="1610615304" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="143" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub3" min="0" max="4294967295" defval="1610615560" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="144" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub4" min="0" max="4294967295" defval="1610615816" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="145" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub5" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="146" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub6" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="147" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub7" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="148" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub8" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="149" readonly="true" name="Number Of Inputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="150" readonly="true" name="Read Input 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="151" readonly="true" name="Read Input 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="2"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="152" readonly="true" name="Read Input 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="3"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="153" readonly="true" name="Read Input 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="4"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="154" readonly="true" name="Read Input 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="5"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="155" readonly="true" name="Read Input 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="6"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="156" readonly="true" name="Read Input 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="7"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="157" readonly="true" name="Read Input 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="8"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="158" readonly="true" name="Read Input 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="9"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="159" readonly="true" name="Read Input 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="10"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="160" readonly="true" name="Read Input 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="11"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="161" readonly="true" name="Read Input 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6000subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24576" commsubindex="12"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="162" readonly="true" name="Number Of Inputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="163" readonly="false" name="Polarity Input 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="164" readonly="false" name="Polarity Input 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="165" readonly="false" name="Polarity Input 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="166" readonly="false" name="Polarity Input 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="167" readonly="false" name="Polarity Input 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="168" readonly="false" name="Polarity Input 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="169" readonly="false" name="Polarity Input 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="170" readonly="false" name="Polarity Input 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="171" readonly="false" name="Polarity Input 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="172" readonly="false" name="Polarity Input 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="173" readonly="false" name="Polarity Input 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="174" readonly="false" name="Polarity Input 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6002subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24578" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="175" readonly="false" name="Enable Digital Input Interrupts" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6005" min="0" max="1" defval="1" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24581" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="176" readonly="true" name="Number Of Inputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="177" readonly="false" name="Interrupt Any Change 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub1" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="178" readonly="false" name="Interrupt Any Change 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="179" readonly="false" name="Interrupt Any Change 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub3" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="180" readonly="false" name="Interrupt Any Change 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub4" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="181" readonly="false" name="Interrupt Any Change 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub5" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="182" readonly="false" name="Interrupt Any Change 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub6" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="183" readonly="false" name="Interrupt Any Change 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub7" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="184" readonly="false" name="Interrupt Any Change 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub8" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="185" readonly="false" name="Interrupt Any Change 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006sub9" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="186" readonly="false" name="Interrupt Any Change 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006subA" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="187" readonly="false" name="Interrupt Any Change 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006subB" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="188" readonly="false" name="Interrupt Any Change 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6006subC" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24582" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="189" readonly="true" name="Number Of Inputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="190" readonly="false" name="Interrupt Low-to-High 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="191" readonly="false" name="Interrupt Low-to-High 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="192" readonly="false" name="Interrupt Low-to-High 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="193" readonly="false" name="Interrupt Low-to-High 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="194" readonly="false" name="Interrupt Low-to-High 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="195" readonly="false" name="Interrupt Low-to-High 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="196" readonly="false" name="Interrupt Low-to-High 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="197" readonly="false" name="Interrupt Low-to-High 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="198" readonly="false" name="Interrupt Low-to-High 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="199" readonly="false" name="Interrupt Low-to-High 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="200" readonly="false" name="Interrupt Low-to-High 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="201" readonly="false" name="Interrupt Low-to-High 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6007subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24583" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="202" readonly="true" name="Number Of Inputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="203" readonly="false" name="Interrupt High-to-Low 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="204" readonly="false" name="Interrupt High-to-Low 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="205" readonly="false" name="Interrupt High-to-Low 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="206" readonly="false" name="Interrupt High-to-Low 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="207" readonly="false" name="Interrupt High-to-Low 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="208" readonly="false" name="Interrupt High-to-Low 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="209" readonly="false" name="Interrupt High-to-Low 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="210" readonly="false" name="Interrupt High-to-Low 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="211" readonly="false" name="Interrupt High-to-Low 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="212" readonly="false" name="Interrupt High-to-Low 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="213" readonly="false" name="Interrupt High-to-Low 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="214" readonly="false" name="Interrupt High-to-Low 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6008subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24584" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="215" readonly="true" name="Number Of Inputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6100sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="216" readonly="true" name="Read Input 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="217" readonly="true" name="Read Input 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="2"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="218" readonly="true" name="Read Input 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="3"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="219" readonly="true" name="Read Input 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="4"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="220" readonly="true" name="Read Input 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="5"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="221" readonly="true" name="Read Input 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6100sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24832" commsubindex="6"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="222" readonly="true" name="Number Of Inputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6102sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="223" readonly="false" name="Polarity Input 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="224" readonly="false" name="Polarity Input 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="225" readonly="false" name="Polarity Input 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="226" readonly="false" name="Polarity Input 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="227" readonly="false" name="Polarity Input 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="228" readonly="false" name="Polarity Input 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6102sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24834" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="229" readonly="true" name="Number Of Inputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6106sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="230" readonly="false" name="Interrupt Any Change 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub1" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="231" readonly="false" name="Interrupt Any Change 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub2" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="232" readonly="false" name="Interrupt Any Change 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub3" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="233" readonly="false" name="Interrupt Any Change 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub4" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="234" readonly="false" name="Interrupt Any Change 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub5" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="235" readonly="false" name="Interrupt Any Change 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6106sub6" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24838" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="236" readonly="true" name="Number Of Inputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6107sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="237" readonly="false" name="Interrupt Low-to-High 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="238" readonly="false" name="Interrupt Low-to-High 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="239" readonly="false" name="Interrupt Low-to-High 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="240" readonly="false" name="Interrupt Low-to-High 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="241" readonly="false" name="Interrupt Low-to-High 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="242" readonly="false" name="Interrupt Low-to-High 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6107sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24839" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="243" readonly="true" name="Number Of Inputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6108sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="244" readonly="false" name="Interrupt High-to-Low 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="245" readonly="false" name="Interrupt High-to-Low 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="246" readonly="false" name="Interrupt High-to-Low 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="247" readonly="false" name="Interrupt High-to-Low 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="248" readonly="false" name="Interrupt High-to-Low 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="249" readonly="false" name="Interrupt High-to-Low 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6108sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="24840" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="250" readonly="true" name="Number Of Outputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="251" readonly="false" name="Write Output 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="252" readonly="false" name="Write Output 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="253" readonly="false" name="Write Output 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="254" readonly="false" name="Write Output 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="255" readonly="false" name="Write Output 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="256" readonly="false" name="Write Output 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="257" readonly="false" name="Write Output 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="258" readonly="false" name="Write Output 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="259" readonly="false" name="Write Output 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="260" readonly="false" name="Write Output 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="261" readonly="false" name="Write Output 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="262" readonly="false" name="Write Output 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6200subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25088" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="263" readonly="true" name="Number Of Outputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="264" readonly="false" name="Change Polarity Output 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="265" readonly="false" name="Change Polarity Output 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="266" readonly="false" name="Change Polarity Output 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="267" readonly="false" name="Change Polarity Output 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="268" readonly="false" name="Change Polarity Output 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="269" readonly="false" name="Change Polarity Output 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="270" readonly="false" name="Change Polarity Output 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="271" readonly="false" name="Change Polarity Output 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="272" readonly="false" name="Change Polarity Output 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="273" readonly="false" name="Change Polarity Output 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="274" readonly="false" name="Change Polarity Output 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="275" readonly="false" name="Change Polarity Output 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6202subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25090" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="276" readonly="true" name="Number Of Outputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="277" readonly="false" name="Error Mode Output 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub1" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="278" readonly="false" name="Error Mode Output 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub2" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="279" readonly="false" name="Error Mode Output 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub3" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="280" readonly="false" name="Error Mode Output 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub4" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="281" readonly="false" name="Error Mode Output 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub5" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="282" readonly="false" name="Error Mode Output 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub6" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="283" readonly="false" name="Error Mode Output 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub7" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="284" readonly="false" name="Error Mode Output 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub8" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="285" readonly="false" name="Error Mode Output 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206sub9" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="286" readonly="false" name="Error Mode Output 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206subA" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="287" readonly="false" name="Error Mode Output 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206subB" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="288" readonly="false" name="Error Mode Output 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6206subC" min="0" max="255" defval="255" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25094" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="289" readonly="true" name="Number Of Outputs 8-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub0" min="0" max="255" defval="12" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="290" readonly="false" name="Error Value Output 8-bit Block 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub1" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="291" readonly="false" name="Error Value Output 8-bit Block 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="292" readonly="false" name="Error Value Output 8-bit Block 3" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub3" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="293" readonly="false" name="Error Value Output 8-bit Block 4" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub4" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="294" readonly="false" name="Error Value Output 8-bit Block 5" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub5" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="295" readonly="false" name="Error Value Output 8-bit Block 6" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub6" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="296" readonly="false" name="Error Value Output 8-bit Block 7" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub7" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="7"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="297" readonly="false" name="Error Value Output 8-bit Block 8" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub8" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="8"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="298" readonly="false" name="Error Value Output 8-bit Block 9" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207sub9" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="9"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="299" readonly="false" name="Error Value Output 8-bit Block 10" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207subA" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="10"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="300" readonly="false" name="Error Value Output 8-bit Block 11" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207subB" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="11"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="301" readonly="false" name="Error Value Output 8-bit Block 12" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6207subC" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25095" commsubindex="12"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="302" readonly="true" name="Number Of Outputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6300sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="303" readonly="false" name="Write Output 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="304" readonly="false" name="Write Output 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="305" readonly="false" name="Write Output 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="306" readonly="false" name="Write Output 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="307" readonly="false" name="Write Output 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="308" readonly="false" name="Write Output 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6300sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25344" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="309" readonly="true" name="Number Of Outputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6302sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="310" readonly="false" name="Change Polarity Output 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="311" readonly="false" name="Change Polarity Output 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="312" readonly="false" name="Change Polarity Output 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="313" readonly="false" name="Change Polarity Output 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="314" readonly="false" name="Change Polarity Output 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="315" readonly="false" name="Change Polarity Output 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6302sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25346" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="316" readonly="true" name="Number Of Outputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6306sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="317" readonly="false" name="Error Mode Output 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub1" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="318" readonly="false" name="Error Mode Output 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub2" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="319" readonly="false" name="Error Mode Output 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub3" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="320" readonly="false" name="Error Mode Output 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub4" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="321" readonly="false" name="Error Mode Output 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub5" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="322" readonly="false" name="Error Mode Output 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6306sub6" min="0" max="65535" defval="65535" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25350" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="323" readonly="true" name="Number Of Outputs 16-bit Block" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6307sub0" min="0" max="255" defval="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="324" readonly="false" name="Error Value Output 16-bit Block 1" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub1" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="325" readonly="false" name="Error Value Output 16-bit Block 2" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub2" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="326" readonly="false" name="Error Value Output 16-bit Block 3" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub3" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="3"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="327" readonly="false" name="Error Value Output 16-bit Block 4" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub4" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="4"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="328" readonly="false" name="Error Value Output 16-bit Block 5" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub5" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="5"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="329" readonly="false" name="Error Value Output 16-bit Block 6" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6307sub6" min="0" max="65535" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25351" commsubindex="6"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="330" readonly="true" name="Number Of Analogue Inputs 16-bit" typepar="short" typetarg="short" shortdescr="6401sub0" min="32768" max="32767" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25601" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="331" readonly="true" name="Analogue Input 1" typepar="short" typetarg="short" shortdescr="6401sub1" min="32768" max="32767" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25601" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="332" readonly="true" name="Analogue Input 2" typepar="short" typetarg="short" shortdescr="6401sub2" min="32768" max="32767" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25601" commsubindex="2"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="333" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6421sub0" min="0" max="255" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25633" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="334" readonly="false" name="Trigger Selection Analogue Input 1" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6421sub1" min="0" max="255" defval="7" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25633" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="335" readonly="false" name="Trigger Selection Analogue Input 2" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6421sub2" min="0" max="255" defval="7" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25633" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="336" readonly="false" name="Analogue Input Global Interrupt Enable" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="6423" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25635" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="337" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="int" typetarg="int" shortdescr="6424sub0" min="2147483648" max="2147483647" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25636" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="338" readonly="false" name="Upper Limit Analogue Input 1" typepar="int" typetarg="int" shortdescr="6424sub1" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25636" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="339" readonly="false" name="Upper Limit Analogue Input 2" typepar="int" typetarg="int" shortdescr="6424sub2" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25636" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="340" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="int" typetarg="int" shortdescr="6425sub0" min="2147483648" max="2147483647" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25637" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="341" readonly="false" name="Lower Limit Analogue Input 1" typepar="int" typetarg="int" shortdescr="6425sub1" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25637" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="342" readonly="false" name="Lower Limit Analogue Input 2" typepar="int" typetarg="int" shortdescr="6425sub2" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25637" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="343" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6426sub0" min="0" max="4294967295" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25638" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="344" readonly="false" name="Delta Analogue Input 1" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6426sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25638" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="345" readonly="false" name="Delta Analogue Input 2" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6426sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25638" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="346" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6427sub0" min="0" max="4294967295" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25639" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="347" readonly="false" name="Negative Delta Analogue Input 1" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6427sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25639" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="348" readonly="false" name="Negative Delta Analogue Input 2" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6427sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25639" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="349" readonly="false" name="Number Of Analogue Inputs 16-bit" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6428sub0" min="0" max="4294967295" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25640" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="350" readonly="false" name="Positive Delta Analogue Input 1" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6428sub1" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25640" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="351" readonly="false" name="Positive Delta Analogue Input 2" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="6428sub2" min="0" max="4294967295" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25640" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="352" readonly="true" name="Number Of Analogue Inputs 16-bit" typepar="int" typetarg="int" shortdescr="6431sub0" min="2147483648" max="2147483647" defval="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25649" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+			</par>
+			<par ipa="353" readonly="false" name="Offset Analogue Input 1" typepar="int" typetarg="int" shortdescr="6431sub1" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25649" commsubindex="1"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="354" readonly="false" name="Offset Analogue Input 2" typepar="int" typetarg="int" shortdescr="6431sub2" min="2147483648" max="2147483647" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="25649" commsubindex="2"/>
+				<option optid="AccessType">rww</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="355" readonly="false" name="Number of I/O modules" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2000" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8192" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+			</par>
+			<par ipa="356" readonly="true" name="Alarm Code" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2001" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8193" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="357" readonly="true" name="Warning Code" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2002" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8194" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="358" readonly="true" name="Rotary Switch Hi" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2003" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8195" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="359" readonly="true" name="Rotary Switch Lo" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2004" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8196" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="360" readonly="true" name="Dip Switch" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="2005" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="8197" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="361" readonly="false" name="Dummy0002" typepar="char" typetarg="char" shortdescr="2" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="2" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="362" readonly="false" name="Dummy0003" typepar="short" typetarg="short" shortdescr="3" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="3" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="363" readonly="false" name="Dummy0004" typepar="int" typetarg="int" shortdescr="4" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="364" readonly="false" name="Dummy0005" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="5" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="365" readonly="false" name="Dummy0006" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="6" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="366" readonly="false" name="Dummy0007" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="7" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="7" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+		</parameters>
+	</deviceconfig>
+	<customconfig>
+		<canopen numPDORx="5" numPDOTx="5" hasDynamicPDO="1" granularity="8" hasBootUpMsg="1"/>
+	</customconfig>
+</devicetemplate>

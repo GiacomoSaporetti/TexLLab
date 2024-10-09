@@ -1,0 +1,208 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>CAN device object</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<script type="text/javascript">
+try
+{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+catch (e)
+{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+var m_showSplitBits
+
+function onchange_comboTypeIEC( value )
+{
+	switch( value )
+	{
+	case "SINT":
+	case "INT":
+	case "DINT":
+	case "REAL":
+		chkSplit.checked = false
+		chkSplit.disabled = true
+		break;
+	default:
+		chkSplit.disabled = false
+	}
+}
+
+function Init()
+{
+	// reset var risultato
+	app.TempVar("newVar_item") = undefined
+	
+	//toglie l'ultimo carattere '/' dal datapath
+	var nodexml = datapath.value.slice(0, -1);
+
+	m_showSplitBits = app.TempVar("newVar_showSplitBits")
+
+	if (!m_showSplitBits)
+	{
+		labelChkSplit.style.display = "none"
+		chkSplit.style.display = "none"
+	}
+		
+	onchange_comboTypeIEC( comboTypeIEC.value )
+}
+
+function Validate()
+{
+	if ( editIndex.value.substr( 0, 2 ) == "0x" )
+		var hexFormatIndex = editIndex.value
+	else
+		var hexFormatIndex = "0x" + editIndex.value
+		
+	if ( editSubindex.value.substr( 0, 2 ) == "0x" )
+		var hexFormatSubIndex = editSubindex.value
+	else
+		var hexFormatSubIndex = "0x" + editSubindex.value
+	
+	if ( isNaN( hexFormatIndex ) )
+	{
+		alert( app.Translate( "Check Object index value" ) )
+		editIndex.focus()
+		return undefined
+	}
+	
+	if ( isNaN( hexFormatSubIndex ) )
+	{
+		alert( app.Translate( "Check Object subindex value" ) )
+		editIndex.focus()
+		return undefined
+	}
+	
+	var item = {}
+	item.index = parseInt( hexFormatIndex )
+	item.subindex = parseInt( hexFormatSubIndex )
+	item.name = editDescription.value
+	item.typeIEC = comboTypeIEC.value
+	item.splitBits = m_showSplitBits ? chkSplit.checked : false
+	
+	if (!( item.index > 0 && item.index <= 65535 ))
+	{
+		alert( app.Translate( "Check Object index value. Index out of range" ) )
+		editIndex.focus()
+		return undefined
+	}
+	if (!( item.subindex >= 0 && item.subindex <= 255 ))
+	{
+		alert( app.Translate( "Check Object subindex value. SubIndex out of range" ) )
+		editSubindex.focus()
+		return undefined
+	}
+	if (!( item.name.length > 0 ))
+	{
+		alert( app.Translate( "Object name should be specified" ) )
+		editDescription.focus()
+		return undefined
+	}
+	
+	return item
+}
+
+function CloseOK()
+{
+	var item = Validate()
+	
+	if ( item != undefined )
+	{
+		app.TempVar("newVar_item") = item
+		CloseDlg()
+	}
+}
+
+function CloseDlg()
+{
+	window.opener = "x"; window.open("", "_self")
+	window.close()
+}
+
+function OnKeyDown(e)
+{
+	if (window.event) // IE8 and earlier
+		var keynum = window.event.keyCode;
+	else if (e && e.which) // IE9/Firefox/Chrome/Opera/Safari
+		var keynum = e.which;
+	
+	if (keynum == 13)
+		CloseOK()
+		
+	return true
+}
+
+	</script>
+</head>
+
+<body scroll="no" onload="Init()" class="Sfondo">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	
+	<div align="center" >
+		<fieldset>
+			<legend><t:t>CAN device object</t:t></legend>
+			<table align="left" border="0">
+				<tr>
+					<td align="left" style="width:200px">
+						<label for="editIndex"><t:t>Object index (hex)</t:t></label>
+					</td>
+					<td align="left">
+						<input type="input" id="editIndex">
+					</td>
+				</tr>
+				<tr>
+					<td align="left" style="width:200px">
+						<label for="editSubindex"><t:t>Object subindex (hex)</t:t></label>
+					</td>
+					<td align="left">
+						<input type="input" id="editSubindex">
+					</td>
+				</tr>
+				<tr>
+					<td align="left" style="width:200px">
+						<label for="comboTypeIEC"><t:t>Type IEC</t:t></label>
+					</td>
+					<td align="left">
+						<select id="comboTypeIEC" onchange="onchange_comboTypeIEC(this.value)">
+							<option value="USINT">USINT</option>
+							<option value="SINT">SINT</option>
+							<option value="BYTE">BYTE</option>
+							<option value="UINT">UINT</option>
+							<option value="INT">INT</option>
+							<option value="WORD">WORD</option>
+							<option value="UDINT">UDINT</option>
+							<option value="DINT">DINT</option>
+							<option value="DWORD">DWORD</option>
+							<option value="REAL">REAL</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td align="left" style="width:200px">
+						<label id="labelChkSplit" for="chkSplit" style="position:relative; top:-3px"><t:t>Split single bits</t:t></label>
+					</td>
+					<td align="left">
+						<input type="checkbox" id="chkSplit">
+					</td>
+				</tr>
+				<tr>
+					<td align="left" style="width:200px">
+						<label for="editDescription"><t:t>Object description</t:t></label>
+					</td>
+					<td align="left">
+						<input type="input" id="editDescription" onkeydown="OnKeyDown()">
+					</td>
+				</tr>
+
+			</table>
+		</fieldset>
+		<br>
+		<button style="width: 100px" onclick="CloseOK()"><b><t:t>OK</t:t></b></button>&nbsp;&nbsp;&nbsp;
+		<button style="width: 100px" onclick="CloseDlg()"><b><t:t>Cancel</t:t></b></button>
+	</div>
+<script>
+</script>
+</body>
+</html>

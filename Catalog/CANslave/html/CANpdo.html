@@ -1,0 +1,255 @@
+﻿<html>
+<head>
+	<title>CAN PDO Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+
+	var WINDOW_NAME = "CANPdoWindow"
+	var app = window.external
+
+	var gentypes = app.CallFunction("common.GetGeneralTypes")
+	var MSGBOX = gentypes.MSGBOX
+
+	var m_isTX
+	
+	//	riempio la struttura di configurazione generale
+	var m_copsCfg = app.CallFunction( "CANslave_PDO.GetCOPSCfgInfo" )
+	
+	function InitPage()
+	{	
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + '../img/plus2.gif'
+		imgMinus.src = csspath + '../img/minus2.gif'		
+//		imgUp.src = csspath + '../img/arrowUp.gif'
+//		imgDown.src = csspath + '../img/arrowDown.gif'
+		
+		// setta titolo e salva pagina corrente
+		var path = app.GetCurrentWindowData()
+		var node = app.SelectNodesXML(path + ".")[0]
+		pageTitle.innerText = "CANopen slave PDO #" + app.DataGet(path + "PDO_config[1]/Number[1]", 0) + " Configuration"
+//		SaveActiveWindow(WINDOW_NAME)
+
+		PDOTransmission_OnChange()
+
+		m_isTX = app.DataGet(path + "../@direction", 0) == "TX"
+
+		if ( m_copsCfg.COBIDauto )
+		{
+		    EditCOBID.readOnly = "true"
+		    EditCOBID.className = "InputReadonly"
+			
+			//	questo controllo non è associato automaticamente con la sintassi .D
+			app.CallFunction( "CANslave_PDO.UpdateCOBID", node )
+		}
+		
+		if ( m_isTX )
+			PDOTransmission_Cyclic_Row.style.display = "block"
+		else
+			PDOTransmission_Cyclic_Row.style.display = "none"
+		
+		//	questo controllo non è associato automaticamente con la sintassi .D
+		EditCOBID.value = parseInt(app.DataGet(path + "PDO_config[1]/COBID[1]", 0)).toString(16)
+	}
+	
+	function COBID_OnChange(newValue)
+	{
+		var path = app.GetCurrentWindowData()
+		var node = app.SelectNodesXML(path + ".")[0]
+		var currentValue = app.DataGet(path + "PDO_config[1]/COBID[1]", 0)
+		
+		if ( app.CallFunction( "CANslave_PDO.SetCOBID", node, newValue ) )
+			EditCOBID.value = parseInt(app.DataGet(path + "PDO_config[1]/COBID[1]", 0)).toString(16)
+		else
+		{
+			var msg = app.Translate( "Bad COBID value specified or COBID range not allowed")
+			app.MessageBox(msg, app.Translate( "COBID change" ), MSGBOX.MB_ICONEXCLAMATION)
+			
+			EditCOBID.value = parseInt(currentValue).toString(16)
+		}
+	}
+	
+	//	cambia il numero di PDO se quello specificato non è utilizzato	
+	function PDONumber_OnChange(newValue)
+	{
+		var path = app.GetCurrentWindowData()		
+		var node = app.SelectNodesXML(path + ".")[0]
+		var currentValue = app.DataGet(path + "PDO_config[1]/Number[1]", 0)
+		
+		var changed = app.CallFunction( "CANslave_PDO.ChangePDONumber", node, newValue )
+		if ( changed )
+		{
+			EditNumber.value = newValue		
+			EditCOBID.value = parseInt(app.DataGet(path + "PDO_config[1]/COBID[1]", 0)).toString(16)
+		}
+		else
+		{					
+			var msg = app.Translate( "PDO number already assigned or bad value specified")
+			app.MessageBox(msg, app.Translate( "PDO number change" ), MSGBOX.MB_ICONEXCLAMATION)
+			
+			EditNumber.value = currentValue
+		}
+	}
+	
+	function PDOTransmission_OnChange(value)
+	{
+		var path = app.GetCurrentWindowData()
+		if ( value == undefined )	//	setta valore corrente
+		{
+			value = app.DataGet(path + "PDO_config[1]/TransmissionMode[1]", 0)
+		}
+		
+		if ( value == 0 )	//	sync mode
+		{		
+			TransmissionType.value = "1"
+			app.DataSet(path + "PDO_config[1]/TransmissionType[1]", 0, "1")
+			TransmissionType.disabled = true
+			TransmissionTypeRow.style.display = "none"
+			
+			EventTimer.value = "0"
+			app.DataSet(path + "PDO_config[1]/EventTimer[1]", 0, "0")			
+			EventTimer.disabled = true
+			EventTimerRow.style.display = "none"
+		}
+		else if ( value == 1 )	//	event mode
+		{
+			TransmissionType.value = "255"
+			app.DataSet(path + "PDO_config[1]/TransmissionType[1]", 0, "255")
+			TransmissionType.disabled = true
+			TransmissionTypeRow.style.display = "none"
+			
+			EventTimer.value = "0"
+			app.DataSet(path + "PDO_config[1]/EventTimer[1]", 0, "0")
+			EventTimer.disabled = true
+			EventTimerRow.style.display = "none"
+		}
+		else if ( value == 2 )	//	cycle mode
+		{
+			TransmissionType.value = "255"
+			app.DataSet(path + "PDO_config[1]/TransmissionType[1]", 0, "255")
+			TransmissionType.disabled = true
+			TransmissionTypeRow.style.display = "none"
+			
+			EventTimer.disabled = false
+			EventTimerRow.style.display = "block"
+		}
+		else	//	user defined
+		{
+			TransmissionType.disabled = false
+			TransmissionTypeRow.style.display = "block"
+			EventTimer.disabled = false
+			EventTimerRow.style.display = "block"
+		}
+	}
+	</script>
+
+	<script type="text/javascript" src="grid_entrylist.js"></script>
+</head>
+
+<body onload="InitGrid(datapath.value)" onunload="OnUnload()">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table width="100%" style="height: 100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle">CAN PDO Configuration</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" style="height:100%; table-layout:fixed" border="0" cellpadding="0" cellspacing="0">
+				<tr style="height:220px; vertical-align:top">
+					<td class="tableHeader">
+						<fieldset style="width:300px; float:left">
+							<legend><t:t>PDO info</t:t></legend>
+							<label style="width:100px" for="EditDirection"><t:t>Direction:</t:t></label><input type="text" class="InputReadonly" readonly="readonly" id="EditDirection" name=".D(../@direction)"><br>
+                            <label style="width:100px" for="EditNumber"><t:t>Number:</t:t></label><input type="text" id="EditNumber" name=".D(PDO_config[1]/Number[1])" onchange="PDONumber_OnChange(this.value)"><br>
+                            <label style="width:100px" for="EditCOBID"><t:t>COBID (hex):</t:t></label><input type="text" id="EditCOBID" onchange="COBID_OnChange(this.value)"><br>
+						</fieldset>						
+						<fieldset style="width:300px; float:left">
+							<legend><t:t>PDO communication settings</t:t></legend>
+							<table style="width:100%">
+								<tr>
+									<td colspan="2"><input type="radio" id="PDOTransmission_Sync" name=".D(PDO_config[1]/TransmissionMode[1])" value="0" onclick="PDOTransmission_OnChange(this.value)"><label for="PDOTransmission_Sync"><t:t>SYNC Mode</t:t></label></td>
+								</tr>
+								<tr>
+									<td colspan="2"><input type="radio" id="PDOTransmission_Event" name=".D(PDO_config[1]/TransmissionMode[1])" value="1" onclick="PDOTransmission_OnChange(this.value)"><label for="PDOTransmission_Event"><t:t>EVENT Mode</t:t></label></td>
+								</tr>
+								<tr id="PDOTransmission_Cyclic_Row">
+									<td colspan="2"><input type="radio" id="PDOTransmission_Cyclic" name=".D(PDO_config[1]/TransmissionMode[1])" value="2" onclick="PDOTransmission_OnChange(this.value)"><label for="PDOTransmission_Cyclic"><t:t>CYCLIC Mode</t:t></label></td>
+								</tr>
+								<tr>
+									<td colspan="2"><input type="radio" id="PDOTransmission_Man" name=".D(PDO_config[1]/TransmissionMode[1])" value="-1" onclick="PDOTransmission_OnChange(this.value)"><label for="PDOTransmission_Man"><t:t>USER DEFINED Mode</t:t></label></td>
+								</tr>
+								<tr id="TransmissionTypeRow">
+									<td style="width:150px">
+										<label for="TransmissionType">Transmission Type:</label>
+									</td>
+									<td>
+										<input type="text" id="TransmissionType" size="4" style="margin-left:20px" name=".D(PDO_config[1]/TransmissionType[1])">
+									</td>
+								</tr>
+								<tr id="EventTimerRow">
+									<td style="width:150px">
+										<label for="EventTimer">Event Timer (ms):</label>
+									</td>
+									<td>
+										<input type="text" id="EventTimer" size="4" style="margin-left:20px" name=".D(PDO_config[1]/EventTimer[1])">
+									</td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+				<tr>
+					<td class="tableHeader">
+						<img id="imgPlus" alt="Add" name="button" src="" onClick="CANAddRow()" class="buttonImg" >
+						<span class="Titles_table buttonText" onClick="CANAddRow()"><t:t>Add</t:t></span>
+						<img id="imgMinus" alt="Delete" name="button" src="" onClick="grid_DeleteRowXML()" class="buttonImg" >
+						<span class="Titles_table buttonText" onClick="grid_DeleteRowXML()"><t:t>Remove</t:t></span>
+<!--
+						<span onClick="GridMoveUp(grid, gridDatapath)">
+							<img id="imgUp" alt="Add" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Up</t:t></span>
+						</span>
+						<span onClick="GridMoveDown(grid, gridDatapath)">
+							<img id="imgDown" alt="Add" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Down</t:t></span>
+						</span>
+-->
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+							<param name="margin" value="40">
+							<param name="multiselect" value="1">
+						</object>
+					</td>
+				</tr>
+			</table>
+			
+			<script type="text/javascript" src="grid_entrylist_events.js"></script>
+		</td>
+	</tr>
+
+</table>
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+</body>
+</html>

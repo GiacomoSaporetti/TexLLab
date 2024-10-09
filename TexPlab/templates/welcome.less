@@ -1,0 +1,278 @@
+// !!! stile derivato da welcome.less di LogicLab !!!
+
+.sfondo {
+	padding: 40px;
+	background: url(./img/sfondo.png) no-repeat top right; 
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	overflow: auto;
+}
+
+.column {
+	max-width: none;
+	min-width: 450px;
+}
+
+.column:nth-child(n+2) {
+	margin-left: 10px;
+}
+
+* {
+	font-family: Arial;
+}
+
+@table-background: #fff;
+@table-even-background: #fef8f4;
+@table-hover-background: #fbcaaa;
+
+.box {
+	border: 1px solid lightgray;
+
+	// titolo dei box
+	> .title {
+		font-size: 15px;
+		color: white;
+		background-color: #f47a27;
+		height: 35px;
+		line-height: 35px;
+		padding-left: 15px;
+		text-transform: uppercase;
+
+		&.singlebox {
+			width: 729px;
+		}
+	}
+
+	// box "new project"
+	.new-prj-container {
+		width: 370px;
+		min-width: 370px;
+		padding-bottom: 1px;	// altrimenti finisce di netto
+
+		// stile comune per la lista dei target e dei template
+		.list-catalog-table {
+			overflow-y: auto;
+			max-height: 600px;
+			display: block;
+			overflow-x: hidden;
+			background-color: @table-background;		// per non vedere lo sfondo
+
+			tbody {
+				display: block;
+			}
+
+			tr {
+				display: block;		// per fargli occupare tutta la riga
+
+				&:nth-child(n+2):nth-child(even) {
+					background-color: @table-even-background;
+				}
+			}
+
+			td.catalog-item {
+				padding: 5px;
+				display: flex;
+				cursor: pointer;
+
+				&:hover {
+					background-color: @table-hover-background;
+				}
+
+				&.disabled {
+					background-color: @table-background;
+					cursor: auto;
+				}
+
+				> img {
+					max-width: 50px;
+					max-height: 50px;
+				}
+
+				// stile comune per lista target e lista template
+				> div {
+					display: flex;
+					flex-direction: column;
+					margin-left: 10px;
+					overflow: hidden;		// serve per fare funzionare l'overflow ellipsis
+
+					// titolo
+					> span:first-child {
+						font-weight: bold;
+						font-size: 0.9em;
+						// le tre regole seguenti servono per fare funzionare l'overflow ellipsis
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+				}
+
+				// stile per la descrizione
+				.target-templ-descr() {
+					margin-top: 3px;
+					// le tre regole seguenti servono per fare funzionare l'overflow ellipsis
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				// stile per lista target
+				&.target > div {
+					// versione
+					> span:nth-child(2) {
+						margin-top: 3px;
+						font-size: 0.75em;
+						font-weight: bold;
+
+						&::before {
+							content: "Version: ";
+							font-weight: normal;
+						}
+					}
+
+					// descrizione
+					> span:nth-child(3) {
+						.target-templ-descr;
+						font-size: 0.70em;
+					}
+				}
+
+				// stile per lista template
+				&.template > div {
+					// qui c'e' solamente la descrizione
+					> span:nth-child(2) {
+						.target-templ-descr;
+						font-size: 0.8em;
+					}
+				}
+			}
+
+			.list-item-selected {
+				background-color: #f9b384 !important;
+			}
+		}
+	}
+
+	&.noborder {
+		border: none
+	}
+
+	&.box-targets {
+		background-color: @table-background;	// serve per non mostrare l'immagine di sfondo sotto alla tabella
+	}
+}
+
+// classe usata per lo scan e per i mru
+.mruTable {
+	font-size: 12px;
+	border-collapse: collapse;
+	width: 744px;		// e' la stessa lunghezza del target selection e template selection
+
+	// la prima riga e' dell'header
+	&#mru tr:nth-child(n+2):hover {
+		cursor: pointer;
+		background-color: @table-hover-background;
+	}
+
+	tr {
+		background-color: @table-background;		// per non vedere lo sfondo
+		min-height: 25px;
+
+		// header della tabella
+		&:first-child {
+			background-color: #d4d4d4;
+
+			td {
+				border-color: #d4d4d4;
+			}
+		}
+
+		&:nth-child(even) {
+			background-color: @table-even-background;
+		}
+
+		td {
+			text-align: center;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgb(201, 201, 201);
+			color: black;
+		}
+	}
+
+	// gestione mru nel caso manchino informazioni extra riguardanti i progetti
+	&.hide-extra-columns:not(#examples) {
+		tr:nth-child(2) {
+			// nasconde riga intestazione
+			display: none;
+		}
+
+		td:nth-child(n+2) {
+			// nasconde colonne aggiuntive
+			display: none;
+		}
+
+		td {
+			// allinea il testo a sinistra
+			text-align: left;
+			padding-left: 10px;
+		}
+	}
+}
+
+// bottoni grandi "new project", "open project"
+.hoverButton, .hoverButton:link, .hoverButton:visited {
+	text-decoration: none;
+	width: 200px;
+	height: 57px;
+	display: inline-block;
+}
+
+.hoverButton {
+	img {
+		border-style: none;
+		position: relative;
+		top: 8px;
+		left: 10px;
+	}
+
+	span {
+		position: relative;
+		top: -16px;
+		left: 15px;
+		font: bold 14px Arial;
+		color: white;
+	}
+}
+
+// filtro dei progetti recenti
+#mruFilterContainer {
+	float: right;
+	display: none;
+	font-size: 0.80em;
+	font-weight: normal;
+	text-transform: none;
+
+	.filter {
+		// serve specificare l'altezza altrimenti deforma l'interfaccia
+		height: 22px;
+		line-height: 22px;
+		margin-top: 10px;
+		border-radius: 5px;
+		padding: 5px;
+		margin-right: 10px;
+		background-color: rgb(134, 144, 152);
+		color: white;
+		font-weight: bold;
+
+		// x per rimuovere il filtro
+		> span:nth-child(n+2) {
+			margin-left: 4px;
+			cursor: pointer;
+			font-size: 1.4em;
+			font-weight: normal;
+		}
+	}
+}

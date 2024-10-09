@@ -1,0 +1,51 @@
+/************************************************************************************
+*                                                                                   *
+*                   !!!! MODIFICARE IL FILE .less E NON .css !!!!                   *
+*                                                                                   *
+*************************************************************************************/
+
+// includo lo stile comune per l'indicatore di stato
+@import (reference) "common.less";
+
+// stati diagnostica
+.status.on:before {
+	.color-dot(#94e185) ;
+}
+.status.unknown:before {
+	.color-dot(#ffc182) ;
+}
+.status.off:before {
+	.color-dot(#c9404d);
+}
+
+.status:before {
+	.dot-before-definition(7px);
+}
+.status.empty:before {
+	border-color: transparent;
+}
+
+// tabella degli stati della diagnostica
+table.diagno-tbl {
+	border-collapse: collapse;
+}
+
+table.diagno-tbl > * {
+	td {
+		border-bottom: 1px solid #ddd;
+		padding-right: 25px;
+
+		&.tab-head {
+			font-weight: bold;
+		}
+	}
+
+	.separator {
+		border-top: 2px solid gray;
+	}
+}
+
+// classe usata da praticamente tutte le pagine di diagnostica per nascondere programmaticamente elementi
+.hide {
+	display: none;
+}

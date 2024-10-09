@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- #DEFINE BROKER_ICON img\broker.ico -->
+
+<template>
+  <hmi>
+    <menu name="menu_MQTTAddBroker">
+      <command caption="Add broker" handler="MQTT.AddBroker" />
+      <separator/>
+      <command caption="Enable / Disable" handler="MQTT.EnableDisalbleNode"/>
+    </menu>
+    <menu name="menu_MQTTDeleteBroker">
+      <command caption="Rename broker" handler="common.RenameNode" />
+      <command caption="Delete broker" handler="MQTT.DeleteBroker" />
+      <separator/>
+      <command caption="Enable / Disable" handler="MQTT.EnableDisalbleNode"/>
+    </menu>
+
+    <window type="html" link="html\MQTThome.html" helpContext="MQTTPage">MQTTHome</window>
+    <window type="html" link="html\broker_connection.html" helpContext="MQTTPage">MQTTBrokerHome</window>
+    <window type="html" link="html\broker_publish.html" helpContext="MQTTPage">broker_publish</window>
+    <window type="html" link="html\broker_subscribe.html" helpContext="MQTTPage">broker_subscribe</window>
+    <form type="html" link="html\MQTTVarAssign.html" helpContext="MQTTPage" modal="true" ysize="300" xsize="650" xsizeMin="650" ysizeMin="300" resizable="true" icon="BROKER_ICON">MQTTVarAssign</form>
+    <form type="html" link="html\MQTTJSONPreview.html" helpContext="MQTTPage" modal="true" ysize="300" xsize="400" xsizeMin="400" ysizeMin="300" resizable="true" icon="BROKER_ICON">MQTTJSONPreview</form>
+
+    <tree name="tree1">
+      <node name="MQTT_Broker" icon="BROKER_ICON" datalink="MQTTBroker" window="MQTTBrokerHome" menu="menu_MQTTDeleteBroker" captionedit="true" onendcaptionedit="MQTT.OnEndBrokerEdit"/>
+    </tree>
+  </hmi>
+
+  <extensions>
+    <script alias="MQTT">MQTT.js</script>
+  </extensions>
+
+  <templatedata>
+    <brokerField name="" value="" sendonvariation="0" threshold="0"/>
+
+    <brokerMapping topic="" ro="true" qos="0" retain="0" payload="bin" inhibittime="0" polling="0" />
+
+    <MQTTBroker enabled="1" autoConnect="1" caption="New broker" clientname="" clientnameParametric="0" clientnameParametricVar="" ipaddress="" port="1883" tls="0" username="" usernameParametric="0" usernameParametricVar="" password="" passwordParametric="0" passwordParametricVar="" prefix="" qos="0" retain="0" payload="bin" polling="0" commonnameserver="" timeoutTCP="60" timeoutMQTT="60" clientCert="" clientKey="" caCert="">
+      <publish/>
+      <subscribe/>
+    </MQTTBroker>
+
+    <MQTT enabled="1">
+      <MQTTDownloadFiles/>
+    </MQTT>
+  </templatedata>
+
+  <datadef version="5.0">
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="llMQTT_positiveDecimal">
+      <xs:restriction base="xs:decimal">
+        <xs:minInclusive value="0"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="TMQTT_publish_field">
+      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="value" type="xs:string" />
+      <xs:attribute name="sendonvariation" type="xs:boolean" />
+      <xs:attribute name="threshold" type="llMQTT_positiveDecimal" />
+    </xs:complexType>
+
+    <xs:complexType name="TMQTT_mapping">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="brokerField" type="TMQTT_publish_field" />
+        </xs:sequence>
+        <xs:attribute name="topic" type="xs:string"/>
+        <xs:attribute name="ro" type="xs:boolean"/>
+        <xs:attribute name="qos">
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:enumeration value="0"/>
+              <xs:enumeration value="1"/>
+              <xs:enumeration value="2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="retain" type="xs:boolean"/>
+        <xs:attribute name="payload" type="xs:string"/>
+        <xs:attribute name="inhibittime" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="polling" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+      </xs:complexType>
+
+      <xs:complexType name="TMQTT_publish">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="brokerMapping" type="TMQTT_mapping"/>
+        </xs:sequence>
+        <xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true"/>
+        <xs:attribute name="locationPage" type="xs:string" fixed="broker_publish" />
+      </xs:complexType>
+
+      <xs:complexType name="TMQTT_subscribe">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="brokerMapping" type="TMQTT_mapping"/>
+        </xs:sequence>
+        <xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true"/>
+        <xs:attribute name="locationPage" type="xs:string" fixed="broker_subscribe" />
+      </xs:complexType>
+
+      <xs:complexType name="TMQTT_Broker">
+        <xs:sequence>
+          <xs:element name="publish" type="TMQTT_publish"/>
+          <xs:element name="subscribe" type="TMQTT_subscribe"/>
+        </xs:sequence>
+        <xs:attribute name="enabled" type="xs:boolean"/>
+        <xs:attribute name="autoConnect" type="xs:boolean"/>
+        <xs:attribute name="clientname" type="xs:string"/>
+        <xs:attribute name="clientnameParametric" type="xs:boolean"/>
+        <xs:attribute name="clientnameParametricVar" type="xs:string"/>
+        <xs:attribute name="ipaddress" type="xs:string"/>
+        <xs:attribute name="tls" type="xs:boolean"/>
+        <xs:attribute name="commonnameserver" type="xs:string"/>
+        <xs:attribute name="username" type="xs:string"/>
+        <xs:attribute name="usernameParametric" type="xs:boolean"/>
+        <xs:attribute name="usernameParametricVar" type="xs:string"/>
+        <xs:attribute name="password" type="xs:string"/>
+        <xs:attribute name="passwordParametric" type="xs:boolean"/>
+        <xs:attribute name="passwordParametricVar" type="xs:string"/>
+        <xs:attribute name="port" type="xs:positiveInteger"/>
+        <xs:attribute name="caption" type="xs:string"/>
+        <xs:attribute name="prefix" type="xs:string"/>
+        <xs:attribute name="retain" type="xs:boolean"/>
+        <xs:attribute name="polling" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="qos">
+          <xs:simpleType>
+            <xs:restriction base="xs:integer">
+              <xs:enumeration value="0"/>
+              <xs:enumeration value="1"/>
+              <xs:enumeration value="2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="payload" type="xs:string"/>
+        <xs:attribute name="uniqueID" type="xs:integer"/>
+        <xs:attribute name="timeoutTCP" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="timeoutMQTT" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="clientCert" type="xs:string"/>
+        <xs:attribute name="clientKey" type="xs:string"/>
+        <xs:attribute name="caCert" type="xs:string"/>
+        <xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+        <xs:attribute name="onloadnode" type="xs:string" fixed="MQTT.OnLoadNode"/>
+      </xs:complexType>
+
+      <xs:complexType name="TMQTT_DownloadFiles">
+        <xs:sequence>
+          <xs:element name="filename" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="TMQTT">
+        <xs:sequence>
+          <xs:element name="MQTTDownloadFiles" type="TMQTT_DownloadFiles" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="MQTTBroker" type="TMQTT_Broker" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="enabled" type="xs:boolean"/>
+        <xs:attribute name="onloadnode" type="xs:string" fixed="MQTT.OnLoadNode"/>
+        <!-- permette l'aggancio del nodo al proprio template di riferimento e abilita gli aggiornamenti -->
+        <xs:attribute name="ExtensionName" type="xs:string" fixed="MQTT"/>
+        <xs:attribute name="template" type="xs:string"/>
+        <xs:attribute name="version" type="xs:decimal"/>
+      </xs:complexType>
+    </xs:schema>
+  </datadef>
+</template>

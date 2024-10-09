@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Diagnostics</title>
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<LINK href='" + csspath + "diagnostics.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+		var app = window.external;
+		var gentypes = app.CallFunction("common.GetGeneralTypes");
+	</script>
+
+	<script src="broker_diagnostics.js"></script>
+
+	<style>
+		.enable-label {
+			width: 115px;
+			display: inline-block;
+		}
+	</style>
+</head>
+<body scroll="no">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr class="TitlePag">
+			<td id="pageTitle"><t:t>publish configuration</t:t></td>
+		</tr>
+
+		<tr>
+			<td class="SfondoTab">
+				<div class="menu html5">
+					<div class="menu_off"> <a href="broker_connection.html"><t:t>Connection</t:t></a> </div>
+					<div class="menu_off"> <a href="broker_publish.html"><t:t>Publish</t:t></a></div>
+					<div class="menu_off"> <a href="broker_subscribe.html"><t:t>Subscribe</t:t></a></div>
+					<div class="menu_on"> <a href="#"><t:t>Diagnostics</t:t></a></div>
+					&nbsp;
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="Sfondo">
+				<fieldset>
+					<legend><t:t>Diagnostics</t:t></legend>
+					<div id="diagnosticData" class="hide">
+						<table class="diagno-tbl">
+							<tr>
+								<th></th>
+								<th><label><b><t:t>Description</t:t></b></label></th>
+								<th><label><b><t:t>Value</t:t></b></label></th>
+							</tr>
+							<tr>
+								<td><label><t:t>Configured</t:t>:</label</td>
+								<td><label id="txtConfigured"></label></td>
+								<td><label id="txtConfiguredVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Connection state</t:t>:</label</td>
+								<td><label id="txtConnState"></label></td>
+								<td><label id="txtConnStateVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Active</t:t>:</label</td>
+								<td><label id="txtActive"></label></td>
+								<td><label id="txtActiveVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Running</t:t>:</label</td>
+								<td><label id="txtRunning"></label></td>
+								<td><label id="txtRunningVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Published variables count</t:t>:</label></td>
+								<td><label class="status empty">-</label></td>
+								<td><label id="txtOutputVars"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Subscribed variables count</t:t>:</label></td>
+								<td><label class="status empty">-</label></td>
+								<td><label id="txtInputVars"></label></td>
+							</tr>
+							<tr id="rowErrPub">
+								<td><label><t:t>Error in publish</t:t>:</label></td>
+								<td><label id="txtErrPub"></label></td>
+								<td><label id="txtErrPubVal"></label></td>
+							</tr>
+							<tr id="rowErrPubIdx">
+								<td><label><t:t>Publish error index</t:t>:</label></td>
+								<td><label class="status empty">-</td>
+								<td><label id="txtErrPubIdxVal"></label></td>
+							</tr>
+							<tr id="rowErrSub">
+								<td><label><t:t>Error in subscribe</t:t>:</label></td>
+								<td><label id="txtErrSub"></label></td>
+								<td><label id="txtErrSubVal"></label></td>
+							</tr>
+							<tr id="rowErrSubIdx">
+								<td><label><t:t>Subscribe error index</t:t>:</label></td>
+								<td><label id="txtErrSubIdx"></label></td>
+								<td><label id="txtErrSubIdxVal"></label></td>
+							</tr>
+						</table>
+					</div>
+					<label id="diagnosticsEnableMessage" class="hide"></label>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
+
+	<script>InitPage();</script>
+</body>
+</html>

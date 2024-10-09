@@ -1,0 +1,287 @@
+﻿	(************************)
+	(*                      *)
+	(*        ENUMS         *)
+	(*                      *)
+	(************************)
+
+TYPE
+
+	COPS_CHN_ENUM: ( { DE:"CAN physical channel" }
+		COPS_CHN_CAN0 := 0,{ DE:"CAN channel 0" }
+		COPS_CHN_CAN1 := 1,{ DE:"CAN channel 1" }
+		COPS_CHN_CAN2 := 2{ DE:"CAN channel 2" }
+	);
+
+	COPS_BAUD_ENUM: ( { DE:"Baud rate CAN, Kbit/s" }		
+		COPS_BAUD_1000K := 0,		{ DE:"1000 Kbit/s" }
+		COPS_BAUD_800K := 1,		{ DE:"800 Kbit/s" }
+		COPS_BAUD_500K := 2,		{ DE:"500 Kbit/s" }
+		COPS_BAUD_250K := 3,		{ DE:"250 Kbit/s" }
+		COPS_BAUD_125K := 4,		{ DE:"125 Kbit/s" }
+		COPS_BAUD_100K := 5,		{ DE:"100 Kbit/s" }
+		COPS_BAUD_50K := 6,			{ DE:"50 Kbit/s" }
+		COPS_BAUD_20K := 7,			{ DE:"20 Kbit/s" }
+		COPS_BAUD_10K := 8,			{ DE:"10 Kbit/s" }
+		COPS_BAUD_AUTO := 9,		{ DE:"10 Kbit/s" }
+		COPS_BAUD_DISABLED := 255	{ DE:"Disabled" }
+	);
+	
+	COPS_CONFIG_ERROR_CODES: ( 	{ DE:"Configuration error codes" }
+		COPS_E_OK := 0,				{ DE:"No Error" }
+		COPS_E_CAN_START := -411, 	{ DE:"Error starting CAN driver" }
+		COPS_E_CAN_INIT := -410, 	{ DE:"Error initializing CAN driver" }
+		COPS_E_SDO2_INIT := -409, 	{ DE:"Error initializing SDO2 module" }
+		COPS_E_SDO1_INIT := -408, 	{ DE:"Error initializing SDO1 module" }
+		COPS_E_SDO0_INIT := -407, 	{ DE:"Error initializing SDO0 module" }
+		COPS_E_NGE_INIT := -406, 	{ DE:"Error initializing NGE module" }
+		COPS_E_EMCY_INIT := -405, 	{ DE:"Error initializing EMCY module" }
+		COPS_E_PDOTX_INIT := -404, 	{ DE:"Error initializing PDOTX module" }
+		COPS_E_PDORX_INIT := -403, 	{ DE:"Error initializing PDORX module" }
+		COPS_E_SYNC_INIT := -402, 	{ DE:"Error initializing SYNC module" }
+		COPS_E_NMT_INIT := -401 	{ DE:"Error initializing NMT module" }
+	);
+	
+	COPS_OBJDICT_ERROR_CODES: (	{ DE:"Object dictionary error codes" }
+		COPS_OBJDICT_OK				:= 16#00000000,	{ DE:"No error" }
+		COPS_OBJDICT_NO_PAR			:= 16#06020000,	{ DE:"Object does not exist in the object dictionary" }
+		COPS_OBJDICT_NO_SUB_I		:= 16#06090011,	{ DE:"Sub-index does not exist" }
+		COPS_OBJDICT_READONLY		:= 16#06010002,	{ DE:"Attempt to write a read only object" }
+		COPS_OBJDICT_NOTWRITENOW	:= 16#08000022,	{ DE:"Data cannot be transferred or stored to the application because of the present device state" }
+		COPS_OBJDICT_MINVAL			:= 16#06090032,	{ DE:"Value of parameter written too low" }
+		COPS_OBJDICT_MAXVAL			:= 16#06090031,	{ DE:"Value of parameter written too high" }
+		COPS_OBJDICT_CONSTANTLIMITS	:= 16#08000021,	{ DE:"Data cannot be transferred or stored to the application  because of local control" }
+		COPS_OBJDICT_VAL_EXCEEDED	:= 16#06090030,	{ DE:"Value range of parameter exceeded" }
+		COPS_OBJDICT_ACCESS			:= 16#06010000,	{ DE:"Unsupported access to an object" }
+		COPS_OBJDICT_GENERAL		:= 16#08000000,	{ DE:"General error" }
+		COPS_OBJDICT_SAVE			:= 16#06060000,	{ DE:"Access failed due to an hardware error" }
+		COPS_OBJDICT_SIGNATURE		:= 16#08000020,	{ DE:"Data cannot be transferred or stored to the application" }
+		COPS_OBJDICT_TOGGLE			:= 16#05030000,	{ DE:"Toggle bit not alternated" }
+		COPS_OBJDICT_TIMEOUT		:= 16#05040000,	{ DE:"SDO protocol timed out" }
+		COPS_OBJDICT_CSCOMM			:= 16#05040001,	{ DE:"Client/server command specifier not valid or unknown" }
+		COPS_OBJDICT_WRITEONLY		:= 16#06010001,	{ DE:"Attempt to read a write only object" }
+		COPS_OBJDICT_LENGTH			:= 16#06070010,	{ DE:"Data type does not match, length of service parameter does not match" }
+		COPS_OBJDICT_LENHIGH		:= 16#06070012,	{ DE:"Data type does not match, length of service parameter too high" }
+		COPS_OBJDICT_LENLOW			:= 16#06070013,	{ DE:"Data type does not match, length of service parameter too low" }
+		COPS_OBJDICT_PDOMAPPED		:= 16#06040041,	{ DE:"Object cannot be mapped to the PDO" }
+		COPS_OBJDICT_PDOLEN			:= 16#06040042,	{ DE:"The number and length of the objects to be mapped would exceed PDO length" }
+		COPS_OBJDICT_INC			:= 16#06040043	{ DE:"General parameter incompatibility reason" }
+	);
+
+	COPS_PARAM_STRUCT : STRUCT	{ DE:"Structure to manage default parametrization" }
+		index : WORD;			{ DE:"Index" }
+		subindex : USINT;		{ DE:"Subindex" }
+		len : USINT; 			{ DE:"Length in bytes" }
+		isExtBuff : BOOL;		{ DE:"FALSE: value is in value field, TRUE: value field is a pointer to the value" }
+		reserved_0 : USINT;		{ DE:"Reserved for future use" }
+		reserved_1 : UINT;		{ DE:"Reserved for future use" }
+		value : DWORD;			{ DE:"Value or pointer to the value depending on extBuff" }
+	END_STRUCT;
+	
+	COPS_OBJDICT_ERROR_STRUCT : STRUCT	{ DE:"Configuration error diagnostic" }
+		index : WORD;			{ DE:"Index" }
+		subindex : USINT;		{ DE:"Subindex" }
+		isWriteOp : BOOL;		{ DE:"Is write operation" }
+		error : COPS_OBJDICT_ERROR_CODES;		{ DE:"Error code" }
+		errorCounter : UDINT;	{ DE:"Error counter" }
+	END_STRUCT;
+
+	COPS_SDO_ABORT_ENUM: ( { DE:"CANopen SDO abort code, according to DS301" }
+		COPS_SDO_ABORT_OK := 16#00000000,		{ DE:"No error" }
+		COPS_SDO_ABORT_TGBIT := 16#05030000,	{ DE:"Toggle bit not alternated" }
+		COPS_SDO_ABORT_TMO := 16#05040000,		{ DE:"SDO protocol timed out" }
+		COPS_SDO_ABORT_CSC := 16#05040001,		{ DE:"Client/server command specifier not valid or unknown" }
+		COPS_SDO_ABORT_BCKS := 16#05040002,		{ DE:"Invalid block size (block mode only)" }
+		COPS_SDO_ABORT_SEQN := 16#05040003,		{ DE:"Invalid sequence number (block mode only)" }
+		COPS_SDO_ABORT_CRC := 16#05040004,		{ DE:"CRC error (block mode only)" }
+		COPS_SDO_ABORT_OUTM := 16#05040005,		{ DE:"Out of memory" }
+		COPS_SDO_ABORT_UNACC := 16#06010000,	{ DE:"Unsupported access to an object" }
+		COPS_SDO_ABORT_WRONLY := 16#06010001,	{ DE:"Attempt to read a write only object" }
+		COPS_SDO_ABORT_RDONLY := 16#06010002,	{ DE:"Attempt to write a read only object" }
+		COPS_SDO_ABORT_NOOBJ := 16#06020000,	{ DE:"Object does not exist in the object dictionary" }
+		COPS_SDO_ABORT_MAPOBJ := 16#06040041,	{ DE:"Object cannot be mapped to the PDO" }
+		COPS_SDO_ABORT_EXCPDO := 16#06040042,	{ DE:"The number and length of the objects to be mapped would exceed PDO length" }
+		COPS_SDO_ABORT_PARINC := 16#06040043,	{ DE:"General parameter incompatibility reason" }
+		COPS_SDO_ABORT_GENINC := 16#06040047,	{ DE:"General internal incompatibility in the device" }
+		COPS_SDO_ABORT_HWERR := 16#06060000,	{ DE:"Access failed due to an hardware error" }
+		COPS_SDO_ABORT_OBJLEN := 16#06070010,	{ DE:"Data type does not match, length of service parameter does not match" }
+		COPS_SDO_ABORT_TOOHG := 16#06070012,	{ DE:"Data type does not match, length of service parameter too high" }
+		COPS_SDO_ABORT_TOOLW := 16#06070013,	{ DE:"Data type does not match, length of service parameter too low" }
+		COPS_SDO_ABORT_NOSI := 16#06090011,		{ DE:"Sub-index does not exist" }
+		COPS_SDO_ABORT_RANGE := 16#06090030,	{ DE:"Value range of parameter exceeded" }
+		COPS_SDO_ABORT_LIMHG := 16#06090031,	{ DE:"Value of parameter written too high" }
+		COPS_SDO_ABORT_LIMLW := 16#06090032,	{ DE:"Value of parameter written too low" }
+		COPS_SDO_ABORT_HGLW := 16#06090036,		{ DE:"Maximum value is less than minimum value" }
+		COPS_SDO_ABORT_GENERIC := 16#08000000,	{ DE:"General error" }
+		COPS_SDO_ABORT_TRANSF := 16#08000020,	{ DE:"Data cannot be transferred or stored to the application" }
+		COPS_SDO_ABORT_TRANSFLOC := 16#08000021,{ DE:"Data cannot be transferred or stored to the application  because of local control" }
+		COPS_SDO_ABORT_TRANSSTAT := 16#08000022,{ DE:"Data cannot be transferred or stored to the application because of the present device state" }
+		COPS_SDO_ABORT_OBJDICT := 16#08000023	{ DE:"Object dictionary dynamic generation fails" }
+	);
+	
+	COPS_SDO_STATUS_ENUM: ( { DE:"CANopen SDO client procedure execution state" }
+		COPS_SDO_INIT := 0,	{ DE:"Initialization. Ready for new request" }
+		COPS_SDO_WAIT := 1,	{ DE:"Slave queried busy" }
+		COPS_SDO_RQ := 2,	{ DE:"Send request" }
+		COPS_SDO_RSP := 3,	{ DE:"Wait response" }
+		COPS_SDO_END := 4	{ DE:"Terminated. Ready for new request" }
+	);
+	
+	COPS_ERROR_ENUM: ( { DE:"CANopen slave error code" }
+		COPS_E_OK := 0,			{ DE:"No error" }
+		COPS_E_NOT_READY := 1,	{ DE:"Current device not ready" }
+		COPS_E_NODE := 2,		{ DE:"Specified node does not exists" }
+		COPS_E_SYS := 3,			{ DE:"Generic error" }
+		COPS_E_ABORT := 4,		{ DE:"Slave abort request" }
+		COPS_E_LENGTH := 5		{ DE:"Length not supported (1,2,4 are supported)" }
+	);
+	
+END_TYPE
+
+
+	(************************)
+	(*                      *)
+	(*      STRUCTURES      *)
+	(*                      *)
+	(************************)
+
+TYPE
+
+	COPS_STATUS_STRUCT : STRUCT 
+		can_chn : USINT; 	{ DE: "Channel number" }
+		node : USINT; 		{ DE: "Node ID" }
+		cfg : BOOL; 		{ DE: "True if default configuration has been applied" }
+		initOk : BOOL; 		{ DE: "True if configuration has been applied and COPS has been inited, if false see errorCode" }
+		errorCode : COPS_CONFIG_ERROR_CODES; { DE: "Error code, if error in the startup process" } 
+		n_pdotxa : UINT;	{ DE: "Number of asynchronous PDO TX" }
+		n_pdotxs : UINT;	{ DE: "Number of synchronous PDO TX" }
+		n_pdorxa : UINT;	{ DE: "Number of asynchronous PDO RX" }
+		n_pdorxs : UINT; 	{ DE: "Number of synchronous PDO RX" }
+		baudrate : UDINT; 	{ DE: "Baudrate bps" }
+		netStat : BYTE; 	{ DE: "State machine status:
+16#00 is Boot up,
+16#01 is Missing,
+16#04 is Stopped,
+16#05 is Operational,
+16#06 is Reset,
+16#7F is Pre operational
+16#FF invalid configuration" }
+		isOperational : BOOL;	{ DE: "Running and in operational status" }
+		isBusOff : BOOL;		{ DE: "CAN bus off status" }
+	END_STRUCT;
+
+END_TYPE
+
+	(****************************)
+	(*                          *)
+	(*     GLOBAL VARIABLES     *)
+	(*                          *)
+	(****************************)
+
+{ ALLOCATE:sysCopsStatus }
+	
+VAR_GLOBAL
+
+{G:"CANOpen Slave"}
+
+sysCopsStatus AT %IB60072.0 : COPS_STATUS_STRUCT; 
+	{ DE:"System CANopen Slave Diagno. It is a structure of type COPS_STATUS_STRUCT" }
+sysCopsObjDictError AT %IB60073.0 : COPS_OBJDICT_ERROR_STRUCT; 
+	{ DE:"CANopen Slave Object Dictionary Diagno. It is a structure of type COPS_OBJDICT_ERROR_STRUCT" }
+
+END_VAR
+
+FUNCTION AlCOPS_SetConfiguration : BOOL
+	{ HIDDEN:ON }
+	{ DE:"CANopen slave configuration settings" }
+	VAR_INPUT
+		can : COPS_CHN_ENUM;		{ DE:"CAN physical channel, referred to enumerative COPS_CHN_ENUM" }
+		baudrate : COPS_BAUD_ENUM;	{ DE:"CAN baudrate, referred to enumerative COPS_BAUD_ENUM" }
+		nodeID : USINT;				{ DE:"Node ID of the slave" }
+		start : BOOL;				{ DE:"Start NMT automatically" }
+		addrParamCfgTable : DWORD;  { DE:"Address of the parameters configuration table" }
+		numParamCfgTable : UINT;	{ DE:"Number of records of COPS_PARAM_STRUCT in the table" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION_BLOCK sysCops_SlaveSetObjBuffer
+	{ DE:"Cops set integer object on other slave" }
+	VAR_INPUT
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		objd : USINT;	{ DE:"Slave Object size, 1 to 4" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		reserved : BYTE;{ DE:"Reserved for future use" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+		pval : PVOID;	{ DE:"Pointer to the value to be written" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		reserved2 : ARRAY [0..2] OF BYTE;
+		status : COPS_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		error : COPS_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPS_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCops_SlaveGetObjBuffer
+	{ DE:"Cops get integer object from other slave" }
+	VAR_INPUT
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+		vald : UINT;	{ DE:"Max buffer size" }
+		pval : PVOID;	{ DE:"Pointer to the value to be readed" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		objd : USINT;					{ DE:"Length in bytes of the object readed"}
+		reserved : UINT;				{ DE:"Reserved for future use" }
+		status : COPS_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPS_SDO_STATUS_ENUM"}
+		error : COPS_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPS_ERROR_ENUM for returned value" }
+		abort : COPS_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPS_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCops_SlaveSetObjInteger
+	{ DE:"Cops set integer object on other slave" }
+	VAR_INPUT
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		objd : USINT;	{ DE:"Slave Object size, 1 to 4" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		reserved : BYTE;{ DE:"Reserved for future use" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+		val : DINT;		{ DE:"Integer Value to be written" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		reserved2 : ARRAY [0..2] OF BYTE;
+		status : COPS_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		error : COPS_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPS_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCops_SlaveGetObjInteger
+	{ DE:"Cops get integer object from other slave" }
+	VAR_INPUT
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		objd : USINT;					{ DE:"Length in bytes of the object readed"}
+		status : COPS_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPS_SDO_STATUS_ENUM"}
+		val : DINT;						{ DE:"Integer Value that was read" }
+		error : COPS_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPS_ERROR_ENUM for returned value" }
+		abort : COPS_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPS_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK

@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Device driver" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Device driver" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="DRIVER_4"/>
+				<Pou name="DRIVER_4C"/>
+				<Pou name="DRIVER_1"/>
+				<Pou name="MANUAL_2"/>
+				<Pou name="MANUAL_1"/>
+				<Pou name="MANUAL_4"/>
+				<Pou name="MANUAL"/>
+				<Pou name="FLOW_CONTROL"/>
+				<Pou name="TUNE"/>
+				<Pou name="INTERLOCK"/>
+				<Pou name="INTERLOCK_4"/>
+				<Pou name="PARSET"/>
+				<Pou name="PARSET2"/>
+				<Pou name="TUNE2"/>
+				<Pou name="SIGNAL"/>
+				<Pou name="SIGNAL_4"/>
+				<Pou name="INC_DEC"/>
+				<Pou name="FT_Profile"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="MANUAL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="ON" type="BOOL"/>
+						<var name="OFF" type="BOOL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+MANUAL is a manual override for digital signals.
+when on and off = FALSE, the output follows IN.
+ON = TRUE forces the output high, and OFF = TRUE forces the output low.
+
+
+*)
+
+MANUAL := NOT OFF AND (IN OR ON);
+
+
+
+(* revision history
+hm	21. nov 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="DRIVER_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="Toggle_Mode" type="BOOL"/>
+						<var name="Timeout" type="TIME"/>
+						<var name="SET" type="BOOL"/>
+						<var name="IN0" type="BOOL"/>
+						<var name="IN1" type="BOOL"/>
+						<var name="IN2" type="BOOL"/>
+						<var name="IN3" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+						<var name="Q3" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="d0" type="DRIVER_1"/>
+						<var name="d1" type="DRIVER_1"/>
+						<var name="d2" type="DRIVER_1"/>
+						<var name="d3" type="DRIVER_1"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	2 jan 2008
+programmer 	hugo
+tested by		tobias
+
+driver_4 is a 4 channel multi purpose driver.
+a rising edge on in? sets the output Q? high if toggle_mode is flase. while toggle_mode is true, a rising edge on in? toggles the output Q?.
+if a timeout is specified the output Q? will be reset to false automatically after the timeout has elapsed.
+a asynchronous reset and set will force the output high or low respectively.
+an asynchronous set will force all outputs high simultaneously
+
+*)
+
+D0(Set:=set, in:=in0, rst:=rst, toggle_mode:=toggle_mode, timeout:=timeout);
+D1(Set:=set, in:=in1, rst:=rst, toggle_mode:=toggle_mode, timeout:=timeout);
+D2(Set:=set, in:=in2, rst:=rst, toggle_mode:=toggle_mode, timeout:=timeout);
+D3(Set:=set, in:=in3, rst:=rst, toggle_mode:=toggle_mode, timeout:=timeout);
+Q0 := D0.Q;
+Q1 := D1.Q;
+Q2 := D2.Q;
+Q3 := D3.Q;
+
+
+(* revision history
+hm	2. jan 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DRIVER_4C" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+						<var name="Timeout" type="TIME"/>
+					</inputVars>
+					<outputVars>
+						<var name="SN" type="INT"/>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+						<var name="Q3" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="off" type="TON"/>
+						<var name="edge" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	23. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+driver_4C is a multi purpose driver.
+a rising edge on in switches from S0 state S1 and the next edge to state S2 and so on.
+in state S0 all outputs Q are FALSE.
+The stet of the Outputs in any state S? is configurable with setup variables.
+The variables S1..S5 define the states, while the sequence is terminated when a state Variable S? = 0.
+The lower bits 0..3 of the state vars S? are corresponding to the Outputs Q0..Q3
+
+*)
+
+IF RST OR off.Q THEN
+	SN := 0;
+ELSIF IN AND NOT edge THEN
+	SN := SN + 1;
+	IF SN > 7 OR SX[SN] = 0 THEN SN := 0; END_IF;
+END_IF;
+edge := in;
+IF SN > 0 THEN
+	Q0 := SX[SN].0;
+	Q1 := SX[SN].1;
+	Q2 := SX[SN].2;
+	Q3 := SX[SN].3;
+ELSE
+	Q0 := FALSE;
+	Q1 := FALSE;
+	Q2 := FALSE;
+	Q3 := FALSE;
+END_IF;
+
+(* maximaum timeout *)
+IF timeout > t#0s THEN off(in := SN > 0, PT := Timeout); END_IF;
+
+
+(* revision history
+hm	23. mar. 2009	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DRIVER_1" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="Toggle_Mode" type="BOOL"/>
+						<var name="Timeout" type="TIME"/>
+						<var name="SET" type="BOOL"/>
+						<var name="IN" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="off" type="TON"/>
+						<var name="edge" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	2 jan 2008
+programmer 	hugo
+tested by		tobias
+
+driver_1 is a multi purpose driver.
+a rising edge on in sets the output high if toggle is flase. while toggle is true, a rising edge on in toggles the output Q.
+if a timeout is specified the output q will be reset to false automatically after the timeout has elapsed.
+a asynchronous reset and set will force the output high or low respectively.
+
+*)
+
+IF off.Q THEN Q := FALSE; END_IF;
+IF rst THEN
+	Q := FALSE;
+ELSIF set THEN
+	Q := TRUE;
+ELSIF IN AND NOT edge THEN
+	IF toggle_mode THEN q := NOT Q; ELSE q := TRUE; END_IF;
+END_IF;
+edge := in;
+IF timeout > t#0s THEN off(in := Q, PT := Timeout); END_IF;
+
+
+(* revision history
+hm	2. jan 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MANUAL_2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="ENA" type="BOOL"/>
+						<var name="ON" type="BOOL"/>
+						<var name="OFF" type="BOOL"/>
+						<var name="MAN" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+						<var name="STATUS" type="BYTE"/>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	22. sep. 2008
+programmer 	hugo
+tested by	oscat
+
+MANUAL_2 is a manual override for boolean signals.
+it has static force high and low as well as a manual input.
+
+*)
+
+IF ena THEN
+	IF NOT ON AND NOT OFF THEN
+		Q := IN;
+		STATUS := 100;
+	ELSIF on AND NOT off THEN
+		Q := TRUE;
+		STATUS := 101;
+	ELSIF NOT on AND off THEN
+		q := FALSE;
+		STATUS := 102;
+	ELSE
+		Q := MAN;
+		STATUS := 103;
+	END_IF;
+ELSE
+	Q := FALSE;
+	STATUS := 104;
+END_IF;
+
+
+
+(* revision history
+hm	22. sep. 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MANUAL_1" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="MAN" type="BOOL"/>
+						<var name="M_I" type="BOOL"/>
+						<var name="SET" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+						<var name="STATUS" type="BYTE"/>
+					</outputVars>
+					<localVars>
+						<var name="S_edge" type="BOOL"/>
+						<var name="r_edge" type="BOOL"/>
+						<var name="edge" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.2	14. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+MANUAL_1 is a manual override for digital signals.
+When MAN = FALSE, the output follows IN and when MAN = TRUE the Output follows M_I.
+
+
+*)
+
+IF NOT man THEN
+	Q := IN;
+	STATUS := 100;
+	edge := FALSE;
+ELSIF NOT s_edge AND set THEN
+	Q := TRUE;
+	edge := TRUE;
+	status := 101;
+ELSIF NOT r_edge AND rst THEN
+	Q := FALSE;
+	edge := TRUE;
+	status := 102;
+ELSIF NOT edge THEN
+	Q := M_I;
+	status := 103;
+END_IF;
+
+(* remember levels of manual signals *)
+s_edge := SET;
+r_edge := RST;
+
+
+
+(* revision history
+hm	17. jun 2008	rev 1.0
+	original version
+
+hm	17. oct 2008	rev 1.1
+	deleted unnecessary variable m_edge
+
+hm	14. mar. 2009	rev 1.2
+	replaced double assignments
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MANUAL_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="I0" type="BOOL"/>
+						<var name="I1" type="BOOL"/>
+						<var name="I2" type="BOOL"/>
+						<var name="I3" type="BOOL"/>
+						<var name="MAN" type="BOOL"/>
+						<var name="STP" type="BOOL"/>
+						<var name="M0" type="BOOL"/>
+						<var name="M1" type="BOOL"/>
+						<var name="M2" type="BOOL"/>
+						<var name="M3" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL"/>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+						<var name="Q3" type="BOOL"/>
+						<var name="STATUS" type="BYTE"/>
+					</outputVars>
+					<localVars>
+						<var name="edge" type="BOOL"/>
+						<var name="pos" type="INT"/>
+						<var name="tog" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	17. jun 2008
+programmer 	hugo
+tested by	oscat
+
+MANUAL_4 is a manual override for digital signals.
+When MAN = FALSE, the output follows IN and when MAN = TRUE the Output follows M_I.
+
+
+*)
+
+IF man THEN
+	IF NOT TOG THEN
+		Q0 := M0;
+		Q1 := M1;
+		Q2 := M2;
+		Q3 := M3;
+		STATUS := 101;
+	END_IF;
+	IF STP AND NOT edge THEN
+		tog := TRUE;
+		CASE pos OF
+			0:	Q0 := TRUE;
+				Q1 := FALSE;
+				Q2 := FALSE;
+				Q3 := FALSE;
+				STATUS := 110;
+			1:	Q0 := FALSE;
+				Q1 := TRUE;
+				Q2 := FALSE;
+				Q3 := FALSE;
+				STATUS := 111;
+			2:	Q0 := FALSE;
+				Q1 := FALSE;
+				Q2 := TRUE;
+				Q3 := FALSE;
+				STATUS := 112;
+			3:	Q0 := FALSE;
+				Q1 := FALSE;
+				Q2 := FALSE;
+				Q3 := TRUE;
+				STATUS := 113;
+		END_CASE;
+		pos := INC(pos,1,3);
+	END_IF;
+ELSE
+	Q0 := I0;
+	Q1 := I1;
+	Q2 := I2;
+	Q3 := I3;
+	STATUS := 100;
+	tog := FALSE;
+	pos := 0;
+END_IF;
+
+(* remember status of stp *)
+edge := STP;
+
+
+
+(* revision history
+hm	17. jun 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FLOW_CONTROL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="REQ" type="BOOL"/>
+						<var name="ENQ" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+						<var name="T_AUTO" type="TIME">
+							<initValue>T#1h</initValue>
+						</var>
+						<var name="T_DELAY" type="TIME">
+							<initValue>T#23h</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+						<var name="STATUS" type="BYTE"/>
+					</outputVars>
+					<localVars>
+						<var name="timer" type="TP_1D"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	28. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+FLOW_CONTROL switches a valves depending on the input in.
+flow control also limits the maximum ontime of the valve and controls pressure on the output side.
+
+*)
+
+
+STATUS := 100;
+IF RST THEN
+	Q := FALSE;
+	timer(rst := TRUE);
+	timer.RST := FALSE;
+	STATUS := 103;
+ELSIF ENQ THEN
+	IF IN THEN
+		status := 101;
+	END_IF;
+	IF REQ THEN
+		(* timer will generate a timed pulse after TP goes high *)
+		timer.PT1 := T_AUTO;
+		timer.PTD := T_DELAY;
+		timer.IN := TRUE;
+		STATUS := 102;
+	END_IF;
+END_IF;
+
+
+(* set output and run timer *)
+timer();
+timer.IN := FALSE;
+Q := (IN AND ENQ) OR timer.Q;
+
+
+
+(* revision history
+hm 	28. jun. 2008 	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TUNE" version="1.0.0" creationDate="0" lastModifiedDate="1637662804" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL"/>
+						<var name="SU" type="BOOL"/>
+						<var name="SD" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+						<var name="SS" type="REAL">
+							<initValue>0.1</initValue>
+						</var>
+						<var name="Limit_L" type="REAL"/>
+						<var name="LIMIT_H" type="REAL">
+							<initValue>100.0</initValue>
+						</var>
+						<var name="RST_val" type="REAL"/>
+						<var name="SET_val" type="REAL">
+							<initValue>100.0</initValue>
+						</var>
+						<var name="T1" type="TIME">
+							<initValue>T#500ms</initValue>
+						</var>
+						<var name="T2" type="TIME">
+							<initValue>T#2s</initValue>
+						</var>
+						<var name="S1" type="REAL">
+							<initValue>2.0</initValue>
+						</var>
+						<var name="S2" type="REAL">
+							<initValue>10.0</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="DWORD"/>
+						<var name="start" type="DWORD"/>
+						<var name="start2" type="DWORD"/>
+						<var name="state" type="INT"/>
+						<var name="in" type="BOOL"/>
+						<var name="step" type="REAL"/>
+						<var name="SPEED" type="REAL"/>
+						<var name="Y_start" type="REAL"/>
+						<var name="Y_start2" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.2	11. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+tune generates an output signal which is set by input switches.
+up to 4 switsches can be used to tune the signal up or down.
+
+*)
+
+
+(* read system time *)
+tx := sysTimer;
+
+IF rst THEN
+	Y := RST_val;
+	state := 0;
+ELSIF set THEN
+	Y := SET_val;
+	state := 0;
+ELSIF state > 0 THEN
+	(* key has been pushed state machine operating *)
+	(* first read the correct input *)
+	IF state = 1 THEN
+		(* step up *)
+		in := su;
+	ELSE
+		(* step down *)
+		in := sd;
+	END_IF;
+	(* check for single step operation *)
+	IF NOT in AND tx - start <= TO_DWORD(T1) THEN
+		Y := Y_start + step;
+		state := 0;
+	(* check if fast ramp needs to be generated *)
+	ELSIF in AND tx - start >= TO_DWORD(T2) THEN
+		Y := Y_start2 + TO_REAL(tx - start2) * s2 / speed;
+	(* check if slow ramp needs to be generated *)
+	ELSIF in AND tx - start >= TO_DWORD(T1) THEN
+		Y := Y_start + TO_REAL(tx - start - TO_DWORD(T1)) * S1 / speed;
+		start2 := tx;
+		Y_start2 := Y;
+	ELSIF NOT in THEN
+		state := 0;
+	END_IF;
+ELSIF su THEN
+	(* slow step up *)
+	state := 1;
+	start := tx;
+	step := ss;
+	speed := 1000.0;
+	Y_start := Y;
+ELSIF sd THEN
+	(* slow step down *)
+	state := 2;
+	start := tx;
+	step := -ss;
+	speed := -1000.0;
+	Y_start := Y;
+END_IF;
+
+(* make sure output does not exceed limits *)
+Y := LIMIT(Y, LIMIT_L, LIMIT_H);
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	3.11.2007		rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	added type conversions to avoid warnings under codesys 3.0
+
+hm	11. mar. 2009	rev 1.2
+	real constants updated to new systax using dot																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="INTERLOCK" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="I1" type="BOOL"/>
+						<var name="I2" type="BOOL"/>
+						<var name="TL" type="TIME"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q1" type="BOOL"/>
+						<var name="Q2" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="T1" type="TOF"/>
+						<var name="T2" type="TOF"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	28 sep 2007
+programmer 	hugo
+tested by		tobias
+
+INTERLOCK has two inputs I1 and I2 which drive the corresponding outputs Q1 and Q2.
+the inputs signals lock each other out and therfore I1 can only drive Q1 when I2 is Low and vice versa.
+The input TL specifies a dead time between two outputs can become active.
+an output can only become active when the other output was not active for the time TL.
+
+*)
+
+(* the input signal have a run delay to lockout the other input *)
+T1(IN := I1, PT := TL);
+T2(IN := I2, PT := TL);
+
+Q1 := I1 AND NOT t2.Q;
+Q2 := I2 AND NOT t1.Q;
+
+
+(* revision history
+
+hm	28 sep 2007		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="INTERLOCK_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="I0" type="BOOL"/>
+						<var name="I1" type="BOOL"/>
+						<var name="I2" type="BOOL"/>
+						<var name="I3" type="BOOL"/>
+						<var name="E" type="BOOL"/>
+						<var name="MODE" type="INT"/>
+					</inputVars>
+					<outputVars>
+						<var name="OUT" type="BYTE"/>
+						<var name="TP" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="in" type="BYTE"/>
+						<var name="last" type="BYTE"/>
+						<var name="old" type="BYTE"/>
+						<var name="lmode" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	14. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+INTERLOCK_4 detects one of 4 switches and delivers the number of the switch pressed on the output out
+a output tp is true for one cycle if the output has changed.
+a setup variable MODE selects between 3 different modes:
+MODE = 0, any input active will disable all other inputs
+MODE = 1, the input with the highest number will be acepted
+mode = 2, the input last pressed will disable all others 
+
+*)
+
+(* check if enable is active *)
+IF E THEN
+(* reset all vars when there is a mode change on thy fly *)
+	IF mode <> lmode THEN
+		out := 0;
+		last := 0;
+		old := 0;
+		lmode := mode;
+	END_IF;
+	(* load inputs into in *)
+	in.0 := I0;
+	in.1 := I1;
+	in.2 := I2;
+	in.3 := I3;
+	(* only execute when there is any change *)
+	IF in <> last THEN
+		(* only execute when inputs have chages state *)
+		CASE mode OF
+			0:	(* output directly display inputs as bits in byte out *)
+				out := in;
+
+			1:	(* the input with the highest number will be acepted *)
+				IF in.3 THEN out := 8;
+				ELSIF in.2 THEN out := 4;
+				ELSIF in.1 THEN out := 2;
+				ELSE out := in;
+				END_IF;
+
+			2:	(* input last pressed will be displayed only *)
+				last := ((in XOR last) AND in);
+				IF last.3 THEN out := 8;
+				ELSIF last.2 THEN out := 4;
+				ELSIF last.1 THEN out := 2;
+				ELSE out := last;
+				END_IF;
+
+			3:	(* any input active will disable all other inputs *)
+				IF (out AND in) = 0 THEN
+					IF in.3 THEN out := 8;
+					ELSIF in.2 THEN out := 4;
+					ELSIF in.1 THEN out := 2;
+					ELSE out := in;
+					END_IF;
+				END_IF;
+
+		END_CASE;
+		last := in;
+	END_IF;
+	tp := out <> old;
+	old := out;
+ELSE
+	out := 0;
+	last := 0;
+	old := 0;
+	lmode := 0;
+	tp := FALSE;
+END_IF;
+
+
+(* revision history
+hm	24. oct 2008	rev 1.0
+	original version
+
+hm	14. mar. 2009	rev 1.1
+	replaced double assignments
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="PARSET" version="1.0.0" creationDate="0" lastModifiedDate="1637662720" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="A0" type="BOOL"/>
+						<var name="A1" type="BOOL"/>
+						<var name="X01" type="REAL"/>
+						<var name="X02" type="REAL"/>
+						<var name="X03" type="REAL"/>
+						<var name="X04" type="REAL"/>
+						<var name="X11" type="REAL"/>
+						<var name="X12" type="REAL"/>
+						<var name="X13" type="REAL"/>
+						<var name="X14" type="REAL"/>
+						<var name="X21" type="REAL"/>
+						<var name="X22" type="REAL"/>
+						<var name="X23" type="REAL"/>
+						<var name="X24" type="REAL"/>
+						<var name="X31" type="REAL"/>
+						<var name="X32" type="REAL"/>
+						<var name="X33" type="REAL"/>
+						<var name="X34" type="REAL"/>
+						<var name="TC" type="TIME"/>
+					</inputVars>
+					<outputVars>
+						<var name="P1" type="REAL"/>
+						<var name="P2" type="REAL"/>
+						<var name="P3" type="REAL"/>
+						<var name="P4" type="REAL"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="X" type="REAL" dim0="4" dim1="4"/>
+						<var name="S1" type="REAL"/>
+						<var name="S2" type="REAL"/>
+						<var name="S3" type="REAL"/>
+						<var name="S4" type="REAL"/>
+						<var name="tx" type="DWORD"/>
+						<var name="last" type="DWORD"/>
+						<var name="start" type="BOOL"/>
+						<var name="set" type="BYTE"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+parset selects on of 4 parameter sets adressed by the inputs A0 and A1. if TC is specified, the change of the outputs
+is ramped by the time tc
+*)
+
+
+(* read system_time *)
+tx := sysTimer;
+
+(* init sequence *)
+IF NOT init THEN
+	set.0 := NOT A0;
+	init := TRUE;
+	X[0,1] := X01;
+	X[0,2] := X02;
+	X[0,3] := X03;
+	X[0,4] := X04;
+	X[1,1] := X11;
+	X[1,2] := X12;
+	X[1,3] := X13;
+	X[1,4] := X14;
+	X[2,1] := X21;
+	X[2,2] := X22;
+	X[2,3] := X23;
+	X[2,4] := X24;
+	X[3,1] := X31;
+	X[3,2] := X32;
+	X[3,3] := X33;
+	X[3,4] := X34;
+	P1 := X01;
+	P2 := X02;
+	P3 := X03;
+	P4 := X04;
+END_IF;
+
+(* check for input change *)
+IF (A0 XOR set.0) OR (A1 XOR set.1) THEN
+	(* a new set is selected *)
+	set.0 := A0;
+	set.1 := A1;
+	IF tc > t#0s THEN
+		start := TRUE;
+		last := tx;
+		(* save the step speed for the output changes in S *)
+		S1 := (X[set,1] - P1)/TO_REAL(TO_DWORD(tc));
+		S2 := (X[set,2] - P2)/TO_REAL(TO_DWORD(tc));
+		S3 := (X[set,3] - P3)/TO_REAL(TO_DWORD(tc));
+		S4 := (X[set,4] - P4)/TO_REAL(TO_DWORD(tc));
+	END_IF;
+ELSIF start AND tx - last < TO_DWORD(tc) THEN
+	(* ramp the outputs to the new value *)
+	P1 := X[set,1] - S1 * TO_REAL(TO_DWORD(Tc) - tx + last);
+	P2 := X[set,2] - S2 * TO_REAL(TO_DWORD(Tc) - tx + last);
+	P3 := X[set,3] - S3 * TO_REAL(TO_DWORD(Tc) - tx + last);
+	P4 := X[set,4] - S4 * TO_REAL(TO_DWORD(Tc) - tx + last);
+ELSE
+	(* make sure outputs match the correct set values *)
+	start := FALSE;
+	P1 := X[set,1];
+	P2 := X[set,2];
+	P3 := X[set,3];
+	P4 := X[set,4];
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	2.11.2007		rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	added type conversions to avoid warnings under codesys 3.0
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="PARSET2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL"/>
+						<var name="X01" type="REAL"/>
+						<var name="X02" type="REAL"/>
+						<var name="X03" type="REAL"/>
+						<var name="X04" type="REAL"/>
+						<var name="X11" type="REAL"/>
+						<var name="X12" type="REAL"/>
+						<var name="X13" type="REAL"/>
+						<var name="X14" type="REAL"/>
+						<var name="X21" type="REAL"/>
+						<var name="X22" type="REAL"/>
+						<var name="X23" type="REAL"/>
+						<var name="X24" type="REAL"/>
+						<var name="X31" type="REAL"/>
+						<var name="X32" type="REAL"/>
+						<var name="X33" type="REAL"/>
+						<var name="X34" type="REAL"/>
+						<var name="L1" type="REAL"/>
+						<var name="L2" type="REAL"/>
+						<var name="L3" type="REAL"/>
+						<var name="TC" type="TIME"/>
+					</inputVars>
+					<outputVars>
+						<var name="P1" type="REAL"/>
+						<var name="P2" type="REAL"/>
+						<var name="P3" type="REAL"/>
+						<var name="P4" type="REAL"/>
+					</outputVars>
+					<localVars>
+						<var name="Pset" type="parset"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	3 nov 2007
+programmer 	hugo
+tested by	tobias
+
+parset2 selects on of 4 parameter sets depending on the value of X. if TC is specified, the change of the outputs
+is ramped by the time TC
+*)
+
+
+(* init sequence *)
+IF NOT init THEN
+	init := TRUE;
+	pset(TC:=TC, X01:=X01, X02:=X02, X03:=X03, X04:=X04, X11:=X11, X12:=X12, X13:=X13, X14:=X14, X21:=X21, X22:=X22, X23:=X23, X24:=X24, X31:=X31, X32:=X32, X33:=X33, X34:=X34);
+END_IF;
+IF ABS(X) < L1 THEN
+	pset(A0 := FALSE, A1 := FALSE);
+ELSIF ABS(X) < L2 THEN
+	pset(A0 := TRUE, A1 := FALSE);
+ELSIF ABS(x) < L3 THEN
+	pset(A0 := FALSE, A1 := TRUE);
+ELSE
+	pset(A0 := TRUE, A1 := TRUE);
+END_IF;
+P1 := pset.P1;
+P2 := pset.P2;
+P3 := pset.P3;
+P4 := pset.P4;
+
+(* revision history
+hm		3.11.2007		rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TUNE2" version="1.0.0" creationDate="0" lastModifiedDate="1637662840" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL"/>
+						<var name="SU" type="BOOL"/>
+						<var name="SD" type="BOOL"/>
+						<var name="FU" type="BOOL"/>
+						<var name="FD" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+						<var name="SS" type="REAL">
+							<initValue>0.1</initValue>
+						</var>
+						<var name="FS" type="REAL">
+							<initValue>5.0</initValue>
+						</var>
+						<var name="Limit_L" type="REAL"/>
+						<var name="LIMIT_H" type="REAL">
+							<initValue>100.0</initValue>
+						</var>
+						<var name="RST_val" type="REAL"/>
+						<var name="SET_val" type="REAL">
+							<initValue>100.0</initValue>
+						</var>
+						<var name="TR" type="TIME">
+							<initValue>T#500ms</initValue>
+						</var>
+						<var name="S1" type="REAL">
+							<initValue>2.0</initValue>
+						</var>
+						<var name="S2" type="REAL">
+							<initValue>10.0</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="DWORD"/>
+						<var name="start" type="DWORD"/>
+						<var name="state" type="INT"/>
+						<var name="in" type="BOOL"/>
+						<var name="step" type="REAL"/>
+						<var name="SPEED" type="REAL"/>
+						<var name="Y_start" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.2	11. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+tune2 generates an output signal which is set by input switches.
+up to 4 switsches can be used to tune the signal up or down.
+
+*)
+
+
+(* read system time *)
+tx := sysTimer;
+
+IF rst THEN
+	Y := RST_val;
+	state := 0;
+ELSIF set THEN
+	Y := SET_val;
+	state := 0;
+ELSIF state > 0 THEN
+	(* key has been pushed state machine operating *)
+	(* first read the correct input *)
+	CASE state OF
+		1 :	(* slow up *)
+			in := su;
+		2 :	(* slow down *)
+			in := sd;
+		3 :	(* fast up *)
+			in := fu;
+		4 :	(* fast down *)
+			in := fd;
+	END_CASE;
+	(* check for single step operation *)
+	IF NOT in AND tx - start <= TO_DWORD(TR) THEN
+		Y := Y_start + step;
+		state := 0;
+	(* check if ramp needs to be generated *)
+	ELSIF in AND tx - start >= TO_DWORD(TR) THEN
+		Y := Y_start + TO_REAL(tx - start - TO_DWORD(TR)) * speed;
+	ELSIF NOT in THEN
+		state := 0;
+	END_IF;
+ELSIF su THEN
+	(* slow step up *)
+	state := 1;
+	start := tx;
+	step := ss;
+	speed := s1 * 1.0E-3;
+	Y_start := Y;
+ELSIF sd THEN
+	(* slow step down *)
+	state := 2;
+	start := tx;
+	step := -ss;
+	speed := -s1 * 1.0E-3;
+	Y_start := Y;
+ELSIF fu THEN
+	(* fast step up *)
+	state := 3;
+	start := tx;
+	step := fs;
+	speed := s2 * 1.0E-3;
+	y_start := Y;
+ELSIF fd THEN
+	(* fast step down *)
+	state := 4;
+	start := tx;
+	step := -fs;
+	speed := -s2 * 1.0E-3;
+	y_start := Y;
+END_IF;
+
+(* make sure output does not exceed limits *)
+Y := LIMIT(Y, LIMIT_L, LIMIT_H);
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	3.11.2007		rev 1.0
+	original version
+
+hm	16. 3. 2008	rev 1.1
+	added type conversions to avoid warnings in codesys 3.0
+	improved performance
+
+hm	11. mar. 2009	rev 1.2
+	real constants updated to new systax using dot																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SIGNAL" version="1.0.0" creationDate="0" lastModifiedDate="1637662758" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL"/>
+						<var name="SIG" type="BYTE"/>
+						<var name="TS" type="TIME"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="DWORD"/>
+						<var name="step" type="BYTE"/>
+						<var name="one" type="BYTE">
+							<initValue>1</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	13 dec 2007
+programmer 	hugo
+tested by		tobias
+
+this function generates an output signal according to a bit pattern SIG.
+the patter is shifted to the output in time steps of TS.
+ts defaults to 128 ms if not specified.
+*)
+
+
+IF in THEN
+	(* an alarm is present read system time first *)
+	tx := sysTimer;
+	(* calculate the step counter which is the lowest 3 bits of (time / ts) *)
+	IF ts > t#0s THEN
+		step := TO_BYTE(tx / TO_DWORD(ts) AND 16#0000_0007);
+	ELSE
+		step := TO_BYTE(SHR(tx,7) AND 16#0000_0007);
+	END_IF;
+	(* convert the value 0-7 in step into one bit only (bit 0-7) *)
+	step := SHL(one,step);
+	(* generate the output signal *)
+	Q := (step AND sig) > 0;
+ELSE
+	Q := FALSE;
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	13.12.2007		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SIGNAL_4" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="IN1" type="BOOL"/>
+						<var name="IN2" type="BOOL"/>
+						<var name="IN3" type="BOOL"/>
+						<var name="IN4" type="BOOL"/>
+						<var name="TS" type="TIME"/>
+						<var name="S1" type="BYTE">
+							<initValue>2#1111_1111</initValue>
+						</var>
+						<var name="S2" type="BYTE">
+							<initValue>2#1111_0000</initValue>
+						</var>
+						<var name="S3" type="BYTE">
+							<initValue>2#1010_1010</initValue>
+						</var>
+						<var name="S4" type="BYTE">
+							<initValue>2#1010_0000</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+					</outputVars>
+					<localVars>
+						<var name="sig" type="SIGNAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	13 dec 2007
+programmer 	hugo
+tested by		tobias
+
+this function generates one out of 4 signals specified by bit patterns S1 .. S4.
+the selected pattern will be shifted with the step time TS.
+In1 has higher priority then In2 which has higher priority then IN3 and in4 has the lowest priority.
+ts defaults to 128 ms if not specified.
+*)
+
+
+(* an alarm is present read system time first *)
+(* check if an alarm is present if yes set sig to the alarm pattern otherwise exit the routine *)
+IF in1 THEN
+	sig(in := TRUE, sig := s1, TS := TS);
+ELSIF in2 THEN
+	sig(in := TRUE, sig := s2, TS := TS);
+ELSIF in3 THEN
+	sig(in := TRUE, sig := s3, TS := TS);
+ELSIF in4 THEN
+	sig(in := TRUE, sig := s4, TS := TS);
+ELSE
+	sig(in := FALSE);
+END_IF;
+
+(* set the output *)
+Q := sig.Q;
+
+
+(* revision history
+hm	13.12.2007		rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="INC_DEC" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="CHa" type="BOOL"/>
+						<var name="CHb" type="BOOL"/>
+						<var name="RST" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="dir" type="BOOL"/>
+						<var name="cnt" type="INT"/>
+					</outputVars>
+					<localVars>
+						<var name="edgea" type="BOOL"/>
+						<var name="clk" type="BOOL"/>
+						<var name="clka" type="BOOL"/>
+						<var name="clkb" type="BOOL"/>
+						<var name="edgeb" type="BOOL"/>
+						<var name="axb" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+	version 1.0	4 aug 2006
+	programmer 	oscat
+	tested BY		oscat
+
+incremental decoder with quadruple accuracy.
+2 pulses for each channel are created for each directional pulse.
+*)
+
+axb := cha XOR chb;
+
+(* create pulses for channel a *)
+clka := cha XOR edgea;
+edgea := cha;
+
+clkb := chb XOR edgeb;
+edgeb := chb;
+
+(* create pulses for both channels *)
+clk := clka OR clkb;
+
+(* set the direction output *)
+IF axb AND clka THEN dir := TRUE; END_IF;
+IF axb AND clkb THEN dir := FALSE; END_IF;
+
+(* increment or decrement the counter *)
+IF clk AND dir THEN cnt := cnt + 1; END_IF;
+IF clk AND NOT dir THEN cnt := cnt -1; END_IF;
+
+(* reset the counter if rst active *)
+IF rst THEN cnt := 0; END_IF;
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FT_Profile" version="1.0.0" creationDate="0" lastModifiedDate="1637662589" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="K" type="REAL">
+							<initValue>1.0</initValue>
+						</var>
+						<var name="O" type="REAL"/>
+						<var name="M" type="REAL">
+							<initValue>1.0</initValue>
+						</var>
+						<var name="E" type="BOOL"/>
+						<var name="value_0" type="REAL"/>
+						<var name="time_1" type="TIME"/>
+						<var name="value_1" type="REAL"/>
+						<var name="time_2" type="TIME"/>
+						<var name="value_2" type="REAL"/>
+						<var name="time_3" type="TIME"/>
+						<var name="value_3" type="REAL"/>
+						<var name="time_10" type="TIME"/>
+						<var name="value_10" type="REAL"/>
+						<var name="time_11" type="TIME"/>
+						<var name="value_11" type="REAL"/>
+						<var name="time_12" type="TIME"/>
+						<var name="value_12" type="REAL"/>
+						<var name="time_13" type="TIME"/>
+						<var name="value_13" type="REAL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL"/>
+						<var name="RUN" type="BOOL"/>
+						<var name="ET" type="TIME"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="edge" type="BOOL"/>
+						<var name="state" type="BYTE"/>
+						<var name="ta" type="TIME"/>
+						<var name="tb" type="TIME"/>
+						<var name="t0" type="TIME"/>
+						<var name="temp" type="REAL"/>
+						<var name="va" type="REAL"/>
+						<var name="vb" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	15 sep 2007
+programmer 	tobias
+tested by		hugo
+
+FT_Profile generates an output signal which is defined by values over a time scale.
+the different values are connected by ramps between the individual values.
+a rising edge on E starts the output signal generation and E = True can delay time_3 / value_3 as long as it stays true.
+an additional multiplier K can be used to multiply the output and an offset O can be added to the output dynamically.
+*)
+
+(* read system time *)
+tx := DWORD_TO_TIME(sysTimer);
+
+(* determine start condition *)
+IF E AND NOT edge THEN
+	RUN := TRUE;
+	ET := t#0s;
+	t0 := tx;
+	ta := tx;
+	tb := multime(time_1, M);
+	va := value_0;
+	vb := value_1;
+	temp := value_0;
+	state := 1;
+END_IF;
+edge := E;
+
+(* generate startup profile *)
+IF run THEN
+	CASE state OF
+		1:	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_2 - time_1, M);
+				va := value_1;
+				vb := value_2;
+				temp := value_1;
+				state := 2;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		2:	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_3 - time_2, M);
+				va := value_2;
+				vb := value_3;
+				temp := value_2;
+				state := 3;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		3:	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_10 - time_3, M);
+				va := value_3;
+				vb := value_10;
+				temp := value_3;
+				state := 4;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		4 :	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_11 - time_10, M);
+				va := value_10;
+				vb := value_11;
+				temp := value_10;
+				IF E THEN state := 5; ELSE state := 6; END_IF;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		5:	(* extend the signal while E is true *)
+			IF E THEN
+				ta := tx;
+			ELSE
+				state := 6;
+			END_IF;
+		6:	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_12 - time_11, M);
+				va := value_11;
+				vb := value_12;
+				temp := value_11;
+				state := 7;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		7:	IF tx - ta >= tb THEN
+				ta := ta + tb;
+				tb := multime(time_13 - time_12, M);
+				va := value_12;
+				vb := value_13;
+				temp := value_12;
+				state := 8;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+		8:	IF tx - ta >= tb THEN
+				temp := value_13;
+				run := FALSE;
+			ELSE
+				temp := ((vb - va) * TO_REAL(tx - ta) / TO_REAL(tb) + va);
+			END_IF;
+	END_CASE;
+	Y := temp * K + O;
+	ET := tx - t0;
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	27 feb 2007		rev 1.0
+	original version
+
+hm	15. sep2007		rev 1.1
+	replaced Time() with T_PLC_MS for compatibility and performance reasons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

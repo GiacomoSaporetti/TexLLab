@@ -1,0 +1,2361 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Signal generators" fullXml="true">
+		<descr>WARNING: several elements of this library require also Oscat_Arithmetics, Oscat_Mathematics, Oscat_Pulse_Generator and Oscat_Signal_Processing libraries to be included inorder to work properly. Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Signal generators" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="_RMP_W"/>
+				<Pou name="_RMP_NEXT"/>
+				<Pou name="_RMP_B"/>
+				<Pou name="GEN_PULSE"/>
+				<Pou name="GEN_SIN"/>
+				<Pou name="GEN_PW2"/>
+				<Pou name="GEN_RDM"/>
+				<Pou name="GEN_RMP"/>
+				<Pou name="GEN_SQR"/>
+				<Pou name="GEN_RDT"/>
+				<Pou name="RMP_SOFT"/>
+				<Pou name="RMP_B"/>
+				<Pou name="PWM_PW"/>
+				<Pou name="PWM_DC"/>
+				<Pou name="RMP_W"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="_RMP_W" version="1.0.0" creationDate="0" lastModifiedDate="1637664463" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>16-bit ramp generator</title>
+				<descr>&lt;HTML&gt;_RMP_W Is an 16-bit ramp generator.
+						&lt;ul&gt;
+						&lt;li&gt;The ramp is generated in an externally declared variable.&lt;/li&gt;
+						&lt;li&gt;The ramp is rising when DIR = TRUE and falling if DIR = FALSE.&lt;/li&gt;
+						&lt;li&gt;Reaching a final value of the ramp, the generator remains at this value.&lt;/li&gt;
+						&lt;li&gt;With the input E the ramp can be stopped at any time, when E = TRUE the ramp runs.&lt;/li&gt;
+						&lt;li&gt;The input TR shows the time which is needed to cycle through 0-65535 or the other way around.&lt;/li&gt;
+						&lt;ul/&gt;</descr>
+				<vars>
+					<inoutVars>
+						<var name="RMP" type="WORD">
+							<descr>Output signal</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="DIR" type="BOOL">
+							<descr>Direction, TRUE means up</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="TR" type="TIME">
+							<descr>Time to run a full ramp</descr>
+						</var>
+					</inputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="DWORD"/>
+						<var name="tl" type="DWORD"/>
+						<var name="step" type="DINT"/>
+						<var name="init" type="BOOL"/>
+						<var name="last_dir" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	20. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+
+_RMP_B generates a ramp on an external var of type byte
+tr is the total ramp time, E is an enable and dir the direction of the ramp
+
+*)
+
+tx := sysTimer;
+IF E AND init THEN
+	(* we need to set tl = tx when direction changes *)
+	IF dir XOR last_dir THEN
+	 tl := tx;
+	 last_dir := dir;
+	END_IF;
+	(* check_elapsed time and calculate only if necessary *)
+	IF tr > t#0s THEN
+		step := TO_DINT(SHL(tx-tl, 16) / TO_DWORD(TR));
+	ELSE
+		step := 65535;
+	END_IF;
+	IF step > 0 THEN
+		(* perform the step on the ramp *)
+		tl := tx;
+		(* calculate the step response *)
+		IF NOT dir THEN step := - step; END_IF;
+		rmp := TO_WORD(LIMIT(TO_DINT(rmp) + step, 0, 65535));
+	END_IF;
+ELSE
+	tl := tx;
+	init := TRUE;
+END_IF;
+
+
+(* revison history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	22. oct. 2008	rev 1.0
+	original version
+
+hm	20. nov. 2008	rev 1.1
+	set default for E to be TRUE
+	added init
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="_RMP_NEXT" version="1.0.0" creationDate="0" lastModifiedDate="1637744709" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Ramp following input</title>
+				<descr>&lt;HTML&gt;RMP_NEXT follows at the output OUT to the input signal IN with the in TR and TF defned rising or falling fanks.&lt;br/&gt;
+Unlike RMP_SOFT the fank of RMP_NEXT runs until it underrun or overrun the endpoint and is therefore suitable for control tasks.&lt;br/&gt;
+&lt;ul&gt;
+&lt;li&gt;Changing the value of IN so a rising ramp with TR or a falling fank with TF starts at the output OUT until the value of OUT has overrun or underrun the IN.&lt;/li&gt;
+&lt;li&gt;The output then remains at this value.&lt;/li&gt;
+&lt;li&gt;The outputs of UP and DN shows just whether a rising or a falling edge are created.&lt;/li&gt;
+&lt;li&gt;The output DIR indicates the direction of change at IN, if IN is not changed, the output remains at the last state.&lt;/li&gt;
+&lt;li&gt;The lock time TL determines the delay time between the direction reversal.&lt;/li&gt;
+&lt;/ul&gt;
+The following graph shows the waveform at OUT when changing the input signal at IN:
+&lt;img src=picture1.jpg&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Signal_Processing library to be included in order to work properly.</descr>
+				<vars>
+					<inoutVars>
+						<var name="OUT" type="BYTE"/>
+					</inoutVars>
+					<inputVars>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="IN" type="BYTE">
+							<descr>Input</descr>
+						</var>
+						<var name="TR" type="TIME">
+							<descr>Rise time for ramp from 0..255</descr>
+						</var>
+						<var name="TF" type="TIME">
+							<descr>Fall time for ramp 255..0</descr>
+						</var>
+						<var name="TL" type="TIME">
+							<descr>Lock time between a change of direction</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="DIR" type="BOOL">
+							<descr>Direction of change in IN</descr>
+						</var>
+						<var name="UP" type="BOOL">
+							<descr>Signals a rising ramp</descr>
+						</var>
+						<var name="DN" type="BOOL">
+							<descr>Signals a falling ramp</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="rmx" type="_RMP_B"/>
+						<var name="dirx" type="TREND_DW"/>
+						<var name="t_lock" type="TP"/>
+						<var name="xen" type="BOOL"/>
+						<var name="xdir" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.4		18. jul. 2009
+programmer 	hugo
+tested by		oscat
+
+
+_RMP_NEXT  will generate a ramp output following the input IN.
+on a rising ramp the output will stop as soon as it has surpassed the input in, and on a falling ramp it will stop when out is smaller than in.
+a lockout time T_L will be added between up and down direction.
+
+*)
+
+dirx(X := in);
+
+t_lock(in := FALSE, pt := TO_UDINT(TL));
+
+IF dirx.TU AND (OUT < IN) THEN
+	IF NOT xdir AND xen THEN t_lock(in := TRUE); END_IF;
+	xen := TRUE;
+	xdir := TRUE;
+ELSIF dirx.TD AND (OUT > IN) THEN
+	IF xdir AND xen THEN t_lock(in := TRUE); END_IF;
+	xen := TRUE;
+	xdir := FALSE;
+ELSIF xen THEN
+	IF (xdir AND (out >= in)) OR (NOT xdir AND (out <= in)) THEN
+		xen := FALSE;
+		IF tl > t#0s THEN t_lock(IN := TRUE); END_IF;
+	END_IF;
+END_IF;
+
+IF NOT t_lock.Q AND xen THEN
+		UP := XDIR;
+		DIR := XDIR;
+		DN := NOT XDIR;
+ELSE
+	UP := FALSE;
+	DN := FALSE;
+END_IF;
+
+rmx(rmp := OUT, E := E AND (UP OR DN) , dir := DIR, tr := SEL(dir, TF, TR));
+
+
+(* revison history
+hm	23. nov. 2008	rev 1.0
+	original version
+
+hm	24. jan. 2009	rev 1.1
+	deleted unused vars tmp1, tmp2
+
+hm	20. feb. 2009	rev 1.2
+	improved algorithm
+	added TL
+
+hm	9. mar. 2009	rev 1.3
+	input E was ignored
+	removed double assignments
+
+hm	18. jul. 2009	rev 1.4
+	improved performance
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="picture1.jpg" width="305" height="205" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CADNATEDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Uaa6hhgjIzTfvNkc46UY8xcHjnNLSwHM
+/FOV7f4beKJInaKRdNnYOpwVIQ8irHw6klm8CeH5JmZ5WsYizN1PyjrVb4qtt+GvipjyP7Nu
+DyP+mZrlvAPw3t7zwRoU51jWEaSzifbHeOFHyjgDsKqPK92B6mqhBgCnVxP/AAq22/6Dmtf+
+Bz0n/Crbb/oOa3/4HP8A41XLHuB220FtxHNDdK4n/hVtt/0HNb/8Dnpf+FXW3/Qb1r/wOei0
+e4HZ84O7kHtinKoRQqjAHQV51a6XN4T8faPZW2p311a30EzTR3cxlyVxtIz0616Iq7QF9KTj
+YB34U3aAxbHJ4NeZ6Z4ek8YeKPE8l3rGpQra3iwwxW1y0aIuwHGB71sf8Kttv+g5rX/gc9Pl
+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
+/9k=]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="_RMP_B" version="1.0.0" creationDate="0" lastModifiedDate="1637664434" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>8-bit ramp generator</title>
+				<descr>&lt;HTML&gt;_RMP_B is an 8-bit ramp generator.
+&lt;ul&gt;
+&lt;li&gt;The ramp is generated in an externally declared variable.&lt;/li&gt;
+&lt;li&gt;The ramp is rising when DIR = TRUE and falling if DIR = FALSE.&lt;/li&gt;
+&lt;li&gt;Reaching a final value of the ramp, the generator remains at this value.&lt;/li&gt;
+&lt;li&gt;With the input E the ramp can be stopped at any time, when E = TRUE the ramp runs.&lt;/li&gt;
+&lt;li&gt;The input TR shows the time which is needed to cycle through 0-255 or the other way around.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Arithmetic library to be included in order to work properly.</descr>
+				<vars>
+					<inoutVars>
+						<var name="RMP" type="BYTE">
+							<descr>Output signal</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="DIR" type="BOOL">
+							<descr>Direction, TRUE means up</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="TR" type="TIME">
+							<descr>Time to run a full ramp</descr>
+						</var>
+					</inputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="tl" type="TIME"/>
+						<var name="tn" type="TIME"/>
+						<var name="init" type="BOOL"/>
+						<var name="last_dir" type="BOOL"/>
+						<var name="start" type="BYTE"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2		19. feb. 2011
+programmer 	hugo
+tested by		oscat
+
+_RMP_B generates a ramp on an external var of type byte
+tr is the total ramp time, E is an enable and dir the direction of the ramp
+
+*)
+
+(* read system timer *)
+tx := TO_TIME(sysTimer);
+
+IF E AND init AND (dir = last_dir) AND (RMP <> SEL(DIR, 0, 255)) AND TR = tn THEN
+	RMP := FRMP_B(start, DIR, tx - tl, TR);
+ELSE
+	init := TRUE;
+	tl := tx;
+	tn := tr;
+	start := RMP;
+END_IF;
+last_dir := dir;
+
+
+
+(* revison history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	22. oct. 2008	rev 1.0
+	original version
+
+hm	20. nov. 2008	rev 1.1
+	set default for E to be TRUE
+	added init
+
+hm	19. nov. 2011	rev 1.2
+	new code
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_PULSE" version="1.0.0" creationDate="0" lastModifiedDate="1637664500" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Pulse generator</title>
+				<descr>&lt;HTML&gt;GEN_PULSE generates at the output Q, an output signal which sets in the time of PTH to TRUE and then set for PTL to LOW.
+						&lt;ul&gt;
+						&lt;li&gt;The generator will start after ENQ = TRUE always with a rising edge at Q, and remains for the time PTH to TURE.
+						&lt;li&gt;As long as ENQ = TRUE continuous pulses at the output Q are generated.
+						&lt;li&gt;Is one of the times (PTH, PTL) or both equal to 0 the time will limit to one PLC cycle.
+						&lt;li&gt;GEN_PULSE (ENQ: = TRUE, PTH: = T # 0s, PTL: = T # 0s) generates an output signal which has one cycle TRUE and one cycle FALSE.
+						&lt;li&gt;The Default ENQ value is TRUE.
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="ENQ" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="PTH" type="TIME">
+							<descr>Pulse duration HIGH</descr>
+						</var>
+						<var name="PTL" type="TIME">
+							<descr>Pulse duration LOW</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="tn" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	8. apr. 2011
+programmer 	hugo
+tested by		oscat
+
+GEN_PULSE uses the internal sps timer to generate a continuous output waveform with programmable high and low time.
+the accuracy of gen_pulse is depending on the system timer.
+when time is 0 the high and low times are exactly one cycle.
+ENQ = TRUE will start and ENQ = FALSE will stop the generator.
+
+*)
+
+IF enq THEN
+	tx := TO_TIME(sysTimer);
+	IF NOT init THEN init := TRUE; tn := tx; END_IF;
+	IF tx - tn >= SEL(Q, PTL, PTH) THEN
+		tn := tn + SEL(Q, PTL, PTH);
+		Q := NOT Q;
+	END_IF;
+ELSE
+	Q := FALSE;
+	init := FALSE;
+END_IF;
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	29. jun. 2008	rev 1.0
+	original version
+
+hm	23. nov. 2008	rev 1.1
+	set default for enq to be true
+
+hm	18. jul. 2009	rev 1.2
+	improved performance
+
+hm	13. nov. 2009	rev 1.3
+	corrected error
+
+hm	16. feb. 2011	rev 1.4
+	corrected an error when timer overflows
+
+hm	8. apr. 2011	rev 1.5
+	ptl and pth was exchanged
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_SIN" version="1.0.0" creationDate="0" lastModifiedDate="1637743465" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Sine wave generator with programmable period</title>
+				<descr>&lt;HTML&gt;GEN_SIN is a sine wave generator with programmable period, adjustable amplitude and signal offset.
+&lt;ul&gt;
+&lt;li&gt;A special feature is a adjustable delay so that with multiple generators overlapping signals can be generated.
+&lt;li&gt;A Binary Output Q passes a logical signal, which is generated phase equal to the sine signal.
+&lt;li&gt;The input DL is a delay for the output signal.
+&lt;li&gt;The Delay is specifed with DL * PT.
+&lt;li&gt;A DL of 0.5 delays the signal by half a period.
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Period time</descr>
+						</var>
+						<var name="AM" type="REAL">
+							<descr>Signal amplitude</descr>
+							<initValue>1.0</initValue>
+						</var>
+						<var name="OS" type="REAL">
+							<descr>Signal offset</descr>
+						</var>
+						<var name="DL" type="REAL">
+							<descr>Signal delay</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Digital output</descr>
+						</var>
+						<var name="Out" type="REAL">
+							<descr>Analog output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+						<var name="temp" type="REAL"/>
+					</localVars>
+					<localConsts>
+						<const name="PI2" type="REAL">
+							<descr>PI * 2</descr>
+							<initValue>6.28318530717958647692528676655900576</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.6	11. mar. 2009
+programmer 	oscat
+tested BY	oscat
+
+this signal generator generates a sine wave output. The sine wave signal is defined by period time (PT), 
+amplitude (AM), offset (OS) and a specific delay for the output signal (DL).
+The Output waveform will have its max peak at AM/2 + OS and its minimum peak at -AM/2 + OS. 
+The delay input can delay a signal up to PT, this can be useful to synchronize different generators 
+and generate interleaving signals. A Cos wave can be generated accordingly.
+in addition to a analog output Out there is a second boolean output Q with the corresponding binary signal.
+*)
+
+(* read system time and prepare input data *)
+tx := TO_TIME(sysTimer) - last;
+DL := MODR(dl,1.0);
+IF dl < 0.0 THEN dl := 1.0 - dl; END_IF;
+
+(* init section *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+	tx := t#0s;
+END_IF;
+
+(* add last if one cycle is finished *)
+IF tx >= pt THEN
+	last := last + pt;
+	tx := tx - pt;
+END_IF;
+
+(* generate sine wave *)
+IF pt > t#0s THEN
+	temp := SIN(PI2 * (TO_REAL(tx) + TO_REAL(pt) * dl) / TO_REAL(pt));
+END_IF;
+out := am * 0.5 *  temp + os;
+
+(* boolean output Q *)
+q := NOT SIGN_R(temp);
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	22. jan 2007	rev 1.0
+	original version
+
+hm	17 sep 2007	rev 1.1
+	replaced time() with t_plc_ms for compatibilitx reasons
+
+hm	27. nov 2007	rev 1.2
+	avoid divide by 0 when pt = 0
+
+hm	6. jan 2008		rev 1.3
+	improved performance
+
+hm	16. mar. 2008	rev 1.4
+	added type conversion to avoid warnings under codesys 3.0
+
+hm	18. oct. 2008	rev 1.5
+	using math constants
+
+hm	11. mar. 2009	rev 1.6
+	changed real constants to use dot syntax
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_PW2" version="1.0.0" creationDate="0" lastModifiedDate="1637664559" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Pulse generator with 2 period settings</title>
+				<descr>GEN_PW2 generates an output signal with a definable time TH for HIGH and TL for LOW.
+						Using the input TS is switched between two sets of parameters (TL1, TH1 and TL2, TH2).
+						On startup or after a ENQ = TRUE, the module begins with the LOW phase at the output.</descr>
+				<vars>
+					<inputVars>
+						<var name="ENQ" type="BOOL">
+							<descr>Enable input</descr>
+						</var>
+						<var name="TH1" type="TIME">
+							<descr>Set time HIGH when TS = LOW</descr>
+						</var>
+						<var name="TL1" type="TIME">
+							<descr>Set time LOW when TS = LOW</descr>
+						</var>
+						<var name="TH2" type="TIME">
+							<descr>Set time HIGH when TS = HIGH</descr>
+						</var>
+						<var name="TL2" type="TIME">
+							<descr>Set time LOW when TS = HIGH</descr>
+						</var>
+						<var name="TS" type="BOOL">
+							<descr>Selection for the end times</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+						<var name="TH" type="TIME">
+							<descr>Elapsed time when Q = FALSE</descr>
+						</var>
+						<var name="TL" type="TIME">
+							<descr>Elapsed time when Q = TRUE</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="t_high" type="TIME"/>
+						<var name="t_low" type="TIME"/>
+						<var name="tx" type="TIME"/>
+						<var name="start" type="TIME"/>
+						<var name="init" type="BOOL"/>
+						<var name="et" type="TIME"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	14. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+GEN_PW2 generates a time TH? followed by a time TL?.
+the input ts selects between 2 sets of timings for the operation.
+
+
+*)
+
+(* read system timer *)
+tx := TO_TIME(sysTimer);
+
+(* startup initialization *)
+IF NOT init THEN
+	start := tx;
+	init := TRUE;
+	TH := T#0s;
+	TL := T#0s;
+END_IF;
+
+(* timing selection *)
+IF TS THEN
+	t_high := TH2;
+	t_low := TL2;
+ELSE
+	t_high := TH1;
+	t_low := TL1;
+END_IF;
+
+(* normal operation *)
+IF ENQ THEN
+	et := tx - start;
+	IF NOT Q THEN
+		IF et >= t_low THEN
+			Q := TRUE;
+			start := tx;
+			TL := T#0s;
+		ELSE
+			TL := et;
+		END_IF;
+	ELSE
+		IF et >= t_high THEN
+			Q := FALSE;
+			start := tx;
+			TH := T#0s;
+		ELSE
+			TH := et;
+		END_IF;
+	END_IF;
+ELSE
+	Q := FALSE;
+	TH := T#0s;
+	TL := T#0s;
+	start := tx;
+END_IF;
+
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	26. sep. 2008	rev 1.0
+	original version
+
+hm	14. mar. 2009	rev 1.1
+	removed double assignments
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_RDM" version="1.0.0" creationDate="0" lastModifiedDate="1637664650" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Random pulse generator</title>
+				<descr>&lt;HTML&gt;GEN_RDM is a random signal generator.
+&lt;ul&gt;
+&lt;li&gt;It generates the output OUT a new value in PT intervals.
+&lt;li&gt;The output Q is TRUE for one cycle when the output OUT has changed.
+&lt;li&gt;The input AM and OS set the amplitude and the offset for the output OUT.
+&lt;li&gt;If the inputs OS and AM are not connected, then the default values are 0.
+&lt;/ul&gt;
+The following example shows a trace recording of the input values PT = 100ms, AM = 10 and OS = 5. The output values generated every 100 ms in the range of 0 .. 10.
+&lt;img src=Picture2.jpg&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Period time</descr>
+						</var>
+						<var name="AM" type="REAL">
+							<descr>Signal amplitude</descr>
+							<initValue>1</initValue>
+						</var>
+						<var name="OS" type="REAL">
+							<descr>Signal offset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+						<var name="Out" type="REAL">
+							<descr>Analog output signal</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+	version 1.1	16 sep 2007
+	programmer 	oscat
+	tested BY		oscat
+
+this signal generator generates a random output. The signal is defined by period time (PT), 
+amplitude (AM), offset (OS).
+The Output waveform will have its max peak at AM/2 + OS and its minimum peak at -AM/2 + OS. 
+The period time PT defines how often the output signal will jump to a new randow value.
+The Output Q will be true for one cycle anytime the output OUT has changed
+
+*)
+
+(* read system time and prepare input data *)
+tx := TO_TIME(sysTimer) - last;
+
+(* init section *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+	tx := t#0s;
+END_IF;
+
+(* add last if one cycle is finished *)
+IF tx >= pt THEN
+	last := last + pt;
+	tx := tx - pt;
+
+	(* generate output signal *)
+	out := am * (RDM(0.0) - 0.5) + os;
+	q := TRUE;
+ELSE
+	q := FALSE;
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	7.2.2007		rev 1.0
+	original version
+
+hm	16.9.2007		rev 1.1
+	changes time() to T_plc_ms() for compatibility reasons
+
+*)
+
+]]>
+				</sourceCode>
+				<images>
+					<image name="picture2.jpg" width="435" height="159" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CACfAbMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6H8P6z4nsdJ0PRfC4FnZi1EjxI3l4Ygk/
+7xOOfpWJcfG7xFpuv6bo11qc9vqF3c/ZzZ7/AJgu0kPjptOMfjXb698LfG+u+AvC8ngg29nd
+y2qPJeTuQ8GPQd8ivOrP9m/4ox/Fzwfq2t2NtqUBvzJfXlmwEcUQQhSynpz2HU13e1OeTlGX
+LHY39P8AjRLqviafw3a+K7ltZtQTPatlTCOvzMRge1dGPEniZoy39vzbT8w/eABR34H86zfi
+R+yd4p8S+JPiVe6Vd2ttH4jsLa2svmZGV43BdmI6ZA7V5/43/Yh+KGqeLDN4f8QW9rpC2ixx
+7rqRGMYiUeQwHXLhjuPODR7dLc2tY9S/4SbxI2ca/M3G5CJFYyD+8MHnHtSr4i8UN01+XnhX
+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]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="GEN_RMP" version="1.0.0" creationDate="0" lastModifiedDate="1637664684" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Sawtooth generator</title>
+				<descr>&lt;HTML&gt;GEN_RMP is a sawtooth generator.
+&lt;ul&gt;
+&lt;li&gt;It generates a ramp at the output OUT with the duration of PT and repeats this continuously.
+&lt;li&gt;The output Q is for exactly one cycle TRUE when the ramp starts at the output OUT.
+&lt;li&gt;The input AM and OS set the amplitude and the ofset for the output OUT.
+&lt;li&gt;If the inputs OS and AM are not connected the default values are 0 and 1.
+&lt;li&gt;The output OUT then generates a sawtooth signal of 0 .. 1.
+&lt;li&gt;The input DL can move the output up to a period (PT) and is used to produce multiple shifted signals to each other.
+&lt;li&gt;A 0 at the input DL means no displacement.
+&lt;li&gt;A value between 0 and 1 shifts the signal by up to a period.
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Period time</descr>
+							<initValue>t#1s</initValue>
+						</var>
+						<var name="AM" type="REAL">
+							<descr>Signal amplitude</descr>
+							<initValue>1.0</initValue>
+						</var>
+						<var name="OS" type="REAL">
+							<descr>Signal offset</descr>
+						</var>
+						<var name="DL" type="REAL">
+							<descr>Signal delay (0..1 * PT)</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+						<var name="OUT" type="REAL">
+							<descr>Analog output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+						<var name="temp" type="REAL"/>
+						<var name="ltemp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+	version 1.4	10. mar. 2009
+	programmer 	oscat
+	tested BY		oscat
+
+this signal generator generates a ramp wave output. The ramp wave signal is defined by period time (PT), 
+amplitude (AM), offset (OS) and a specific delay for the output signal (DL).
+The Output waveform will have its minimum peak at OS and its maximum peak at AM + OS. 
+The delay input can delay a signal up to PT, this can be useful to synchronize different generators 
+and generate interleaving signals.
+in addition to the analog output Out there is a second boolean output Q with is true for one cycle when the ramp starts.
+*)
+
+(* read system time and prepare input data *)
+tx := TO_TIME(sysTimer) - last;
+DL := MODR(dl,1.0);
+IF dl < 0.0 THEN dl := 1.0 - dl; END_IF;
+
+(* init section *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+	tx := t#0s;
+END_IF;
+
+(* add last if one cycle is finished *)
+IF tx >= pt THEN
+	last := last + pt;
+	tx := tx - pt;
+END_IF;
+
+(* generate sine wave *)
+ltemp := temp;
+IF pt > t#0s THEN
+	temp := FRACT((TO_REAL(tx) + TO_REAL(pt) * dl) / TO_REAL(pt));
+END_IF;
+out := am * temp + os;
+
+(* boolean output Q *)
+Q := temp < ltemp;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	3. mar 2007		rev 1.0
+	original version
+
+hm	17 sep 2007		rev 1.1
+	replaced time() with t_plc_ms for compatibilitx reasons
+
+hm	27. nov 2007	rev 1.2
+	avoid divide by 0 when pt = 0
+
+ks	26. oct. 2008	rev 1.3
+	code optimization
+
+hm	10. mar. 2009	rev 1.4
+	changed real constants to use dot syntax
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_SQR" version="1.0.0" creationDate="0" lastModifiedDate="1637664789" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Square wave generator</title>
+				<descr>&lt;HTML&gt;GEN_SQR is a sqare wave generator with programmable period, adjustable amplitude and signal offset and duty cycle DC ( Duty Cycle ).&lt;br&gt;
+A special feature is an adjustable delay so that with multiple generators overlapping signals can be generated.&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Period time</descr>
+						</var>
+						<var name="AM" type="REAL">
+							<descr>Signal amplitude</descr>
+							<initValue>1.0</initValue>
+						</var>
+						<var name="OS" type="REAL">
+							<descr>Signal offset</descr>
+						</var>
+						<var name="DC" type="REAL">
+							<descr>Duty cycle (0..1)</descr>
+							<initValue>0.5</initValue>
+						</var>
+						<var name="DL" type="REAL">
+							<descr>Signal delay (0..1)</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Binary output</descr>
+						</var>
+						<var name="Out" type="REAL">
+							<descr>Analog output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.4	11. mar. 2009
+programmer 	oscat
+tested BY		oscat
+
+this signal generator generates a square wave output. The square wave signal is defined by period time (PT), 
+amplitude (AM), offset (OS), duty cycle (DC) and a specific delay for the output signal (DL).
+The Output waveform will switch between AM/2 + OS and -AM/2 + OS. The DC input specifies ther duty cycle, 
+DC = 0 means output is low at all times and 1 means output is high at all times.
+The delay input can delay a signal up to PT, this can be useful to synchronize different generators and generate interleaving signals.
+in addition to a analog output Out there is a second boolean output Q.
+*)
+
+(* check dc = 1 or 0 *)
+IF dc = 0.0 THEN
+	out := -am * 0.5 + os;
+	Q := FALSE;
+	RETURN;
+ELSIF dc = 1.0 THEN
+	out := am * 0.5 + os;
+	Q := TRUE;
+	RETURN;
+END_IF;
+
+(* read system time and prepare input data *)
+tx := TO_TIME(sysTimer) - last;
+DL := MODR(dl,1.0);
+IF dl < 0.0 THEN dl := 1.0 - dl; END_IF;
+dc := MODR(dc,1.0);
+IF dc < 0.0 THEN dc := 1.0 - dc; END_IF;
+
+(* init section *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+	tx := t#0s;
+END_IF;
+
+(* add last if one cycle is finished *)
+IF tx >= pt THEN
+	last := last + pt;
+	tx := tx - pt;
+END_IF;
+
+(* check if falling or rising edge first *)
+IF (TO_REAL(pt) * (dl + dc)) >= TO_REAL(pt) THEN
+	(* generate falling edge *)
+	IF TO_REAL(tx) >= (TO_REAL(pt) * (dl + dc - 1)) THEN
+		out := -am * 0.5 + os;
+		Q := FALSE;
+	END_IF;
+	(* generate rising edge *)
+	IF TO_REAL(tx) >= (TO_REAL(pt) * dl) THEN
+		out := am * 0.5 + os;
+		Q := TRUE;
+	END_IF;
+ELSE
+	(* generate rising edge first *)
+	IF TO_REAL(tx) >= (TO_REAL(pt) * dl) THEN
+		out := am * 0.5 + os;
+		Q := TRUE;
+	END_IF;
+	(* generate falling edge *)
+	IF TO_REAL(tx) >= (TO_REAL(pt) * (dl + dc)) THEN
+		out := -am * 0.5 +os;
+		Q := FALSE;
+	END_IF;
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	12. feb 2007	rev 1.1
+	added default value for dc = 0.5
+
+hm	17 sep 2007	rev 1.2
+	replaced time() with t_plc_ms for compatibilitx reasons
+
+hm	6. jan 2008	rev 1.3
+	improved performance
+
+hm	11. mar. 2009	rev 1.4
+	changed real constants to use dot syntax
+	set default amplitude to 1.0
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_RDT" version="1.0.0" creationDate="0" lastModifiedDate="1634628296" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Generates pulses with a defined pulse width and random spacing</title>
+				<descr>&lt;HTML&gt;GEN_RDT generates pulses with a defined pulse width and random spacing.&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;The output pulses with the pulse width TP_Q be generated at random intervals TX.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;TX fuctuates randomly between time MIN_TIME_MS and MAX_TIME_MS.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;The module generates output pulses at XQ only when the ENABLE input is TRUE.&lt;/li&gt;&lt;br&gt;
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="Min_Time_ms" type="TIME">
+							<descr>Minimum cycle time</descr>
+							<initValue>t#1s</initValue>
+						</var>
+						<var name="Max_Time_ms" type="TIME">
+							<descr>Maximum cycle time</descr>
+							<initValue>t#1.2s</initValue>
+						</var>
+						<var name="TP_Q" type="TIME">
+							<descr>Pulse width of the output pulse to XQ</descr>
+							<initValue>t#100ms</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="xQ" type="BOOL">
+							<descr>Binary output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="tonRDMTimer" type="TON">
+							<descr>Time module clock generator</descr>
+						</var>
+						<var name="tof_xQ" type="TOF">
+							<descr>Switch-off delay clock generator</descr>
+						</var>
+						<var name="tRDMTime" type="TIME">
+							<descr>Target time</descr>
+						</var>
+						<var name="rRDMTime" type="REAL">
+							<descr>Random value timer</descr>
+						</var>
+						<var name="tmp" type="DINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16 mar. 2008
+programmer 	J. Schohaus
+tested by		Hugo
+
+RDMT generates a defined pulse with pulse width TP_Q at random times. the random time will be defined with an minimum and maximum time.
+
+*)
+
+
+(*
+FUNCTION_BLOCK RDMTimer
+###############################################################################
+		 Ersteller / author :		 		 		 		 		 J.Schohaus
+		 Datum / date:		 		 		 		 		 		 13.07.2007
+###############################################################################
+		 Änderungen / Datum / Ersteller :		 		 		 		 		 		 		 		 		 		 		 		 		 		 		 
+		 moditication / date / author :		 		 
+###############################################################################
+		 Verwendete Bibliotheken		 ( * werden im Baustein nicht benötigt )
+		 		 		 		 Oscat.lib
+###############################################################################
+Beschreibung:
+*)
+
+tonRDMTimer ( IN:= Enable , PT:= TO_UDINT(tRDMTime) );
+tof_xQ ( IN:= tonRDMTimer.Q , PT:= TO_UDINT(TP_Q) );
+XQ := tof_xq.Q;
+IF tonRDMTimer.Q THEN
+		 xQ := TRUE ;
+		 rRDMTime := RDM ( last:= rRDMTime ) ;
+		 tmp :=  TO_DINT ( rRDMTime * TO_REAL(TO_DINT( Max_Time_ms - Min_Time_ms ) + TO_DINT(Min_Time_ms ))) ;
+		 tRDMTime := TO_TIME(tmp);
+		 tonRDMTimer ( IN:= FALSE );
+END_IF;
+
+(* revision history
+J. Schohaus	19. nov 2007	rev 1.0
+	origial version
+
+hm	16. mar. 2008			rev 1.1
+	added type conversion to avoid warnings under codesys 3.0
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="RMP_SOFT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Smooths the ramp of an input signal VAL</title>
+				<descr>&lt;HTML&gt;RMP_SOFT smooths the ramp of an input signal VAL.
+&lt;ul&gt;
+&lt;li&gt;The signal OUT follows the input signal VAL, where increase time as well as fall time can be limited by PT_ON and PT_OFF .
+&lt;li&gt;The rise time and fall time of the ramps are defined by setup parameter in the module RMP_SOFT.
+&lt;li&gt;The setup time PT_ON specifies how long the ramp takes of 0..255.
+&lt;li&gt;A ramp that is limited by the VAL, is accordingly shorter.
+&lt;li&gt;PT_OFF defines accordingly the falling ramp.
+&lt;li&gt;If the input IN is set to FALSE, VAL corresponds to a value of 0, so by switching the input IN between 0 and VAL it can be switched.
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Pulse_Generators library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Enable input</descr>
+						</var>
+						<var name="VAL" type="BYTE">
+							<descr>Maximum output value</descr>
+						</var>
+						<var name="PT_ON" type="TIME">
+							<descr>Rise time</descr>
+						</var>
+						<var name="PT_OFF" type="TIME">
+							<descr>Fall time</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="OUT" type="BYTE">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="rmp" type="_RMP_B"/>
+						<var name="tmp" type="BYTE"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.0	26. oct. 2008
+programmer 	oscat
+tested BY		oscat
+
+this soft on/off ramp generator generates a soft on and soft off ramp while the max on value is set by the input
+the time for a full ramp can be set by config variables for up and down ramp.
+
+*)
+
+tmp := SEL(in, 0, val);
+IF tmp > out THEN
+	(* we need to ramp down *)
+	rmp(dir := TRUE, E := TRUE, TR := PT_ON, rmp := out);
+	(* make sure out does not surpass tmp *)
+	out := MIN(out, tmp);
+ELSIF tmp < out THEN
+	(* we need to ramp up *)
+	rmp(dir := FALSE, E := TRUE, TR := PT_OFF, rmp := out);
+	(* make sure out does not surpass tmp *)
+	out := MAX(out, tmp);
+ELSE
+	(* no ramp necessary *)
+	rmp(E := FALSE, rmp := out);
+END_IF;
+
+
+(* revision history
+
+hm 22.1.2007	rev 1.1
+	deleted unused variables X1 and I, X2 and X3
+
+hm	17.9.2007	rev 1.2
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	26. oct. 2008	2.0
+	new code using _rmp_b
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="RMP_B" version="1.0.0" creationDate="0" lastModifiedDate="1629921068" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Ramp generator with 8 bits (1 byte) resolution</title>
+				<descr>&lt;HTML&gt;RMP_B is a ramp generator with 8 bits (1 byte) resolution.
+						&lt;ul&gt;
+						&lt;li&gt;The ramp of 0..255 is divided into a maximum of 255 steps and go through, in a time of PT once complete.
+						&lt;li&gt;An enable signal E switches the ramp generator on or of.
+						&lt;li&gt;An asynchronous reset sets each time the output to 0, and a pulse at the SET input sets the output to 255.
+						&lt;li&gt;With a UD input, the direction OPEN (UD = TRUE) or down (UD = FALSE) is set.
+						&lt;li&gt;The output of BUSY = TRUE indicates that a ramp is active. BUSY = FALSE means the output is stable.
+						&lt;li&gt;The outputs HIGH and LOW are TRUE, if the output OUT reaches the lower or upper limit (0 and 255).
+						&lt;li&gt;At setting of PT has to be noted, that a PLC with 5ms cycle time needs 256*5 = 1275 milliseconds for a ramp.
+						&lt;li&gt;If the time PT is made shorter than the cycle time multiplied by 256, the edge is translated in correspondingly larger steps. The ramp is constructed in this case with less than 256 steps per cycle.
+						&lt;li&gt;PT may be T#0s, then the output switched between minimum and maximum value back and forth.
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL">
+							<descr>Set input</descr>
+						</var>
+						<var name="PT" type="TIME">
+							<descr>Duration of ramp</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="UP" type="BOOL">
+							<descr>Direction, TRUE means up</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="OUT" type="BYTE">
+							<descr>Ramp output</descr>
+						</var>
+						<var name="BUSY" type="BOOL">
+							<descr>TRUE, when ramp is running</descr>
+						</var>
+						<var name="HIGH" type="BOOL">
+							<descr>Maximum output value is reached</descr>
+						</var>
+						<var name="LOW" type="BOOL">
+							<descr>Minimum output value is reached</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="rmp" type="_RMP_B"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 2.0	23. oct. 2008
+programmer 	oscat
+tested BY	oscat
+
+this ramp generator generates a byte wide ramp with 255 steps
+the generator has an asynchronous set and reset
+the ramp is controlled by PT which is the total ramp time for a full sweep from 0..255
+an UD input controlls the direction Up or Down and the E input enables the ramp generation
+a busy output indicates that the ramp is running, busy false means output is stable.
+the outputs low and high will be true when the output has reached its max or min value.
+
+*)
+
+(* generate ramp *)
+rmp(dir := UP, E := E, TR := PT, rmp := out);
+
+(* set or reset operation *)
+IF RST THEN
+	out := 0;
+ELSIF SET THEN
+	out := 255;
+END_IF;
+
+(* checks for outputs stable and reset or set busy flag *)
+low := out = 0;
+high := out = 255;
+busy := NOT (low OR high) AND E;
+
+
+(* revision history
+
+hm 5.10.2006	rev 1.1
+	added busy output
+hm 17.1.2007	rev 1.2
+	renamed input ud to up for better usability
+	deleted unused variable step
+
+hm	17.9.2007		rev 1.3
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	28. sep 2007	rev 1.4
+	added outputs on and off
+	busy is now disabled while en is false
+	new coding for higher accuracy and performance
+
+hm	5. oct 2007	rev 1.5
+	added statements to allow for PT to be t#0s output jumps to max or min immediately
+
+hm	25. dec 2007	rev 1.6
+	improved code for better performance
+
+hm	16. oct. 2008	rev 1.7
+	improved code for better performance
+
+hm	18. oct. 2008	rev 1.8
+	added type conversion to avoid warnings
+	changed input en to e for compatibility reasons
+
+hm	23. oct. 2008	REV 	2.0
+	new code using _RMP_B
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="PWM_PW" version="1.0.0" creationDate="0" lastModifiedDate="1629907076" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Pulse width modulated frequency generator</title>
+				<descr>&lt;HTML&gt;PWM_PW is a pulse width modulated frequency generator.
+&lt;/br&gt;
+The generator generates a fixed frequency F with a duty cycle (TON / TOFF) which can bemodulated (set) by the input PW.&lt;/br&gt;
+The input passes the time before the signal remains TRUE.&lt;/br&gt;
+&lt;img src=picture4.jpg&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Pulse_Generators library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="F" type="REAL">
+							<descr>Output frequency</descr>
+						</var>
+						<var name="PW" type="TIME">
+							<descr>Pulse duration high</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="clk" type="CLK_PRG"/>
+						<var name="pulse" type="TP_X"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	11. mar. 2009
+programmer 	oscat
+tested BY		oscat
+
+this signal generator generates a square wave signal which is specified by the frequency and the pulse width.
+*)
+
+IF F > 0.0 THEN
+	CLK(PT := TO_TIME(TO_DWORD(1000.0 / F)));
+	Pulse(in := clk.Q, pt := pw);
+	Q := pulse.Q;
+END_IF;
+
+(* revision history
+
+hm	25. feb 2007	rev 1.1
+	recoded in st for better performance and better portability
+
+hm	27. nov 2007	rev 1.2
+	avoid divide by 0 when F = 0
+
+hm	9. dec 2007		rev 1.3
+	corrected an error with F = 0
+
+hm	19. oct. 2008	rev 1.4
+	changed type tp_r to TP_x brecause of name change
+
+hm	11. mar. 2009	rev 1.5
+	changed real constants to use dot syntax
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="picture4.jpg" width="295" height="79" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABPAScDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKAGLNHI7orqz
+pwygglfr6U+viX4M+L/EXhf9rj9qJdD8C6p4yWbV9HMr6dfWVuLciw4DC4mjJzk/dz05xxX0
+B/wtr4gf9EP8S/8Ag60f/wCTKAPWazNe17TfCuj3er6xqFvpWlWUTTXN7eSrHDDGOrM7EAAe
+prnPA/jTxL4kvp4Nb+HureEII4w6XWoX9jcJK24DYBbzyMDgk5IA461yv7YEMtx+zP8AEOOB
+S07aYwjwhf5ty4O0dcHt3oA6jw38bPh/4yhafRPGuharCLmKy32d/HIPPlOIouD95yCAvU9q
+6E+KNHF3qVr/AGrZ/aNLiWe+iM677WNgWV5Bn5AQrHJ7A18/fFf4H+Kbrw5r3jPVvEVr4l8b
+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]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="PWM_DC" version="1.0.0" creationDate="0" lastModifiedDate="1629906640" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Duty-cycle modulated frequency generator</title>
+				<descr>&lt;HTML&gt;PWM_DC is a Duty - cycle modulated frequency generator.
+&lt;ul&gt;
+&lt;li&gt;The generator generates a fxed frequency F with a duty cycle (TON / TOFF) which can be modulated (adjusted) by the input DC.
+&lt;li&gt;A value of 0.5 at the input DC generates a duty cycle of 50%.
+&lt;/ul&gt;
+The following image shows an output signal with a duty - cycle 2 / 1, which corresponds to a DC (ratio) of 0.67.
+&lt;img src=picture3.jpg&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Pulse_Generator library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="F" type="REAL">
+							<descr>Output frequency (Hz)</descr>
+						</var>
+						<var name="DC" type="REAL">
+							<descr>Duty cycle (0..1)</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="clk" type="CLK_PRG"/>
+						<var name="pulse" type="TP_X"/>
+						<var name="tmp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.4	11. mar. 2009
+programmer 	oscat
+tested BY		oscat
+
+this signal generator generates a square wave signal which is specified by the frequency and the duty cycle
+*)
+
+IF F > 0.0 THEN
+	tmp := 1000.0 / F;
+	CLK(PT := TO_TIME(TO_DWORD(tmp)));
+	Pulse(in := clk.Q, pt := TO_TIME(TO_DWORD(tmp * DC)));
+	Q := pulse.Q;
+END_IF;
+
+(* revision history
+
+hm	25. feb 2007	rev 1.1
+	recoded in st for better performance and better portability
+
+hm	27. nov 2007	rev 1.2
+	avoid divide by 0 when F = 0
+
+hm	19. oct. 2008	rev 1.3
+	changed type TP_R to TP_X because of name change
+	improved performance
+
+hm	11. mar. 2009	rev 1.4
+	changed real constants to use dot syntax
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="picture3.jpg" width="408" height="96" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABgAZgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKACiiigAoooo
+AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAErzC2/aY+E11rEelRf
+ErwvLqckwt1s11WEytIW2hAu7JO7jGOvFeoV47aWw/4a71R/J+T/AIQa0AfZxn+0LnjPrQB6
+zqOo2ukafc319cRWlnbxtLNcTOESNFGSzE8AAd6wdH+JPhXxBqGm2Om+ItMv73UrP+0rOC3u
+Ud7i1yB5yKDkpkj5hxXwN46km8beAtEsLzWdd1LxFchJ/HunjVbvdZ3q6lZrarLCsm21OHuM
+JGqA4zg7FI+qfgn4RsvD/wAe/jnd2yXgefUdLTNxdzzIR/Z0LnaHYqPmY/dHTA6AAAHu9FFF
+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]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="RMP_W" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>16-bit ramp generator</title>
+				<descr>&lt;HTML&gt;RMP_W is a ramp generator with 16-bit (2 bytes) resolution.
+						&lt;ul&gt;
+						&lt;li&gt;The ramp of 0..65535 is divided into a maximum of 65536 steps and run in a time of PT once complete.
+						&lt;li&gt;An enable signal E switches the ramp generator on or off.
+						&lt;li&gt;An asynchronous reset sets each time the output to 0, and a pulse at the Set input sets the output to 65535.
+						&lt;li&gt;With the UD input, the direction UP (UD = TRUE) or DOWN (UD = FALSE) is defined.
+						&lt;li&gt;The output of BUSY = TRUE indicates that a ramp is active. BUSY = FALSE means the output is stable.
+						&lt;li&gt;The outputs HIGH and LOW gets TRUE, the output OUT reaches the lower or upper limit (0 and 65535).
+						&lt;li&gt;At setting of PT is to be noted that a PLC with 5 ms cycle time needs 65536*5 = 327 seconds for a ramp.
+						&lt;li&gt;If the PT is the time defned shorter than the cycle time 65536, the edge is translated in correspondingly larger steps.
+						&lt;li&gt;The ramp is constructed in this case with less than 256 steps per cycle.
+						&lt;li&gt;PT may be T#0s, then the output switched between minimum and maximum value back and forth.</descr>
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL">
+							<descr>Set input</descr>
+						</var>
+						<var name="PT" type="TIME">
+							<descr>Duration of ramp (0..65535)</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="UP" type="BOOL">
+							<descr>If TRUE direction is UP (otherwise is DOWN)</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="WORD">
+							<descr>Out value</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>TRUE when ramp is running</descr>
+						</var>
+						<var name="high" type="BOOL">
+							<descr>Maximum output value reached</descr>
+						</var>
+						<var name="low" type="BOOL">
+							<descr>Minimum output value reached</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="rmp" type="_RMP_W"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.0	23. oct. 2008
+programmer 	oscat
+tested BY	oscat
+
+this ramp generator generates a Word wide ramp with 65535 steps
+the generator has an asynchronous set and reset
+the ramp is controlled by PT which is the total ramp time for a full sweep from 0..65535
+an UD input controlls the direction Up or Down and the E input enables the ramp generation
+a busy output indicates that the ramp is running, busy false means output is stable.
+the outputs low and high will be true when the output has reached its max or min value.
+*)
+
+(* generate ramp *)
+rmp(dir := UP, E := E, TR := PT, rmp := out);
+
+(* set or reset operation *)
+IF RST THEN
+	out := 0;
+ELSIF SET THEN
+	out := 65535;
+END_IF;
+
+(* checks for outputs stable and reset or set busy flag *)
+low := out = 0;
+high := out = 65535;
+busy := NOT (low OR high) AND E;
+
+
+(* revision history:
+
+hm 4.10.2006		rev 1.1
+	added the busy output which signals that the ramp is running.
+
+hm 22.1.2007		rev 1.2
+	deleted unused variable step
+
+hm	17.9.2007		rev 1.3
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	28. sep 2007	rev 1.4
+	added outputs on and off
+	busy is now disabled while en is false
+	new coding for higher accuracy and performance
+
+hm	5. oct 2007	rev 1.5
+	added statements to allow for PT to be t#0s output jumps to max or min immediately
+
+hm	2. dec 2007	rev 1.6
+	corrected an error in calculation of step response
+
+hm	25. dec 2007	rev 1.7
+	corrected an error while step response was too slow for fast rise times
+
+hm	16. oct. 2008	rev 1.8
+	improved performance
+
+hm	18. oct. 2008	rev 1.9
+	renamed inout EN to E for compatibility reasons
+
+hm	23. oct. 2008	rev 2.0
+	new code using _RMP_W
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

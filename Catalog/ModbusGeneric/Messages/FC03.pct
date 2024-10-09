@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<devicetemplate>
+	<deviceinfo caption="Modbus FC-03" name="Modbus FC-03" version="1.0" icon="img\FC.ico" deviceid="FC03">
+		<description>Read Holding Register - Function 03 (0x03)</description>
+		<protocols>
+			<protocol>modbus_message</protocol>
+		</protocols>
+	</deviceinfo>
+
+	<plcconfig>
+
+		<hmi>
+			<window type="html" link="html/FC03.html" helpContext="ModbusMessagePage">win_FC03</window>
+
+            <tree name="tree1">
+                <node name="FC03" caption="" icon="img\FC.ico" window="win_FC03" datalink="FC03" menu="menuRemove" captionedit="yes"/>
+            </tree>
+
+		</hmi>
+
+        <templatedata>
+            <FC03>
+                <FC_config>
+                    <block>input</block>
+                    <funcode>3</funcode>
+                    <type>word</type>
+                    <startAddress>0</startAddress>
+                    <pollTime>0</pollTime>
+                    <tmo>1000</tmo>
+                    <FC_images_in> 
+                        <FC_image> 
+                            <label/> 
+                            <type/> 
+                            <description/> 
+                            <dataBlock/>
+                            <ioObject name="Register" subindex="0" objtype="WORD" inout="in"/>
+                        </FC_image> 
+                    </FC_images_in>
+					<turnAround>0</turnAround>
+                    <oneshot/>					
+                </FC_config>
+            </FC03>
+		</templatedata>
+
+		<datadef version="3.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:element name="FC03">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+                                    <xs:element name="FC_config">
+										<xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="block" type="xs:string"/>
+                                                <xs:element name="funcode" type="xs:integer"/>
+                                                <xs:element name="type" type="xs:string"/>
+                                                <xs:element name="startAddress" type="xs:integer"/>
+                                                <xs:element name="pollTime" type="xs:integer"/>
+                                                <xs:element name="tmo" type="xs:integer"/>
+                                                <xs:element name="FC_images_in">
+                                                    <xs:complexType>
+            											<xs:sequence>
+            												<xs:element name="FC_image" type="FC_image" maxOccurs="125"/>
+            											</xs:sequence>
+														<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="turnAround" type="xs:integer"/>
+                                                <xs:element name="oneshot" type="xs:string"/>												
+                                            </xs:sequence>
+										</xs:complexType>
+									</xs:element>
+                                </xs:sequence>
+								<xs:attribute name="window" type="xs:string" fixed="win_FC03"/>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="ModbusFC"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="ModbusCustom.UnassignAllPLCVarsFromDevice"/>
+								<xs:attribute name="onpastenode"  type="xs:string" fixed="ModbusCustom.ClearAllPLCVarsFromDevice"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+           </xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

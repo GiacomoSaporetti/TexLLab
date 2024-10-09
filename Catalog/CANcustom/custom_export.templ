@@ -1,0 +1,1374 @@
+<?xml version="1.0"?>
+<!-- #DEFINE PREFIX $PREFIX$ -->
+<devicetemplate>
+	<deviceinfo caption="$NAME$" name="$NAME$" icon="custom.ico" version="1.0" deviceid="$PREFIX$" importedFromEDS="false" editingEnabled="false">
+		<description>Custom CANopen device</description>
+		<protocols>
+			<protocol>CANopen_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="$NAME$" icon="custom.ico" menu="menuRemoveEnableDisable" datalink="PREFIX" window="CANcustom1" captionedit="true"/>
+			</tree>
+		</hmi>
+		
+		<templatedata>
+			<PREFIX enabled="true">
+				<CANcustom_config>
+					<nodeNumber>1</nodeNumber>
+					<nodeGuardPeriod>200</nodeGuardPeriod>
+					<lifeTimeFactor>3</lifeTimeFactor>
+					<SDOsetList/>
+					<PDOTxMappingList/>
+					<PDORxMappingList/>
+					<PDOTxTransmission>-1</PDOTxTransmission>
+					<PDOTxCyclicTime>0</PDOTxCyclicTime>
+					<PDORxTransmission>-1</PDORxTransmission>
+					<BootTime>10000</BootTime>
+					<NodeHbPTime>0</NodeHbPTime>
+					<NodeHbCTime>0</NodeHbCTime>
+					<MasterHbCTime>0</MasterHbCTime>
+					<identityObjectCheck>1</identityObjectCheck>
+					<MandatorySlave>0</MandatorySlave>
+					<PDOAutoMapping>0</PDOAutoMapping>
+				</CANcustom_config>
+			</PREFIX>
+			<!-- altri nodi per feature successive aggiunti via codice da OnLoadNode! -->
+		</templatedata>
+		
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX" type="TCANcustom"/>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+	
+	<deviceconfig>
+		<parameters nextIpa="1">
+			<par ipa="20000" readonly="true" name="Device Type" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1000" defval="0" scale="1" form="%d" offs="0" descr="Mandatory">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4096" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20001" readonly="true" name="Error Register" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1001" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4097" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20002" readonly="true" name="Number Of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1018sub0" defval="4" scale="1" form="%d" offs="0" descr="Device info for identity check">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20003" readonly="true" name="Vendor Id" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub1" defval="" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="1"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20004" readonly="true" name="Product code" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub2" defval="" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="2"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20005" readonly="true" name="Revision number" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub3" defval="" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="3"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20006" readonly="true" name="Serial number" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1018sub4" defval="" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4120" commsubindex="4"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1400	-->
+			<par ipa="20007" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1400sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 1 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20008" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1400sub1" min="1" defval="$NODEID+ 0x200" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20009" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1400sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5120" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1600	-->
+			<par ipa="20010" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1600sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 1 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20011" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20012" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20013" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20014" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20015" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20016" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20017" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20018" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1600sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5632" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1800	-->
+			<par ipa="20019" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1800sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 1 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20020" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1800sub1" min="1" defval="$NODEID+ 0x180" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20021" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1800sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20022" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1800sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6144" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A00	-->
+			<par ipa="20023" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A00sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 1 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20024" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20025" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20026" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20027" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20028" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20029" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20030" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20031" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A00sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6656" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1401	-->
+			<par ipa="20032" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1401sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 2 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20033" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1401sub1" min="1" defval="$NODEID+ 0x300" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20034" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1402sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5121" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1601	-->
+			<par ipa="20035" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1601sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 2 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20036" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20037" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20038" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20039" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20040" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20041" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20042" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20043" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1601sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5633" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1801	-->
+			<par ipa="20044" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1801sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 2 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20045" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1801sub1" min="1" defval="$NODEID+ 0x280" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20046" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1801sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20047" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1801sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6145" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A01	-->
+			<par ipa="20048" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A01sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 2 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20049" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20050" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20051" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20052" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20053" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20054" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20055" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20056" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A01sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6657" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1402	-->
+			<par ipa="20057" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1402sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 3 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20058" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1402sub1" min="1" defval="$NODEID+ 0x400" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20059" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1402sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5122" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1602	-->
+			<par ipa="20060" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1602sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 3 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20061" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20062" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20063" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20064" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20065" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20066" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20067" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20068" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1602sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5634" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1802	-->
+			<par ipa="20069" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1802sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 3 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20070" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1802sub1" min="1" defval="$NODEID+ 0x380" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20071" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1802sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20072" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1802sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6146" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A02	-->
+			<par ipa="20073" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A02sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 3 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20074" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20075" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20076" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20077" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20078" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20079" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20080" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20081" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A02sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6658" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1403	-->
+			<par ipa="20082" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1403sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 4 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20083" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1403sub1" min="1" defval="$NODEID+ 0x500" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20084" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1403sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5123" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1603	-->
+			<par ipa="20085" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1603sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 4 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20086" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20087" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20088" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20089" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20090" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20091" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20092" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20093" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1603sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5635" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1803	-->
+			<par ipa="20094" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1803sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 4 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20095" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1803sub1" min="1" defval="$NODEID+ 0x480" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20096" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1803sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20097" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1803sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6147" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A03	-->
+			<par ipa="20098" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A03sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 4 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20099" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20100" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20101" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20102" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20103" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20104" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20105" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20106" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A03sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6659" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1404	-->
+			<par ipa="20107" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1404sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 5 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20108" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1404sub1" min="1" defval="$NODEID+ 0x780" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20109" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1404sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5124" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1604	-->
+			<par ipa="20110" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1604sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 5 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20111" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20112" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20113" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20114" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20115" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20116" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20117" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20118" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1604sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5636" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1804	-->
+			<par ipa="20119" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1804sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 5 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20120" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1804sub1" min="1" defval="$NODEID+ 0x680" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20121" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1804sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20122" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1804sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6148" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A04	-->
+			<par ipa="20123" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A04sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 5 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20124" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20125" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20126" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20127" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20128" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20129" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20130" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20131" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A04sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6660" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1405	-->
+			<par ipa="20132" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1405sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 6 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5125" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20133" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1405sub1" min="1" defval="$NODEID+ 0x240" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5125" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20134" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1405sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5125" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1605	-->
+			<par ipa="20135" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1605sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 6 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20136" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20137" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20138" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20139" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20140" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20141" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20142" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20143" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1605sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5637" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1805	-->
+			<par ipa="20144" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1805sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 6 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6149" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20145" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1805sub1" min="1" defval="$NODEID+ 0x1C0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6149" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20146" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1805sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6149" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20147" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1805sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6149" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A05	-->
+			<par ipa="20148" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A05sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 6 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20149" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20150" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20151" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20152" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20153" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20154" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20155" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20156" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A05sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6661" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1406	-->
+			<par ipa="20157" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1406sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 7 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5126" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20158" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1406sub1" min="1" defval="$NODEID+ 0x340" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5126" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20159" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1406sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5126" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1606	-->
+			<par ipa="20160" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1606sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 7 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20161" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20162" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20163" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20164" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20165" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20166" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20167" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20168" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1606sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5638" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1806	-->
+			<par ipa="20169" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1806sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 7 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6150" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20170" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1806sub1" min="1" defval="$NODEID+ 0x2C0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6150" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20171" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1806sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6150" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20172" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1806sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6150" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A06	-->
+			<par ipa="20173" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A06sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 7 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20174" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20175" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20176" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20177" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20178" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20179" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20180" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20181" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A06sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6662" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1407	-->
+			<par ipa="20182" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1407sub0" defval="2" scale="1" form="%d" offs="0" descr="PDO Rx 8 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5127" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20183" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1407sub1" min="1" defval="$NODEID+ 0x440" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5127" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20184" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1407sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5127" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1607	-->
+			<par ipa="20185" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1607sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Rx 8 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20186" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20187" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20188" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20189" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20190" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20191" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20192" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20193" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1607sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5639" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1807	-->
+			<par ipa="20194" readonly="true" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1807sub0" defval="5" scale="1" form="%d" offs="0" descr="PDO Tx 8 - communication settings">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6151" commsubindex="0"/>
+				<option optid="AccessType">ro</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20195" readonly="false" name="COB-ID" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1807sub1" min="1" defval="$NODEID+ 0x3C0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6151" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20196" readonly="false" name="Transmission Type" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1807sub2" min="0" max="255" defval="0" scale="1" form="%d" offs="0">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6151" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20197" readonly="false" name="Event Timer" typepar="unsignedShort" typetarg="unsignedShort" shortdescr="1807sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6151" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	0x1A07	-->
+			<par ipa="20198" readonly="false" name="Number of Entries" typepar="unsignedChar" typetarg="unsignedChar" shortdescr="1A07sub0" min="0" max="8" defval="0" scale="1" form="%d" offs="0" descr="PDO Tx 8 - mapping definition">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20199" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub1" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="1"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20200" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub2" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="2"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20201" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub3" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="3"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20202" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub4" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="4"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20203" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub5" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="5"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20204" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub6" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="6"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20205" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub7" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="7"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+			<par ipa="20206" readonly="false" name="PDO Mapping Entry" typepar="unsignedInt" typetarg="unsignedInt" shortdescr="1A07sub8" defval="0" scale="1" form="%d" offs="0" descr="">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6663" commsubindex="8"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">0</option>
+			</par>
+<!--	Dummy objects for granularity 1 -->
+			<par ipa="20207" readonly="false" name="Dummy0001" typepar="boolean" typetarg="boolean" shortdescr="2" defval="" scale="1" form="%d" offs="0" descr="Dummy object BOOL">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="1" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20208" readonly="false" name="Dummy0002" typepar="char" typetarg="char" shortdescr="2" defval="" scale="1" form="%d" offs="0" descr="Dummy object SINT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="2" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20209" readonly="false" name="Dummy0003" typepar="short" typetarg="short" shortdescr="3" defval="" scale="1" form="%d" offs="0" descr="Dummy object INT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="3" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20210" readonly="false" name="Dummy0004" typepar="int" typetarg="int" shortdescr="4" defval="" scale="1" form="%d" offs="0" descr="Dummy object DINT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="4" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20211" readonly="false" name="Dummy0005" typepar="unsignedChar" typetarg="unsignedChar" defval="" shortdescr="5" scale="1" form="%d" offs="0" descr="Dummy object USINT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="5" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20212" readonly="false" name="Dummy0006" typepar="unsignedShort" typetarg="unsignedShort" defval="" shortdescr="6" scale="1" form="%d" offs="0" descr="Dummy object UINT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="6" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+			<par ipa="20213" readonly="false" name="Dummy0007" typepar="unsignedInt" typetarg="unsignedInt" defval="" shortdescr="7" scale="1" form="%d" offs="0" descr="Dummy object UDINT">
+				<menu id="0"/>
+				<protocol name="CanOpen" commaddr="7" commsubindex="0"/>
+				<option optid="AccessType">rw</option>
+				<option optid="PDOMapping">1</option>
+			</par>
+		</parameters>
+		<enums/>
+	</deviceconfig>
+	
+	<customconfig>
+		<canopen numPDORx="8" numPDOTx="8" hasDynamicPDO="1" granularity="8"/>
+	</customconfig>
+</devicetemplate>

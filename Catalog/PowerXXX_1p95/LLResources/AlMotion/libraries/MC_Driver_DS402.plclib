@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="0.9.5" name="MC_Driver_DS402" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="MC_Driver_DS402" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<GlobalVars name="DriverVars"/>
+				<Definition name="DRIVER_DEBUG"/>
+				<Definition name="DRIVER_DEFERRED_INTF"/>
+				<Definition name="DRIVER_MAPPED_VARS"/>
+				<Definition name="DRIVER_MOTION_STATUS"/>
+				<Definition name="DRIVER_REF"/>
+				<Definition name="DRIVER_WORK"/>
+				<Definition name="MCD_COMMAND"/>
+				<Definition name="MCD_RESPONSE"/>
+				<Pou name="MC_Driver_Bonfiglioli"/>
+				<Pou name="MC_Driver_DS402"/>
+				<Pou name="MC_Driver_KollmorgenAKD"/>
+				<Pou name="MC_Driver_VirtualAxis"/>
+			</folder>
+		</libWorkspace>
+		<globalVars>
+			<group name="DriverVars" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="" version="1.0.0">
+				<var name="_ecat_network_ok" type="BOOL"/>
+			</group>
+		</globalVars>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration>
+			<group name="DriverVars">
+				<iecDeclaration active="FALSE"/>
+			</group>
+		</iecVarsDeclaration>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="MC_Driver_Bonfiglioli" version="1.0.0" extends="MC_Driver_DS402" creationDate="1614004201" lastModifiedDate="1614004201" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<localVars>
+						<var name="gartm_statusword" type="UINT^"/>
+						<var name="gartm_opmode" type="SINT^"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods>
+					<method name="StartCmd_PowerOn" version="1.0.0" visibility="public" creationDate="1614004335" lastModifiedDate="1615476842">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// Bonfiglioli implementation override
+op_mode^ := TO_SINT(8);
+controlword^ := 16#80;
+driver^.di.command := MCD_CMD_NONE;
+driver^.di.response := MCD_RESP_NONE;
+driver^.di.action := MCD_CMD_POWER_ON;
+sm_step := 1;
+]]>
+						</sourceCode>
+					</method>
+					<method name="ActionCmd_PowerOn" version="1.0.0" visibility="public" creationDate="1614004364" lastModifiedDate="1618818644">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// Bonfiglioli implementation override
+CASE sm_step OF
+	1:
+	IF statusword^ MOD 16#100 = 16#50 THEN
+		controlword^ := 0;
+		target_torque^ := TO_INT(1000);
+		sm_step := 2;	
+	END_IF;		
+	2:
+	IF statusword^ MOD 16#100 = 16#50 THEN
+		controlword^ := 6;
+		sm_step := 3;	
+	ELSE
+		controlword^ := 80;		
+	END_IF;	
+	3:
+	IF statusword^ MOD 16#100 = 16#31 THEN
+		controlword^ := 7;
+		target_position^ := actual_position^;
+		sm_step := 4;	
+	END_IF;		
+	4:
+	IF statusword^ MOD 16#100 = 16#33 THEN
+		controlword^ := 16#F;
+	END_IF;		
+	IF statusword^ MOD 16#100 = 16#37 THEN
+		driver^.di.response := MCD_RESP_POWER_ON;
+		driver^.di.action := MCD_CMD_NONE;
+		sm_step := 0;	
+	END_IF;		
+	
+END_CASE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="GetAxisReadyToMove" version="1.0.0" visibility="public" creationDate="1623672925" lastModifiedDate="1623672944">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF NOT _ecat_network_ok THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+gartm_statusword := driver^.mp.adr_statusword;
+gartm_opmode := driver^.mp.adr_op_mode;
+
+IF driver^.di.command <> MCD_CMD_NONE THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+IF gartm_statusword^ MOD 16#100 <> 16#37 THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+IF gartm_opmode^ <> 8 THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+GetAxisReadyToMove := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+				</methods>
+				<sourceCode type="ST">
+					<![CDATA[]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MC_Driver_DS402" version="1.0.0" creationDate="1613646334" lastModifiedDate="1622801855" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<externalVars>
+						<var name="_motionLibraryInitialized" type="BOOL"/>
+						<var name="_ecat_network_ok" type="BOOL"/>
+					</externalVars>
+					<localVars>
+						<var name="dummy" type="BOOL"/>
+						<var name="driver" type="DRIVER_REF^"/>
+						<var name="op_mode" type="SINT^"/>
+						<var name="controlword" type="UINT^"/>
+						<var name="statusword" type="UINT^"/>
+						<var name="sm_step" type="INT"/>
+						<var name="pTargetPosition" type="DINT^"/>
+						<var name="pTargetVelocity" type="DINT^"/>
+						<var name="pActualPosition" type="DINT^"/>
+						<var name="pActualVelocity" type="DINT^"/>
+						<var name="idx_velocity" type="INT"/>
+						<var name="idx_prev_velocity" type="INT"/>
+						<var name="accFilter" type="DINT"/>
+						<var name="filterActual" type="DINT"/>
+						<var name="threshold" type="DINT"/>
+						<var name="actual_position" type="DINT^"/>
+						<var name="target_position" type="DINT^"/>
+						<var name="target_torque" type="INT^"/>
+						<var name="target_velocity" type="DINT^"/>
+						<var name="actual_velocity" type="DINT^"/>
+						<var name="actual_torque" type="INT^"/>
+						<var name="op_mode_display" type="SINT^"/>
+						<var name="axis" type="AXIS_REF^"/>
+						<var name="tick_u" type="REAL"/>
+						<var name="fbsdowrite" type="sysECAT_Sdo_Write"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods>
+					<method name="DeferredCommandSM" version="1.0.0" visibility="public" creationDate="1613999307" lastModifiedDate="1623167572">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="dcsm_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+							<localVars>
+								<var name="dcsm_dummy" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// check adr_axis valid
+IF dcsm_adr_axis = NULL THEN
+   RETURN;
+END_IF;
+
+driver^.isAxisReady := this.GetAxisReadyToMove();
+IF driver^.signalMotionFailure THEN
+	dummy := this.OnMotionFailure();
+END_IF;
+IF driver^.signalMotionOutOfRange THEN
+	dummy := this.OnMotionOutOfRange();
+END_IF;
+
+
+/* ------------------------------------------ */
+/* ---- commands and response management ---- */
+/* ------------------------------------------ */
+
+CASE driver^.di.command OF
+	MCD_CMD_POWER_ON :
+		dcsm_dummy := this.StartCmd_PowerOn();				
+		
+	MCD_CMD_POWER_OFF:
+		dcsm_dummy := this.StartCmd_PowerOff();			
+
+	MCD_CMD_HOMING :
+		dcsm_dummy := this.StartCmd_Homing();							
+END_CASE;
+
+CASE driver^.di.action OF
+	MCD_CMD_POWER_ON :
+		dcsm_dummy := this.ActionCmd_PowerOn();				
+		
+	MCD_CMD_POWER_OFF:
+		dcsm_dummy := this.ActionCmd_PowerOff();				
+
+	MCD_CMD_HOMING :
+		dcsm_dummy := this.ActionCmd_Homing();							
+END_CASE;
+
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="ComputeMotionStatus" version="1.0.0" visibility="public" creationDate="1613999333" lastModifiedDate="1626246391">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="cms_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[/* --------------------------------- */
+/* ---- motion state mesurement ---- */
+/* --------------------------------- */
+
+driver^.wk.size_velocity := TO_INT(400);
+idx_velocity := driver^.wk.idx_velocity;
+
+filterActual := cms_adr_axis^.params.pow2_pulses_rev - 6;
+IF filterActual < 0 THEN
+	filterActual := 0;
+END_IF; 
+accFilter := accFilter * 115 + SHR(ABS(pActualVelocity^), filterActual) * 13;
+accFilter := TO_DINT(SHR(TO_DWORD(accFilter), 7));
+driver^.wk.arr_target_velocity[idx_velocity] := TO_DINT(SHR(TO_DWORD(ABS(pTargetVelocity^)), filterActual));
+driver^.wk.arr_actual_velocity[idx_velocity] := accFilter;
+driver^.wk.idx_velocity := driver^.wk.idx_velocity +1;
+IF driver^.wk.idx_velocity >= driver^.wk.size_velocity THEN
+	driver^.wk.idx_velocity := 0;
+END_IF;	
+idx_prev_velocity := driver^.wk.idx_velocity;
+
+CASE driver^.state OF
+	MCD_SM_StandStill:
+		driver^.ms.SetConstantVelocity := FALSE;
+		driver^.ms.ActConstantVelocity := FALSE;
+		driver^.ms.SetAccelerating := FALSE;
+		driver^.ms.ActAccelerating := FALSE;
+		driver^.ms.SetDecelerating := FALSE;
+		driver^.ms.ActDecelerating := FALSE;
+		driver^.ms.SetDirectionPositive := FALSE;
+		driver^.ms.ActDirectionPositive := FALSE;
+		driver^.ms.SetDirectionNegative := FALSE;
+		driver^.ms.ActDirectionNegative := FALSE;
+	
+		threshold := MAX(ABS(driver^.wk.arr_actual_velocity[idx_velocity]) +1, threshold);
+		
+	MCD_SM_Disabled:
+		driver^.ms.SetConstantVelocity := FALSE;
+		driver^.ms.ActConstantVelocity := FALSE;
+		driver^.ms.SetAccelerating := FALSE;
+		driver^.ms.ActAccelerating := FALSE;
+		driver^.ms.SetDecelerating := FALSE;
+		driver^.ms.ActDecelerating := FALSE;
+		driver^.ms.SetDirectionPositive := FALSE;
+		driver^.ms.ActDirectionPositive := FALSE;
+		driver^.ms.SetDirectionNegative := FALSE;
+		driver^.ms.ActDirectionNegative := FALSE;
+	
+	MCD_SM_Homing:
+		driver^.ms.SetConstantVelocity := driver^.wk.arr_target_velocity[idx_prev_velocity] = driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActConstantVelocity := driver^.wk.arr_actual_velocity[idx_prev_velocity] = driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetAccelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] < driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActAccelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDecelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] > driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActDecelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDirectionPositive := driver^.wk.prev_target_position < pTargetPosition^;
+		driver^.ms.ActDirectionPositive := driver^.wk.prev_actual_position < pActualPosition^;
+		driver^.ms.SetDirectionNegative := driver^.wk.prev_target_position > pTargetPosition^;
+		driver^.ms.ActDirectionNegative := driver^.wk.prev_actual_position > pActualPosition^;
+
+	
+	MCD_SM_ErrorStop:
+		driver^.ms.SetConstantVelocity := FALSE;
+		driver^.ms.ActConstantVelocity := FALSE;
+		driver^.ms.SetAccelerating := FALSE;
+		driver^.ms.ActAccelerating := FALSE;
+		driver^.ms.SetDecelerating := FALSE;
+		driver^.ms.ActDecelerating := FALSE;
+		driver^.ms.SetDirectionPositive := FALSE;
+		driver^.ms.ActDirectionPositive := FALSE;
+		driver^.ms.SetDirectionNegative := FALSE;
+		driver^.ms.ActDirectionNegative := FALSE;
+	
+	MCD_SM_Stopping:
+		driver^.ms.SetConstantVelocity := driver^.wk.arr_target_velocity[idx_prev_velocity] = driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActConstantVelocity := driver^.wk.arr_actual_velocity[idx_prev_velocity] = driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetAccelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] < driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActAccelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDecelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] > driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActDecelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDirectionPositive := driver^.wk.prev_target_position < pTargetPosition^;
+		driver^.ms.ActDirectionPositive := driver^.wk.prev_actual_position < pActualPosition^;
+		driver^.ms.SetDirectionNegative := driver^.wk.prev_target_position > pTargetPosition^;
+		driver^.ms.ActDirectionNegative := driver^.wk.prev_actual_position > pActualPosition^;
+
+	
+	MCD_SM_DiscreteMotion:
+		driver^.ms.ActConstantVelocity := ABS(driver^.wk.arr_actual_velocity[idx_velocity] - driver^.wk.arr_actual_velocity[idx_prev_velocity]) < threshold *2;
+		IF driver^.ms.ActConstantVelocity THEN
+			driver^.ms.ActAccelerating := FALSE;
+			driver^.ms.ActDecelerating := FALSE;		
+		ELSE		
+			driver^.ms.ActAccelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+			driver^.ms.ActDecelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] > driver^.wk.arr_actual_velocity[idx_velocity];
+		END_IF;
+		driver^.ms.ActDirectionPositive := driver^.wk.prev_actual_position < pActualPosition^;
+		driver^.ms.ActDirectionNegative := driver^.wk.prev_actual_position > pActualPosition^;
+
+		driver^.ms.SetConstantVelocity := ABS(driver^.wk.arr_target_velocity[idx_velocity] - driver^.wk.arr_target_velocity[idx_prev_velocity]) < threshold *2;
+		IF driver^.ms.SetConstantVelocity THEN
+			driver^.ms.SetAccelerating := FALSE;
+			driver^.ms.SetDecelerating := FALSE;		
+		ELSE		
+			driver^.ms.SetAccelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] < driver^.wk.arr_target_velocity[idx_velocity];
+			driver^.ms.SetDecelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] > driver^.wk.arr_target_velocity[idx_velocity];
+		END_IF;
+		driver^.ms.SetDirectionPositive := driver^.wk.prev_target_position < pActualPosition^;
+		driver^.ms.SetDirectionNegative := driver^.wk.prev_target_position > pActualPosition^;
+
+
+	
+	MCD_SM_ContinuousMotion:
+		driver^.ms.SetConstantVelocity := driver^.wk.arr_target_velocity[idx_prev_velocity] = driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActConstantVelocity := driver^.wk.arr_actual_velocity[idx_prev_velocity] = driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetAccelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] < driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActAccelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDecelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] > driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActDecelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDirectionPositive := driver^.wk.prev_target_position < pTargetPosition^;
+		driver^.ms.ActDirectionPositive := driver^.wk.prev_actual_position < pActualPosition^;
+		driver^.ms.SetDirectionNegative := driver^.wk.prev_target_position > pTargetPosition^;
+		driver^.ms.ActDirectionNegative := driver^.wk.prev_actual_position > pActualPosition^;
+
+	
+	MCD_SM_SynchronizedMotion:
+		driver^.ms.SetConstantVelocity := driver^.wk.arr_target_velocity[idx_prev_velocity] = driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActConstantVelocity := driver^.wk.arr_actual_velocity[idx_prev_velocity] = driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetAccelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] < driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActAccelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDecelerating := driver^.wk.arr_target_velocity[idx_prev_velocity] > driver^.wk.arr_target_velocity[idx_velocity];
+		driver^.ms.ActDecelerating := driver^.wk.arr_actual_velocity[idx_prev_velocity] < driver^.wk.arr_actual_velocity[idx_velocity];
+		driver^.ms.SetDirectionPositive := driver^.wk.prev_target_position < pTargetPosition^;
+		driver^.ms.ActDirectionPositive := driver^.wk.prev_actual_position < pActualPosition^;
+		driver^.ms.SetDirectionNegative := driver^.wk.prev_target_position > pTargetPosition^;
+		driver^.ms.ActDirectionNegative := driver^.wk.prev_actual_position > pActualPosition^;
+
+	
+END_CASE;
+driver^.wk.prev_target_position := pTargetPosition^;
+driver^.wk.prev_actual_position := pActualPosition^;
+
+
+
+
+ComputeMotionStatus := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_PowerOn" version="1.0.0" visibility="public" creationDate="1614000863" lastModifiedDate="1623072338">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[op_mode^ := TO_SINT(8);
+controlword^ := 16#0;
+driver^.di.command := MCD_CMD_BUSY;
+driver^.di.response := MCD_RESP_NONE;
+driver^.di.action := MCD_CMD_POWER_ON;
+sm_step := 1;
+]]>
+						</sourceCode>
+					</method>
+					<method name="ActionCmd_PowerOn" version="1.0.0" visibility="public" creationDate="1614000878" lastModifiedDate="1633596470">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// DS 402 transitions to power on
+CASE sm_step OF
+	1:
+	controlword^ := 16#80; // reset errors
+	sm_step := 2;	
+	2:
+	IF statusword^ MOD 16#100 = 16#50 THEN
+		controlword^ := 6;
+		sm_step := 3;	
+	END_IF;	
+	3:
+	IF statusword^ MOD 16#100 = 16#31 THEN
+		controlword^ := 7;
+		axis^.seqVars.homePos_du := actual_position^;
+		axis^.seqVars.Position_du := 0;
+		axis^.seqVars.si_Position_du := 0;
+		target_position^ := actual_position^;
+		sm_step := 4;	
+	END_IF;		
+	4:
+	IF statusword^ MOD 16#100 = 16#33 THEN
+		controlword^ := 16#F;
+	END_IF;		
+	IF statusword^ MOD 16#100 = 16#37 THEN
+		driver^.di.command := MCD_CMD_NONE;	
+		driver^.di.response := MCD_RESP_POWER_ON;
+		driver^.di.action := MCD_CMD_NONE;
+		sm_step := 0;	
+	END_IF;		
+	
+END_CASE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_PowerOff" version="1.0.0" visibility="public" creationDate="1614001676" lastModifiedDate="1621246922">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[sm_step := 0;
+controlword^ := 0;
+op_mode^ := TO_SINT(0);
+driver^.di.command := MCD_CMD_NONE;
+driver^.di.response := MCD_RESP_POWER_OFF;
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="ActionCmd_PowerOff" version="1.0.0" visibility="public" creationDate="1614002037" lastModifiedDate="1614002037">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[]]>
+						</sourceCode>
+					</method>
+					<method name="Execute" version="1.0.0" visibility="public" creationDate="1614005210" lastModifiedDate="1633596472">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF NOT _motionLibraryInitialized THEN
+	Execute := FALSE;
+	RETURN;
+END_IF;
+
+axis := adr_axis;
+driver := adr_axis^.driver;
+tick_u := axis^.params.pulses_rev / axis^.params.units_rev;
+
+op_mode := driver^.mp.adr_op_mode;
+op_mode_display := driver^.mp.adr_op_mode_display;
+controlword := driver^.mp.adr_controlword;
+statusword:= driver^.mp.adr_statusword;
+actual_position := driver^.mp.adr_actual_position;
+target_position := driver^.mp.adr_target_position;
+actual_velocity := driver^.mp.adr_actual_velocity;
+target_velocity := driver^.mp.adr_target_velocity;
+target_torque := driver^.mp.adr_target_torque;
+actual_torque := driver^.mp.adr_actual_torque;
+
+pTargetPosition := driver^.mp.adr_target_position;
+pTargetVelocity := driver^.mp.adr_target_velocity;
+pActualPosition := driver^.mp.adr_actual_position;
+pActualVelocity := driver^.mp.adr_actual_velocity;
+
+dummy := this.CyclicProcessing_User( adr_axis );
+dummy := this.DeferredCommandSM( adr_axis );
+dummy := this.ComputeMotionStatus( adr_axis );
+
+
+Execute := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="CyclicProcessing_User" version="1.0.0" visibility="public" creationDate="1614156014" lastModifiedDate="1614156044">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="cpu_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[CyclicProcessing_User := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="Background" version="1.0.0" visibility="public" creationDate="1621590474" lastModifiedDate="1623228645">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF NOT _motionLibraryInitialized THEN
+	Background := FALSE;
+	RETURN;
+END_IF;
+
+axis := adr_axis;
+driver := adr_axis^.driver;
+tick_u := axis^.params.pulses_rev / axis^.params.units_rev;
+
+dummy := this.BackgroundProcessing_User( bpu_adr_axis := adr_axis );
+dummy := this.BackgroundCommandSM( bcsm_adr_axis := adr_axis );
+
+Background := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="BackgroundProcessing_User" version="1.0.0" visibility="public" creationDate="1621590820" lastModifiedDate="1621590886">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="bpu_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[BackgroundProcessing_User := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="BackgroundCommandSM" version="1.0.0" visibility="public" creationDate="1621591015" lastModifiedDate="1633103517">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="bcsm_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+							<localVars>
+								<var name="bcsm_dummy" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[		// check adr_axis valid
+IF bcsm_adr_axis = NULL THEN
+   RETURN;
+END_IF;
+
+/* ------------------------------------------ */
+/* ---- commands and response management ---- */
+/* ------------------------------------------ */
+
+CASE driver^.di.command OF
+	MCD_CMD_HOME_SET_PARAMS :
+		bcsm_dummy := this.StartCmd_HomeSetParams();				
+END_CASE;
+
+CASE driver^.di.action OF
+	MCD_CMD_HOME_SET_PARAMS :
+		bcsm_dummy := this.ActionCmd_HomeSetParams();				
+END_CASE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_HomeSetParams" version="1.0.0" visibility="public" creationDate="1621591674" lastModifiedDate="1622040818">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[driver^.di.response := MCD_RESP_NONE;
+driver^.di.action := MCD_CMD_HOME_SET_PARAMS;
+sm_step := 0;
+
+StartCmd_HomeSetParams := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_Homing" version="1.0.0" visibility="public" creationDate="1621591939" lastModifiedDate="1623072456">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[driver^.di.command := MCD_CMD_BUSY;
+driver^.di.response := MCD_RESP_NONE;
+driver^.di.action := MCD_CMD_HOMING;
+sm_step := 1;
+
+StartCmd_Homing := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="ActionCmd_HomeSetParams" version="1.0.0" visibility="public" creationDate="1621592688" lastModifiedDate="1623061073">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// TODO: calcolo e invio degli SDO
+// 0x6098.0 l'homing method
+// 0x6099.1 search switch speed in drive unit
+// 0x6099.2 search zero speed in drive unit
+// 0x609A homing acceleration in drive unit
+
+axis^.homing.hmZeroVelocity_du := MCVelocity_eu2du( tick_u := tick_u, vel_eu := axis^.homing.hmZeroVelocity_eu );
+axis^.homing.hmSwitchVelocity_du := MCVelocity_eu2du( tick_u := tick_u, vel_eu := axis^.homing.hmSwitchVelocity_eu );
+axis^.homing.hmAcceleration_du := MCAcceleration_eu2du( tick_u := tick_u, acc_eu := axis^.homing.hmAcceleration_eu );
+
+
+// homing method
+ActionCmd_HomeSetParams := this.SDOWrite(
+	index := TO_UINT(16#6098),
+	subindex := 0,	
+	value := TO_DWORD(axis^.homing.hmMethod),
+	size := 1
+);
+IF NOT ActionCmd_HomeSetParams THEN
+	driver^.di.command := MCD_CMD_NONE;
+	driver^.di.response := MCD_RESP_ERROR;
+	driver^.di.action := MCD_CMD_NONE;
+	sm_step := 0;	
+	RETURN;
+END_IF;
+
+// search switch velocity
+ActionCmd_HomeSetParams := this.SDOWrite(
+	index := 16#6099,
+	subindex := 1,	
+	value := axis^.homing.hmSwitchVelocity_du,
+	size := 4
+);
+IF NOT ActionCmd_HomeSetParams THEN
+	driver^.di.command := MCD_CMD_NONE;
+	driver^.di.response := MCD_RESP_ERROR;
+	driver^.di.action := MCD_CMD_NONE;
+	sm_step := 0;	
+	RETURN;
+END_IF;
+
+// search zero velocity
+ActionCmd_HomeSetParams := this.SDOWrite(
+	index := 16#6099,
+	subindex := 2,	
+	value := axis^.homing.hmZeroVelocity_du,
+	size := 4
+);
+IF NOT ActionCmd_HomeSetParams THEN
+	driver^.di.command := MCD_CMD_NONE;
+	driver^.di.response := MCD_RESP_ERROR;
+	driver^.di.action := MCD_CMD_NONE;
+	sm_step := 0;	
+	RETURN;
+END_IF;
+
+// acceleration
+ActionCmd_HomeSetParams := this.SDOWrite(
+	index := 16#609A,
+	subindex := 0,	
+	value := axis^.homing.hmAcceleration_du,
+	size := 4
+);
+IF NOT ActionCmd_HomeSetParams THEN
+	driver^.di.command := MCD_CMD_NONE;
+	driver^.di.response := MCD_RESP_ERROR;
+	driver^.di.action := MCD_CMD_NONE;
+	sm_step := 0;	
+	RETURN;
+END_IF;
+
+driver^.di.command := MCD_CMD_NONE;
+driver^.di.response := MCD_RESP_HOME_SET_PARAMS;
+driver^.di.action := MCD_CMD_NONE;
+sm_step := 0;	
+]]>
+						</sourceCode>
+					</method>
+					<method name="ActionCmd_Homing" version="1.0.0" visibility="public" creationDate="1621592739" lastModifiedDate="1633102280">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<localVars>
+								<var name="target_reached" type="BOOL"/>
+								<var name="home_found" type="BOOL"/>
+								<var name="home_error" type="BOOL"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// DS 402 transitions to power on
+
+// debug decommentare per homing manuale
+//driver^.di.command := MCD_CMD_NONE;	
+//driver^.di.response := MCD_RESP_HOMING;
+//driver^.di.action := MCD_CMD_NONE;
+//sm_step := 0;
+//RETURN;	
+
+
+dummy := dummy;
+
+CASE sm_step OF
+	1:
+	IF statusword^ MOD 16#100 = 16#37 THEN
+		controlword^ := 7; // The torque must be removed from the engine
+		sm_step := 2;	
+	END_IF;	
+
+	2:
+	IF statusword^ MOD 16#100 = 16#33 THEN
+		op_mode^ := 6; // homing mode
+		sm_step := 3;	
+	END_IF;	
+
+	3:
+	IF statusword^ MOD 16#100 = 16#33 AND op_mode_display^ = 6 THEN
+		controlword^ := 16#1F; // start homing
+		sm_step := 4;	
+	END_IF;	
+	
+	4: // waiting homing end or error
+		target_reached := SHR(statusword^, 10) MOD 2 = 1;
+		home_found := SHR(statusword^, 12) MOD 2 = 1;
+		home_error := SHR(statusword^, 13) MOD 2 = 1;
+		IF home_error THEN
+			// this is an explicit error
+			sm_step := 9; // error
+		ELSE IF target_reached <> home_found THEN
+			// CiA 402 specify that these two bits must have the same value, otherwise homing error	
+			sm_step := 9; // error
+			dummy := dummy;
+		ELSE IF target_reached AND home_found THEN
+			// Homing procedure completed
+			sm_step := 5;			
+		END_IF; END_IF; END_IF;
+	5: // normal operation must be restored then record the home position
+		controlword^ := 7; // va tolta la coppia al motore per cambiare la modalita`
+		sm_step := 6;
+	6:
+	IF statusword^ MOD 16#100 = 16#37 THEN
+		op_mode^ := 8; // position mode
+		target_position^ := actual_position^;
+		sm_step := 7;
+	END_IF;	
+	7:
+	IF statusword^ MOD 16#100 = 16#33 AND op_mode_display^ = 8 THEN
+		controlword^ := 16#F; // position motion
+		sm_step := 8;	
+	END_IF;	
+	8:
+	IF statusword^ MOD 16#100 = 16#37 THEN
+		driver^.di.command := MCD_CMD_NONE;	
+		driver^.di.response := MCD_RESP_HOMING;
+		driver^.di.action := MCD_CMD_NONE;
+		sm_step := 0;	
+	END_IF;
+	9: // homing error
+		driver^.di.command := MCD_CMD_NONE;	
+		driver^.di.response := MCD_RESP_ERROR;
+		driver^.di.action := MCD_CMD_NONE;
+		sm_step := 0;		
+END_CASE;
+
+dummy := dummy;
+]]>
+						</sourceCode>
+					</method>
+					<method name="SDOWrite" version="1.0.0" visibility="public" creationDate="1622797923" lastModifiedDate="1633443064">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="index" type="UINT"/>
+								<var name="subIndex" type="USINT"/>
+								<var name="value" type="DWORD"/>
+								<var name="size" type="USINT"/>
+							</inputVars>
+							<localVars>
+								<var name="fbwrite" type="sysECAT_Sdo_Write"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[dummy := dummy;
+(*
+fbsdowrite.result := FALSE;
+fbsdowrite.errorCode := 0;
+fbsdowrite( slave_address := TO_UINT(driver^.fieldbusAddress),
+		 index := index, 
+		 sindex := subIndex,
+		 len := TO_UDINT( size ),
+		 value := TO_DINT( value )
+);
+*)
+
+dummy := dummy;
+
+
+SDOWrite := fbwrite.result;
+]]>
+						</sourceCode>
+					</method>
+					<method name="GetAxisReadyToMove" version="1.0.0" visibility="public" creationDate="1623166579" lastModifiedDate="1623222972">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<localVars>
+								<var name="gartm_statusword" type="UINT^"/>
+								<var name="gartm_opmode" type="SINT^"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF NOT _ecat_network_ok THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+gartm_statusword := driver^.mp.adr_statusword;
+gartm_opmode := driver^.mp.adr_op_mode_display;
+
+IF driver^.di.command <> MCD_CMD_NONE THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+IF gartm_statusword^ MOD 16#100 <> 16#37 THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+IF gartm_opmode^ <> 8 THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+GetAxisReadyToMove := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="OnMotionFailure" version="1.0.0" visibility="public" creationDate="1623167216" lastModifiedDate="1633444435">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// dummy := sysLogWriteMsg(1, 'Motion failure signaled', 0,0,0,0);
+driver^.signalMotionFailure := FALSE;
+OnMotionFailure := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="OnMotionOutOfRange" version="1.0.0" visibility="public" creationDate="1623167520" lastModifiedDate="1632730276">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[dummy := sysLogWriteMsg(1, 'Motion out of range signaled', 0,0,0,0);
+driver^.signalMotionOutOfRange := FALSE;
+OnMotionOutOfRange := TRUE;
+]]>
+						</sourceCode>
+					</method>
+				</methods>
+				<sourceCode type="ST">
+					<![CDATA[]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MC_Driver_KollmorgenAKD" version="1.0.0" extends="MC_Driver_DS402" creationDate="1624026969" lastModifiedDate="1624026969" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars/>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods>
+					<method name="GetAxisReadyToMove" version="1.0.0" visibility="public" creationDate="1624027061" lastModifiedDate="1624027125">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<localVars>
+								<var name="gartm_statusword" type="UINT^"/>
+							</localVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF NOT _ecat_network_ok THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+gartm_statusword := driver^.mp.adr_statusword;
+
+IF driver^.di.command <> MCD_CMD_NONE THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+IF gartm_statusword^ MOD 16#100 <> 16#37 THEN
+	GetAxisReadyToMove := FALSE;
+	RETURN;
+END_IF;
+
+GetAxisReadyToMove := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+				</methods>
+				<sourceCode type="ST">
+					<![CDATA[]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="MC_Driver_VirtualAxis" version="1.0.0" extends="MC_Driver_DS402" creationDate="1614155117" lastModifiedDate="1614155117" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<localVars>
+						<var name="Power" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods>
+					<method name="StartCmd_PowerOn" version="1.0.0" visibility="public" creationDate="1614155182" lastModifiedDate="1615477279">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// Dummy simulation driver
+op_mode^ := TO_SINT(8);
+controlword^ := 16#0;
+statusword^ := 16#37; // fa credere ai blocchi che il drive e` in coppia
+driver^.di.command := MCD_CMD_NONE;
+driver^.di.response := MCD_RESP_POWER_ON;
+driver^.di.action := MCD_CMD_NONE;
+Power := TRUE;
+StartCmd_PowerOn := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_PowerOff" version="1.0.0" visibility="public" creationDate="1614155440" lastModifiedDate="1615477298">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[// Dummy simulation driver
+op_mode^ := TO_SINT(8);
+controlword^ := 16#0;
+statusword^ := 16#0; // fa credere ai blocchi che il drive e` fermo
+driver^.di.command := MCD_CMD_NONE;
+driver^.di.response := MCD_RESP_POWER_OFF;
+driver^.di.action := MCD_CMD_NONE;
+Power := FALSE;
+StartCmd_PowerOff := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="CyclicProcessing_User" version="1.0.0" visibility="public" creationDate="1614156211" lastModifiedDate="1615477343">
+						<returnValue>BOOL</returnValue>
+						<vars>
+							<inputVars>
+								<var name="cpu_adr_axis" type="AXIS_REF^"/>
+							</inputVars>
+						</vars>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[IF Power THEN
+	actual_position^ := target_position^;
+	actual_velocity^ := target_velocity^;
+	actual_torque^ := target_torque^;
+ELSE
+	actual_position^ := TO_DINT(0);
+	actual_velocity^ := TO_DINT(0);
+	actual_torque^ := TO_INT(0);
+END_IF;
+
+CyclicProcessing_User := TRUE;
+
+]]>
+						</sourceCode>
+					</method>
+					<method name="GetAxisReadyToMove" version="1.0.0" visibility="public" creationDate="1623741675" lastModifiedDate="1623741693">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[GetAxisReadyToMove := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_HomeSetParams" version="1.0.0" visibility="public" creationDate="1623741770" lastModifiedDate="1623742063">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[driver^.di.response := MCD_RESP_HOME_SET_PARAMS;
+sm_step := 0;
+
+StartCmd_HomeSetParams := TRUE;
+]]>
+						</sourceCode>
+					</method>
+					<method name="StartCmd_Homing" version="1.0.0" visibility="public" creationDate="1623741801" lastModifiedDate="1623742006">
+						<returnValue>BOOL</returnValue>
+						<vars/>
+						<iecDeclaration active="FALSE"/>
+						<sourceCode type="ST">
+							<![CDATA[driver^.di.response := MCD_RESP_HOMING;
+sm_step := 0;
+
+StartCmd_Homing := TRUE;
+]]>
+						</sourceCode>
+					</method>
+				</methods>
+				<sourceCode type="ST">
+					<![CDATA[]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="DRIVER_DEBUG" version="1.0.0">
+				<vars>
+					<var name="profile1_Position" type="DINT"/>
+					<var name="profile1_Velocity" type="DINT"/>
+					<var name="profile2_Position" type="DINT"/>
+					<var name="profile2_Velocity" type="DINT"/>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+			<struct name="DRIVER_DEFERRED_INTF" version="1.0.0">
+				<vars>
+					<var name="command" type="MCD_COMMAND"/>
+					<var name="response" type="MCD_RESPONSE"/>
+					<var name="cmd_data" type="DWORD"/>
+					<var name="rsp_data" type="DWORD"/>
+					<var name="action" type="MCD_COMMAND"/>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+			<struct name="DRIVER_MAPPED_VARS" version="1.0.0">
+				<vars>
+					<var name="adr_statusword" type="UINT^"/>
+					<var name="adr_controlword" type="UINT^"/>
+					<var name="adr_op_mode" type="SINT^"/>
+					<var name="adr_op_mode_display" type="SINT^"/>
+					<var name="adr_errorcode" type="UINT^"/>
+					<var name="adr_follow_err_actual" type="DINT^"/>
+					<var name="adr_target_position" type="DINT^"/>
+					<var name="adr_actual_position" type="DINT^"/>
+					<var name="adr_target_velocity" type="DINT^"/>
+					<var name="adr_actual_velocity" type="DINT^"/>
+					<var name="adr_target_torque" type="INT^"/>
+					<var name="adr_actual_torque" type="INT^"/>
+					<var name="actual_acceleration" type="DINT"/>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+			<struct name="DRIVER_MOTION_STATUS" version="1.0.0">
+				<vars>
+					<var name="setconstantvelocity" type="BOOL"/>
+					<var name="setaccelerating" type="BOOL"/>
+					<var name="setdecelerating" type="BOOL"/>
+					<var name="setdirectionpositive" type="BOOL"/>
+					<var name="setdirectionnegative" type="BOOL"/>
+					<var name="actconstantvelocity" type="BOOL"/>
+					<var name="actaccelerating" type="BOOL"/>
+					<var name="actdecelerating" type="BOOL"/>
+					<var name="actdirectionpositive" type="BOOL"/>
+					<var name="actdirectionnegative" type="BOOL"/>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+			<struct name="DRIVER_REF" version="1.0.0">
+				<vars>
+					<var name="Id" type="UINT">
+						<descr>Id of the axis</descr>
+					</var>
+					<var name="mp" type="DRIVER_MAPPED_VARS">
+						<descr>Mapped IO variables</descr>
+					</var>
+					<var name="state" type="MCD_AxisStateMachine">
+						<descr>State of the axis, refer to axis state machine in PLCopen documents</descr>
+					</var>
+					<var name="di" type="DRIVER_DEFERRED_INTF">
+						<descr>Deferred commands interface</descr>
+					</var>
+					<var name="wk" type="DRIVER_WORK">
+						<descr>Work variables</descr>
+					</var>
+					<var name="ms" type="DRIVER_MOTION_STATUS">
+						<descr>Motion Status</descr>
+					</var>
+					<var name="debug" type="DRIVER_DEBUG">
+						<descr>Debug variables</descr>
+					</var>
+					<var name="fieldbusAddress" type="UDINT">
+						<descr>Fieldbus specific address</descr>
+					</var>
+					<var name="isAxisReady" type="BOOL">
+						<descr>driver to sequencer Axis is online</descr>
+					</var>
+					<var name="signalMotionFailure" type="BOOL">
+						<descr>sequencer to driver motion error</descr>
+					</var>
+					<var name="signalMotionOutOfRange" type="BOOL">
+						<descr>sequencer to driver motion out of range</descr>
+					</var>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+			<struct name="DRIVER_WORK" version="1.0.0">
+				<vars>
+					<var name="prev_target_position" type="DINT"/>
+					<var name="arr_target_velocity" type="DINT" dim0="400"/>
+					<var name="prev_actual_position" type="DINT"/>
+					<var name="arr_actual_velocity" type="DINT" dim0="400"/>
+					<var name="idx_velocity" type="INT"/>
+					<var name="size_velocity" type="INT"/>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+		</structs>
+		<typedefs/>
+		<enums>
+			<enum name="MCD_COMMAND" version="1.0.0">
+				<elements>
+					<element name="MCD_CMD_NONE">
+						<value>0</value>
+					</element>
+					<element name="MCD_CMD_BUSY">
+						<value>1</value>
+					</element>
+					<element name="MCD_CMD_POWER_ON">
+						<descr>Power On command</descr>
+						<value>2</value>
+					</element>
+					<element name="MCD_CMD_POWER_OFF">
+						<descr>Power Off command</descr>
+						<value>3</value>
+					</element>
+					<element name="MCD_CMD_HOME_SET_PARAMS">
+						<descr>Sets Homing parameters on drive</descr>
+						<value>4</value>
+					</element>
+					<element name="MCD_CMD_HOMING">
+						<descr>Execute homing procedure</descr>
+						<value>5</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="MCD_RESPONSE" version="1.0.0">
+				<elements>
+					<element name="MCD_RESP_NONE">
+						<descr>No response</descr>
+						<value>0</value>
+					</element>
+					<element name="MCD_RESP_BUSY">
+						<descr>Response engine busy</descr>
+						<value>1</value>
+					</element>
+					<element name="MCD_RESP_ERROR">
+						<descr>Response engine error</descr>
+						<value>2</value>
+					</element>
+					<element name="MCD_RESP_POWER_ON">
+						<descr>Power On response</descr>
+						<value>3</value>
+					</element>
+					<element name="MCD_RESP_POWER_OFF">
+						<descr>Power Off response</descr>
+						<value>4</value>
+					</element>
+					<element name="MCD_RESP_HOME_SET_PARAMS">
+						<descr>HomeSetParams response</descr>
+						<value>5</value>
+					</element>
+					<element name="MCD_RESP_HOMING">
+						<descr>Homing response</descr>
+						<value>6</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

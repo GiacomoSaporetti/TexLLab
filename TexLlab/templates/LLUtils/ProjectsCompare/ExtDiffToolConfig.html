@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>EditorConfig</title>
+
+	<script>
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		var app = window.external;
+
+		var shell = app.CallFunction("common.CreateObject", "WScript.Shell");
+
+		// definiti uguali in DiffView.js
+		const INI_SECTION_PREFIX = "Settings";
+		const INI_SETTING_TOOL_NAME = "PrjCompare_Diff_Tool_Name";
+		const INI_SETTING_TOOL_PARAMETERS = "PrjCompare_Diff_Tool_Parameters";
+
+		function InitPage() {
+			// con dark theme vengono usate altre immagini
+			let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+			imgHelp.src = csspath + imgPathPrefix + "help.png";
+
+			selectToolBtn.title = app.Translate("Configure the preferred diff. tool");
+
+			let editorName = app.ReadINIString(INI_SECTION_PREFIX, INI_SETTING_TOOL_NAME);
+			let editorParams = app.ReadINIString(INI_SECTION_PREFIX, INI_SETTING_TOOL_PARAMETERS);
+
+			toolNameTxt.value = editorName;
+			toolParamsTxt.value = editorParams;
+		}
+
+		function OnOK() {
+			app.WriteINIString(INI_SECTION_PREFIX, INI_SETTING_TOOL_NAME, toolNameTxt.value);
+			app.WriteINIString(INI_SECTION_PREFIX, INI_SETTING_TOOL_PARAMETERS, toolParamsTxt.value);
+
+			CloseDlg();
+		}
+
+		function SelectExternalTool() {
+			let programsFolder = shell.ExpandEnvironmentStrings("%ProgramFiles%");
+			let filePath = app.CallFunction("commonDLL.ShowOpenFileDlg", "Executable files (*.exe)|*.exe|All files (*.*)|*.*|", ".exe", programsFolder);
+			if (!filePath)
+				return;
+
+			toolNameTxt.value = filePath;
+		}
+
+		function ShowHelpParameters() {
+			let msg = app.Translate("Insert parameters to pass to the configured tool.");
+			let msg2 = app.Translate("It is recommended to open the diff. tool in read-only mode: the IDE will not observe and apply changes made to the code in the external tool.");
+			let msg3 = app.Translate("Check the CLI manual of your preferred tool.");
+
+			app.MessageBox(msg + "\n\n" + msg2 + "\n\n" + msg3, "", gentypes.MSGBOX.MB_ICONQUESTION);
+		}
+	</script>
+
+	<style>
+		body {
+			padding: 10px;
+			overflow: hidden;
+		}
+
+		label {
+			display: inline-block;
+			width: 135px;
+		}
+
+		input {
+			width: 235px;
+		}
+
+		.btn-container {
+			margin-top: 20px;
+			display: flex;
+			justify-content: space-around;
+		}
+
+		/* bottoni finestra */
+		.btn-container > button {
+			width: 85px;
+		}
+
+		/* bottoni di help */
+		.ll-button {
+			height: 25px !important;
+			width: 25px;
+			padding: 0 2px 0 2px !important;
+			vertical-align: sub;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<label for="toolNameTxt"><t:t>External tool</t:t>:</label>
+		<input type="text" id="toolNameTxt">
+		<button class="ll-button" id="selectToolBtn" onclick="SelectExternalTool()">...</button>
+	</div>
+
+	<div class="mt-xs">
+		<label for="toolParamsTxt"><t:t>External tool parameters</t:t>:</label>
+		<input type="text" id="toolParamsTxt">
+		<button class="ll-button" id="helpBtn" onclick="ShowHelpParameters()">
+			<img id="imgHelp"/>
+		</button>
+	</div>
+
+	<div class="btn-container">
+		<button onclick="OnOK()" class="FlatButton"><t:t>Save</t:t></button>
+		<button onclick="CloseDlg()" class="FlatButton"><t:t>Cancel</t:t></button>
+	</div>
+
+	<script>
+		InitPage()
+	</script>
+</body>
+</html>

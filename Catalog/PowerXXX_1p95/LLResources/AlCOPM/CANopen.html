@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>CANopen Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var CAN_MODE_OFF = 0
+	var CAN_MODE_MASTER = 1
+	var CAN_MODE_SLAVE = 2
+	var PROTOCOL_CAN_MASTER = "CANopen_master"
+	var PROTOCOL_CAN_SLAVE = "CANopen_slaveGroup"
+	
+	var m_oldMode
+	
+	function InitPage()
+	{
+		var path = _DATAPATH
+//		pageTitle.innerText = app.DataGet(path + "@name", 0) + " Configuration"
+		
+		SearchError(path)
+		
+		var mode = app.DataGet(path + "/@mode", 0)
+		UpdatePage(mode)
+/*
+		var logopath = window.external.CatalogPath + "../Common/Img/"
+		logo.src = logopath + "logo_footer.png"
+		
+		riempimentologo.style.backgroundRepeat = "repeat-x"
+		var img = logopath + "riempimentologo_footer.png"
+		riempimentologo.style.backgroundImage = "url('"+img+"')";
+*/
+	}
+	
+	function Mode_OnClick(mode)
+	{
+		var path = _DATAPATH
+		
+		var numChilds = app.SelectNodesXML(path + "*").length
+		if (numChilds != 0)	//	switch da master a slave e viceversa
+		{
+			if (!confirm(app.Translate("Changing the mode will delete all child nodes.\nContinue ?")))
+			{
+				document.getElementById("mode" + m_oldMode).checked = true
+				app.DataSet(path + "/@mode", 0, m_oldMode)
+				return
+			}
+			
+			for (var i = numChilds; i > 0; i--)
+				app.DataDelete(path + "*[" + i + "]", 0)
+		}
+		
+		UpdatePage(mode)
+		
+		var protocol
+		if (mode == CAN_MODE_OFF)
+			protocol = ""
+		else if (mode == CAN_MODE_MASTER)
+			protocol = PROTOCOL_CAN_MASTER
+		else if (mode == CAN_MODE_SLAVE)
+			protocol = PROTOCOL_CAN_SLAVE
+		
+		app.DataSet(path + "@protocol", 0, protocol)
+		
+		if (mode == CAN_MODE_SLAVE)
+		{
+			app.AddTemplateData("CANslave_PDOgroup_TX", path + ".", 0, false)
+			app.AddTemplateData("CANslave_PDOgroup_RX", path + ".", 0, false)
+		}
+		
+		// aggiorna il list control del catalogo
+		var query = "//deviceinfo[protocols/protocol = '" + protocol + "']"
+		app.CallFunction("catalog.UpdateCatalogListCtrl", query)
+	}
+	
+	function UpdatePage(mode)
+	{
+		fldBaudRate.style.display = (mode != CAN_MODE_OFF) ? "" : "none"
+		fldMasterSettings.style.display = (mode == CAN_MODE_MASTER) ? "" : "none"
+		fldSlaveDeviceInfo.style.display = (mode == CAN_MODE_SLAVE) ? "" : "none"
+		fldSlaveSyncCommunication.style.display = (mode == CAN_MODE_SLAVE) ? "" : "none"
+		fldSlaveNetworkMonitoring.style.display = (mode == CAN_MODE_SLAVE) ? "" : "none"
+		fldSlaveConfiguration.style.display = (mode == CAN_MODE_SLAVE) ? "" : "none"
+		m_oldMode = mode;
+	}
+	
+	function OnChangeNodeID(value)
+	{
+		if (m_oldMode == CAN_MODE_SLAVE)
+		{					
+			var path = _DATAPATH
+			
+			//	aggiorno subito il valore
+			app.DataSet( path + "@slaveNodeID", 0, value )
+			
+			//	modifico il cobid dei pdo associati
+			var nodeListTx = app.SelectNodesXML( path + "CANslave_PDOgroup_TX/*" )
+			var node
+			while ( node = nodeListTx.nextNode() )
+			{
+				app.CallFunction( "CANslave_PDO.UpdateCOBID", node )
+			}
+			
+			//	modifico il cobid dei pdo associati
+			var nodeListRx = app.SelectNodesXML( path + "CANslave_PDOgroup_RX/*" )
+			var node
+			while ( node = nodeListRx.nextNode() )
+			{
+				app.CallFunction( "CANslave_PDO.UpdateCOBID", node )
+			}
+		}
+	}
+</script>
+<style>
+	label {
+		display: inline-block;
+	}
+</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr class="TitlePag">
+				<td id="pageTitle">
+					<t:t>CANopen Configuration</t:t>
+				</td>
+			</tr>
+			<tr>
+				<td class="Sfondo">
+					<fieldset style="width:300px">
+						<legend><t:t>Mode</t:t></legend>
+						<input type="radio" id="mode0" name=".D(@mode)" value="0" onclick="Mode_OnClick(this.value)">
+						<label for="mode0"><t:t>Not used</t:t></label>
+						<br>
+						<input type="radio" id="mode1" name=".D(@mode)" value="1" onclick="Mode_OnClick(this.value)">
+						<label for="mode1"><t:t>Master</t:t></label>
+						<!--<br>
+						<input type="radio" id="mode2" name=".D(@mode)" value="2" onclick="Mode_OnClick(this.value)">
+						<label for="mode2"><t:t>Slave</t:t></label>-->
+					</fieldset>
+					<fieldset id="fldBaudRate" style="width:300px">
+						<legend><t:t>Baud rate</t:t></legend>
+						<input type="radio" id="baud6" name=".D(@baudRate)" value="1000000"><label for="baud6"><t:t>1 Mb/s</t:t></label><br>
+						<input type="radio" id="baud5" name=".D(@baudRate)" value="500000"><label for="baud5"><t:t>500 Kb/s</t:t></label><br>
+						<input type="radio" id="baud4" name=".D(@baudRate)" value="250000"><label for="baud4"><t:t>250 Kb/s</t:t></label><br>
+						<input type="radio" id="baud3" name=".D(@baudRate)" value="125000"><label for="baud3"><t:t>125 Kb/s</t:t></label><br>
+						<input type="radio" id="baud2" name=".D(@baudRate)" value="10000"><label for="baud2"><t:t>100 Kb/s</t:t></label><br>
+						<input type="radio" id="baud1" name=".D(@baudRate)" value="50000"><label for="baud1"><t:t>50 Kb/s</t:t></label><br>
+					</fieldset>
+					<fieldset id="fldMasterSettings" style="width:300px">
+						<legend><t:t>Master Settings</t:t></legend>
+						<label style="width:120px" for="nodeID"><t:t>Node ID (1..127):</t:t></label><input type="text" id="nodeID" name=".D(@nodeID)">
+						<br>
+						<!--	<label style="width:1420px" for="fldcopmCan"><t:t>CAN Channel:</t:t></label>
+						<input type="radio" id="copmCan1" name=".D(@copmCan)" value="1"> <label for="copmCan1"><t:t>1</t:t></label>
+						<input type="radio" id="copmCan2" name=".D(@copmCan)" value="2"> <label for="copmCan2"><t:t>2</t:t></label> <br>	-->						
+						<br>
+						<label style="width:120px" for="hbTime"><t:t>Heartbeat time (ms):</t:t></label><input type="text" id="hbTime" name=".D(@hbTime)"><br>
+						<label style="width:120px" for="syncCOBID"><t:t>Sync COBID:</t:t></label><input type="text" id="syncCOBID" name=".D(@syncCOBID)"><br>
+						<label style="width:120px" for="syncCycle"><t:t>Sync Cycle (ms):</t:t></label><input type="text" id="syncCycle" name=".D(@syncCycle)"><br>
+					</fieldset>
+					<fieldset id="fldSlaveDeviceInfo" style="width:390px">
+						<legend><t:t>Device info</t:t></legend>
+						<label style="width:210px" for="slaveNodeID"><t:t>Node ID (1..127):</t:t></label> <input type="text" id="slaveNodeID" name=".D(@slaveNodeID)" onchange="OnChangeNodeID(this.value)"><br>
+						<br>
+						<label style="width:210px" for="slaveDeviceType"><t:t>Device Type:</t:t></label> <input type="text" id="slaveDeviceType" name=".D(@slaveDeviceType)"><br>
+						<label style="width:210px" for="slaveVendorID"><t:t>Vendor ID:</t:t></label> <input type="text" id="slaveVendorID" name=".D(@slaveVendorID)"><br>
+						<label style="width:210px" for="slaveProductCode"><t:t>Product Code:</t:t></label> <input type="text" id="slaveProductCode" name=".D(@slaveProductCode)"><br>
+						<label style="width:210px" for="slaveRevisionNumber"><t:t>Revision:</t:t></label> <input type="text" id="slaveRevisionNumber" name=".D(@slaveRevisionNumber)"><br>
+						<label style="width:210px" for="slaveSerialNumber"><t:t>Serial:</t:t></label> <input type="text" id="slaveSerialNumber" name=".D(@slaveSerialNumber)"><br>
+<!--					<br>
+						<label style="width:210px" for="slaveManufacturerDeviceName"><t:t>Manufacturer Device Name:</t:t></label> <input type="text" id="slaveManufacturerDeviceName" name=".D(@slaveManufacturerDeviceName)"><br>
+						<label style="width:210px" for="slaveManufacturerHardwareVer"><t:t>Manufacturer Hardware Ver:</t:t></label> <input type="text" id="slaveManufacturerHardwareVer" name=".D(@slaveManufacturerHardwareVer)"><br>
+						<label style="width:210px" for="slaveManufacturerSoftwareVer"><t:t>Manufacturer Software Ver:</t:t></label> <input type="text" id="slaveManufacturerSoftwareVer" name=".D(@slaveManufacturerSoftwareVer)"><br>-->
+					</fieldset>								
+					<fieldset id="fldSlaveSyncCommunication" style="width:390px">
+						<legend><t:t>Sync communication</t:t></legend>
+						<label style="width:210px" for="slaveSyncCOBID"><t:t>Sync COBID:</t:t></label> <input type="text" id="slaveSyncCOBID" name=".D(@slaveSyncCOBID)"><br>
+						<!--<label style="width:210px" for="slaveSyncCycle"><t:t>Sync Cycle (ms):</t:t></label> <input type="text" id="slaveSyncCycle" name=".D(@slaveSyncCycle)"><br>-->
+					</fieldset>
+					<fieldset id="fldSlaveNetworkMonitoring" style="width:390px">
+						<legend><t:t>Network monitoring</t:t></legend>
+						<label style="width:210px" for="slaveGuardTime"><t:t>Node Guard Period (ms):</t:t></label> <input type="text" id="slaveGuardTime" name=".D(@slaveGuardTime)"><br>
+						<label style="width:210px" for="slaveLifeTimeFactor"><t:t>Life time Factor:</t:t></label> <input type="text" id="slaveLifeTimeFactor" name=".D(@slaveLifeTimeFactor)"><br>
+						<br>
+						<label style="width:210px" for="slaveConsumerHeartbeatTime"><t:t>Node heartbeat consumer time (ms):</t:t></label> <input type="text" id="slaveConsumerHeartbeatTime" name=".D(@slaveConsumerHeartbeatTime)"><br>
+						<label style="width:210px" for="slaveProducerHeartbeatTime"><t:t>Node heartbeat producer time (ms):</t:t></label> <input type="text" id="slaveProducerHeartbeatTime" name=".D(@slaveProducerHeartbeatTime)"><br>
+					</fieldset>
+					<fieldset id="fldSlaveConfiguration" style="width:390px">
+						<legend><t:t>Configurator settings</t:t></legend>
+						<label style="width:210px" for="slaveCfgMaxTPDONum"><t:t>TPDO max number:</t:t></label> <input type="text" class="InputReadonly" readonly="readonly" id="slaveCfgMaxTPDONum" name=".D(@slaveCfgMaxTPDONum)"><br>
+						<label style="width:210px" for="slaveCfgMaxRPDONum"><t:t>RPDO max number:</t:t></label> <input type="text" class="InputReadonly" readonly="readonly" id="slaveCfgMaxRPDONum" name=".D(@slaveCfgMaxRPDONum)"><br>
+						<label style="width:210px" for="slaveCfgGranularity"><t:t>PDO granularity:</t:t></label> <input type="text" class="InputReadonly" readonly="readonly" id="slaveCfgGranularity" name=".D(@slaveCfgGranularity)"><br>
+						<label style="width:210px" for="slaveCfgCOBIDAutoAssignment"><t:t>COBID auto assignment:</t:t></label> <input type="checkbox" id="slaveCfgCOBIDAutoAssignment" name=".D(@slaveCfgCOBIDAutoAssignment)"><br>
+					</fieldset>
+				</td>
+			</tr>
+		</table>
+		<div class="push"></div>
+	</div>
+<!--<div class="footer">
+		<div id="footerImg">
+			<div id="riempimentologo"><img id="logo"> </div>
+		</div>
+	</div>-->
+	<script>
+		// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+		InitPage()
+	</script>
+</body>
+</html>

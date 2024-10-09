@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.1" name="TexFileSystem" fullXml="true">
+		<descr>Filesystem library.</descr>
+		<libWorkspace>
+			<folder name="TexFileSystem" excludeFromBuildIfNotDef="">
+				<folder name="definition">
+					<Definition name="TEXFS_ACCESS_MODE"/>
+					<Definition name="TEXFS_IEC_HANDLE"/>
+					<Definition name="__XWORD"/>
+					<Definition name="TEXFS_IEC_RESULT"/>
+					<Definition name="TEXFS_ERRORS"/>
+					<Definition name="TEXFS_SYS_FILE_STATUS"/>
+					<Definition name="TEXFS_SYS_FILETIME"/>
+				</folder>
+				<folder name="file">
+					<Pou name="TexFS_sysFileRename"/>
+					<Pou name="TexFS_sysFileGetSize"/>
+					<Pou name="TexFS_sysFileClose"/>
+					<Pou name="TexFS_sysFileEOF"/>
+					<Pou name="TexFS_sysFileFlush"/>
+					<Pou name="TexFS_sysFileWrite"/>
+					<Pou name="TexFS_sysFileRead"/>
+					<Pou name="TexFS_sysFileCopy"/>
+					<Pou name="TexFS_sysFileDelete"/>
+					<Pou name="TexFS_sysFileOpen"/>
+					<Pou name="TexFS_sysFileSetPos"/>
+					<Pou name="TexFS_sysFileGetStatus"/>
+					<Pou name="TexFS_sysFileGetTime"/>
+					<Pou name="TexFS_sysFileGetName"/>
+					<Pou name="TexFS_sysFileGetPos"/>
+					<Pou name="TexFS_sysFileGetSizeByHandle"/>
+					<Pou name="TexFS_sysFileGetTimeByHandle"/>
+				</folder>
+				<folder name="directory"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions>
+			<function name="TexFS_sysFileRename" version="1.0.0" creationDate="1720175252" lastModifiedDate="1725358627">
+				<descr>Rename the file.</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szOldFileName" type="STRING">
+							<descr>Old file name. File name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="szNewFileName" type="STRING">
+							<descr>New file name. File name can contain an absolute path to the file.</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileRename: TEXFS_IEC_RESULT
+
+
+VAR_INPUT
+	szOldFileName 	: STRING[ 32 ];			(* Old file name. File name can contain an absolute path to the file. *)
+	szNewFileName	: STRING[ 32 ];			(* New file name. File name can contain an absolute path to the file. *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetSize" version="1.0.0" creationDate="1720083217" lastModifiedDate="1725357337">
+				<descr>Get file size of the file specified by name</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szFileName" type="STRING">
+							<descr>File name. File name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="pResult" type="@TEXFS_IEC_RESULT">
+							<descr>pointer to system error code</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetSize: __XWORD
+
+VAR_INPUT
+	szFileName 	: STRING[ 32 ];			(* File name. File name can contain an absolute path to the file. *)
+	pResult 	: @TEXFS_IEC_RESULT;	(* pointer to system error code *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileClose" version="1.0.0" creationDate="1720079723" lastModifiedDate="1725355354">
+				<descr>Close a file specified by handle</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileClose: TEXFS_IEC_RESULT
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileEOF" version="1.0.0" creationDate="1720082896" lastModifiedDate="1725355371">
+				<descr>Check, if end of file is reached</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileEOF: TEXFS_IEC_RESULT		(* Check, if end of file is reached *)
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileFlush" version="1.0.0" creationDate="1720082896" lastModifiedDate="1725355613">
+				<descr>Flush the file cache and write into the file</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileFlush: __XWORD		(* Set the file pointer to the specified position *)
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileWrite" version="1.0.0" creationDate="1720082896" lastModifiedDate="1720780370">
+				<descr>Write number of bytes to the file. File must be opened with AM_READ_WRITE or AM_APPEND or AM_CREATE or AM_TRUNCATE.</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle to the file</descr>
+						</var>
+						<var name="pbyBuffer" type="@BYTE">
+							<descr>pointer to buffer with data to write to file</descr>
+						</var>
+						<var name="ulSize" type="__XWORD">
+							<descr>number of bytes to write in the file, must be less or equal the buffer size</descr>
+						</var>
+						<var name="pResult" type="@TEXFS_IEC_RESULT">
+							<descr>pointer to system error code</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileWrite: __XWORD
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle to the file *)
+	pbyBuffer 	: @BYTE;				(* pointer to buffer with data to write to file *)
+	ulSize 		: __XWORD;				(* number of bytes to write in the file, must be less or equal the buffer size *)
+	pResult 	: @TEXFS_IEC_RESULT;	(* pointer to system error code *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileRead" version="1.0.0" creationDate="1720082896" lastModifiedDate="1725358244">
+				<descr>Read number of bytes out of the file</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+						<var name="pbyBuffer" type="@BYTE">
+							<descr>pointer to buffer for read data</descr>
+						</var>
+						<var name="ulSize" type="__XWORD">
+							<descr>number of bytes to read from file, must be less or equal to the buffer size!</descr>
+						</var>
+						<var name="pResult" type="@TEXFS_IEC_RESULT">
+							<descr>pointer to system error code</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileRead: __XWORD
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+	pbyBuffer 	: @BYTE;				(* pointer to buffer for read data *)
+	ulSize 		: __XWORD;				(* number of bytes to read from file, must be less or equal to the buffer size! *)
+	pResult 	: @TEXFS_IEC_RESULT;	(* pointer to system error code *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileCopy" version="1.0.0" creationDate="1720081721" lastModifiedDate="1721029185">
+				<descr>Copy one file to another</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szDestFileName" type="STRING">
+							<descr>destination file name, file name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="szSourceFileName" type="STRING">
+							<descr>source file name, file name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="pulCopied" type="@__XWORD">
+							<descr>number of bytes copied</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileCopy: __XWORD		(* Copy one file to another. *)
+
+VAR_INPUT
+	szDestFileName 		: STRING[ 32 ];			(* destination file name, file name can contain an absolute path to the file. *)
+	szSourceFileName	: STRING[ 32 ];			(* source file name, file name can contain an absolute path to the file. *)
+	pulCopied 			: @__XWORD;				(* number of bytes copied *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileDelete" version="1.0.0" creationDate="1720082821" lastModifiedDate="1725355056">
+				<descr>Delete the file specified by name.</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szFileName" type="STRING">
+							<descr>File name. File name can contain an absolute path to the file.</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileDelete: TEXFS_IEC_RESULT
+
+VAR_INPUT
+	szFileName : STRING[ 32 ];			(* File name. File name can contain an absolute path to the file. *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileOpen" version="1.0.0" creationDate="1720081721" lastModifiedDate="1725358244">
+				<descr>Open or create file</descr>
+				<returnValue>TEXFS_IEC_HANDLE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szFileName" type="STRING">
+							<descr>File name. File name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="am" type="TEXFS_ACCESS_MODE">
+							<descr>Requested access mode to the file</descr>
+						</var>
+						<var name="pResult" type="@TEXFS_IEC_RESULT">
+							<descr>pointer to system error code</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileOpen: TEXFS_IEC_HANDLE
+
+VAR_INPUT
+	szFileName	: STRING[ 32 ];			(* File name. File name can contain an absolute path to the file. *)
+	am 			: TEXFS_ACCESS_MODE;	(* Requested access mode to the file *)
+	pResult 	: @TEXFS_IEC_RESULT;	(* pointer to system error code *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileSetPos" version="1.0.0" creationDate="1720082896" lastModifiedDate="1725358871">
+				<descr>Set to the specified position the file pointer of a file open for reading.</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+						<var name="ulOffset" type="__XWORD">
+							<descr>offset to set from the beginning of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileSetPos: __XWORD
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+	ulOffset	: __XWORD;				(* offset to set from the beginning of the file *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetStatus" version="1.0.0" creationDate="1720083217" lastModifiedDate="1725357423">
+				<descr>Get the file status</descr>
+				<returnValue>TEXFS_SYS_FILE_STATUS</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetStatus: TEXFS_SYS_FILE_STATUS		(* Get the file status *)
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetTime" version="1.0.0" creationDate="1720083217" lastModifiedDate="1721050119">
+				<descr>Get file time of the specified file</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="szFileName" type="STRING">
+							<descr>file name, file name can contain an absolute path to the file.</descr>
+						</var>
+						<var name="ptFileTime" type="@TEXFS_SYS_FILETIME">
+							<descr>pointer to get the file time results</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetTime: TEXFS_IEC_RESULT		(* Get file time of the specified file *)
+
+VAR_INPUT
+	szFileName 		: STRING[ 32 ];				(* file name, file name can contain an absolute path to the file. *)
+	ptFileTime 		: @TEXFS_SYS_FILETIME;		(* pointer to get the file time results *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetName" version="1.0.0" creationDate="1720083217" lastModifiedDate="1725356728">
+				<descr>Get the file name of the file specified by handle</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+						<var name="ptFileName" type="@STRING">
+							<descr>pointer to File name of the specified file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetName: __XWORD		(* Get the file name from file specified by handle *)
+
+VAR_INPUT
+	hFile 		: TEXFS_IEC_HANDLE;		(* handle of the file *)
+	ptFileName  : @STRING;              (* pointer to File name of the specified file *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetPos" version="1.0.0" creationDate="1720082896" lastModifiedDate="1725356728">
+				<descr>Get actual file pointer position</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>handle of the file</descr>
+						</var>
+						<var name="pulPos" type="@__XWORD">
+							<descr>pointer to get actual position of the file pointer from the beginning of the file</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetPos: TEXFS_IEC_RESULT	(* Get actual file pointer position *)
+
+VAR_INPUT
+	hFile 	: TEXFS_IEC_HANDLE;		(* handle of the file *)
+	pulPos	: @__XWORD;				(* pointer to get actual position of the file pointer from the beginning of the file *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetSizeByHandle" version="1.0.0" creationDate="1720083217" lastModifiedDate="1725879097">
+				<descr>Get file size of the file specified by name</descr>
+				<returnValue>__XWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>Handle of the file</descr>
+						</var>
+						<var name="pResult" type="@TEXFS_IEC_RESULT">
+							<descr>pointer to system error code</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexFS_sysFileGetSizeByHandle: __XWORD
+
+VAR_INPUT
+	hFile	 	: TEXFS_IEC_HANDLE;		(* Handle of the file *)
+	pResult 	: @TEXFS_IEC_RESULT;	(* pointer to system error code *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexFS_sysFileGetTimeByHandle" version="1.0.0" creationDate="1720083217" lastModifiedDate="1725879204">
+				<descr>Get file time of the specified file</descr>
+				<returnValue>TEXFS_IEC_RESULT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hFile" type="TEXFS_IEC_HANDLE">
+							<descr>Handle of the file</descr>
+						</var>
+						<var name="ptFileTime" type="@TEXFS_SYS_FILETIME">
+							<descr>pointer to get the file time results</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="FALSE">
+					<![CDATA[FUNCTION TexFS_sysFileGetTimeByHandle: TEXFS_IEC_RESULT		(* Get file time of the specified file *)
+
+VAR_INPUT
+	hFile	 		: TEXFS_IEC_HANDLE;			(* Handle of the file *)
+	ptFileTime 		: @TEXFS_SYS_FILETIME;		(* pointer to get the file time results *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="TEXFS_SYS_FILETIME" version="1.0.0">
+				<descr>Timestamps of the specified file</descr>
+				<vars>
+					<var name="tCreation" type="UDINT">
+						<descr>creation time of the file</descr>
+					</var>
+					<var name="tLastAccess" type="UDINT">
+						<descr>time of as access to the file ( Note: Actually not available )</descr>
+					</var>
+					<var name="tLastModification" type="UDINT">
+						<descr>time of last modification</descr>
+					</var>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+		</structs>
+		<typedefs>
+			<typedef name="TEXFS_IEC_HANDLE" type="INT">
+				<iecDeclaration active="FALSE"/>
+				<descr>Define new data type for file handle.</descr>
+				<initValue>0</initValue>
+			</typedef>
+			<typedef name="__XWORD" type="INT">
+				<iecDeclaration active="FALSE"/>
+				<descr>Define new data type.</descr>
+			</typedef>
+			<typedef name="TEXFS_IEC_RESULT" type="INT">
+				<iecDeclaration active="FALSE"/>
+				<descr>Define new data type for the return value.</descr>
+			</typedef>
+		</typedefs>
+		<enums>
+			<enum name="TEXFS_ACCESS_MODE" baseType="DINT" version="1.0.0">
+				<descr>File modes to open a file.</descr>
+				<elements>
+					<element name="AM_READ">
+						<descr>Open an existing file with Read access. If file does not exist, Open fails</descr>
+						<value>0</value>
+					</element>
+					<element name="AM_READ_WRITE">
+						<descr>Open a file with Read/Write access. If file does not exist, Open creates a new file</descr>
+						<value>1</value>
+					</element>
+					<element name="AM_APPEND">
+						<descr>Open a file with only Write access If file exists, Open appends the file. If file does not exist, Open creates a new file..</descr>
+						<value>2</value>
+					</element>
+					<element name="AM_CREATE">
+						<descr>Create new file with only Write access. If file does exist, Open fails.</descr>
+						<value>3</value>
+					</element>
+					<element name="AM_TRUNCATE">
+						<descr>Create new file with only Write access. If file does exist, content is discarded.</descr>
+						<value>4</value>
+					</element>
+				</elements>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[TEXFS_ACCESS_MODE: DINT (
+	AM_READ 		:= 0,			(* Open an existing file with Read access. If file does not exist, Open fails *)
+	AM_READ_WRITE   := 1,           (* Open a file with Read/Write access. If file does not exist, Open creates a new file *)
+	AM_APPEND		:= 2,			(* Open a file with only Write access If file exists, Open appends the file. If file does not exist, Open creates a new file.. *)
+	AM_CREATE		:= 3,			(* Create new file with only Write access. If file does exist, Open fails. *)
+	AM_TRUNCATE		:= 4			(* Create new file with only Write access. If file does exist, content is discarded. *)
+);
+
+]]>
+				</iecDeclaration>
+			</enum>
+			<enum name="TEXFS_ERRORS" baseType="DINT" version="1.0.0">
+				<descr>Describes the enumeration for the FileSystem ErrorCodes.</descr>
+				<elements>
+					<element name="ERR_BAD_CONTENTS">
+						<descr>Error code bad contents of the read file.</descr>
+						<value>-50</value>
+					</element>
+					<element name="ERR_BAD_DISK_STRUCTURE">
+						<descr>Error code there is something wrong in the directories or FAT.</descr>
+						<value>-29</value>
+					</element>
+					<element name="ERR_CANCELLED_BY_USER">
+						<descr>Error code cancelled by user.</descr>
+						<value>-28</value>
+					</element>
+					<element name="ERR_IS_A_DIR">
+						<descr>Error code is not a file.</descr>
+						<value>-27</value>
+					</element>
+					<element name="ERR_EOF">
+						<descr>Error code reached the end of the file.</descr>
+						<value>-26</value>
+					</element>
+					<element name="ERR_WRITE_PROTECTED">
+						<descr>Error code the file is open read only or the disk is write protected.</descr>
+						<value>-25</value>
+					</element>
+					<element name="ERR_BAD_NAME">
+						<descr>Error code invalid file name.</descr>
+						<value>-24</value>
+					</element>
+					<element name="ERR_IS_A_FILE">
+						<descr>Error code is not a dir.</descr>
+						<value>-23</value>
+					</element>
+					<element name="ERR_WRONG_SIZE">
+						<descr>Error code the size of file is wrong.</descr>
+						<value>-22</value>
+					</element>
+					<element name="ERR_ABORTED">
+						<descr>Error code execution aborted.</descr>
+						<value>-21</value>
+					</element>
+					<element name="ERR_CANT_DO">
+						<descr>Error code: the operation could not be performed for some reason.</descr>
+						<value>-20</value>
+					</element>
+					<element name="ERR_DIR_FULL">
+						<descr>Error code directory full.</descr>
+						<value>-19</value>
+					</element>
+					<element name="ERR_DISK_FULL">
+						<descr>Error code disk full.</descr>
+						<value>-18</value>
+					</element>
+					<element name="ERR_NO_MEMORY">
+						<descr>Error code no memory.</descr>
+						<value>-17</value>
+					</element>
+					<element name="ERR_DISK_WRITE">
+						<descr>Error code disk writing.</descr>
+						<value>-16</value>
+					</element>
+					<element name="ERR_DISK_READ">
+						<descr>Error code disk reading.</descr>
+						<value>-15</value>
+					</element>
+					<element name="ERR_TOO_MANY_DIR_OPEN">
+						<descr>Error code too many open directories.</descr>
+						<value>-14</value>
+					</element>
+					<element name="ERR_VOLUME_NOT_AVAILABLE">
+						<descr>Error code volume not available.</descr>
+						<value>-13</value>
+					</element>
+					<element name="ERR_BAD_OWNER">
+						<descr>Error code: the access is performed by a task that is not the one that opened the file.</descr>
+						<value>-12</value>
+					</element>
+					<element name="ERR_BAD_INDEX">
+						<descr>Error code invalid file index.</descr>
+						<value>-11</value>
+					</element>
+					<element name="ERR_NO_ENTRIES">
+						<descr>Error code no such file or directory.</descr>
+						<value>-10</value>
+					</element>
+					<element name="ERR_TOO_MANY_OPEN_FILE">
+						<descr>Error code too many open files.</descr>
+						<value>-9</value>
+					</element>
+					<element name="ERR_BAD_PARAMETER">
+						<descr>Error code invalid access code.</descr>
+						<value>-8</value>
+					</element>
+					<element name="ERR_INVALID_ACCESS">
+						<descr>Error code invalid parameter.</descr>
+						<value>-7</value>
+					</element>
+					<element name="ERR_PERMISSION_DENIED">
+						<descr>Error code permission denied.</descr>
+						<value>-6</value>
+					</element>
+					<element name="ERR_FILE_NOT_FOUND">
+						<descr>Error code file not found</descr>
+						<value>-1</value>
+					</element>
+				</elements>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[TEXFS_ERRORS: DINT (
+	ERR_FILE_NOT_FOUND          := -1,        (* Error code file not found *)
+	ERR_PERMISSION_DENIED 		:= -6,        (* Error code permission denied.*)
+	ERR_INVALID_ACCESS	 		:= -7,        (* Error code invalid parameter.*)
+	ERR_BAD_PARAMETER			:= -8,        (* Error code invalid access code.*)
+	ERR_TOO_MANY_OPEN_FILE		:= -9,        (* Error code too many open files.*)
+	ERR_NO_ENTRIES 				:= -10,       (* Error code no such file or directory.*)
+	ERR_BAD_INDEX     			:= -11,       (* Error code invalid file index.*)
+	ERR_BAD_OWNER 				:= -12,       (* Error code: the access is performed by a task that is not the one that opened the file.*)
+	ERR_VOLUME_NOT_AVAILABLE	:= -13,       (* Error code volume not available.*)
+	ERR_TOO_MANY_DIR_OPEN		:= -14,       (* Error code too many open directories.*)
+	ERR_DISK_READ 				:= -15,       (* Error code disk reading.*)
+	ERR_DISK_WRITE 				:= -16,       (* Error code disk writing.*)
+	ERR_NO_MEMORY 				:= -17,       (* Error code no memory.*)
+	ERR_DISK_FULL 				:= -18,       (* Error code disk full.*)
+	ERR_DIR_FULL 				:= -19,       (* Error code directory full.*)
+	ERR_CANT_DO 				:= -20,       (* Error code: the operation could not be performed for some reason. *)        
+	ERR_ABORTED 				:= -21,       (* Error code execution aborted.*)
+	ERR_WRONG_SIZE 				:= -22,       (* Error code the size of file is wrong.*)
+	ERR_IS_A_FILE 				:= -23,       (* Error code is not a dir.*)
+	ERR_BAD_NAME 				:= -24,       (* Error code invalid file name.*)
+	ERR_WRITE_PROTECTED	 		:= -25,       (* Error code the file is open read only or the disk is write protected.*)
+	ERR_EOF 					:= -26,       (* Error code reached the end of the file.*)
+	ERR_IS_A_DIR 				:= -27,       (* Error code is not a file.*)
+	ERR_CANCELLED_BY_USER 		:= -28,       (* Error code cancelled by user.*)
+	ERR_BAD_DISK_STRUCTURE 		:= -29,       (* Error code there is something wrong in the directories or FAT.*)
+	ERR_BAD_CONTENTS 			:= -50        (* Error code bad contents of the read file.*)
+);
+
+]]>
+				</iecDeclaration>
+			</enum>
+			<enum name="TEXFS_SYS_FILE_STATUS" baseType="DINT" version="1.0.0">
+				<descr>Actual file status of the specified file</descr>
+				<elements>
+					<element name="FS_NOT_OPEN">
+						<descr>file not open</descr>
+						<value>0</value>
+					</element>
+					<element name="FS_OPEN_READ">
+						<descr>file open for reading</descr>
+						<value>1</value>
+					</element>
+					<element name="FS_OPEN_EOF">
+						<descr>file open for reading and pointer at the end of file</descr>
+						<value>2</value>
+					</element>
+					<element name="FS_OPEN_READ_WRITE">
+						<descr>file open for reading and writing</descr>
+						<value>3</value>
+					</element>
+					<element name="FS_OPEN_WRITE">
+						<descr>file open for writing and pointer at at end of file</descr>
+						<value>4</value>
+					</element>
+					<element name="FS_OPEN_WRITE_ERR">
+						<descr>file open for writing and an error occurred</descr>
+						<value>5</value>
+					</element>
+				</elements>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[TEXFS_SYS_FILE_STATUS: DINT (
+	FS_NOT_OPEN := 0,	        (*  file not open *)
+	FS_OPEN_READ := 1,	        (*  file open for reading *)
+	FS_OPEN_EOF := 2,	        (*  file open for reading and pointer at the end of file *)
+	FS_OPEN_READ_WRITE := 3,	(*  file open for reading and writing *)
+	FS_OPEN_WRITE := 4,	        (*  file open for writing and pointer at at end of file *)
+	FS_OPEN_WRITE_ERR := 5	    (*  file open for writing and an error occurred *)
+);
+
+]]>
+				</iecDeclaration>
+			</enum>
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

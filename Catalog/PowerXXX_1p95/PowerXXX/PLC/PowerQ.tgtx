@@ -1,0 +1,10 @@
+<target>
+	<resources>
+		<resource name="POWERQ" processor="PowerPC_E200">
+			<task id="0" name="Fast" period="1000" type="cyclic" descr="Fast task"/>
+			<task id="1" name="User" period="10000" type="cyclic" descr="User task"/>
+			<task id="2" name="Background" period="100000" type="cyclic" descr="Background task"/>
+			<task id="3" name="Init" period="0" type="single" descr="Init task"/>
+		</resource>
+	</resources>
+</target>

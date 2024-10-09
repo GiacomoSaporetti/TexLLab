@@ -1,0 +1,62 @@
+/************************************************************************************
+*                                !!!! deprecato !!!!                                *
+*************************************************************************************
+
+ora lo stile di varslist e' incluso nel CSS generale (style.css).
+questo stile e' mantenuto nel catalogo per ragioni di retrocompatibilita': le pagine Axel sono aggiornate ma alcuni clienti lo usano ancora.
+*/
+
+body {
+  overflow-y: hidden;
+  padding: 10px;
+}
+.container {
+  height: 100vh;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+.btn-container {
+  height: 30px;
+  padding: 15px 0 20px 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+.btn-container > button {
+  background-color: #f0f0f0;
+  border: 1px solid #dcdcdc;
+  display: inline-block;
+  color: #666666;
+  font-size: 12px;
+  padding: 6px ;
+  text-decoration: none;
+  font: normal 12px Arial;
+  color: #002157;
+  width: 100px;
+}
+.btn-container > button[disabled] {
+  opacity: 0.6;
+}
+.btn-container > button:not([disabled]):hover {
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.btn-container > button:not([disabled]):active {
+  position: relative;
+  top: 1px;
+}
+.list-container {
+  -ms-flex: 1;
+      flex: 1;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+#list {
+  -ms-flex: 1;
+      flex: 1;
+}

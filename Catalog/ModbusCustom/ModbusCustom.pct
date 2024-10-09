@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<menu name="ModbusCustomEditor_gridPopup">
+			<command caption="Cut" handler="common.GridCut"/>
+			<command caption="Copy" handler="common.GridCopy"/>
+			<command caption="Paste" handler="common.GridPaste" updatehandler="common.UpdateGridPaste"/>
+			<separator/>
+			<command caption="Move Up" handler="common.GridMoveUp" updatehandler="common.UpdateGridMove"/>
+			<command caption="Move Down" handler="common.GridMoveDown" updatehandler="common.UpdateGridMove"/>
+		</menu>
+		
+		<menu name="menuAdd_NewModbusCustom">
+			<command caption="Add" handler="common.AddNode" statusmsg="Add a new node in the tree"/>
+			<separator/>
+			<command caption="Paste" handler="common.TreePaste" updatehandler="common.UpdateTreePaste"/>
+			<separator/>
+			<command caption="Create new and add" handler="ModbusCustom.NewModbusCustomSlave" statusmsg="Create a new Modbus custom slave and add it"/>
+			<command caption="Import from file..." handler="ModbusCustom.ImportFromFile"/>
+			<command caption="Export to file..." handler="ModbusCustom.ExportToFileMultiple"/>
+		</menu>
+		
+		<menu name="menuModbusCustomSlave">
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<command caption="Enable / Disable" handler="common.EnableDisableNode" statusmsg="Disable a node"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+			<separator/>
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+			<separator/>
+			<command caption="Export to catalog" handler="ModbusCustom.ExportToCatalogAsNewSlave" />
+			<!-- <command caption="Export to file..." handler="ModbusCustom.ExportToFile" /> -->
+		</menu>
+		
+		<window type="html" link="html\ModbusCustomMain.html"   helpContext="ModbusCustomPage">ModbusCustomMain</window>
+		<window type="html" link="html\ModbusCustomParams.html" helpContext="ModbusCustomPage">ModbusCustomParams</window>
+		<window type="html" link="html\ModbusCustomInput.html"  helpContext="ModbusCustomPage">ModbusCustomInput</window>
+		<window type="html" link="html\ModbusCustomOutput.html" helpContext="ModbusCustomPage">ModbusCustomOutput</window>
+		
+		<form type="html" link="html\ModbusCustomEditor.html" resizable="true" modal="true" xsize="940" xsizeMin="750" ysize="700" ysizeMin="550" helpContext="ModbusCustomEditor">ModbusCustomEditor</form>
+	</hmi>
+	
+	<templatedata>
+		<!-- ___________________ GENERIC MODBUS ___________________ -->
+		<sendParam>
+			<address>0</address>
+			<type/>
+			<value>0</value>
+			<timeout>200</timeout>
+			<enabled>1</enabled>
+		</sendParam>
+	
+		<FC_image> 
+			<label/> 
+			<type/> 
+			<description/> 
+			<dataBlock/>
+			<ioObject name="Register" subindex="0" objtype="WORD" inout="in"/>
+		</FC_image> 
+
+		<modbusMapping>
+			<label/>
+			<type/>
+			<dataBlock/>
+			<pollTime>0</pollTime>
+			<ioObject name="" objtype="" inout="in" subindex="0" objectIndex="0" objectSubIndex="0"/>
+			<oneshot/>
+			<enabled>1</enabled>
+		</modbusMapping>
+		
+		<modbusMappingIO>
+			<label/>
+			<type/>
+			<dataBlock/>
+			<pollTime>0</pollTime>
+			<ioObject name="" objtype="" inout="inOut" subindex="0" objectIndex="0" objectSubIndex="0"/>
+			<writeFirst>0</writeFirst>
+			<enabled>1</enabled>
+		</modbusMappingIO>
+
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		
+			<!-- *********************************** MODBUS GENERICO ****************************** -->
+			<xs:complexType name="TsendParam">
+				<xs:sequence>
+					<xs:element name="address" type="xs:integer"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="value" type="xs:decimal"/>
+					<xs:element name="timeout" type="xs:integer"/>
+					<!-- aggiungere con minOccurs=0 i nuovi settaggi, andranno poi aggiunti in ModbusCustom.OnLoadNode per compatibilita' con i vecchi PCT -->
+					<xs:element name="enabled" type="xs:boolean" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="FC_image">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="description" type="xs:string"/>
+					<xs:element name="dataBlock" type="xs:string"/>
+					<xs:element name="ioObject" type="ioObjectType"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<!-- *********************************** MODBUS CUSTOM ****************************** -->
+			<xs:complexType name="TmodbusMapping">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="dataBlock" type="xs:string"/>
+					<xs:element name="pollTime" type="xs:integer"/>
+					<xs:element name="ioObject" type="ioObjectType"/>
+					<!-- aggiungere con minOccurs=0 i nuovi settaggi, andranno poi aggiunti in ModbusCustom.OnLoadNode per compatibilita' con i vecchi PCT -->
+					<xs:element name="oneshot" type="xs:string" minOccurs="0"/>
+					<xs:element name="enabled" type="xs:boolean" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TmodbusMappingIO">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="dataBlock" type="xs:string"/>
+					<xs:element name="pollTime" type="xs:integer"/>
+					<xs:element name="ioObject" type="ioObjectType"/>
+					<xs:element name="writeFirst" type="xs:boolean"/>
+					<xs:element name="enabled" type="xs:boolean" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TModbusCustom_config">
+				<xs:sequence>
+					<xs:element name="modbusAddress" type="xs:integer"/>
+					<xs:element name="nodeNumber" type="xs:integer"/>
+					<xs:element name="pollTime" type="xs:integer"/>
+					<xs:element name="timeout" type="xs:integer"/>
+					<xs:element name="ip" type="xs:string"/>
+					<xs:element name="inputs">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="modbusMapping" type="TmodbusMapping"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="ModbusCustomInput" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="outputs">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="modbusMapping" type="TmodbusMapping"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="ModbusCustomOutput" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="turnAround" type="xs:integer"/>
+					<xs:element name="sendParams">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="sendParam" type="TsendParam"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="ModbusCustomParams" />
+						</xs:complexType>
+					</xs:element>
+					<!-- aggiungere con minOccurs=0 i nuovi settaggi, andranno poi aggiunti in ModbusCustom.OnLoadNode per compatibilita' con i vecchi PCT -->
+					<xs:element name="minPollTime" type="xs:integer" minOccurs="0"/>
+					<xs:element name="inputsOutputs" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="modbusMappingIO" type="TmodbusMappingIO"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="ModbusCustomInputOutput" />
+						</xs:complexType>
+					</xs:element>
+					<!-- 0: static mode (standard)
+						 1: dynamic mode by variable name
+						 2: dynamic mode by 16bit key
+						 4: dynamic mode by 32bit key -->
+					<xs:element name="slaveAddressConfigMode" minOccurs="0" type="xs:integer"/>
+					<!-- this field is used for both modbus RTU and TCP in non static mode -->
+					<xs:element name="dynamicSlaveAddress" minOccurs="0" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			
+			<xs:complexType name="TModbusCustom">
+				<xs:complexContent>	<xs:extension base="insertableDevice">
+					<xs:sequence>
+						<xs:element name="ModbusCustom_config" type="TModbusCustom_config"/>
+					</xs:sequence>
+					<xs:attribute name="ExtensionName" type="xs:string" fixed="ModbusCustom"/>
+					<xs:attribute name="oncreatenode" type="xs:string" fixed="ModbusCustom.OnCreateNode"/>
+					<xs:attribute name="ondeletenode" type="xs:string" fixed="ModbusCustom.UnassignAllPLCVarsFromDevice"/>
+					<xs:attribute name="onpastenode"  type="xs:string" fixed="ModbusCustom.OnPasteNode"/>
+					<xs:attribute name="onloadnode" type="xs:string" fixed="ModbusCustom.OnLoadNode"/>
+					<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+					<xs:attribute name="RefactorFunc" type="xs:string" fixed="ModbusCustom.Refactor"/>
+					<xs:attribute name="canBeDisabled"  type="xs:boolean" fixed="true"/>
+					<xs:attribute name="enabled"  type="xs:boolean"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+
+	</datadef>
+	
+	<extensions>
+		<script alias="ModbusCustom">ModbusCustom.js</script>
+		
+		<eventhandler event="OnLoadTemplate">ModbusCustom.OnLoadTemplate</eventhandler>
+	</extensions>
+</template>

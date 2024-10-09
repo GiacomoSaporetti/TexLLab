@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Complex mathematics" fullXml="true">
+		<descr>WARNING: some elements of this library (functions CABS, CLOG, CSQRT) require also Oscat_Mathematics library to be included inorder to work properly. Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Complex mathematics" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="CADD"/>
+				<Pou name="CATANH"/>
+				<Pou name="CCOSH"/>
+				<Pou name="CCON"/>
+				<Pou name="CDIV"/>
+				<Pou name="CACOS"/>
+				<Pou name="CEXP"/>
+				<Pou name="CARG"/>
+				<Pou name="CCOS"/>
+				<Pou name="CABS"/>
+				<Pou name="CATAN"/>
+				<Pou name="CASINH"/>
+				<Pou name="CACOSH"/>
+				<Pou name="CASIN"/>
+				<Pou name="CINV"/>
+				<Pou name="CSQRT"/>
+				<Pou name="CMUL"/>
+				<Pou name="CSINH"/>
+				<Pou name="CTANH"/>
+				<Pou name="CPOL"/>
+				<Pou name="CSET"/>
+				<Pou name="CSUB"/>
+				<Pou name="CPOW"/>
+				<Pou name="CLOG"/>
+				<Pou name="CTAN"/>
+				<Pou name="CSIN"/>
+				<folder name="type definition">
+					<Definition name="Oscat_CMath_Complex"/>
+				</folder>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="CADD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Addition of complex numbers</title>
+				<descr>CADD adds two complex numbers X and Y.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="Y" type="Oscat_CMath_Complex">
+							<descr>Input value 2</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function add two complex numbers
+
+*)
+
+CADD.re := x.re + y.re;
+CADD.im := x.im + y.im;
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CATANH" version="1.0.0" creationDate="0" lastModifiedDate="1635414213" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc hyperbolic tangent of a complex number</title>
+				<descr>CATANH calculates the arc hyperbolic tangent of a complex number
+						The range of values of the result is between [ -π/2,+π/2 ] for the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="i2" type="REAL"/>
+						<var name="num" type="REAL"/>
+						<var name="den" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex arcus hyperbolic tangens
+
+*)
+
+i2 := x.im * x.im;
+num := 1.0 + x.re;
+num := i2 + num * num;
+den := 1.0 - x.re;
+den := i2 + den * den;
+CATANH.re := 0.25 * (LN(num) - LN(den));
+den := TO_REAL(1) - x.re * x.re - i2;
+CATANH.im := 0.5 * ATAN(2.0 * x.im / den);
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CCOSH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Hyperbolic cosine of a complex number</title>
+				<descr>CCOSH calculates the hyperbolic cosine of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the arcus tangens function of a complex number
+
+*)
+
+CCOSH.re := cosH(x.re) * COS(x.im);
+CCOSH.im := sinH(x.re) * SIN(x.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CCON" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Conjugation of a complex number</title>
+				<descr>CCON calculated the conjugation of a complex number
+						CCON.RE = X.RE
+						CCON.IM = -X.IM</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calcucates the conjugation of a complex number
+
+*)
+
+CCON.re := x.re;
+CCON.im := -x.im;
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CDIV" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Division of two complex numbers</title>
+				<descr>CDIV divides two complex numbers X / Y.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Complex dividend</descr>
+						</var>
+						<var name="Y" type="Oscat_CMath_Complex">
+							<descr>Complex divisor</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Temp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function divides two complex numbers
+
+*)
+
+temp := Y.re * Y.re + Y.im * Y.im;
+CDIV.re := (X.re * Y.re + X.im * Y.im) / temp;
+CDIV.im := (X.im * Y.re - X.re * Y.im) / temp;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CACOS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc cosine of a complex number</title>
+				<descr>Cacos calculates the arc cosine of a complex number
+						The range of values of the result is between [0, π] for the real part and [∞, +∞] for the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input complex number</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Y" type="Oscat_CMath_Complex"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the arcus cosinus function of a complex number
+
+*)
+
+y := CACOSH(x);
+CACOS.re := y.im;
+CACOS.im := -y.re;
+
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CEXP" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>complex exponent to base E</title>
+				<descr>CEXP calculates the complex exponent to base E, CEXP = E^X.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Temp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex exponent
+
+*)
+
+temp := EXP(X.re);
+CEXP.re := temp * COS(X.im);
+CEXP.im := temp * SIN(X.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CARG" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Angle of a complex number in the coordinate system</title>
+				<descr>CARG calculates the angle of a complex number in the coordinate system.
+						The range of values of the result is between [-π , +π ].</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	20. apr. 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the phase angle (argument) of a complex number
+
+*)
+
+CARG := ATAN2(X.im, X.re);
+
+
+
+(* revision history
+hm	21. feb. 2008	rev 1.0
+	original version
+
+hm	20. apr. 2008	rev 1.1
+	use ATAN2 instead of ATAN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CCOS" version="1.0.0" creationDate="0" lastModifiedDate="1635416396" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Cosine of a complex number</title>
+				<descr>CCOs calculates the cosine of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="tmp" type="Oscat_CMath_Complex"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by		oscat
+
+this function calculates the cosinus function of a complex number
+
+*)
+
+//CCOS := CCOSH(CSET(X.im, X.re));
+tmp:= CSET(X.im, X.re);
+CCOS := CCOSH(tmp);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CABS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Length of the vector of a complex number</title>
+				<descr>&lt;HTML&gt;CABS calculates the length of the vector of a complex number.&lt;br&gt;
+The absolute value is also module or Magnitude mentioned.&lt;br&gt;
+CABS = SQRT(X.RE² + X.IM²)&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input complex number</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function the aboslute value of a complex number
+
+*)
+
+CABS := HYPOT(x.re, x.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CATAN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc tangent of a complex number</title>
+				<descr>ATAN calculates the arc tangent of a complex number
+						The range of values of the result is between [ -π/2,+π/2 ] For the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="r2" type="REAL"/>
+						<var name="num" type="REAL"/>
+						<var name="den" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex arcus tangens
+
+*)
+
+r2 := x.re * x.re;
+den := 1.0 - r2 - x.im * x.im;
+CATAN.re := 0.5 * ATAN(2.0 * x.re / den);
+num := x.im + 1.0;
+num := r2 + num * num;
+den := x.im - 1.0;
+den := r2 + den * den;
+CATAN.im := 0.25 * (LN(num)-LN(den));
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CASINH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc hyperbolic sine of a complex number</title>
+				<descr>CASINH calculates the arc hyperbolic sine of a complex number
+						The range of values of the result is between [ -π, +π ] for the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Y" type="Oscat_CMath_Complex"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the hyperbolic arcus sinus function of a complex number
+
+*)
+
+y.re := (X.re - X.im)*(X.re + X.im) + 1.0;
+y.im := 2.0 * X.re * X.im;
+y    := CSQRT(y);
+y.re := y.re + x.re;
+y.im := y.im + x.im;
+CASINH  := CLOG(y);
+
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CACOSH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc hyperbolic cosine of a complex numbe</title>
+				<descr>CACOSH calculates the arc hyperbolic cosine of a complex number
+						The range of values of the result is between [-π ,+π] For the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input complex number</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Y" type="Oscat_CMath_Complex"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the hyperbolic arcus cosinus function of a complex number
+
+*)
+
+y.re := (X.re - X.im)*(X.re + X.im) - 1.0;
+y.im := 2.0 * X.re * X.im;
+y    := CSQRT(y);
+y.re := y.re + x.re;
+y.im := y.im + x.im;
+CACOSH  := CLOG(y);
+
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CASIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc sine of a complex number</title>
+				<descr>CASIN calculates the arc sine of a complex number
+						The range of values of the result is between [-π/2,+π/2 ] for the imaginary part.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="Y" type="Oscat_CMath_Complex"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the arcus sinus function of a complex number
+
+*)
+
+y.re := -x.im;
+y.im := x.re;
+y := CASINH(y);
+CASIN.re := y.im;
+CASIN.im := -y.re;
+
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CINV" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Reciprocal of a complex number</title>
+				<descr>CINV calculated the reciprocal of a complex number, CINV = 1/X</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the inverse of a complex numbers (1 / X)
+
+*)
+
+temp := X.re * X.re + X.im * X.im;
+CINV.re := X.re / temp;
+CINV.im := -X.im / temp;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CSQRT" version="1.0.0" creationDate="0" lastModifiedDate="1635409797" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Square root of a complex number</title>
+				<descr>&lt;HTML&gt;CSQRT calculates the square root of a complex number.&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex sqare root
+
+*)
+
+temp := HYPOT(x.re, x.im);
+CSQRT.re :=  SQRT(0.5 * (temp + x.re));
+CSQRT.im :=  TO_REAL(sgn(x.im)) * SQRT(0.5 * (temp - x.re));
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CMUL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Complex multiplication</title>
+				<descr>CMUL Multiplies two complex numbers X and Y.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input 1</descr>
+						</var>
+						<var name="Y" type="Oscat_CMath_Complex">
+							<descr>Input 2</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function multiplies two complex numbers
+
+*)
+
+CMUL.re := X.re * Y.re - X.im * Y.im;
+CMUL.im := X.re * Y.im + X.im * Y.re;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CSINH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Hyperbolic sine of a complex number</title>
+				<descr>CSINH calculates the hyperbolic sine of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the sinus function of a complex number
+
+*)
+
+CSINH.re := sinH(X.re) * COS(X.im);
+CSINH.im := cosH(X.re) * SIN(X.im);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CTANH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Hyperbolic tangent of a complex number</title>
+				<descr>CTANH calculates the hyperbolic tangent of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+						<var name="xi2" type="REAL"/>
+						<var name="xr2" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex hyperbolictangens
+
+*)
+
+xi2 := 2.0 * x.im;
+xr2 := 2.0 * x.re;
+temp := 1.0 / (COSH(xr2) + COS(xi2));
+CTANH.re := temp * SINH(xr2);
+CTANH.im := temp * SIN(xi2);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1	
+	new faster code
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CPOL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Complex number in polar form.</title>
+				<descr>CPOL produces a complex number in polar form.
+						The input values of L and A specify the length (radius) and the angle.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="L" type="REAL">
+							<descr>Length or radius</descr>
+						</var>
+						<var name="A" type="REAL">
+							<descr>Angle value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function creates a complex numbers for the polar form with the inputs L (length) an A for Angle.
+
+*)
+
+CPOL.re := L * COS(A);
+CPOL.im := L * SIN(A);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CSET" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Generate a complex number</title>
+				<descr>CSET generated from the two input components RE and IM is a complex number of type COMPLEX.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="RE" type="REAL">
+							<descr>Real input</descr>
+						</var>
+						<var name="IM" type="REAL">
+							<descr>Imaginary input</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function creates a complex number from two real inputs
+
+*)
+
+CSET.re := RE;
+CSET.im := IM;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CSUB" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Complex subtraction</title>
+				<descr>CSUB Subtracts two complex numbers, Csub = X - Y.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="Y" type="Oscat_CMath_Complex">
+							<descr>Input value 2</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function subtracts two complex numbers
+
+*)
+
+CSUB.re := X.re - Y.re;
+CSUB.im := X.im - Y.im;
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CPOW" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Power of two Complex numbers</title>
+				<descr>CPOW calculates the power of two Complex numbers, CPOW = X^Y.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Complex base</descr>
+						</var>
+						<var name="Y" type="Oscat_CMath_Complex">
+							<descr>Complex exponent</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex power function x to the power of y
+
+*)
+
+CPOW := CEXP(CMUL(Y,CLOG(X)));
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CLOG" version="1.0.0" creationDate="0" lastModifiedDate="1635420955" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Natural logarithm of a complex number raised to E</title>
+				<descr>&lt;HTML&gt;CLOG calculates the natural logarithm of a complex number raised to E.&lt;br&gt;
+CLOG(X) = LOG(e)(X).&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	20. apr. 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the complex natural (base e) logarithm
+
+*)
+
+CLOG.re := LN(HYPOT(X.re, X.im));
+CLOG.im := ATAN2(X.im, X.re);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+hm	20. apr. 2008	rev 1.1
+	use ATAN2 instead of ATAN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CTAN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Tangent of a complex number</title>
+				<descr>CTAN calculates the tangent of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+						<var name="xi2" type="REAL"/>
+						<var name="xr2" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this function calculates the tangens function of a complex number
+
+*)
+
+xi2 := 2.0 * x.im;
+xr2 := 2.0 * x.re;
+temp := 1.0 / (COS(xr2) + COSH( xi2));
+CTAN.re := temp * SIN(xr2);
+CTAN.im := temp * SINH(xi2);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+hm	10. mar 2009	rev 1.1
+	faster code
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CSIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Sine of a complex number</title>
+				<descr>Csin calculates the sine of a complex number</descr>
+				<returnValue>Oscat_CMath_Complex</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="Oscat_CMath_Complex">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+this function calculates the sinus function of a complex number
+
+*)
+
+CSIN.re := cosH(X.im) * SIN(X.re);
+CSIN.im := sinH(X.im) * COS(X.re);
+
+
+(* revision history
+hm	21. feb 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="Oscat_CMath_Complex" version="1.0.0">
+				<descr>Structure used to pass a complex number (made of a real part and an immaginary part)</descr>
+				<vars>
+					<var name="re" type="REAL">
+						<descr>Real part</descr>
+					</var>
+					<var name="im" type="REAL">
+						<descr>Immaginary part</descr>
+					</var>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+			</struct>
+		</structs>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

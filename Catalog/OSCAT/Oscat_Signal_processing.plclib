@@ -1,0 +1,3784 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Signal processing" fullXml="true">
+		<descr>WARNING: several elements of this library require also Oscat_Mathematics, Oscat_Control_Modules and Oscat_Signal_Generators libraries to be included inorder to work properly. Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Signal processing" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="AIN"/>
+				<Pou name="BYTE_TO_RANGE"/>
+				<Pou name="AOUT"/>
+				<Pou name="AOUT1"/>
+				<Pou name="AIN1"/>
+				<Pou name="DELAY_4"/>
+				<Pou name="DELAY"/>
+				<Pou name="FILTER_DW"/>
+				<Pou name="FILTER_W"/>
+				<Pou name="FILTER_I"/>
+				<Pou name="FILTER_MAV_W"/>
+				<Pou name="FILTER_MAV_DW"/>
+				<Pou name="FILTER_WAV"/>
+				<Pou name="FADE"/>
+				<Pou name="SCALE_B4"/>
+				<Pou name="SCALE_X4"/>
+				<Pou name="MIX"/>
+				<Pou name="RANGE_TO_BYTE"/>
+				<Pou name="SCALE_D"/>
+				<Pou name="OFFSET"/>
+				<Pou name="RANGE_TO_WORD"/>
+				<Pou name="SCALE_X8"/>
+				<Pou name="SCALE_B8"/>
+				<Pou name="SCALE_B2"/>
+				<Pou name="OFFSET2"/>
+				<Pou name="SCALE_R"/>
+				<Pou name="SCALE_X2"/>
+				<Pou name="OVERRIDE"/>
+				<Pou name="MUX_R2"/>
+				<Pou name="SCALE"/>
+				<Pou name="SCALE_B"/>
+				<Pou name="MUX_R4"/>
+				<Pou name="WORD_TO_RANGE"/>
+				<Pou name="SH_1"/>
+				<Pou name="SH_2"/>
+				<Pou name="SH_T"/>
+				<Pou name="STAIR"/>
+				<Pou name="STAIR2"/>
+				<Pou name="SH"/>
+				<Pou name="TREND"/>
+				<Pou name="TREND_DW"/>
+				<Pou name="SEL2_OF_3B"/>
+				<Pou name="SEL2_OF_3"/>
+				<Pou name="FT_AVG"/>
+				<Pou name="FT_MIN_MAX"/>
+				<Pou name="FT_RMP"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="AIN" version="1.0.0" creationDate="0" lastModifiedDate="1629970226" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Analog input converter</title>
+				<descr>&lt;HTML&gt;Analog inputs of A/D converters generally provide a WORD (16 bit) or DWORD (32 bit), but they do not even usually 16 bit or 32 bit resolution.
+						Furthermore A/D converter digitizing a fixed input range (z as -10..+10 V), which for example, the digital values 0 .. 65535 (In 16-bit).
+						The AIN function is configured by setup parameters and calculates the output values of the A/D converter according to, so that after the AIN module a REAL value is available, which corresponds to the real measured value.
+						Furthermore, the module can extract and convert a Sign- Bit at any point.
+						&lt;ul&gt;
+						&lt;li&gt;Bits defines how many bits of the input DWORD to be processed. For a 12-bit converter, this value is 12. Then only the bits 0 - 11 are scored.
+						&lt;li&gt;Sign defines whether a sign bit is present and where it is found in the input word.
+						&lt;li&gt;Sign = 255 means that no sign bit is present and 15 means that bit 15 in the DWORD contains the sign.
+						&lt;li&gt;The default value for SIGN is 255.
+						&lt;li&gt;LOW and HIGH define the smallest and largest output value.
+						&lt;li&gt;If a Sign- Bit is defined (SIGN &lt; 255), then LOW and HIGH must be positive. Without Sign- Bit they can be either positive or negative.
+						&lt;/ul&gt;
+						Example:
+						&lt;ul&gt;
+						&lt;li&gt;A 12-bit A/D converter without a sign and input range from 0-10 is defined as follows: Bits = 12, Sign = 255, LOW = 0, HIGH = 10
+						&lt;li&gt;A 14-bit A/D converter with 14 bits with sign and input range -10 - +10 is defined as: Bits = 14, Sign = 14, Low = 0, HIGH = +10.
+						&lt;li&gt;A 24-bit A/D converter without sign and a input range -10 - +10 is defined as: Bits = 24, Sign = 255, LOW =- 10, HIGH = +10.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input from the A / D converter</descr>
+						</var>
+						<var name="Bits" type="BYTE">
+							<descr>Number of bits, 32 for a complete word</descr>
+						</var>
+						<var name="sign" type="BYTE">
+							<descr>Sign bit, 31 for bit 31 (255 means no sign bit present)</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Minimum value of output</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Largest value of output</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="temp1" type="DWORD"/>
+						<var name="temp2" type="DWORD"/>
+						<var name="sx" type="BOOL"/>
+						<var name="ff" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	16 mar 2008
+programmer 	oscat
+tested by		tobias
+
+Ain converts signals from A/D converters or other digital sources to an internal real value
+the lowest number of bits are extracted from the input word and the sign will be extracted if available separately.
+the output signal is then conditioned to range from low to high values for a 0 to max value on the analog inputs:
+for example a 15bit input (bits := 12) with sign at bit 15 (0..15) will deliver 0.0 (low value at 0) for an input value of 2#0000_0000_0000
+an input value of 2#1111_1111_1111 will deliver 10.0 on the output (high value set to 10).
+
+*) 
+
+ff:= low;
+
+(* extract the sign bit *)
+IF sign < 32 THEN
+	temp1 := SHR(in,sign);
+	sx := temp1.0;
+ELSE
+	sx := FALSE;
+END_IF;
+temp1 := SHR(16#FFFFFFFF, 32-bits);
+temp2 := in AND temp1;
+AIN := (high - low) * TO_REAL(temp2) / TO_REAL(temp1) + low;
+IF sx THEN AIN := -AIN; END_IF;
+
+(* revision history
+hm 18.8.2006	rev 1.1
+	fixed an error with low value negative and high value 0.
+
+hm 19.1.2007	rev 1.2
+	fixed an error with sign bit.
+
+hm	13.9.2007	rev 1.3
+	changed code to avoid warning under codesys 2.8.1
+
+hm	2. dec 2007	rev 1.4
+	changed code for better performance
+
+hm	16. mar 2008	rev 1.5
+	added type conversions to avoid warnings under codesys 30
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="BYTE_TO_RANGE" version="1.0.0" creationDate="0" lastModifiedDate="1637748473" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;BYTE_TO_RANGE converts a BYTE value into a REAL. An input value of 0 corresponds
+						to the REAL value of LOW and an input value of 255 corresponds
+						to the input value of HIGH.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="BYTE">
+							<descr>Input Byte</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Initial value at X = 0</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Initial value at X = 255</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	9. jan 2008
+programmer 	hugo
+tested by		tobias
+
+Byte_to_Range converts a Byte into a real between low and high.
+
+*)
+
+BYTE_TO_RANGE := (high - low) * TO_REAL(X) / 255.0 + low;
+
+
+(* revision history
+hm	9. jan 2008		rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="AOUT" version="1.0.0" creationDate="0" lastModifiedDate="1634656436" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Analog output converter</title>
+				<descr>&lt;HTML&gt;&lt;p&gt;Inputs of D/A converters typically require a WORD (16 bit) or DWORD (32 bit), but they usually do not have 16 bit or 32 bit resolution. A D/A converter
+normally generates a fxed output range (i.e. -10 .. +10 V) which is represented, for example, with the digital values 0 .. 65535 (In 16-bit). The
+function AOUT converts the corresponding input &lt;b&gt;IN&lt;/b&gt;, so that a digital value gets used by the D/A converter to generate an output value linked to the input.
+&lt;ul&gt;
+&lt;li&gt;Furthermore, the module can insert a Sign-Bit anywhere if the D/A converter needs it.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Bits&lt;/b&gt; define how many Bits can be handled by the D/A converter.&lt;/li&gt;
+For a 12 bit converter, this value is 12. Then
+only the bits 0 - 11 are scored. Sign defnes whether a sign bit is needed
+and where to place in the source DWORD. Sign = 255 means that no sign
+bit is needed, and 15 means Bit 15 in the DWORD contains the sign. LOW
+and HIGH defne the smallest and highest input value. If a Sign-Bit is defned
+( SIGN&lt; 255), then LOW and HIGH must be positive. Without Sign-Bit
+they can be either positive or negative.
+Examples :
+A 12-bit D/A converter without a sign and output range from 0-10 is defned
+follows: Bits = 12, Sign = 255, LOW = 0, HIGH = 10
+A 14-bit D/A converter with 14 bits with sign and output range -10 - +10 is
+defned as: Bits = 14, Sign = 14, Low = 0, HIGH = +10.
+A 24-bit D/A converter without a sign and output range from -10 - +10 is
+defned as follows: Bits = 24, Sign = 255, LOW = -10, HIGH = +10
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="Bits" type="BYTE">
+							<descr>Number of bits, 16 for a complete word</descr>
+						</var>
+						<var name="sign" type="BYTE">
+							<descr>Sign Bit, 15 for Bit 15 (32 to disable)</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Smallest value of the input</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Largest value of the input</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="in2" type="REAL"/>
+						<var name="sx" type="BOOL">
+							<initValue>0</initValue>
+						</var>
+						<var name="tmp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.4	23 feb 2008
+programmer 	oscat
+tested by	tobias
+
+AOUT converts an internal real value to a word for a D/A converter or other output devices.
+
+*) 
+
+
+(* if sign bit is defined *)
+IF sign < 32 THEN
+	sx := sign_R(in);
+	in2 := ABS(in);
+ELSE
+	in2 := in;
+END_IF;
+
+(* begrenze in auf die zulässigen werte *)
+in2 := LIMIT(in2, low, high);
+
+(* Berechne den Ausgangswert *)
+Aout := TO_DWORD( (in2 - low)/(high-low) * TO_REAL(SHL(DWORD#1,bits)-1));
+IF sx THEN Aout := SHL(DWORD#1,sign) OR Aout; END_IF;    
+
+
+
+(*
+revision history
+
+hm 18.1.2007		rev 1.1
+	renamed Modul to aout.
+	changed Output to 32 Bit max.
+	corrected error with sign bit.
+
+hm	13.9.2007		rev 1.2
+	changed code to avoid warning under codesys 2.8.1
+
+hm	2. dec 2007		rev 1.3
+	changed code for better performance
+
+hm	23. feb 2008	rev 1.4
+	changed code for better performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="AOUT1" version="1.0.0" creationDate="0" lastModifiedDate="1634656302" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Advanced analog output converter</title>
+				<descr>&lt;HTML&gt;AOUT1 generates from the REAL input value IN a digital output value for D/A converter or other modules of digital data.&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;Using Setup variables, the digital output value can be adapted to diferent needs.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;The IN input value is converted using the information in LOW and HIGH and with the length specifed in BIT_0 and BIT_N, and made available at the output.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;BIT_0 specifes the position of the lowest signifcant data bits (Bit0) in the output data and BIT_N specifes the position of the most signifcant data bits in the output data.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;The length of the data area is automatically calculated by BIT_N - BIT_0 + 1.&lt;/li&gt;&lt;br&gt;
+&lt;li&gt;When the position of a sign bit is specifed with SIGN the sign of the input value is copied to the specifed position of SIGN in the output data.&lt;/li&gt;&lt;br&gt;
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<returnValue>DWORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="Bit_0" type="INT">
+							<descr>Position of the lowest significant bit of data word</descr>
+						</var>
+						<var name="Bit_N" type="INT">
+							<descr>Position of the most significat bit of data word</descr>
+						</var>
+						<var name="sign" type="INT">
+							<descr>Sign bit, 15 for bit 15 (32 if disabled)</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Smallest value of the input</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Largest value of input</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="sx" type="BOOL"/>
+						<var name="in2" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	23 feb 2008
+programmer 	oscat
+tested by		tobias
+
+this module conditions an internal real value for a D/A converter.
+
+*) 
+
+(* if sign bit is defined *)
+IF sign < 32 THEN
+	sx := SIGN_R(in);
+	in2 := ABS(in);
+ELSE
+	in2 := in;
+END_IF;
+
+(* begrenze in auf die zulässigen werte *)
+in2 := LIMIT(in2, low, high);
+
+(* Berechne den Ausgangswert *)
+AOUT1 := SHL(TO_DWORD((in2 - low) / (high - low) * TO_REAL(SHL(DWORD#1,bit_n - Bit_0 + 1) -1)),Bit_0);
+IF sx THEN AOUT1 := SHL(DWORD#1,sign) OR AOUT1; END_IF;
+
+
+(* revision history
+hm	23. feb 2008	rev 1.0
+	original version
+
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_B4" version="1.0.0" creationDate="0" lastModifiedDate="1637752009" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_B4 calculates four internal values from &lt;b&gt;in1&lt;/b&gt;, &lt;b&gt;in2&lt;/b&gt;, &lt;b&gt;in3&lt;/b&gt; and &lt;b&gt;in4&lt;/b&gt;, limited by the respective setup values &lt;b&gt;in_min&lt;/b&gt; and &lt;b&gt;in_max&lt;/b&gt;.
+						The internal values are summed up, the sum is multiplied by &lt;b&gt;K&lt;/b&gt; and added to the offset &lt;b&gt;O&lt;/b&gt;.&lt;/p&gt;
+						&lt;p&gt;SCALE_B4 is an extended version of SCALE_B2.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in1" type="BYTE">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="in2" type="BYTE">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="in3" type="BYTE">
+							<descr>Input value 3</descr>
+						</var>
+						<var name="in4" type="BYTE">
+							<descr>Input value 4</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="in1_min" type="REAL">
+							<descr>Minimum value for in1</descr>
+						</var>
+						<var name="in1_max" type="REAL">
+							<descr>Maximum value for in1</descr>
+						</var>
+						<var name="in2_min" type="REAL">
+							<descr>Minimum value for in2</descr>
+						</var>
+						<var name="in2_max" type="REAL">
+							<descr>Maximum value for in2</descr>
+						</var>
+						<var name="in3_min" type="REAL">
+							<descr>Minimum value for in3</descr>
+						</var>
+						<var name="in3_max" type="REAL">
+							<descr>Maximum value for in3</descr>
+						</var>
+						<var name="in4_min" type="REAL">
+							<descr>Minimum value for in4</descr>
+						</var>
+						<var name="in4_max" type="REAL">
+							<descr>Maximum value for in4</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.4	3. nov. 2008
+programmer 	hugo
+tested by	tobias
+
+	This function can scale up to 4 inputs.
+	The inputs have their min value at 0 and their max value at 255, while min and max can be either positive or negative.
+	The inputs ramp between min and max values for the respective inputs to be between (0..255).
+	The summed output is then scaled by an input K and a offset O can be added to the output.
+
+*)
+
+
+SCALE_B4 := (((in1_max - in1_min) * TO_REAL(in1) + (in2_max - in2_min) * TO_REAL(in2) + (in3_max - in3_min) * TO_REAL(in3) + (in4_max - in4_min) * TO_REAL(in4))* 0.003921569 + in1_min + in2_min + in3_min + in4_min) * K + O;
+
+
+(* revision History
+hm 19.1.2007		rev 1.1
+	changed outputs to real to avoid overflow of integer
+	added offset for better cascading of scale functions
+	changed from fb to function
+
+hm	6. jan 2008		rev 1.2
+	improved performance
+
+hm	26. oct. 2008	rev 1.3
+	optimized code
+
+hm	3. nov. 2008	rev 1.4
+	used wrong factor in formula
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_X4" version="1.0.0" creationDate="0" lastModifiedDate="1631547202" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_X4 calculates internal values from the input IN, IN_MIN
+						and IN_MAX, then adds all the internal values, multiplies the
+						sum by K and adds the offset O.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;An input value IN = FALSE means IN_MIN is included, IN = TRUE means IN_MAX is considered.&lt;/li&gt;
+						&lt;li&gt;The sum is multiplied by K and an offset O is added.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN1" type="BOOL">
+							<descr>Selector value 1</descr>
+						</var>
+						<var name="IN2" type="BOOL">
+							<descr>Selector value 2</descr>
+						</var>
+						<var name="IN3" type="BOOL">
+							<descr>Selector value 3</descr>
+						</var>
+						<var name="IN4" type="BOOL">
+							<descr>Selector value 4</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="IN1_MIN" type="REAL">
+							<descr>Value 1 for in1</descr>
+						</var>
+						<var name="IN1_MAX" type="REAL">
+							<descr>Value 2 for in1</descr>
+						</var>
+						<var name="IN2_MIN" type="REAL">
+							<descr>Value 1 for in2</descr>
+						</var>
+						<var name="IN2_MAX" type="REAL">
+							<descr>Value 2 for in2</descr>
+						</var>
+						<var name="IN3_MIN" type="REAL">
+							<descr>Value 1 for in3</descr>
+						</var>
+						<var name="IN3_MAX" type="REAL">
+							<descr>Value 2 for in3</descr>
+						</var>
+						<var name="IN4_MIN" type="REAL">
+							<descr>Value 1 for in4</descr>
+						</var>
+						<var name="IN4_MAX" type="REAL">
+							<descr>Value 2 for in4</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	26. oct. 2008
+programmer 	hugo
+tested by		tobias
+
+	This function can scale up to 4 inputs.
+	The input can select between two values with true or false.
+	The summed output is then scaled by an input K, and an offset O can be added to the output.
+
+*)
+
+
+SCALE_X4 := (SEL(IN1, IN1_MIN, IN1_MAX) + SEL(IN2, IN2_MIN, IN2_MAX) + 
+			 SEL(IN3, IN3_MIN, IN3_MAX) + SEL(IN4, IN4_MIN, IN4_MAX)) * k + o;
+
+
+(* 
+revision history
+hm	19. jan. 2008	rev 1.0
+	original version
+
+hm	26. oct. 2008	rev 1.1
+	optimized code
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MIX" version="1.0.0" creationDate="0" lastModifiedDate="1631264168" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;MIX provides a mixed ratio &lt;b&gt;M&lt;/b&gt; value, determined from the values &lt;b&gt;A&lt;/b&gt; and
+						&lt;b&gt;B&lt;/b&gt;. The input &lt;b&gt;M&lt;/b&gt; passes the proportion of B in the range 0..1.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="A" type="REAL">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="B" type="REAL">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="M" type="REAL">
+							<descr>Ratio</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+MIX is an analog Mixer. The Output is (1-M)*A + M*B.
+
+*)
+
+
+MIX := (1.0 - M) * A + M * B;
+
+
+(* revision history
+hm	19. Nov 2007	rev 1.0
+	original version
+
+hm	10. mar 2009	rev 1.1
+	real constants updated to new systax using dot
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="RANGE_TO_BYTE" version="1.0.0" creationDate="0" lastModifiedDate="1637751624" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;RANGE_TO_BYTE converts a real value into a BYTE.
+						The input &lt;b&gt;X&lt;/b&gt; is limited by &lt;b&gt;low&lt;/b&gt; and &lt;b&gt;high&lt;/b&gt;, whose values may be at most from 0 to 255. In addition, an overflow on the output cannot happen.&lt;/p&gt;</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Lower range limit</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Upper range limit</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	9. jan 2008
+programmer 	hugo
+tested by	tobias
+
+RANGE_TO_BYTE converts a real value into a byte, between low and high thresholds
+
+*)
+
+
+RANGE_TO_BYTE := TO_BYTE(TO_REAL(TO_SINT(LIMIT(X, low, high) - low)) * 255.0 / (high - low));
+
+
+(* revision history
+hm	9. jan 2008		rev 1.0
+	original version
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_D" version="1.0.0" creationDate="0" lastModifiedDate="1631524954" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_D scales an input DWORD value and returns an output REAL value. The input value &lt;b&gt;X&lt;/b&gt; is limited by &lt;b&gt;I_LO&lt;/b&gt; and &lt;b&gt;I_HI&lt;/b&gt;,
+						whereas the output is limited by &lt;b&gt;O_LO&lt;/b&gt; and &lt;b&gt;O_HI&lt;/b&gt;.&lt;/p&gt;
+						&lt;p&gt;For example, SCALE_D (IN, 0, 8191, 0, 100) scales a 14 bit resolution input into the range 0..100.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="DWORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="I_LO" type="DWORD">
+							<descr>Minimum input value</descr>
+						</var>
+						<var name="I_HI" type="DWORD">
+							<descr>Maximum input value</descr>
+						</var>
+						<var name="O_LO" type="REAL">
+							<descr>Minimum output value</descr>
+						</var>
+						<var name="O_HI" type="REAL">
+							<descr>Maximum output value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.2	11. jan. 2011
+programmer 	hugo
+tested by		oscat
+
+SCALE_D is used to translate and scale a DWORD input x to a real output.
+The input is limited by I_LO <= X <= I_HI.
+
+*)
+
+
+IF I_HI = I_LO THEN
+	SCALE_D := O_LO;
+ELSE
+	SCALE_D := (O_HI - O_LO) / TO_REAL(I_HI - I_LO) * TO_REAL(LIMIT(X, I_LO, I_HI) - I_LO) + O_LO;
+END_IF;
+
+
+(*
+revision history
+hm	18. may. 2008	rev 1.0
+	original version
+
+hm	13. nov. 2008	rev 1.1
+	corrected formula for negative gradient
+
+hm	11. jan 2011	rev 1.2
+	avoid division by 0
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="OFFSET" version="1.0.0" creationDate="0" lastModifiedDate="1631266364" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;OFFSET adds different offsets to an input signal, according to the binary values &lt;b&gt;O1&lt;/b&gt;..&lt;b&gt;O4&lt;/b&gt;. The offsets can be added individually or
+						simultaneously. With &lt;b&gt;D&lt;/b&gt;, a default value can
+						be switched to the adder, by taking the place of &lt;b&gt;X&lt;/b&gt; in the sum.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="O1" type="BOOL">
+							<descr>Enable offset 1</descr>
+						</var>
+						<var name="O2" type="BOOL">
+							<descr>Enable offset 2</descr>
+						</var>
+						<var name="O3" type="BOOL">
+							<descr>Enable offset 3</descr>
+						</var>
+						<var name="O4" type="BOOL">
+							<descr>Enable offset 4</descr>
+						</var>
+						<var name="D" type="BOOL">
+							<descr>Enable default</descr>
+						</var>
+						<var name="Offset_1" type="REAL">
+							<descr>Offset that is added when O1 is TRUE</descr>
+						</var>
+						<var name="Offset_2" type="REAL">
+							<descr>Offset that is added when O2 is TRUE</descr>
+						</var>
+						<var name="Offset_3" type="REAL">
+							<descr>Offset that is added when O3 is TRUE</descr>
+						</var>
+						<var name="Offset_4" type="REAL">
+							<descr>Offset that is added when O4 is TRUE</descr>
+						</var>
+						<var name="default" type="REAL">
+							<descr>Used instead of X if D is TRUE</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	12 jan 2007
+programmer 	oscat
+tested by	oscat
+
+The Function offset adds offsets to an analog signal depending on digital inputs.
+all selected offsets are added at the same time.
+with the input D a default value instead of the input X can be used.
+
+*) 
+
+IF D THEN OFFSET := default; ELSE OFFSET := X; END_IF;
+IF O1 THEN OFFSET := OFFSET + offset_1; END_IF;
+IF O2 THEN OFFSET := OFFSET + offset_2; END_IF;
+IF O3 THEN OFFSET := OFFSET + offset_3; END_IF;
+IF O4 THEN OFFSET := OFFSET + offset_4; END_IF;
+
+
+(* revision history
+hm	12. jan 2007
+	original version
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="RANGE_TO_WORD" version="1.0.0" creationDate="0" lastModifiedDate="1637751756" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;RANGE_TO_WORD converts a real value into a WORD.
+						The input &lt;b&gt;X&lt;/b&gt; is limited &lt;b&gt;low&lt;/b&gt; and &lt;b&gt;high&lt;/b&gt;, whose values may be at most from 0 to 65535. In addition, an overflow on the output cannot happen.&lt;/p&gt;</descr>
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Lower range limit</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Upper range limit</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	9. jan 2008
+programmer 	hugo
+tested by	tobias
+
+Range_to_word converts a real value between low and high into a byte
+
+*)
+
+
+RANGE_TO_WORD := TO_WORD(TO_REAL(TO_INT(LIMIT(X,low,high)-low)) * 65535.0 / (high - low));
+
+
+(* revision history
+hm	9. jan 2008		rev 1.0
+	original version
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_X8" version="1.0.0" creationDate="0" lastModifiedDate="1631603287" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;p&gt;SCALE_X8 calculates internal values from the input IN, IN_MIN
+						and IN_MAX, then adds all the internal values, multiplies the
+						sum by K and adds the offset O.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;An input value IN = FALSE means IN_MIN is included, IN = TRUE means IN_MAX is considered.&lt;/li&gt;
+						&lt;li&gt;The sum is multiplied by K and an offset O is added.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in1" type="BOOL">
+							<descr>Selector value 1</descr>
+						</var>
+						<var name="in2" type="BOOL">
+							<descr>Selector value 2</descr>
+						</var>
+						<var name="in3" type="BOOL">
+							<descr>Selector value 3</descr>
+						</var>
+						<var name="in4" type="BOOL">
+							<descr>Selector value 4</descr>
+						</var>
+						<var name="in5" type="BOOL">
+							<descr>Selector value 5</descr>
+						</var>
+						<var name="in6" type="BOOL">
+							<descr>Selector value 6</descr>
+						</var>
+						<var name="in7" type="BOOL">
+							<descr>Selector value 7</descr>
+						</var>
+						<var name="in8" type="BOOL">
+							<descr>Selector value 8</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="in1_min" type="REAL">
+							<descr>Value 1 for in1</descr>
+						</var>
+						<var name="in1_max" type="REAL">
+							<descr>Value 2 for in1</descr>
+						</var>
+						<var name="in2_min" type="REAL">
+							<descr>Value 1 for in2</descr>
+						</var>
+						<var name="in2_max" type="REAL">
+							<descr>Value 2 for in2</descr>
+						</var>
+						<var name="in3_min" type="REAL">
+							<descr>Value 1 for in3</descr>
+						</var>
+						<var name="in3_max" type="REAL">
+							<descr>Value 2 for in3</descr>
+						</var>
+						<var name="in4_min" type="REAL">
+							<descr>Value 1 for in4</descr>
+						</var>
+						<var name="in4_max" type="REAL">
+							<descr>Value 2 for in4</descr>
+						</var>
+						<var name="in5_min" type="REAL">
+							<descr>Value 1 for in5</descr>
+						</var>
+						<var name="in5_max" type="REAL">
+							<descr>Value 2 for in5</descr>
+						</var>
+						<var name="in6_min" type="REAL">
+							<descr>Value 1 for in6</descr>
+						</var>
+						<var name="in6_max" type="REAL">
+							<descr>Value 2 for in6</descr>
+						</var>
+						<var name="in7_min" type="REAL">
+							<descr>Value 1 for in7</descr>
+						</var>
+						<var name="in7_max" type="REAL">
+							<descr>Value 2 for in7</descr>
+						</var>
+						<var name="in8_min" type="REAL">
+							<descr>Value 1 for in8</descr>
+						</var>
+						<var name="in8_max" type="REAL">
+							<descr>Value 2 for in8</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.2	24. jan. 2009
+programmer 	hugo
+tested by	oscat
+
+This function can scale up to 4 inputs.
+The input can select between two values with true or false.
+The summed output is then scaled by an input K, and an offset O can be added to the output.
+
+*)
+
+
+SCALE_X8 := (SEL(IN1, IN1_MIN, IN1_MAX) + 
+			 SEL(IN2, IN2_MIN, IN2_MAX) +
+			 SEL(IN3, IN3_MIN, IN3_MAX) + 
+			 SEL(IN4, IN4_MIN, IN4_MAX) +
+			 SEL(IN5, IN5_MIN, IN5_MAX) + 
+			 SEL(IN6, IN6_MIN, IN6_MAX) + 
+			 SEL(IN7, IN7_MIN, IN7_MAX) + 
+			 SEL(IN8, IN8_MIN, IN8_MAX)) * k + o;
+
+
+(* 
+revision history
+hm	19. jan. 2008	rev 1.0
+	original version
+
+hm	26. oct. 2008	rev 1.1
+	optimized code
+
+hm	24. jan. 2008	rev 1.2
+	corrected error in formula
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_B8" version="1.0.0" creationDate="0" lastModifiedDate="1637752164" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_B8 calculates eight internal values from &lt;b&gt;in1&lt;/b&gt;, &lt;b&gt;in2&lt;/b&gt;, &lt;b&gt;in3&lt;/b&gt;, &lt;b&gt;in4&lt;/b&gt;, &lt;b&gt;in5&lt;/b&gt;, &lt;b&gt;in6&lt;/b&gt;, &lt;b&gt;in7&lt;/b&gt; and &lt;b&gt;in8&lt;/b&gt;, limited by the respective setup values &lt;b&gt;in_min&lt;/b&gt; and &lt;b&gt;in_max&lt;/b&gt;.
+						The internal values are summed up, the sum is multiplied by &lt;b&gt;K&lt;/b&gt; and added to the offset &lt;b&gt;O&lt;/b&gt;.&lt;/p&gt;
+						&lt;p&gt;SCALE_B8 is an extended version of SCALE_B2 and SCALE_B4.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in1" type="BYTE">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="in2" type="BYTE">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="in3" type="BYTE">
+							<descr>Input value 3</descr>
+						</var>
+						<var name="in4" type="BYTE">
+							<descr>Input value 4</descr>
+						</var>
+						<var name="in5" type="BYTE">
+							<descr>Input value 5</descr>
+						</var>
+						<var name="in6" type="BYTE">
+							<descr>Input value 6</descr>
+						</var>
+						<var name="in7" type="BYTE">
+							<descr>Input value 7</descr>
+						</var>
+						<var name="in8" type="BYTE">
+							<descr>Input value 8</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="in1_min" type="REAL">
+							<descr>Minimum value for in1</descr>
+						</var>
+						<var name="in1_max" type="REAL">
+							<descr>Maximum value for in1</descr>
+						</var>
+						<var name="in2_min" type="REAL">
+							<descr>Minimum value for in2</descr>
+						</var>
+						<var name="in2_max" type="REAL">
+							<descr>Maximum value for in2</descr>
+						</var>
+						<var name="in3_min" type="REAL">
+							<descr>Minimum value for in3</descr>
+						</var>
+						<var name="in3_max" type="REAL">
+							<descr>Maximum value for in3</descr>
+						</var>
+						<var name="in4_min" type="REAL">
+							<descr>Minimum value for in4</descr>
+						</var>
+						<var name="in4_max" type="REAL">
+							<descr>Maximum value for in4</descr>
+						</var>
+						<var name="in5_min" type="REAL">
+							<descr>Minimum value for in5</descr>
+						</var>
+						<var name="in5_max" type="REAL">
+							<descr>Maximum value for in5</descr>
+						</var>
+						<var name="in6_min" type="REAL">
+							<descr>Minimum value for in6</descr>
+						</var>
+						<var name="in6_max" type="REAL">
+							<descr>Maximum value for in6</descr>
+						</var>
+						<var name="in7_min" type="REAL">
+							<descr>Minimum value for in7</descr>
+						</var>
+						<var name="in7_max" type="REAL">
+							<descr>Maximum value for in7</descr>
+						</var>
+						<var name="in8_min" type="REAL">
+							<descr>Minimum value for in8</descr>
+						</var>
+						<var name="in8_max" type="REAL">
+							<descr>Maximum value for in8</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.4	3. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+this functiob block can scale up to 8 inputs.
+the inputs have their min value at 0 and their max value at 255 while the min and max value can be either positive or negative.
+the inputs ramp between min and max values for the respective inputs to be between (0..255).
+the summed output is then scaled by an scale input K and a offset O can be added to the output.
+the min and max input configurations can be edited in the cfc editor by double clicking the symbol body.
+
+*)
+
+
+SCALE_B8 := (((in1_max - in1_min) * TO_REAL(in1) + (in2_max - in2_min) * TO_REAL(in2) + (in3_max - in3_min) * TO_REAL(in3) + (in4_max - in4_min) * TO_REAL(in4) +
+			(in5_max - in5_min) * TO_REAL(in5) + (in6_max - in6_min) * TO_REAL(in6) + (in7_max - in7_min) * TO_REAL(in7) + (in8_max - in8_min) * TO_REAL(in8)) * 0.003921569
+			+ in1_min + in2_min + in3_min + in4_min + in5_min + in6_min + in7_min + in8_min) * K + O;
+
+
+(* revision History
+hm	19. jan.2007	rev 1.1
+	changed outputs to real to avoid overflow of integer
+	added offset for better cascading of scale functions
+
+hm	6. jan. 2008	rev 1.2
+	improved performance
+
+hm	26. oct. 2008	rev 1.3
+	code optimization
+
+hm	3. nov. 2008	rev 1.4
+	used wrong factor in formula
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_B2" version="1.0.0" creationDate="0" lastModifiedDate="1637751812" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_B2 calculates two internal values from &lt;b&gt;in1&lt;/b&gt; and &lt;b&gt;in2&lt;/b&gt;, limited by the setup values &lt;b&gt;in1_min&lt;/b&gt;, &lt;b&gt;in1_max&lt;/b&gt; and &lt;b&gt;in2_min&lt;/b&gt;, &lt;b&gt;in2_max&lt;/b&gt;.
+						The internal values are summed up, the sum is multiplied by &lt;b&gt;K&lt;/b&gt; and added to the offset &lt;b&gt;O&lt;/b&gt;.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;An input value in1 = 0 means in1_min is taken into account, in1 = 255 means that in1_max is considered.&lt;/li&gt;
+						&lt;li&gt;SCALE_B2 can be used, for example, to calculate total air quantities in
+						ventilation systems.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="in1" type="BYTE">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="in2" type="BYTE">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="in1_min" type="REAL">
+							<descr>Minimum value for in1</descr>
+						</var>
+						<var name="in1_max" type="REAL">
+							<descr>Maximum value for in1</descr>
+						</var>
+						<var name="in2_min" type="REAL">
+							<descr>Minimum value for in2</descr>
+						</var>
+						<var name="in2_max" type="REAL">
+							<descr>Maximum value for in2</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.4	3. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+This function block can scale up to two inputs.
+Inputs have their min value at 0 and their max value at 255, while the min and max value can be either positive or negative.
+Inputs ramp between min and max values for the respective inputs to be between (0..255).
+The summed output is then scaled by a scale input K and an offset O can be added to the output.
+
+*)
+
+
+SCALE_B2 := (((in1_max - in1_min) * TO_REAL(in1) + (in2_max - in2_min) * TO_REAL(in2)) * 0.003921569 + in1_min + in2_min) * K + O;
+
+
+(* revision History
+hm 19.1.2007		rev 1.1
+	changed outputs to real to avoid overflow of integer
+	added offset for better cascading of scale functions
+	changed from FB to function
+
+hm	6. jan 2008		rev 1.2
+	improved performance
+
+hm	26. oct. 2008	rev 1.3
+	code optimization
+
+hm	3. nov. 2008	rev 1.4
+	used wrong factor in formula
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="OFFSET2" version="1.0.0" creationDate="0" lastModifiedDate="1631269077" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;OFFSET2 adds an offset to an input signal, according to on the binary
+						values &lt;b&gt;O1&lt;/b&gt;..&lt;b&gt;O4&lt;/b&gt;. If more offsets are selected simultaneously, then
+						the offset with the highest number is added up and the others ignored.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;If &lt;b&gt;O1&lt;/b&gt; and &lt;b&gt;O3&lt;/b&gt; are both TRUE, Offset_3 is added, whereas Offset_1 is discarded.&lt;/li&gt;
+						&lt;li&gt;With &lt;b&gt;D&lt;/b&gt;, a default value is selected, taking the place of the input &lt;b&gt;X&lt;/b&gt; in the sum.&lt;/li&gt;
+						&lt;li&gt;For further explanations, see OFFSET, which has a very similar
+						functionality. OFFSET2 only adds only one offset (the one with the highest number).&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="O1" type="BOOL">
+							<descr>Enable offset 1</descr>
+						</var>
+						<var name="O2" type="BOOL">
+							<descr>Enable offset 2</descr>
+						</var>
+						<var name="O3" type="BOOL">
+							<descr>Enable offset 3</descr>
+						</var>
+						<var name="O4" type="BOOL">
+							<descr>Enable offset 4</descr>
+						</var>
+						<var name="D" type="BOOL">
+							<descr>Enable default</descr>
+						</var>
+						<var name="Offset_1" type="REAL">
+							<descr>Offset that is added when O1 = TRUE</descr>
+						</var>
+						<var name="Offset_2" type="REAL">
+							<descr>Offset that is added when O2 = TRUE</descr>
+						</var>
+						<var name="Offset_3" type="REAL">
+							<descr>Offset that is added when O3 = TRUE</descr>
+						</var>
+						<var name="Offset_4" type="REAL">
+							<descr>Offset that is added when O4 = TRUE</descr>
+						</var>
+						<var name="default" type="REAL">
+							<descr>Used instead of X if D is TRUE</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	12 jan 2007
+programmer 	oscat
+tested by	tobias
+
+OFFSET2 adds offsets to an analog signal depending on digital inputs.
+One offset can be added at the same time, if more then one input is true, the one with the highest number (o1 .. o4) will be used.
+The input D will select a default value instead of X for input.
+
+*) 
+
+IF D THEN OFFSET2 := default; ELSE OFFSET2 := X; END_IF;
+IF O4 THEN OFFSET2 := OFFSET2 + offset_4;
+ELSIF O3 THEN OFFSET2 := OFFSET2 + offset_3;
+ELSIF O2 THEN OFFSET2 := OFFSET2 + offset_2;
+ELSIF O1 THEN OFFSET2 := OFFSET2 + offset_1;
+END_IF;
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_R" version="1.0.0" creationDate="0" lastModifiedDate="1631526010" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_R scales an input REAL value and returns an output REAL value. The input value &lt;b&gt;X&lt;/b&gt; is limited by &lt;b&gt;I_LO&lt;/b&gt; and &lt;b&gt;I_HI&lt;/b&gt;,
+						whereas the output is limited by &lt;b&gt;O_LO&lt;/b&gt; and &lt;b&gt;O_HI&lt;/b&gt;.
+						&lt;/p&gt;
+						&lt;p&gt;For example, SCALE_R (IN, 4, 20, 0, 100) scales an input with range 4..20 into the range 0..100.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="I_LO" type="REAL">
+							<descr>Minimum input value</descr>
+						</var>
+						<var name="I_HI" type="REAL">
+							<descr>Maximum input value</descr>
+						</var>
+						<var name="O_LO" type="REAL">
+							<descr>Minimum output value</descr>
+						</var>
+						<var name="O_HI" type="REAL">
+							<descr>Maximum output value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.2	11. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+SCALE_R is used to translate and scale a REAL input x to a real output.
+The input is limited by I_LO <= X <= I_HI.
+
+*)
+
+
+IF I_LO = I_HI THEN
+	SCALE_R := O_LO;
+ELSE
+	SCALE_R := (O_HI - O_LO) / (I_HI - I_LO) * (LIMIT(X, I_LO, I_HI) - I_LO) + O_LO;
+END_IF;
+
+
+(* revision history
+hm	18. may. 2008	rev 1.0
+	original version
+
+hm	13. nov. 2008	rev 1.1
+	corrected formula for negative gradient
+
+hm	11. jan 2011	rev 1.2
+	avoid division by 0
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_X2" version="1.0.0" creationDate="0" lastModifiedDate="1631547202" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_X2 calculates internal values from the input IN, IN_MIN
+						and IN_MAX, then adds all the internal values, multiplies the
+						sum by K and adds the offset O.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;An input value IN = FALSE means IN_MIN is included, IN = TRUE means IN_MAX is considered.&lt;/li&gt;
+						&lt;li&gt;The sum is multiplied by K and an offset O is added.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN1" type="BOOL">
+							<descr>Selector value 1</descr>
+						</var>
+						<var name="IN2" type="BOOL">
+							<descr>Selector value 2</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="IN1_MIN" type="REAL">
+							<descr>Value 1 for in1</descr>
+						</var>
+						<var name="IN1_MAX" type="REAL">
+							<descr>Value 2 for in1</descr>
+						</var>
+						<var name="IN2_MIN" type="REAL">
+							<descr>Value 1 for in2</descr>
+						</var>
+						<var name="IN2_MAX" type="REAL">
+							<descr>Value 2 for in2</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	26. oct. 2008
+programmer 	hugo
+tested by		tobias
+
+	This function can scale up to two inputs.
+	The input can select between two values with true or false.
+	The summed output is then scaled by an input K, and an offset O can be added to the output.
+	
+*)
+
+
+SCALE_X2 := (SEL(IN1, IN1_MIN, IN1_MAX)+ SEL(IN2, IN2_MIN, IN2_MAX)) * k + o;
+
+
+(*
+revision history
+hm	19. jan, 2007	rev 1.0
+	original version
+
+hm	26. oct. 2008	rev 1.1
+	code optimized
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="OVERRIDE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;OVERRIDE returns the input value (X1, X2, X3) at &lt;b&gt;Y&lt;/b&gt;, whose absolute
+						value is the largest among all.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The inputs &lt;b&gt;X1&lt;/b&gt;, &lt;b&gt;X2&lt;/b&gt; and &lt;b&gt;X3&lt;/b&gt; may be enabled individually with the inputs &lt;b&gt;E1&lt;/b&gt;, &lt;b&gt;E2&lt;/b&gt; and &lt;b&gt;E3&lt;/b&gt;.&lt;/li&gt;
+						&lt;li&gt;if one of the input enable signals is FALSE, the corresponding input is discarded.&lt;/li&gt;
+						&lt;li&gt;One of many possible applications of OVERRIDE is, for example, the
+						query among of three sensors: the one with the highest value overrides the others.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X1" type="REAL">
+							<descr>Input signal 1</descr>
+						</var>
+						<var name="X2" type="REAL">
+							<descr>Input signal 2</descr>
+						</var>
+						<var name="X3" type="REAL">
+							<descr>Input signal 3</descr>
+						</var>
+						<var name="E1" type="BOOL">
+							<descr>Enable signal 1</descr>
+						</var>
+						<var name="E2" type="BOOL">
+							<descr>Enable signal 2</descr>
+						</var>
+						<var name="E3" type="BOOL">
+							<descr>Enable signal 3</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	4 nov 2007
+programmer 	oscat
+tested by	tobias
+
+OVERRIDE deliveres the maximum absolute value of the 3 inputs X1, X2 and X3.
+with the inputs E1, E2 and E3 each of the 3 inputs can be turned on or off.
+
+*) 
+
+IF E1 THEN OVERRIDE := X1; END_IF;
+IF E2 AND ABS(x2) > ABS(OVERRIDE) THEN OVERRIDE := X2; END_IF;
+IF E3 AND ABS(x3) > ABS(OVERRIDE) THEN OVERRIDE := X3; END_IF;
+
+(* revision history
+hm	4.11.2007		rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="MUX_R2" version="1.0.0" creationDate="0" lastModifiedDate="1631265101" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;MUX_R2 selects one of two input values. The function returns &lt;b&gt;IN0&lt;/b&gt; if &lt;b&gt;A&lt;/b&gt; = 0, otherwise it returns &lt;b&gt;IN1&lt;/b&gt;.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN0" type="REAL">
+							<descr>Input value 0</descr>
+						</var>
+						<var name="IN1" type="REAL">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="A" type="BOOL">
+							<descr>Address input</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	16. oct. 2008
+programmer 	oscat
+tested by	oscat
+
+MUX_R2 is an analog Multiplexer.
+one of 2 real inputs are selected and put through to out.
+The Adress input A selects between 2 Real inputs IN0 and IN1, A=0 > In0, A=1 > in1.
+
+*)
+
+
+MUX_R2 := SEL(A, IN0, IN1);
+
+
+(* revision history
+hm	19. jan. 2007	rev 1.0
+	original version
+
+hm	16. oct. 2008	rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE" version="1.0.0" creationDate="0" lastModifiedDate="1631518442" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE multiplies &lt;b&gt;X&lt;/b&gt; with &lt;b&gt;K&lt;/b&gt;, and adds the offset &lt;b&gt;O&lt;/b&gt;. The result is limited by the range defined by the values &lt;b&gt;MN&lt;/b&gt; and &lt;b&gt;MX&lt;/b&gt;.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="K" type="REAL">
+							<descr>Multiplier</descr>
+						</var>
+						<var name="O" type="REAL">
+							<descr>Offset</descr>
+						</var>
+						<var name="MX" type="REAL">
+							<descr>Maximum output value</descr>
+						</var>
+						<var name="MN" type="REAL">
+							<descr>Minimum output value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	16. may. 2008
+programmer 	hugo
+tested by	tobias
+
+Scale is used to translate an input x to output by the formula Y = X*K + O.
+at the same time the output is limited to MN and MX.
+
+*)
+
+
+SCALE := LIMIT(X * K + O, MN, MX);
+
+
+(* revision history
+hm	16. may. 2008		rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SCALE_B" version="1.0.0" creationDate="0" lastModifiedDate="1631520601" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCALE_B scales an input BYTE value and returns an output REAL value.
+						The input value &lt;b&gt;X&lt;/b&gt; is limited by &lt;b&gt;I_LO&lt;/b&gt; and &lt;b&gt;I_HI&lt;/b&gt;,
+						whereas the output is limited by &lt;b&gt;O_LO&lt;/b&gt; and &lt;b&gt;O_HI&lt;/b&gt;.&lt;br&gt;&lt;br&gt;
+						For example, SCALE_B (IN, 0, 255, 0, 100) scales an 8-bit resolution input into a range from 0 to 100.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="BYTE">
+							<descr>Input value</descr>
+						</var>
+						<var name="I_LO" type="BYTE">
+							<descr>Minimum input value</descr>
+						</var>
+						<var name="I_HI" type="BYTE">
+							<descr>Maximum input value</descr>
+						</var>
+						<var name="O_LO" type="REAL">
+							<descr>Minimum output value</descr>
+						</var>
+						<var name="O_HI" type="REAL">
+							<descr>Maximum output value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	18. jan. 2011
+programmer 	hugo
+tested by	tobias
+
+SCALE_B is used to translate and scale a byte input 'x' to a real output.
+
+*)
+
+
+IF I_HI = I_LO THEN
+	SCALE_B := O_LO;
+ELSE
+	SCALE_B := (O_HI - O_LO) / TO_REAL(I_HI - I_LO) * TO_REAL(LIMIT(X, I_LO, I_HI));
+END_IF;
+
+
+(* 
+revision history
+hm	18. may. 2008		rev 1.0
+	original version
+
+hm	18. jan 2011		rev 1.1
+	avoid division by 0
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MUX_R4" version="1.0.0" creationDate="0" lastModifiedDate="1631265976" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;MUX_R4 selects one of 4 input values.&lt;br&gt;
+						IN0 if A0 = 0 &amp; A1 = 0,&lt;br&gt;
+						IN1 if A0 = 1 &amp; A1 = 0;&lt;br&gt;
+						IN2 if A0 = 0 &amp; A1 = 1;&lt;br&gt;
+						IN3 if A0 = 1 &amp; A1 = 1;&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN0" type="REAL">
+							<descr>Input value 0</descr>
+						</var>
+						<var name="IN1" type="REAL">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="IN2" type="REAL">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="IN3" type="REAL">
+							<descr>Input value 3</descr>
+						</var>
+						<var name="A0" type="BOOL">
+							<descr>Address input bit 0</descr>
+						</var>
+						<var name="A1" type="BOOL">
+							<descr>Address input bit 1</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	16. oct. 2008
+programmer 	oscat
+tested by	oscat
+
+MUX_R4 is an analog Multiplexer.
+One of 4 real inputs are selected and put through to out.
+The Adress input A0 and A1 selects between the 4 Real inputs IN0.. IN1.
+
+*)
+
+IF A1 THEN
+	MUX_R4 := SEL(A0, IN2, IN3);
+ELSE
+	MUX_R4 := SEL(A0, IN0, IN1);
+END_IF;
+
+
+
+(* revision history
+hm	19. jan 2007	rev 1.0
+	original version
+
+hm	16. oct. 2008	rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="WORD_TO_RANGE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;WORD_TO_RANGE converts a WORD value into a REAL value. An input value
+						of 0 corresponds to the real value of &lt;b&gt;LOW&lt;/b&gt; and an input value of 65535 corresponds
+						to the input value of &lt;b&gt;HIGH&lt;/b&gt;.&lt;/p&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="WORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Initial value at X = 0</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Initial value at X = 65535</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+Word_to_Range converts a Byte into a real between low and high.
+
+*)
+
+WORD_TO_RANGE := (high - low) * TO_REAL(X) * 0.00001525902189669640 + low;
+
+
+(* revision history
+hm	9. jan 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	improved code
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="STAIR" version="1.0.0" creationDate="0" lastModifiedDate="1631611219" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The Output of STAIR follows the input signal &lt;b&gt;X&lt;/b&gt; with a step function. The
+						height of the steps is given by &lt;b&gt;D&lt;/b&gt;.
+						&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;If X = 0, the output directly follows the input signal.&lt;/li&gt;
+						&lt;li&gt;STAIR is not suitable for filtering input signals, because
+						if the input fluctuates by a step , the output switches between two
+						adjacent values back and forth. For this purpose we recommend the use of
+						Stair2 that works with a Hysteresis and avoids unstable conditions.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="D" type="REAL">
+							<descr>Step size of the output signal</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.4	10. mar. 2009
+programmer 	oscat
+tested by	tobias
+
+the function STAIR converts an anlog input signal to a staircased output.
+D is the step width for the output signal.
+if D = 0, the output follows the input without a change.
+*) 
+
+
+IF D > 0.0 THEN
+	STAIR := TO_REAL(TO_DINT(X / D)) * D;
+ELSE
+	STAIR := X;
+END_IF;
+
+
+
+(* 
+revision history
+hm	28 jan 2007		rev 1.0
+	original version
+
+hm	27 dec 2007		rev 1.1
+	changed code for better performance
+
+hm	6. jan 2008		rev 1.2
+	further performance improvement
+
+hm	26. oct. 2008		rev 1.3
+	optimized code
+
+hm	10. mar. 2009	rev 1.4
+	real constants updated to new systax using dot
+*)
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="AIN1" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Advanced analog input converter</title>
+				<descr>&lt;HTML&gt;AIN1 sets the digital output value of an A/D converter into a corresponding REAL value to the measured value. The device can be adjusted by setup variables to a variety of digital converters.
+						&lt;ul&gt;
+						&lt;li&gt;A SIGN_BIT determines at which bit the D/A converter transmit the sign.
+						&lt;li&gt;When this variable is not defined or set to a value greater than 31 no sign is evaluated.
+						&lt;li&gt;The content of the SIGN_BIT appears at the output of SIGN.
+						&lt;li&gt;When a ERROR_BIT is specified, the contents of Error Bits is displayed at the output ERROR.
+						&lt;li&gt;Some A/D converter supply instead of an Error Bit a fixed output value which is out of the specified range and is thus an error signalling.
+						&lt;li&gt;The setup variable ERROR_CODE specifies the corresponding Error Code and with the ERROR_CODE_EN the evaluation of error code is defined.
+						&lt;li&gt;If ERROR = TRUE, at the output OUT the value of ERROR_OUTPUT is issued.
+						&lt;li&gt;Using the OVERFLOW_BITS an over-range of the D/A converter is signalled and issued at the output OVERFLOW.
+						&lt;li&gt;Using the Setup variables OVERFLOW_CODE_EN and OVERFLOW_CODE it can query a certain code at the input IN and in the presence of this code, the Overflow Bits are set.
+						&lt;li&gt;Using CODE_MIN CODE_MAX in addition to OVERFLOW_BIT specifies an allowable range for the input data.
+						&lt;li&gt;Over or under-steps this area will also set the OVERFLOW output.
+						&lt;li&gt;In an overflow the output value OVERFLOW_OUTPUT is at the output OUT.
+						&lt;li&gt;The setup variables BIT_0 BIT_N determine how the measured value by the D/A converter is provided.
+						&lt;li&gt;With Bit_0 set is defined at which bit the data word begins and with BIT_N at which the bit data word ends.</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input from the A/D converter</descr>
+						</var>
+						<var name="sign_bit" type="INT">
+							<descr>Bit number of the sign</descr>
+							<initValue>255</initValue>
+						</var>
+						<var name="error_bit" type="INT">
+							<descr>Bit number of error bit</descr>
+							<initValue>255</initValue>
+						</var>
+						<var name="error_code_en" type="BOOL">
+							<descr>Evaluation of the Error A code</descr>
+						</var>
+						<var name="error_code" type="DWORD">
+							<descr>Error code of the input IN</descr>
+						</var>
+						<var name="overflow_bit" type="INT">
+							<descr>Bit number of Overfow Bits</descr>
+							<initValue>255</initValue>
+						</var>
+						<var name="overflow_code_en" type="BOOL">
+							<descr>Overflow code evaluation enabled</descr>
+						</var>
+						<var name="overflow_code" type="DWORD">
+							<descr>Overflow code of input IN</descr>
+						</var>
+						<var name="Bit_0" type="INT">
+							<descr>Least significant bit number of data bits</descr>
+						</var>
+						<var name="Bit_N" type="INT">
+							<descr>Most significant bit number of data bits</descr>
+							<initValue>31</initValue>
+						</var>
+						<var name="out_min" type="REAL">
+							<descr>Input value at CODE_MIN</descr>
+						</var>
+						<var name="out_max" type="REAL">
+							<descr>Output value at CODE_MAX</descr>
+							<initValue>10.0</initValue>
+						</var>
+						<var name="code_min" type="DWORD">
+							<descr>Minimum input value</descr>
+						</var>
+						<var name="code_max" type="DWORD">
+							<descr>Maximum input value</descr>
+							<initValue>16#FFFFFFFF</initValue>
+						</var>
+						<var name="error_output" type="REAL">
+							<descr>Output value ERROR</descr>
+						</var>
+						<var name="overflow_output" type="REAL">
+							<descr>Output value of OVERFLOW</descr>
+							<initValue>10.0</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="REAL">
+							<descr>Output value</descr>
+						</var>
+						<var name="sign" type="BOOL">
+							<descr>Sign</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>Error status</descr>
+						</var>
+						<var name="overflow" type="BOOL">
+							<descr>Overflow status</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="tB" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	10. mar. 2009
+programmer 	oscat
+tested by		tobias
+
+Ain1 converts signals from A/D converters or other digital sources to an internal real value.
+
+*) 
+
+(* extract error bit *)
+error := ((SHR(in,error_bit) AND 16#0000_0001) = 1) OR (error_code_en AND error_code = in);
+IF error THEN
+	out := error_output;
+	RETURN;
+END_IF;
+
+(* strip off the data input *)
+tb := SHR(SHL(in, 31 - bit_N), 31 - bit_N + Bit_0);
+
+(* extract overflow bit *)
+overflow := ((SHR(in,overflow_bit) AND 16#0000_0001) = 1) OR (overflow_code_en AND overflow_code = in) OR (tb < code_min OR tb > code_max);
+IF overflow THEN
+	out := overflow_output;
+	RETURN;
+END_IF;
+
+(* extract sign bit *)
+sign := (SHR(in,sign_bit) AND 16#0000_0001) = 1;
+
+(* convert in to out *)
+out := (TO_REAL(tb - code_min) * (out_max - out_min) / TO_REAL(code_max - code_min) + out_min);
+IF sign THEN out := out * -1.0; END_IF;
+
+
+
+(* revision history
+hm	23. feb 2008	rev 1.0
+	original version
+
+hm	16. mar 2008	rev 1.1
+	added type conversions to avoid warnngs under codesys 30
+
+hm	22. apr. 2008	rev 1.2
+	corrected error in formula when code_min was set
+	corrected error when sign bit was used
+	optimized code for better performance
+
+hm	10. mar. 2009	rev 1.3
+	real constants updated to new systax using dot
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DELAY_4" version="1.0.0" creationDate="0" lastModifiedDate="1631196270" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;DELAY_4 delays an input signal by a maximum of 4 cycles. The outputs
+						Out 1..4 pass the last 4 values. Out1 is delayed by one cycle, Out2 by 2
+						cycles, Out3 by 3 cycles and Out4 by 4 cycles.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out1" type="REAL">
+							<descr>Output value delayed by 1 cycle</descr>
+						</var>
+						<var name="out2" type="REAL">
+							<descr>Output value delayed by 2 cycles</descr>
+						</var>
+						<var name="out3" type="REAL">
+							<descr>Output value delayed by 3 cycles</descr>
+						</var>
+						<var name="out4" type="REAL">
+							<descr>Output value delayed by 4 cycles</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	19 jan 2007
+programmer 	hugo
+tested by		tobias
+
+This function block delays input values by each program cycle.
+After 4 cycles, the 'IN' value has shifted to the output 4 and then will be discarded after the next cycle.
+The blocks can be cascaded.
+
+*)
+
+out4 := out3;
+out3 := out2;
+out2 := out1;
+out1 := temp;
+temp := in;
+
+(* revision history
+
+hm 19.1.2007	rev 1.1
+	added variable temp to add 1 delay for q1
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DELAY" version="1.0.0" creationDate="0" lastModifiedDate="1631519612" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;DELAY delays an input signal (IN) for N cycles.&lt;br&gt;
+The input RESET is asynchronous, and may delete the delay buffer.&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of delay cycles</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Asynchronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="OUT" type="REAL">
+							<descr>Delayed output value</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="buf" type="REAL" dim0="32"/>
+						<var name="i" type="INT"/>
+						<var name="init" type="BOOL"/>
+						<var name="stop" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	23. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this function block delays input values by each programm cycle
+after N+1 cycles the in value has shifted to the out.
+N can be any alue from 0 .. 32
+if n = 0 the input will be present on the output without a delay.
+f N > 32 then the output will be delayed by 32 cycles.
+any high on rst will load the buffer with in.
+
+*)
+
+stop := LIMIT(N,0,32) - 1;
+IF rst OR NOT init THEN
+	init := TRUE;
+	FOR i := 0 TO stop DO buf[i] := in; END_FOR;
+	out := in;
+	i := 0;
+ELSIF stop < 0 THEN
+	out := in;
+ELSE
+	out := buf[i];
+	buf[i] := in;
+	i := INC1(i, N);
+END_IF;
+
+
+
+(* revision history
+hm 1.10.2006		rev 1.1
+	corrected error in buffer management
+
+hm 19.1.2007		rev 1.2
+	changed reset to load the value of in instead of 0
+
+hm	27. oct. 2008	rev 1.3
+	improved performance
+
+hm	23. feb.2009	rev 1.4
+	corrected an index problem
+
+hm	23. mar. 2009	rev 1.5
+	corrected non standard write to input N
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_DW" version="1.0.0" creationDate="0" lastModifiedDate="1637665228" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FILTER_DW is a filter of the first degree for 32-bit DWORD data. The main
+application is the filtering of sensor signals for noise reduction. The basic
+functionality of a filter of the first degree can be found in the module
+FT_PT1.&lt;/p&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Control_Modules library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="DWORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="T" type="TIME">
+							<descr>Time constant of the filter</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="DWORD">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="last" type="DWORD"/>
+						<var name="tx" type="DWORD"/>
+						<var name="init" type="BOOL"/>
+						<var name="Yi" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	3. nov. 2008
+programmer 	hugo
+tested by		oscat
+
+FILTER_DW is an low pass filter with a programmable time T used for DWORD format.
+ 
+*)
+
+(* read system time *)
+tx := sysTimer;
+
+(* startup initialization *)
+IF NOT init OR T = t#0s THEN
+	init := TRUE;
+	Yi := TO_REAL(X);
+ELSE
+	Yi := Yi + (TO_REAL(X) - TO_REAL(Y)) * TO_REAL(tx - last) / TO_REAL(T);
+END_IF;
+last := tx;
+
+Y := TO_DWORD(Yi);
+
+
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 10. oct. 2008	rev 1.0
+	original version
+
+hm	3. nov. 2008	REV 1.1
+	corrected an overflow problem
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_W" version="1.0.0" creationDate="0" lastModifiedDate="1637665295" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The main application is the filtering of sensor signals for noise reduction.
+The basic functionality of a filter of the first degree can be found
+in the module FT_PT1.&lt;/p&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Control_Modules library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="WORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="T" type="TIME">
+							<descr>Time constant of the filter</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="WORD">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="last" type="DWORD"/>
+						<var name="tx" type="DWORD"/>
+						<var name="init" type="BOOL"/>
+						<var name="tmp" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.2	25. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+FILTER_W is a low pass filter with a programmable time T used for WORD format.
+ 
+*)
+
+
+(* read system time *)
+tx := sysTimer;
+
+(* startup initialisation *)
+IF NOT init OR T = T#0s THEN
+	init := TRUE;
+	last := tx;
+	Y := X;
+ELSIF Y = X THEN
+	last := tx;
+ELSE
+	tmp :=  TO_DWORD(X - Y) * (tx - last) / TO_DWORD(T);
+	IF tmp <> 0 THEN
+		Y := TO_WORD(TO_DINT(Y) + TO_DINT(tmp));
+		last := tx;
+	END_IF;
+END_IF;
+
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 10. oct. 2008	rev 1.0
+	original version
+
+hm	3. nov. 2008	rev 1.1
+	fixed overflow problem in formula
+
+hm	25. jan. 2011	rev 1.2
+	fixed error in formula
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_I" version="1.0.0" creationDate="0" lastModifiedDate="1637665272" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FILTER_I is a filter of the first degree for 16-bit INT data. The main application
+is the filtering of sensor signals for noise reduction. The basic functionality
+of a filter of the first degree can be found in the module FT_PT1.&lt;/p&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Control_Modules library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="INT">
+							<descr>Input value</descr>
+						</var>
+						<var name="T" type="TIME">
+							<descr>Time constant of the filter</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="INT">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="Yi" type="DINT"/>
+						<var name="last" type="DWORD"/>
+						<var name="tx" type="DWORD"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	8. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+FILTER_I is a low pass filter with a programmable time T used for INT format.
+ 
+*)
+
+(* read system time *)
+tx := sysTimer;
+
+(* startup initialisation *)
+IF NOT init OR T = t#0s THEN
+	init := TRUE;
+	Yi := TO_DINT(X) * 1000;
+ELSE
+	(* to increase accuracy of the filter we calculate internal Yi wich is Y * 1000 *)
+	Yi := Yi + TO_DINT(X - Y) * TO_DINT(tx - last) * 1000 / TO_DINT(T);
+END_IF;
+last := tx;
+Y := TO_INT(yi / 1000);
+
+
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 8. nov. 2008	rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_MAV_W" version="1.0.0" creationDate="0" lastModifiedDate="1631257667" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FILTER_MAV_W is a moving average filter: the actual output is the average of the &lt;b&gt;N&lt;/b&gt; preceding readings.&lt;br&gt;&lt;br&gt;
+Y:= (X0 + X1 + … + Xn-1) / N&lt;br&gt;&lt;br&gt;
+X0 is the value of X in the current cycle, X1 is the value in the previous cycle,
+etc. &lt;br&gt;
+The number of values over which the average has to be calculated
+is specifed by the input N. The range of values of N is between 1 and
+32.&lt;/p&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="WORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="N" type="UINT">
+							<descr>Number of assigned values</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Asynchronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="WORD">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="buffer" type="WORD" dim0="32"/>
+						<var name="i" type="INT"/>
+						<var name="sum" type="DWORD"/>
+						<var name="tmp" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.4	26. MAR. 2011
+programmer 	hugo
+tested by		oscat
+
+FILTER_MAV_W is a moving average filter with programmable length N for WORD Data.
+ 
+*)
+
+
+(* limit N to size of buffer *)
+N := MIN(N, 32);
+
+(* startup initialisation *)
+IF NOT init OR rst OR N = 0 THEN
+	init := TRUE;
+	tmp := TO_INT(N) - 1;
+	FOR i := 1 TO tmp DO
+		buffer[i] := X;
+	END_FOR;
+	sum := Y * N;
+	Y := X;
+ELSE
+	tmp := TO_INT(N);
+	i := INC1(i, tmp);
+	sum := sum + X - buffer[i];
+	Y := TO_WORD(sum / N);
+	buffer[i] := X;
+END_IF;
+
+
+
+(*
+hm 13. oct. 2008	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	added typecast to avoid warnings
+
+hm	24. nov. 2008	rev 1.2
+	added typecasts to avoid warnings
+	avoid devide by 0 if N = 0
+
+hm	23. feb. 2009	rev 1.3
+	limit N to max array size
+
+hm	26. mar. 2011	rev 1.4
+	corrected error in calculation
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_MAV_DW" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FILTER_MAV_DW is a moving average filter: the actual output is the average of the &lt;b&gt;N&lt;/b&gt; preceding readings.&lt;br&gt;&lt;br&gt;
+Y:= (X0 + X1 + … + Xn-1) / N&lt;br&gt;&lt;br&gt;
+X0 is the value of X in the current cycle, X1 is the value in the previous cycle,
+etc. &lt;br&gt;
+The number of values over which the average has to be calculated
+is specifed by the input N. The range of values of N is between 1 and
+32.&lt;/p&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="DWORD">
+							<descr>Input value</descr>
+						</var>
+						<var name="N" type="UINT">
+							<descr>Number of assigned values</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Asynchronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="DWORD">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="buffer" type="DWORD" dim0="32"/>
+						<var name="i" type="INT"/>
+						<var name="tmp" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	23. feb. 2009
+programmer 	hugo
+tested by		oscat
+
+FILTER_MAV_DW is a moving average filter with programmable length N for DWORD Data.
+ 
+*)
+
+(* limit N to size of buffer *)
+N := MIN(N, 32);
+
+(* startup initialisation *)
+IF NOT init OR rst OR N = 0 THEN
+	init := TRUE;
+	tmp := TO_INT(N)-1;
+	FOR i := 0 TO tmp DO
+		buffer[i] := X;
+	END_FOR;
+	Y := X;
+ELSE
+	tmp := TO_INT(N);
+	i := INC1(i, tmp);
+	Y := Y + (X - buffer[i]) / N;
+	buffer[i] := X;
+END_IF;
+
+
+
+
+(*
+hm 13. oct. 2008	rev 1.0
+	original version
+
+hm	27. oct. 2008	rev 1.1
+	added typecast to avoid warnings
+
+hm	24. nov. 2008	rev 1.2
+	added typecasts to avoid warnings
+	avoid divide by 0 if N = 0
+
+hm	23. feb. 2009	rev 1.3
+	limit N to max array size
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FILTER_WAV" version="1.0.0" creationDate="0" lastModifiedDate="1631259630" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FILTER_WAV is a weighted average filter (also called FIR filter), which evaluates a weighted avarage of the values in the buffer with different weights.&lt;/p&gt;&lt;br&gt;
+Y:= X0 * W0 + X1 * W1 + ….+ X15 * W15&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;X0 is the value of &lt;b&gt;X&lt;/b&gt; in the current cycle, X1 is the value in the previous cycle,
+etc.&lt;/li&gt;
+&lt;li&gt;The factors &lt;b&gt;W&lt;/b&gt; are passed as an input array, which contains the filters to be applied.&lt;/li&gt;
+&lt;li&gt;The application makes sense only if these factors are determined by appropriate
+methods or design software.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="W" type="REAL" dim0="16">
+							<descr>Weighting factors</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Asynchronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL">
+							<descr>Filtered value</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="buffer" type="REAL" dim0="16"/>
+						<var name="i" type="INT"/>
+						<var name="n" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+FILTER_WAV is a moving average filter with programmable length N for DWORD Data.
+
+*)
+
+
+(* startup initialisation *)
+IF NOT init OR rst THEN
+	init := TRUE;
+	FOR i := 0 TO 15 DO
+		buffer[i] := X;
+	END_FOR;
+	i := 15;
+	Y := X;
+ELSE
+	i := INC1(i, 16);
+	buffer[i] := X;
+END_IF;
+
+(* calculate the weighted average *)
+Y := 0.0;
+FOR n := 0 TO 15 DO
+	Y := buffer[i] * W[n] + Y;
+	i := DEC1(i, 16);
+END_FOR;
+
+
+(*
+hm 	14. oct. 2008	rev 1.0
+	original version
+
+hm	27. oct. 2008	rev 1.1
+	changed _DEC and _INC to DEC1 and INC1
+
+hm	10. mar. 2009	rev 1.2
+	real constants updated to new systax using dot
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FADE" version="1.0.0" creationDate="0" lastModifiedDate="1631198072" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FADE is used to switch between 2 inputs &lt;b&gt;IN1&lt;/b&gt; and &lt;b&gt;IN2&lt;/b&gt; with a soft transition.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The switching time is specifed as &lt;b&gt;TF&lt;/b&gt;.&lt;/li&gt;
+&lt;li&gt;An asynchronous reset &lt;b&gt;RST&lt;/b&gt; resets the module without delay to &lt;b&gt;IN1&lt;/b&gt; if &lt;b&gt;F&lt;/b&gt; = FALSE or to &lt;b&gt;IN2&lt;/b&gt; when &lt;b&gt;F&lt;/b&gt; = TRUE.&lt;/li&gt;
+&lt;li&gt;A switching operation is triggered by a change in the value of &lt;b&gt;RST&lt;/b&gt;. Then it
+switches within the time &lt;b&gt;TF&lt;/b&gt; between the two inputs.&lt;/li&gt;
+&lt;li&gt;The switchover will mix the two entrances during the changeover. At the beginning of the switch,
+0% of the new value and 100% of the old value are passed as output. After half the transfer time (TF/2), the output has 50% each of the
+two input values (Y = in1* 0.5 + in2 * 0.5). After the entire time TF, the new output value is finally 100% available.&lt;/li&gt;
+&lt;li&gt;During the switching, the output Y is as follows:&lt;br&gt;
+Y = TU/TF * IN1 + (1 - TU/TF) * IN2.&lt;br&gt;
+TU is the time elapsed since the start of the switchover.&lt;/li&gt;
+&lt;li&gt;Since the output of FADE is calculated dinamically, the device can also be
+used to switch dynamic signals. The switch is divided into up to 65,535
+steps, which can be limited by the cycle time of the PLC. A PLC with a cycle
+time of 10ms and a TF of a second is only in 1s/10ms = 100 steps to
+change channels.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Pulse_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN1" type="REAL">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="IN2" type="REAL">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="F" type="BOOL">
+							<descr>If TRUE, selects IN2 as input</descr>
+						</var>
+						<var name="TF" type="TIME">
+							<descr>Transition period</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Asyncronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL">
+							<descr>Output baseline</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="rmx" type="RMP_W"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.3	24. jan. 2009
+programmer 	oscat
+tested BY		oscat
+
+FADE is used to crossfade between the inputs IN1 and IN2. The fade_over time is specified with TF.
+When F = TRUE then Y = IN2 after the time TF, and when F = FALSE then Y = IN1.
+
+*)
+
+
+rmx(rst := rst AND NOT F, set := rst AND F, pt := TF, up := F);
+Y := (in2 - In1) / 65535.0 * TO_REAL(rmx.out) + in1;
+
+
+(* code for rev 1.1
+IF rst THEN
+	rmx(set := F, rst := NOT F);
+ELSIF F AND (NOT rmx.high) THEN
+	rmx(PT := TF, UP := TRUE, e := TRUE, rst := FALSE, set := FALSE);
+ELSIF (NOT F) AND (NOT rmx.low) THEN
+	rmx(PT := TF, UP := FALSE, e := TRUE, rst := FALSE, set := FALSE);
+ELSE
+	rmx(e := FALSE, rst := FALSE, set := FALSE);
+END_IF;
+Y := (TO_REAL(rmx.out) * in1 + TO_REAL(FF - rmx.out) * IN2) / FF;
+*)
+
+
+(* revision history
+hm	26. dec 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	improved performance
+	changed calls for rmp_w because rmp_w has chaged
+
+hm	17. dec. 2008	rev 1.2
+	function of input f was inverted
+
+hm	24. jan. 2009	rev 1.3
+	delted unused var FF
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SH_1" version="1.0.0" creationDate="0" lastModifiedDate="1637665386" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SH_1 is a Sample and Hold module with an adjustable sampling time. It stores
+						the input signal &lt;b&gt;IN&lt;/b&gt; at the output &lt;b&gt;OUT&lt;/b&gt; after the end of a &lt;b&gt;PT&lt;/b&gt; time. After each update of OUT,
+						&lt;b&gt;TRIG&lt;/b&gt; becomes TRUE for one cycle.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="PT" type="TIME">
+							<descr>Sampling time</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="REAL">
+							<descr>Upper output limit</descr>
+						</var>
+						<var name="Trig" type="BOOL">
+							<descr>Trigger output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="last" type="TIME"/>
+						<var name="tx" type="TIME"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.2	17 sep 2007
+programmer 	hugo
+tested by	tobias
+
+This sample and hold module samples an input after the end of a PT time.
+When sample is taken, the output Trig becomes TRUE for one cycle.
+
+*)
+
+
+(* read system time *)
+tx := TO_TIME(sysTimer);
+
+IF tx - last >= PT THEN
+	last := tx;
+	out := in;
+	trig := TRUE;
+ELSE
+	trig := FALSE;
+END_IF;
+
+
+(*
+revision history
+
+HM	6.1.2007	rev 1.1
+	added trig output
+
+HM	17.9.2007	rev 1.2
+	replaced time() with T_PLC_MS() for compatibility reasons
+*)
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SH_2" version="1.0.0" creationDate="0" lastModifiedDate="1637665418" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SH_2 is a Sample and Hold module with an adjustable sampling time. It stores
+the input signal &lt;b&gt;IN&lt;/b&gt; at the output &lt;b&gt;OUT&lt;/b&gt; after the end of a &lt;b&gt;PT&lt;/b&gt; time.
+After each update of OUT, &lt;b&gt;TRIG&lt;/b&gt; becomes TRUE for one cycle.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SH_2 also offers advanced information, such as average, minimum and maximum. &lt;b&gt;N&lt;/b&gt; specifies how many samples
+(16 at maximum),are used to calculate the average.&lt;/li&gt;
+&lt;li&gt;The input value &lt;b&gt;DISC&lt;/b&gt; is used to discard samples:&lt;br&gt;
+If DISC = 0, all samples are used.&lt;br&gt;
+If DISC = 1, the lowest value is ignored.&lt;br&gt;
+If DISC = 2, the lowest and highest values are ignored, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_Mathematics library to be included in order to work properly.</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="PT" type="TIME">
+							<descr>Sampling time</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of samples</descr>
+							<initValue>16</initValue>
+						</var>
+						<var name="disc" type="INT">
+							<descr>Number of discarded samples</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="REAL">
+							<descr>Upper output limit</descr>
+						</var>
+						<var name="trig" type="BOOL">
+							<descr>Trigger output</descr>
+						</var>
+						<var name="avg" type="REAL">
+							<descr>Average</descr>
+						</var>
+						<var name="high" type="REAL">
+							<descr>Maximum</descr>
+						</var>
+						<var name="low" type="REAL">
+							<descr>Minimum</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="M" type="INT"/>
+						<var name="buf" type="REAL" dim0="16"/>
+						<var name="buf2" type="REAL" dim0="16"/>
+						<var name="last" type="TIME"/>
+						<var name="i" type="INT"/>
+						<var name="start" type="INT"/>
+						<var name="temp" type="REAL"/>
+						<var name="stop" type="INT"/>
+						<var name="tx" type="TIME"/>
+						<var name="d2" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.6	10. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+This sample and hold module samples an input after the end of a PT time.
+This module also does the average and other calculations with the input data.
+An average is calculated over N samples, while 'disc' samples are discarded,
+If disc = 0 all samples are averaged,
+If disc = 1 the lowest value is ignored,
+If disc = 2 the lowest and highest values are ignored, 
+and so on...
+
+*)
+
+(* read system time *)
+tx := TO_TIME(sysTimer);
+d2 := SHR(disc,1);
+
+IF tx - last >= PT THEN
+	last := tx;
+	trig := TRUE;
+
+	(* limit N to 1..16 *)
+	M := LIMIT(N,1,16);
+
+	(* edge detected lets take the sample *)
+	FOR i := M - 1 TO 1 BY -1 DO buf2[i] := buf2[i-1]; END_FOR;
+	buf2[0] := in;
+	out := in;
+	buf := buf2;
+
+	(* sort the ARRAY lowest value AT 0 *)
+	FOR start := 0 TO M - 2 DO
+		FOR i := start+1 TO M - 1 DO
+			IF buf[start] > buf[i] THEN
+				temp := buf[start];
+				buf[start] := buf[i];
+				buf[i] := temp;
+			END_IF;
+		END_FOR;
+	END_FOR;
+
+	(* any calculation with the samples is here *)
+	stop := M - 1 - d2;
+	start := d2;
+	IF NOT even(TO_WORD(disc)) THEN start := start + 1; END_IF;
+	avg := 0;
+	FOR i := start TO stop DO avg := avg + buf[i]; END_FOR;
+	avg := avg / TO_REAL(stop - start +1);
+	low := buf[start];
+	high := buf[stop];
+ELSE
+	Trig := FALSE;
+END_IF;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 20. jan. 2007	rev 1.1
+	added input N to specify the amout of samples for average and high low calculations
+	added trig output
+
+hm 10. sep. 2007 	rev 1.2
+	an error would be generated if N was set to 0, now n is forced to1 if set to 0.
+	index was out of array.
+
+hm	17. sep. 2007	rev 1.3
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	6. jan. 2008	rev 1.4
+	improved performance
+
+hm	14. jun. 2008	rev 1.5
+	set default for input N = 16
+
+hm	10. mar. 2009	rev 1.6
+	added type conversion for compatibility reasons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SH_T" version="1.0.0" creationDate="0" lastModifiedDate="1631610789" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SH_T is a transparent Sample and Hold module. The input signal is provided
+						at the output, as long as &lt;b&gt;E&lt;/b&gt; is TRUE. With a falling edge of E, the value
+						is stored at the output &lt;b&gt;OUT&lt;/b&gt; and will stay here until E returns TRUE again.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable signal</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="OUT" type="REAL">
+							<descr>Output value</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+This sample and hold module samples an input while 'E' is TRUE.
+'OUT' stays stable until 'E' returns TRUE again.
+*)
+
+
+IF E THEN out := in; END_IF;
+
+
+(* revision history
+hm	1. sep. 2006	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	changed input en to e for compatibility reasons
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="STAIR2" version="1.0.0" creationDate="0" lastModifiedDate="1631611997" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The output signal from STAIR2 follows the input signal &lt;b&gt;X&lt;/b&gt; with a step function.
+						The height of the steps is given by &lt;b&gt;D&lt;/b&gt;.
+						&lt;ul&gt;
+						&lt;li&gt;If D = 0, the output directly follows the input signal.&lt;/li&gt;
+						&lt;li&gt;The signal follows the steps but with a hysteresis
+						of D so that a noisy input signal cannot trigger jumps between step values.&lt;/li&gt;
+						&lt;li&gt;STAIR2 is also suitable as an input flter.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+						<var name="D" type="REAL">
+							<descr>Step size of the output signal</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL">
+							<descr>Output signal</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.4	10. mar. 2009
+programmer 	hugo
+tested by	oscat
+
+The function STAIR2 converts an anlog input signal to a staircased output.
+D is the step width for the output signal. the output will use D as a hysteresis for a stairchange.
+If D = 0 then the output follows the input without a change.
+
+*) 
+
+
+IF D > 0.0 THEN
+	IF X >= Y + D OR X <= Y - D THEN Y := FLOOR(X/D) * D; END_IF;
+ELSE
+	Y := X;
+END_IF;
+
+
+(* revision history
+hm	28 jan 2007		rev 1.0
+	original version
+
+hm	27. dec 2007	rev 1.1
+	changed code for better performance
+
+hm	30. jun. 2008	rev 1.2
+	added type conversions to avoid warnings under codesys 3.0																																																																																																																																																																																																																																																											
+
+ks	26. oct. 2008	rev 1.3
+	improved code
+
+hm	10. mar. 2009	rev 1.4
+	real constants updated to new systax using dot
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SH" version="1.0.0" creationDate="0" lastModifiedDate="1631608492" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SH is a Sample and Hold module. It saves the
+						input signal &lt;b&gt;IN&lt;/b&gt; at the output &lt;b&gt;OUT&lt;/b&gt; on each rising edge of &lt;b&gt;CLK&lt;/b&gt;.
+						After each update of OUT, &lt;b&gt;TRIG&lt;/b&gt; becomes TRUE for one cycle.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="CLK" type="BOOL">
+							<descr>Clock input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="REAL">
+							<descr>Upper output limit</descr>
+						</var>
+						<var name="trig" type="BOOL">
+							<descr>Output trigger</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="edge" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	16 jan 2007
+programmer 	hugo
+tested by	tobias
+
+This sample and hold module samples an input at the rising edge of 'clk' an stores it at 'out'.
+'out' stays stable until the next rising 'clk' edge appears.
+'trig' is TRUE for one cycle when the output gets updated.
+
+*)
+
+
+IF clk AND NOT edge THEN
+	out := in;
+	trig := TRUE;
+ELSE;
+	trig := FALSE;
+END_IF;
+edge := clk;
+
+
+(*
+revision history
+
+hm 16.1.2007	rev 1.1
+	added trig output
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TREND" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;TREND monitors an input &lt;b&gt;X&lt;/b&gt;, in order to detect when it increases
+						(&lt;b&gt;Q&lt;/b&gt; = TRUE) and when it decreases (&lt;b&gt;Q&lt;/b&gt; = FALSE).&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;If X does not change, Q remains at its last value.&lt;/li&gt;
+						&lt;li&gt;If X increases, the output &lt;b&gt;TU&lt;/b&gt; becomes TRUE for one cycle and &lt;b&gt;D&lt;/b&gt; becomes equal to (X - LAST_X).&lt;/li&gt;
+						&lt;li&gt; If X is less than &lt;b&gt;LAST_X&lt;/b&gt;, &lt;b&gt;TD&lt;/b&gt; gets TRUE for one cycle and &lt;b&gt;D&lt;/b&gt; becomes equal to (LAST_X - X).&lt;/li&gt;
+						&lt;li&gt;LAST_X is an internal value of the module and is the value of X in the last cycle.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>TRUE if X is ascending</descr>
+						</var>
+						<var name="TU" type="BOOL">
+							<descr>TRUE if X increases</descr>
+						</var>
+						<var name="TD" type="BOOL">
+							<descr>TRUE if X decreases</descr>
+						</var>
+						<var name="D" type="REAL">
+							<descr>Delta of the input changes</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="last_X" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	21. aug. 2009
+programmer 	hugo
+tested by		oscat
+
+trend analyses the trend of a input signal.
+The Output Q is True if the input X is >= last_X and is false if the input X is <= last_X
+in addition to the trend the output TU will be high for one cycle to signal a rising of the input value X
+and  TD will signal a decreasing value on the input X.
+in case of a change the output D will show the delta of the input to the last input value.
+
+*)
+
+TU := X > last_X;
+TD := X < last_X;
+Q := TU OR TD;
+D := X - LAST_X;
+
+last_X := X;
+
+
+
+(* revision history
+hm	21. aug. 2009	rev 1.0
+	original version
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TREND_DW" version="1.0.0" creationDate="0" lastModifiedDate="1631613629" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;TREND_DW monitors the input &lt;b&gt;X&lt;/b&gt;, in order to detect when it increases
+						(&lt;b&gt;Q&lt;/b&gt; = TRUE) and when it decreases (&lt;b&gt;Q&lt;/b&gt; = FALSE).&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;If X does not change, Q remains at its last value.&lt;/li&gt;
+						&lt;li&gt;If X increases, &lt;b&gt;TU&lt;/b&gt; becomes TRUE for one cycle and &lt;b&gt;D&lt;/b&gt; becomes equal to ( X - LAST_X). &lt;/li&gt;
+						&lt;li&gt;If X is less than &lt;b&gt;LAST_X&lt;/b&gt;, &lt;b&gt;TD&lt;/b&gt; gets TRUE for one cycle and D becomes equal to (LAST_X - X).&lt;/li&gt;
+						&lt;li&gt;&lt;b&gt;LAST_X&lt;/b&gt; is an internal value of the module and is the value of X in the last cycle.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="X" type="DWORD">
+							<descr>Input value</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>TRUE if X is ascending</descr>
+						</var>
+						<var name="TU" type="BOOL">
+							<descr>TRUE if X increases</descr>
+						</var>
+						<var name="TD" type="BOOL">
+							<descr>TRUE if X decreases</descr>
+						</var>
+						<var name="D" type="DWORD">
+							<descr>Delta of the input changes</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="last_X" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.2	14. mar. 2009
+programmer 	hugo
+tested by	oscat
+
+TREND_DW analyses the trend of a input signal.
+The Output Q is True if the input X is >= last_X and is false if the input X is <= last_X
+in addition to the trend the output TU will be high for one cycle to signal a rising of the input value X
+and  TD will signal a decreasing value on the input X.
+in case of a change the output D will show the delta of the input to the last input value.
+
+*)
+
+
+IF X > last_X THEN
+	TU := TRUE;
+	TD := FALSE;
+	D := X - last_X;
+	Q := TRUE;
+ELSIF X < last_X THEN
+	TD := TRUE;
+	TU := FALSE;
+	D := last_X - X;
+	Q := FALSE;
+ELSE
+	TU := FALSE;
+	TD := FALSE;
+	D := 0;
+END_IF;
+last_X := X;
+
+
+(* revision history
+hm	21. nov. 2008	rev 1.0
+	original version
+
+hm	20. feb. 2009	rev 1.1
+	added outputs TU, TD and D
+
+hm	14. mar. 2009	rev 1.2
+	removed double assignments
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SEL2_OF_3B" version="1.0.0" creationDate="0" lastModifiedDate="1631606709" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SEL2_OF_3B evaluates 3 binary inputs and returns at &lt;b&gt;Q&lt;/b&gt; the value,
+						that at least 2 of the 3 inputs have.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;If one of the three inputs has a different value from the others two, the output &lt;b&gt;W&lt;/b&gt; is set as a warning.&lt;/li&gt;
+						&lt;li&gt;A response delay &lt;b&gt;TD&lt;/b&gt; can be defined for the output W.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN1" type="BOOL">
+							<descr>Input 1</descr>
+						</var>
+						<var name="IN2" type="BOOL">
+							<descr>Input 2</descr>
+						</var>
+						<var name="IN3" type="BOOL">
+							<descr>Input 3</descr>
+						</var>
+						<var name="TD" type="TIME">
+							<descr>Delay for output W</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+						<var name="W" type="BOOL">
+							<descr>Warning</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="TDEL" type="TON"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+	version 1.0	19. may. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+SEL2_OF_3B is used to connect 3 binary sensors to one signal. The output Q reflects the state of at least two inputs.
+If two or more inputs are TRUE, then Q = TRUE. Otherwise, if two or more inputs are FALSE, then Q = FALSE.
+The main putrpose is the connection of 3 redundant binary sensors.  
+The output W is TRUE when one input has a different state from the others.
+The output W becomes TRUE after a programmed delay TD.
+
+*)
+
+
+Q := (IN1 AND IN2) OR (IN1 AND IN3) OR (IN2 AND IN3);
+TDEL(IN := (IN1 XOR IN2) OR (IN1 XOR IN3) OR (IN2 XOR IN3), PT := TO_UDINT(TD));
+W := TDEL.Q;
+
+
+(* 
+revision history
+hm		19. may 2008	rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SEL2_OF_3" version="1.0.0" creationDate="0" lastModifiedDate="1631605646" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SEL2_OF_3 evaluates 3 inputs (&lt;b&gt;IN1&lt;/b&gt; .. &lt;b&gt;IN3&lt;/b&gt;) and checks whether the deviation
+						of the input value is less than or equal to D.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt; The average of the three inputs is returned at output &lt;b&gt;Y&lt;/b&gt;.&lt;/li&gt;
+						&lt;li&gt;Each input is considered only if it is not more distant than &lt;b&gt;D&lt;/b&gt; from another input.&lt;/li&gt;
+						&lt;li&gt;If the average is calculated only on two inputs, the number of unrecognized inputs is passed at &lt;b&gt;W&lt;/b&gt;. If W = 0,
+						all 3 inputs are considered. If all 3 inputs are distant more than D, the output is
+						set to W = 4 and the &lt;b&gt;E&lt;/b&gt; = TRUE. In this case, the output Y does not change and remains at the last valid zero.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN1" type="REAL">
+							<descr>Input value 1</descr>
+						</var>
+						<var name="IN2" type="REAL">
+							<descr>Input value 2</descr>
+						</var>
+						<var name="IN3" type="REAL">
+							<descr>Input value 3</descr>
+						</var>
+						<var name="D" type="REAL">
+							<descr>Maximum distance</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="REAL">
+							<descr>Main output</descr>
+						</var>
+						<var name="W" type="INT">
+							<descr>Warning output</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Error output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="D12" type="BOOL"/>
+						<var name="D23" type="BOOL"/>
+						<var name="D31" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+	version 1.1	10. mar. 2009
+	programmer 	oscat
+	tested BY	oscat
+
+SEL2_OF_3 checks if 3 input signals are within a distance D from each other and calculates the average of the 3 inputs (if they are not distant more than D from each other).
+
+*)
+
+
+D12 := ABS(IN1-IN2) <= D;
+D23 := ABS(IN2-IN3) <= D;
+D31 := ABS(IN3-IN1) <= D;
+
+IF (D12 AND D23) OR (D12 AND D31) OR (D23 AND D31) THEN
+	(* all 3 inputs are valid *)
+	Y := (IN1 + IN2 + IN3) * 0.333333333333;
+	E := FALSE;
+	W := 0;
+ELSIF D12 THEN
+	(* only inut 1 and 2 are valid *)
+	Y := (In1 + IN2) * 0.5;
+	E := FALSE;
+	W := 3;
+ELSIF D23 THEN
+	(* only inut 2 and 3 are valid *)
+	Y := (In2 + IN3) * 0.5;
+	E := FALSE;
+	W := 1;
+ELSIF D31 THEN
+	(* only inut 3 and 1 are valid *)
+	Y := (In3 + IN1) * 0.5;
+	E := FALSE;
+	W := 2;
+ELSE
+	(* no calculation possible *)
+	E := TRUE;
+	W := 4;
+END_IF;
+
+
+(*
+revision history
+hm	18. may 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	improved code
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FT_AVG" version="1.0.0" creationDate="0" lastModifiedDate="1631519612" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>The function module FT_AVG calculates a moving average over each of the last N values. By the input RST, the stored values can be deleted.
+						N is defned from 0 .. 32.
+						N = 0 means that the output signal = input signal.
+						N = 5 is the average over the last 5 values.
+						The average is calculated over a maximum of 32 values.
+						With input E can be control when the input is read. This allows a simple way to connect a sample and a hold module, such as SH_1 with FT_AVG can be linked.
+						The frst call to FT_AVG the bufer load the input signal to avoid that a ramp-up takes place.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of values over which the average is calculated</descr>
+							<initValue>32</initValue>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="AVG" type="REAL">
+							<descr>Moving average over the last N values</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="buff" type="DELAY"/>
+						<var name="i" type="INT"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.5	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+This function calculates the moving average over n samples from a sequential input
+the input values are shifted into an N deep buffer and the avg of this buffer is diplayed at anytime on the output.
+a rst will load the buffer with the current in value..
+
+*)
+
+(* limit n to a max of 32 because delay can do max 32 cycles *)
+buff.N := LIMIT(N, 0, 32);
+
+IF NOT init OR rst THEN
+	FOR i := 1 TO N DO
+		buff(in := in);
+	END_FOR;
+	avg := in;
+	init := TRUE;
+ELSIF E THEN
+	buff(in := in);
+	avg := avg + (in - buff.out ) / TO_REAL(N);
+END_IF;
+
+(* revision history
+
+hm	7. jan. 2007	rev 1.1
+	chaged rst logic to load the buffer with the actual input value instead of 0.
+	added en input to allow better control of signal flow
+	added init to load the buffer with in at startup to avoid rampup at beginning.
+	deleted unused variable cnt.
+
+hm	14. jun. 2008	rev 1.2
+	set default for input en = TRUE and N = 32
+
+hm	10. oct. 2008	rev 1.3
+	improved performance
+
+hm	18. oct. 2008	rev 1.4
+	changed input en to e for compatibility reasons
+
+hm	10. mar. 2009	rev 1.5
+	added type conversion for compatibility reasons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FT_MIN_MAX" version="1.0.0" creationDate="0" lastModifiedDate="1631260282" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FT_MIN_MAX stores the minimum and maximum values of an input signal
+						&lt;b&gt;IN&lt;/b&gt;, and provides these two values at the outputs of &lt;b&gt;MN&lt;/b&gt; and &lt;b&gt;MX&lt;/b&gt;
+						(they can be cleared by a reset &lt;b&gt;rst&lt;/b&gt;, which restores the values of &lt;b&gt;MN&lt;/b&gt; and &lt;b&gt;MX&lt;/b&gt; to the value of the input signal).&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="mx" type="REAL">
+							<descr>Maximum value of the input signal</descr>
+						</var>
+						<var name="mn" type="REAL">
+							<descr>Minimum value of the input signal</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	1 sep 2006
+programmer 	hugo
+tested by	tobias
+
+This function block stores the minimum and maximum values of an input signal.
+When 'rst' is true, the 'mn' and 'mx' outputs are set to the input value 'in'.
+When 'rst' is not enabled, the function autoresets to the 'in' value at startup.
+Since the input might not be present at the first cycle, the mn and mx are set during the second cycle.
+
+*)
+
+IF rst OR NOT init THEN
+	mn := in;
+	mx := in;
+	init := TRUE;
+ELSIF in < mn THEN mn := in;
+ELSIF in > mx THEN mx := in;
+END_IF;
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FT_RMP" version="1.0.0" creationDate="0" lastModifiedDate="1637665363" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;FT_RMP follows an input signal with a linear ramp with defined rise and
+						fall speeds (&lt;b&gt;KR&lt;/b&gt; and &lt;b&gt;KF&lt;/b&gt;).&lt;/p&gt;
+						&lt;img src= ft_rmp.jpg &gt;
+						&lt;ul&gt;
+						&lt;li&gt;K = 1 means that the output rises/falls by1 unit
+						per second. The K factor must be greater than 0. &lt;b&gt;UD&lt;/b&gt;
+						is TRUE if the output is rising, or FALSE if it is dropping.&lt;/li&gt;
+						&lt;li&gt;When the output reaches the input, &lt;b&gt;busy&lt;/b&gt; is FALSE, otherwise it is TRUE and indicates that a rising or falling ramp is active.&lt;/li&gt;
+						&lt;li&gt;The output follows the input signal as long as it is smaller that that, by &lt;b&gt;KR&lt;/b&gt; and &lt;b&gt;KF&lt;/b&gt; speeds.&lt;/li&gt;
+						&lt;li&gt;The ramp generation is realtime,
+						which means that FT_RMP calculates every time where the output
+						should be and sets this value to the output.&lt;/li&gt;
+						&lt;li&gt;The change is dependent on the cycle time and is not based on equal steps.&lt;/li&gt;
+						&lt;li&gt;The module is only active when the input &lt;b&gt;RMP&lt;/b&gt; = TRUE.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="Rmp" type="BOOL">
+							<descr>Enable signal</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="KR" type="REAL">
+							<descr>Rate of rise speed of 1 unit per second</descr>
+						</var>
+						<var name="KF" type="REAL">
+							<descr>Rate of fall speed of 1 unit per second</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="out" type="REAL">
+							<descr>Upper output limit</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>Indicates if the output is rising or falling</descr>
+						</var>
+						<var name="UD" type="BOOL">
+							<descr>TRUE if the output is rising, FALSE if it is falling</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+	version 1.4	25 jan 2008
+	programmer 	oscat
+	tested BY	oscat
+
+This ramp function follows an input signal with a linear ramp up or down, the up or down speed can be set with KF and KR.
+A K factor of 1 means 1 unit per second on the output. K factors can only be positive and not negative.
+A busy output means that the ramp is running or busy, otherwise false means that the 'in' value is present on the output.
+If 'rmp' is false, the output directly follows the input, whereas if rmp is true, the output follows the input with a ramp.
+A updn output signal the directon of the ramp (up or down).
+
+*)
+
+
+(* read system time *)
+tx := TO_TIME(sysTimer) - last;
+
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+	tx := t#0s;
+	out := in;
+END_IF;
+IF NOT rmp THEN
+	out := in;
+	busy := FALSE;
+ELSIF out > in THEN
+	(* ramp down *)
+	out := out - TO_REAL(tx) * 0.001 * KF;
+	out := MAX(in, out);
+ELSIF out < in THEN
+	(* ramp up *)
+	out := out + TO_REAL(tx) * 0.001 * KR;
+	out := MIN(in, out);
+END_IF;
+
+(* set busy and dir flags *)
+IF out < in THEN
+	busy := TRUE;
+	ud := TRUE;
+ELSIF out > in THEN
+	busy := TRUE;
+	ud := FALSE;
+ELSE
+	busy := FALSE;
+END_IF;
+last := last + tx;
+
+
+(* revision history:
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 8.10.2006			rev 1.1
+	added ud output
+
+hm 12. feb 2007		rev 1.2
+	added init variable and corrected a possible startup problem
+
+hm	17. sep 2007	rev 1.3
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	25. jan 2008	rev 1.4
+	performance improvements
+	allow KR and KF to be 0
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="ft_rmp.jpg" width="425" height="169" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CACpAakDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACivMvDPx48P+Kfjx42+Flpc251
+3wrpmn6hdI0xWZ2ufNZ0WJlBZYo/sbNIhZc3iKdrDB9NoAKKKKACiiigAooooAKKKKACiiig
+AooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKK
+KKACiiigAooooAKKKKACiiigAooooAKKKKACsXxZ4o0vwP4W1nxHrV19i0bR7KbUb658t5PJ
+gijaSR9qAs2FUnCgk44BNbVfCf8AwV4+OVx8MP2c7XwjpWo/YdZ8cXpsZVQTLK2mxKHuykiE
+KuWa2iZXJ3xzyLtIyVAPg/8AYv8A2qPEMn/BQbSfHfiS8uJrj4galJo2rQ2iCYFbxlS2gTzn
+Zo4IZ1tMYfcsUAUbh8rfu5X8q9f0tfs2/F6H48/AfwP48jkt5LjWtNilvRaQyRQx3q5juo0W
+TLBUnSVASTkKCGYEMQD06iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiii
+gAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK
+KKKACiiigAooooA+VP2eP+T7P2uP+5R/9NctfVdfKn7PH/J9n7XH/co/+muWvqugAooooAKK
+KKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiig
+AooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAPlT9nj/k+z9rj
+/uUf/TXLX1XXyp+zx/yfZ+1x/wByj/6a5a+q6ACiiigAopKKAFooooAKKKKACiiigAooooAK
+KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiii
+gAooooAKKKKACiiigAooooAKKKKACiiigD5U/Z4/5Ps/a4/7lH/01y19V18qfs8f8n2ftcf9
+yj/6a5a+q6ACiikoA5PVPH1ho8OrSyw3DLpl1BZy+Um9maURFSqqSSP3y54zwcA8Zvw+KbK4
+1DTLSFvO/tC3ku4JoiGjZEMYPIPOfNUjGQRn2zxGvaRe3DeLFW0mcT69psqFYyd8a/Y9zj1U
+bWyeg2t6GpND8O6lovj3TbZoHfRbW1vDaXQ5VFkkt28k/wB0qwkCrgDYqAEkNjxvrNf2lraX
+S2/vP9D5/wCt4mNW1rxvbb+81+R6hRSGRV6sB+NRtdQrnMsY/wCBCvY5kt2e85JbsfzxRuAr
+h9R+Mfg7TbdpZPENjIiEbhBKJW5IHCqST1HQcdelY1x+0F4anXbo0epa/ddTbafZyF1X+8dw
+AwDgdepHFedPMsHTfLKrG/a6u/RdTyamcZfSlyTrx5u102/Rbs9R4xSc9APxryyL4peK9YzN
+onw+v57RflLahcJaSbupARuowR82eTkdq861C8/a21DUry40mx+EumaXJcSGztNXk1F7uKDe
+wQTNETGz7NuSvGT0HQd+X1KWYzlCnLlt1kpRXybVn8jTD5lRxUnCkpadeSST9G0k/kz6Yb7u
+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
+ooooAKKKKACiiigD/9k=]]>
+					</image>
+				</images>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

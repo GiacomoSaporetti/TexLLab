@@ -1,0 +1,4 @@
+<devicecategory name="Custom" icon="custom.ico" image="custom.gif">
+    <description>Custom devices</description>
+</devicecategory>
+

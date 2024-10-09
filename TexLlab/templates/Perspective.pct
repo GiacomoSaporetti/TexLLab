@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<config>
+		<perspective name="Configuration" default="true" menubar="menubarConfiguration">
+			<bar name="*" show="false"/>
+			<bar name="dockResources" show="true"/>
+			<bar name="catalogdock" show="true"/>
+			<bar name="toolbarConfiguration" show="true"/>
+			<bar id="59426" show="true"/>  <!-- CONTROLBAR_OUTPUT -->
+		</perspective>
+		
+		<perspective name="PLC" menubar="$$DEFAULT">
+			<bar name="*" show="false"/>
+			<bar id="117"   show="true"/>  <!-- IDR_MAINFRAME -->
+			<bar id="211"   show="true"/>  <!-- IDI_FBD -->
+			<bar id="663"   show="true"/>  <!-- IDI_LD -->
+			<bar id="1005"  show="true"/>  <!-- IDI_DEBUG -->
+			<bar id="321"   show="true"/>  <!-- IDI_PRJBAR -->
+			<bar id="321"   show="true"/>  <!-- IDI_PRJBAR -->
+			<bar id="59425" show="true"/>  <!-- CONTROLBAR_OPERATORSBLOCKS -->
+			<bar id="59426" show="true"/>  <!-- CONTROLBAR_OUTPUT -->
+			<bar id="59427" show="true"/>  <!-- CONTROLBAR_WATCH -->
+			<bar id="59433" show="true"/>  <!-- CONTROLBAR_WORKSPACE -->
+			<bar id="59436" show="true"/>  <!-- CONTROLBAR_LIBRARYTREE -->
+		</perspective>
+		
+<!-- #IFNDEF PERSPECTIVE_NO_HMI -->
+		<perspective name="HMI" menubar="menubarHMI">
+			<bar name="*" show="false"/>
+			<bar id="59426" show="true"/>  <!-- CONTROLBAR_OUTPUT -->
+			
+			<bar id="5105" show="true"/> <!-- IDR_PAGEOBJ -->
+			<bar id="5223" show="true"/> <!-- IDR_PROJECT -->
+			<bar id="5721" show="false"/> <!-- IDR_TOOLBAR_HMIPROFILES -->
+			
+			<bar name="PageLab_Project_Dock"    show="true"/>
+			<bar name="PageLab_Properties_Dock" show="true"/>
+			<bar name="PageLab_Actions_Dock"    show="true"/>
+			<bar name="PageLab_Parameters_Dock" show="true"/>
+		</perspective>
+<!-- #ENDIF PERSPECTIVE_NO_HMI -->
+		
+		<perspective name="Commissioning" menubar="menubarCommissioning">
+			<bar name="*" show="false"/>
+			<bar id="59426" show="true"/>  <!-- CONTROLBAR_OUTPUT -->
+			<bar name="dockCommissioning" show="true"/>
+			<bar name="toolbarCommissioning" show="true"/>
+			<bar name="monitorDock" show="true"/>
+			<bar name="graphdock" show="true"/>
+		</perspective>
+	</config>
+	
+	<hmi>
+		<toolbar name="GlobalToolbar" caption="GlobalToolbar" dockingFlags="0x100000" closeable="false" rect="0,0,0,42" iconSize="32,32"> <!-- xtpFlagStretchedShared = 0x100000, non chiudibile, in alto a sx -->
+			<button icon="img\newPrj_big.bmp" cmd="32794"/> <!-- IDM_NEWPRJ -->
+			<button icon="img\openPrj_big.bmp" cmd="32777"/> <!-- IDM_OPENPRJ -->
+			<button icon="img\savePrj_big.bmp" cmd="32789"/> <!-- IDM_SAVEPRJ -->
+			<button icon="img\compile_big.bmp" handler="commissioning.BuildAll"  statusmsg="Build all" tooltip="Build all"/>
+			<button icon="img\download_big.bmp" handler="commissioning.DownloadAll" updatehandler="commissioning.UpdateDownloadAll" statusmsg="Download all" tooltip="Download all"/>
+		</toolbar>
+	
+		<toolbar name="Perspective" caption="Perspective" dockingFlags="0x100000" closeable="false" rect="220,0,0,42" iconSize="32,32"> <!-- xtpFlagStretchedShared = 0x100000, non chiudibile, in alto a sx -->
+			<button text="CONFIGURATION" handler="$$SetPerspective:Configuration" statusmsg="Set Configuration perspective" tooltip="Set Configuration perspective" style="check" width="160"/>
+			<button text="PROGRAMMING" handler="$$SetPerspective:PLC" statusmsg="Set PLC perspective" tooltip="Set PLC perspective" style="check" width="160"/>
+<!-- #IFNDEF PERSPECTIVE_NO_HMI -->
+			<button text="DISPLAY" handler="$$SetPerspective:HMI" statusmsg="Set HMI perspective" tooltip="Set HMI perspective" style="check" width="160"/>
+<!-- #ENDIF PERSPECTIVE_NO_HMI -->
+			<button text="COMMISSIONING" handler="$$SetPerspective:Commissioning" statusmsg="Set Commissioning perspective" tooltip="Set Commissioning perspective" style="check" width="160"/>
+		</toolbar>
+	
+		<!-- con append=false i tasti vengono messi in testa alla tabella esistente, sovrascrivendo quelli attuali di default di LL -->
+		<accelTable append="false">
+			<key value="F7" handler="perspective.OnCompileKey" />
+			<key value="F5" handler="perspective.OnDownloadKey" />
+		</accelTable>
+	</hmi>
+	
+	<extensions>
+		<script>perspective.js</script>
+		<eventhandler event="OnLoad">perspective.OnLoad</eventhandler>
+		<eventhandler event="OnMessage" filter="createNewProject">perspective.OnMessage_CreateNewProject</eventhandler>
+	</extensions>
+</template>

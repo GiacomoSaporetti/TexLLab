@@ -1,0 +1,110 @@
+<html>
+<head>
+	<title>Object Dictionary</title> <meta http-equiv="Content-Type" content="text/html;
+	charset=ISO-8859-1" >
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	function InitPage()
+	{
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + '../img/plus2.gif'
+		imgMinus.src = csspath + '../img/minus2.gif'
+		imgUp.src = csspath + '../img/arrowUp.gif'
+		imgDown.src = csspath + '../img/arrowDown.gif'		
+		imgImport.src = csspath + '../img/import.png'
+		imgExport.src = csspath + '../img/export.png'
+		
+		var path = window.external.GetCurrentWindowData()
+
+		FixStyleForGrids();
+		
+		SearchError(path)
+	}
+	
+	</script>
+	<script type="text/javascript" src="ObjectDictionary_def.js"></script>
+	<script type="text/javascript" src="grid_objdict.js"></script>
+</head>
+
+<body onload="InitGrid(datapath.value)" onunload="OnUnload()">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle">CANopen Slave Object Dictionary</td>
+	</tr>
+<!--<tr>
+		<td class="SfondoTab">
+			<div class="menu">
+				<div class="menu_off"> <a href="CANopen.html"><t:t>General</t:t></a> </div>
+				<div class="menu_on"> <a href="ObjectDictionary.html"><t:t>Object Dictionary</t:t></a> </div>
+				&nbsp;
+			</div> 
+		</td>
+	</tr>-->
+	<tr>
+		<td>
+			<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="tableHeader">
+						<span onClick="grid_AddRowXML()">
+							<img id="imgPlus" alt="Add" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Add</t:t></span>
+						</span>
+						<span onClick="grid_DeleteRowXML()">
+							<img id="imgMinus" alt="Delete" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Remove</t:t></span>
+						</span>
+						<span onClick="GridMoveUp(grid, gridDatapath)">
+							<img id="imgUp" alt="Up" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Up</t:t></span>
+						</span>
+						<span onClick="GridMoveDown(grid, gridDatapath)">
+							<img id="imgDown" alt="Down" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Down</t:t></span>
+						</span>
+						
+						<span onClick="ImportFromCSVFile(false)">
+							<img id="imgImport" alt="Import" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Import from file</t:t></span>
+						</span>
+
+
+						<span onClick="ExportToCSVFile(false)">
+							<img id="imgExport" alt="Export" src="" class="buttonImg">
+							<span class="Titles_table buttonText"><t:t>Export to file</t:t></span>
+						</span>
+					</td>
+				</tr>
+				<tr style="height: 100%">
+					<td>
+						<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+							<param name="margin" value="40">
+							<param name="multiselect" value="1">
+						</object>
+					</td>
+				</tr>
+			</table>
+			
+			<script type="text/javascript" src="grid_objdict_events.js"></script>
+		</td>
+	</tr>
+
+</table>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

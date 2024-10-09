@@ -1,0 +1,360 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>CAN Custom Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+	<script type="text/javascript">
+		var app = window.external
+		try
+		{ csspath = "file://" + app.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<LINK href='" + csspath + "diagnostics.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+		
+		/*	prelevo diagnostica specifica se presente */
+		
+		//	percorso corrente
+		var current_device = app.SelectNodesXML(app.GetCurrentWindowData() + ".")[0]
+		//	nodo padre target
+		var targetDevice  = current_device.selectSingleNode("(ancestor::*[@IsRootDevice])[last()]")
+		//	attibuto specifico diagnostica (path relativo a posizione .pct)
+		var diagnostic_js_relative_path = targetDevice.getAttribute( "CANopenMasterSlavesDiagnostic" )
+		//	variabile da valorizzare con percorso completo
+		var diagnostic_js_path
+		//	la diagnostica specifica è presente?
+		if ( diagnostic_js_relative_path && diagnostic_js_relative_path != "" )
+		{			
+			//	percorso .pct
+			var targetDevicePath = targetDevice.getAttribute( "template" )
+			//	trovo ultimo termonatore "\\" per avere la cartella
+			var folderStrIndex = targetDevicePath.lastIndexOf( "\\" )
+			if ( folderStrIndex >= 0 )
+			{
+				//	il pct è in una sottocartella
+				diagnostic_js_path = "file://" + app.CatalogPath + targetDevicePath.substr( 0, folderStrIndex + 1 ) + diagnostic_js_relative_path
+			}
+			else
+			{
+				//	il pct è nella cartella Catalog
+				diagnostic_js_path = "file://" + app.CatalogPath + diagnostic_js_relative_path
+			}
+		}
+		else
+		{
+			//	se non è fornita una diagnostica specifica metto implementazione di default in CANcommon
+			diagnostic_js_path = "file:../../CANcommon/html/diagnostic1_none.js"
+		}
+		
+		//	includo file di diagnostica al percorso calcolato
+		document.write("<SCRIPT src='" + diagnostic_js_path + "' type='text/javascript'></" + "SCRIPT>")
+	</script>
+	
+	<script src="custom1.js"></script>
+
+	<style>
+		#deviceImage
+		{
+			margin-left: 50px;
+			width: 250px;
+			float: left;
+		}
+		#divHelp
+		{
+			cursor: pointer;
+			font: bold 16px Arial;
+		}
+
+		.hide {
+			display: none;
+		}
+	</style>
+</head>
+
+<body onload="UpdatePage()">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle"><t:t>CAN Custom Configuration</t:t></td>
+	</tr>
+	<tr>
+		<td class="SfondoTab">
+			<div class="menu html5">
+				<div class="menu_on"> <a href="#"><t:t>General</t:t></a> </div>
+				<div class="menu_off"> <a href="custom2.html"><t:t>Parametrization</t:t></a> </div>
+				<div class="menu_off"> <a href="custom4.html"><t:t>PDO Tx - Input</t:t></a> </div>
+				<div class="menu_off"> <a href="custom5.html"><t:t>PDO Rx - Output</t:t></a> </div>
+				<div class="menu_off" id="SDOSchedulingSupported"> <a href="custom6.html"><t:t>SDO scheduling</t:t></a> </div>
+				&nbsp;
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="Sfondo">
+<!--			<fieldset style="width:620px; float:none">
+				<legend><t:t>Info</t:t></legend>
+				<span class="Textual_light" style="width:100px"><t:t>Device version: </t:t></span><span id="fwver" class="Textual"></span>
+			</fieldset>
+			<br>-->
+			<fieldset style="width:440px; float:left">
+				<legend><t:t>Network settings</t:t></legend>
+				<table style="table-layout:fixed">
+					<tr>
+						<td> <label for="txtCaption"><t:t>Name</t:t></label> </td>
+						<td> <input id="txtCaption" type="text" name=".D(@caption)" onchange="UpdateTreeCaption()" size="35"> </td>
+					</tr>
+					<tr border="1" id="sectionNodeIDCfg">
+						<td width="210px">
+							<input type="radio" id="dyncfgNodeNumberStatic" name=".D(CANcustom_config[1]/dyncfgNodeNumber[1])" value="false" onclick="NodeNumberMode_OnClick(this.value)"> <label for="dyncfgNodeNumberStatic"><t:t>Static Node Number</t:t></label><br>
+							<input type="radio" id="dyncfgNodeNumberParametric" name=".D(CANcustom_config[1]/dyncfgNodeNumber[1])" value="true" onclick="NodeNumberMode_OnClick(this.value)"> <label for="dyncfgNodeNumberParametric"><t:t>Parametric Node Number</t:t></label><br>
+						</td>
+						<td></td>
+					</tr>
+					<tr height="30px" id="sectionStaticNodeIDCfg">
+						<td width="210px"> <label for="nodeNumber"><t:t>Node Number (1..127)</t:t></label> </td>
+						<td> <input onchange="initDiagnosticNode()" id="nodeNumber" type="text" name=".D(CANcustom_config[1]/nodeNumber[1])"> </td>
+					</tr>
+					<tr height="30px" id="sectionConfigurableNodeIDCfg">
+						<td width="210px"> <label for="nodeNumberVar"><t:t>Node Number Var (USINT):</t:t></label> </td>
+						<td>
+							<input type="text" id="nodeNumberVar" readonly name=".D(CANcustom_config[1]/nodeNumberVar[1])">
+							<img id="nodeNumberVar_imgIn" alt="Assign USINT variable" name="button" src="" class="buttonImg" onClick="Assign( 'USINT', 'CANcustom_config[1]/nodeNumberVar', nodeNumberVar )">
+							<img id="nodeNumberVar_imgOut" alt="UnAssign" name="button" src="" class="buttonImg" onClick="UnAssign( 'CANcustom_config[1]/nodeNumberVar', nodeNumberVar )">
+						</td>
+					</tr>
+				</table>
+				<table style="table-layout:fixed" id="tblNetworkSettings" border="0">
+					<tr>
+						<td width="210px"> <label for="nodeGuardPeriod"><t:t>Node Guard Period (ms)</t:t></label> </td>
+						<td> <input id="nodeGuardPeriod" type="text" name=".D(CANcustom_config[1]/nodeGuardPeriod[1])"> </td>
+					</tr>
+					<tr>
+						<td> <label for="lifeTimeFactor"><t:t>Life time Factor</t:t></label> </td>
+						<td> <input id="lifeTimeFactor" type="text" name=".D(CANcustom_config[1]/lifeTimeFactor[1])"> </td>
+					</tr>
+					<tr>
+						<td> <label for="BootTime"><t:t>Boot time elapsed (ms)</t:t></label> </td>
+						<td> <input id="BootTime" type="text" name=".D(CANcustom_config[1]/BootTime[1])"> </td>
+					</tr>
+					<tr id="rowHb1">
+						<td> <label for="NodeHbPTime"><t:t>Node heartbeat producer time (ms)</t:t></label> </td>
+						<td> <input id="NodeHbPTime" type="text" name=".D(CANcustom_config[1]/NodeHbPTime[1])"> </td>
+					</tr>
+					<tr id="rowHb2">
+						<td> <label for="NodeHbCTime"><t:t>Node heartbeat consumer time (ms)</t:t></label> </td>
+						<td> <input id="NodeHbCTime" type="text" name=".D(CANcustom_config[1]/NodeHbCTime[1])"> </td>
+					</tr>
+					<tr id="rowHb3">
+						<td> <label for="MasterHbCTime"><t:t>Master heartbeat consumer time (ms)</t:t></label> </td>
+						<td> <input id="MasterHbCTime" type="text" name=".D(CANcustom_config[1]/MasterHbCTime[1])"> </td>
+					</tr>
+					<tr id="rowMandatory">
+						<td> <label for="mandatorySlave"><t:t>Mandatory</t:t></label> </td>
+						<td> <input id="mandatorySlave" type="checkbox" name=".D(CANcustom_config[1]/MandatorySlave[1])"> </td>
+					</tr>
+					<tr>
+						<td> <label for="identityObjectCheck"><t:t>Identity Object Check</t:t></label> </td>
+						<td> <input id="identityObjectCheck" type="checkbox" name=".D(CANcustom_config[1]/identityObjectCheck[1])" onclick="identityObjectCheck_OnChange(this.checked)"> </td>
+					</tr>
+				</table>
+			</fieldset>
+			
+			<fieldset id="fldIdentityObjectCheck" style="width:440px">
+				<legend><t:t>Device Info</t:t></legend>
+				<label style="display: inline-block; margin-top:10px"><t:t>Objects checked for device identification</t:t></label>
+				<table style="table-layout:fixed" id="tblIdentityObjectCheck" border="0">
+					<tr>
+						<td width="120px"> <label for="infoDeviceType"><t:t>Device Type **</i></t:t></label> </td>
+						<td> <input id="infoDeviceType" type="text" readonly="true" style="color:rgb(100,100,100)"> </td>
+					</tr>
+					<tr>
+						<td> <label for="infoVendorID"><t:t>Vendor ID **</i></t:t></label> </td>
+						<td> <input id="infoVendorID" type="text" readonly="true" style="color:rgb(100,100,100)"> </td>
+					</tr>
+					<tr>
+						<td> <label for="infoProductCode"><t:t>Product Code **</t:t></label> </td>
+						<td> <input id="infoProductCode" type="text" readonly="true" style="color:rgb(100,100,100)"> </td>
+					</tr>
+					<tr>
+						<td> <label id="labelInfoRevision" for="infoRevision"><t:t>Revision *</t:t></label> </td>
+						<td> <input id="infoRevision" type="text" name=".D(CANcustom_config[1]/identityObjectCheckRevision[1])" onchange="ValidateValue(this)"> <label id="labelInfoRevisionDefault" for="infoRevision"></label> </td>
+					</tr>
+					<tr>
+						<td> <label id="labelInfoSerial" for="infoSerial"><t:t>Serial *</t:t></label> </td>
+						<td> <input id="infoSerial" type="text" name=".D(CANcustom_config[1]/identityObjectCheckSerial[1])" onchange="ValidateValue(this)"> <label id="labelInfoSerialDefault" for="infoRevision"></label> </td>
+					</tr>
+				</table>
+				<label style="display: inline-block; margin-top:10px"><t:t>* Object control is skipped if '0x0' value is specified</t:t></label>
+				<br/>
+				<label style="display: inline-block; margin-top:10px"><t:t>** Value retrieved from EDS</t:t></label>
+			</fieldset>
+			
+			<fieldset id="fldDiagnosticData" style="width:440px">
+				<legend><t:t>Diagnostics</t:t></legend>
+				<div id="diagnosticData" class="hide">
+					<table class="diagno-tbl">
+					<tr>
+						<th></th>
+						<th><label><b><t:t>Description</t:t></b></label></th>
+						<th><label><b><t:t>Value</t:t></b></label></th>
+					</tr>
+					<tr>
+						<td style="width: 200px;"><label><t:t>Configurated</t:t>:</label></td>
+						<td style="width: 150px;"><label id="txtCfg"></label></td>
+						<td style="width: 40px;"><label id="txtCfgVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Present and in operational status</t:t>:</label></td>
+						<td><label id="txtPres"></label></td>
+						<td><label id="txtPresVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Status of the node in the network</t:t>:</label</td>
+						<td><label class="status empty" id="txtNetStat">-</label></td>
+						<td><label id="txtNetStatVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Miss counter</t:t>:</label</td>
+						<td><label class="status empty" id="txtMissCntOk">-</label></td>
+						<td><label id="txtMissCntOkVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Emergency last code</t:t>:</label</td>
+						<td colspan="2"><label class="status empty" id="txtEmrgCode">-</label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Emergency counter</t:t>:</label</td>
+						<td><label class="status empty" id="txtEmrgCnt">-</label></td>
+						<td><label id="txtEmrgCntVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Count of expected sync PDO Tx from node to master missed</t:t>:</label</td>
+						<td><label class="status empty" id="txtSyncPdoMissCnt">-</label></td>
+						<td><label id="txtSyncPdoMissCntVal"></label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Boot error code</t:t>:</label</td>
+						<td><label id="txtBootErr"></label></td>
+						<td><label id="txtBootErrVal"></label></td>
+					</tr>
+					</table>
+				</div>
+				<label id="diagnosticsEnableMessage" class="hide"></label>
+			</fieldset>
+
+			<br style="clear:both">
+			
+			<fieldset id="fldPDOMapping" style="width:440px; float:left">
+				<legend><t:t>PDO Mapping</t:t></legend>
+				<table style="table-layout:fixed" border="0">
+					<tr>
+						<td width="210px"> <label style="font-weight:bold" id="lblPDOMapping"></label> </td>
+						<td> </td>
+					</tr>
+					<tr>
+						<td> <label for="PDOAutoMapping"><t:t>PDO Auto Mapping</t:t></label> </td>
+						<td> <input id="PDOAutoMapping" type="checkbox" name=".D(CANcustom_config[1]/PDOAutoMapping[1])" onclick="PDOAutoMapping_OnChange(this.checked)"> </td>
+					</tr>
+				</table>
+			</fieldset>
+
+			<br style="clear:both">
+			
+			<fieldset id="fldPDOTxComm" style="width:440px; float:left">
+				<legend><t:t>PDO Tx communication settings</t:t></legend>
+				<table>
+					<tr>
+						<td><input type="radio" id="PDOTxTransmission_Man" name=".D(CANcustom_config[1]/PDOTxTransmission[1])" value="-1" onclick="PDOTxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDOTxTransmission_Man"><t:t>USER DEFINED Mode</t:t></label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" id="PDOTxTransmission_Sync" name=".D(CANcustom_config[1]/PDOTxTransmission[1])" value="0" onclick="PDOTxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDOTxTransmission_Sync"><t:t>SYNC Mode</t:t></label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" id="PDOTxTransmission_Event" name=".D(CANcustom_config[1]/PDOTxTransmission[1])" value="1" onclick="PDOTxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDOTxTransmission_Event"><t:t>EVENT Mode</t:t></label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" id="PDOTxTransmission_Cyclic" name=".D(CANcustom_config[1]/PDOTxTransmission[1])" value="2" onclick="PDOTxTransmission_OnChange(this.value)"></td>
+						<td><label for="PDOTxTransmission_Cyclic"><t:t>CYCLIC Mode</t:t></label></td>
+						<td>
+							<input type="text" id="PDOTxCyclicTime" size="4" style="margin-left:20px" name=".D(CANcustom_config[1]/PDOTxCyclicTime[1])" onkeyup="PDOTxCyclicTime_OnChange()">
+							<label for="PDOTxCyclingTime">ms</label>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			
+			<fieldset id="fldPDORxComm"  style="width:440px">
+				<legend><t:t>PDO Rx communication settings</t:t></legend>
+				<table>
+					<tr>
+						<td><input type="radio" id="PDORxTransmission_Man" name=".D(CANcustom_config[1]/PDORxTransmission[1])" value="-1" onclick="PDORxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDORxTransmission_Man"><t:t>USER DEFINED Mode</t:t></label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" id="PDORxTransmission_Sync" name=".D(CANcustom_config[1]/PDORxTransmission[1])" value="0" onclick="PDORxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDORxTransmission_Sync"><t:t>SYNC Mode</t:t></label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" id="PDORxTransmission_Event" name=".D(CANcustom_config[1]/PDORxTransmission[1])" value="1" onclick="PDORxTransmission_OnChange(this.value)"></td>
+						<td colspan="2"><label for="PDORxTransmission_Event"><t:t>EVENT Mode</t:t></label></td>
+					</tr>
+					<tr id="rowPDORxCycleNum1">
+						<td></td>
+						<td><input type="text" id="PDORxCycleNum" size="4" name=".D(CANcustom_config[1]/PDORxCycleNum[1])"></td>
+						<td><label for="PDORxTransmission_Event"><t:t><I>n</I> task Fast I/O cycles</t:t></label></td>
+					</tr>
+					<tr id="rowPDORxCycleNum2">
+						<td></td>
+						<td><label>= 0</label></td>
+						<td><label>On variation only</label></td>
+					</tr>
+					<tr id="rowPDORxCycleNum3">
+						<td></td>
+						<td><label>&gt; 0</label></td>
+						<td><label>On variation + once every <I>n</I> cycles</label></td>
+					</tr>
+				</table>
+			</fieldset>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img id="deviceImage" src="">
+			
+			<table style="position:absolute; right:20px; height:100%">
+				<tr>
+					<td>
+						<fieldset id="deviceDescription" class="Textual"></fieldset>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<div id="divHelp" onclick="app.OpenHelp(m_helpContext)">
+							<img id="imgPDF" src=""><br>
+							Manual
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>	
+</table>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

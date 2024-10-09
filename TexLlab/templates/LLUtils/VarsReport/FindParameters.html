@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Find</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >   
+	<script type="text/javascript">
+        try
+        { csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+        catch (e)
+        { csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+        document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+        document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+    </script>
+
+    <script src="findparameters.js"></script> 
+
+    <style>
+        body{
+            padding-left: 10px;
+            padding-top: 10px;
+            padding-right: 10px;
+            overflow: hidden;
+        }
+
+        button{
+            width: 85px;
+        }
+    </style>
+</head>
+
+<body scroll="no">
+
+    <div>
+        <label for="name">
+            <t:t>Search text</t:t>:
+        </label>
+    </div>
+
+    <div>
+        <input type="text" id="txtName" style="width: 98%;" onkeydown="OnKeyDown()">
+    </div>
+
+    <div class="mt-s">
+        <label>
+            <t:t>Search in</t:t>:
+        </label>
+    </div>
+
+    <div class="mt-xs">
+        <table>
+            <tr>
+                <td>
+                    <input type="checkbox" id="chkFindInName" checked>
+                    <label for="chkFindInName" id="lblFindInName">
+                        <t:t>Name</t:t>
+                    </label></td>
+                <td>
+                    <input type="checkbox" id="chkFindInType" style="margin-left: 13px;">
+                    <label for="chkFindInType" id="lblFindInType">
+                        <t:t>Type</t:t>
+                    </label>
+                </td>
+                <td>
+                    <input type="checkbox" id="chkFindInAddress" style="margin-left: 13px;">
+                    <label for="chkFindInAddress" id="lblFindInAddress">
+                        <t:t>Address</t:t>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="checkbox" id="chkFindInGroup">
+                    <label for="chkFindInGroup" id="lblFindInGroup">
+                        <t:t>Group</t:t>
+                    </label>
+                </td>
+                <td>
+                    <input type="checkbox" id="chkFindInAttribute" style="margin-left: 13px;">
+                    <label for="chkFindInAttribute" id="lblFindInAttribute">
+                        <t:t>Attribute</t:t>
+                    </label>
+                </td>
+                <td>
+                    <input type="checkbox" id="chkFindInDesc" style="margin-left: 13px;">
+                    <label for="chkFindInDesc" id="lblFindInDesc">
+                        <t:t>Description</t:t>
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="mt-xs">
+        <input type="checkbox" id="chkCaseSensitive">    
+        <label for="chkCaseSensitive">
+            <t:t>Case sensitive</t:t>
+        </label>
+    </div>
+
+    <div class="mt-xs">
+        <input type="checkbox" id="chkWholeWord">    
+        <label for="chkWholeWord">
+            <t:t>Match whole word only</t:t>
+        </label>
+    </div>
+
+    <div class="mt-m" >
+        <button onclick="OnOK()" class="FlatButton"><t:t>Search</t:t></button>
+        <button onclick="CloseDlg()" style="position: absolute; right: 10px;" class="FlatButton"><t:t>Cancel</t:t></button>
+    </div>
+
+    <script>
+        // la funzione verrÃ  eseguita PRIMA della visualizzazione della pagina
+        InitPage()
+    </script>
+</body>
+
+</html>

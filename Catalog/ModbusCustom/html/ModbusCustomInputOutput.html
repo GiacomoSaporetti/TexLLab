@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Generic device</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" >
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png';
+		imgUp.src = csspath + imgPathPrefix + 'arrowUp.png';
+		imgDown.src = csspath + imgPathPrefix + 'arrowDown.png';
+		imgOut.src = csspath + imgPathPrefix + 'arrowOut.png';
+		imgIn.src = csspath + imgPathPrefix + 'arrowIn.png';
+
+		
+		var path = app.GetCurrentWindowData()
+		pageTitle.innerText = app.DataGet(path + "@name", 0) + " Configuration"
+		
+		SearchError(path)
+
+		FixStyleForGrids();
+	}
+
+	var tablePath = "ModbusCustom_config[1]/inputsOutputs[1]"		// path relativo della tabella
+	var m_inout = "inOut"
+</script>
+<script type="text/javascript" src="grid.js"></script>
+
+</head>
+
+<body onload="InitGrid(datapath.value)" class="html5">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Generic Device Input+Output</t:t></span>
+	</div>
+
+	<div class="menu">
+		<div class="menu_off"> <a href="ModbusCustomMain.html"><t:t>General</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomParams.html"><t:t>Parametrization</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomInput.html"><t:t>Input</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomOutput.html"><t:t>Output</t:t></a> </div>
+		<div class="menu_on" id="tabModbusCustomInputOutput"> <a href="#"><t:t>Input + Output</t:t></a> </div>
+	</div>
+
+	<div class="tableHeader">
+		<button class="ll-button" onClick="grid_AddRowXML()">
+			<img id="imgPlus" alt="Add">
+			<span class="label"><t:t>Add</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="grid_DeleteRowXML()">
+			<img id="imgMinus" alt="Delete">
+			<span class="label"><t:t>Remove</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="Assign()">
+			<img id="imgIn" alt="Assign">
+			<span class="label"><t:t>Assign</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="UnAssign()">
+			<img id="imgOut" alt="UnAssign">
+			<span class="label"><t:t>UnAssign</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="GridMoveUp(grid, gridDatapath)">
+			<img id="imgUp" alt="Up">
+			<span class="label"><t:t>Up</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="GridMoveDown(grid, gridDatapath)">
+			<img id="imgDown" alt="Down">
+			<span class="label"><t:t>Down</t:t></span>
+		</button>
+	</div>
+
+	<div class="fill-height">
+		<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+			<param name="margin" value="0">
+			<param name="multiselect" value="1">
+		</object>
+	</div>
+</div>
+
+<script type="text/javascript" src="grid_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

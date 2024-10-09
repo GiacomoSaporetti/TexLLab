@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Main Configuration</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="UTF-8">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "iso_bootstrap.min.css' rel='stylesheet' type='text/css'>")
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<LINK href='" + csspath + "license.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/commonlicense.js' type='text/javascript'></" + "SCRIPT>")
+
+	var path
+
+	function InitPage()
+	{
+		path = app.GetCurrentWindowData()
+		pageTitle.innerText = app.DataGet(path + "@caption", 0) + " " + app.Translate("Configuration")
+		
+		var deviceid = app.SelectNodesXML(path + ".")[0].nodeName
+
+		//immagine
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@image")
+		if (nodelist && nodelist.length != 0)
+			
+			deviceImage.src = nodelist[0].text
+		else
+			deviceImage.style.display = "none"
+
+		//descrizione
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/longDescription")
+		if (nodelist && nodelist.length != 0)
+			deviceDescription.innerText = nodelist[0].text
+		else
+			deviceDescription.style.display = "none"
+			
+		//help	
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@helpContext")
+		if (nodelist && nodelist.length != 0)
+		{
+			m_helpContext = nodelist[0].text
+			imgPDF.src = csspath + '../img/pdf_icon.png'
+		}
+		else
+			divHelp.style.display = "none"
+			
+		SearchError(path)
+
+		initLicenseSettings();
+	}
+</script>
+
+<style>
+	.input {
+		display: inline-block;
+		width: 220px !important;
+	}
+</style>
+</head>
+
+<body class="fill-height-container">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	
+	<div class="TitlePag">
+		<span id="pageTitle" class="html5" colspan="4"></span>
+	</div>
+
+	<div class="row j-center bootstrap fill-height">
+		<div class="column col-padding">
+			<div class="panel">
+				<!-- manuale pdf -->
+				<div id="divHelp">
+					<img id="imgPDF" onclick="app.OpenHelp(m_helpContext)"><label style="margin-left: 10px" for="imgPDF"><t:t>User manual</t:t></label>
+				</div>
+				<!-- immagine -->
+				<div>
+					<img id="deviceImage" class="img-responsive"/>
+				</div>
+			</div>
+
+			<!-- descrizione -->
+			<div class="panel" style="margin-top: 25px;">
+				<div>
+					<h3><t:t>Device info</t:t></h3>
+					<div id="deviceDescription"></div>
+					<!--<img width="40px" src="..\img\target.jpg" alt="terget" />-->
+				</div>
+			</div>
+		</div>
+
+		<div id="licenseDiv" class="column col-padding">
+			<div id="registrationPanel" class="panel">
+				<h3>
+					<t:t>License</t:t>
+					<button onclick="readProductsListAndStatus(true)" id="refreshBtn" class="btn btn-default"><t:t>Refresh</t:t></button>
+				</h3>
+
+				<span id="msgConnectLL"><t:t>Please connect LogicLab</t:t></span>
+
+				<div class="mt-m">
+					<h4 data-hide-if-active-or-not-read="true"><t:t>Status</t:t></h4>
+					<table id="prodTbl" class="lic-tbl">
+					</table>
+				</div>
+
+				<hr class="mt-s" data-hide-if-active-or-not-read="true">
+
+				<div id="actModeFld" data-hide-if-active-or-not-read="true">
+					<h4><t:t>Activation mode</t:t></h4>
+
+					<div>
+						<label class="lbl" for="autoMode"><t:t>Online</t:t></label>
+						<label class="switch">
+							<input type="checkbox" id="autoMode" onclick="changeLicensingMode(this.checked)" checked>
+							<span class="slider round"></span>
+						</label>
+					</div>
+				</div>
+
+				<hr class="mt-s" data-hide-if-active-or-not-read="true">
+
+				<!-- auto -->
+				<div id="autoModeFld" class="mt-m" data-hide-if-active-or-not-read="true">
+					<h4><t:t>Automatic activation (online)</t:t></h4>
+
+					<div>
+						<label class="lbl" for="productKeyTxt"><t:t>Product Key</t:t>:</label>
+						<input class="input form-control" type="text" id="productKeyTxt" placeholder="ABCDE-12345-FGHIL-67890">
+					</div>
+
+					<div class="mt-m" align="center">
+						<button class="btn btn-default" onclick="activateAutomaticLicense()"><t:t>Activate</t:t></button>
+					</div>
+				</div>
+
+				<!-- manual -->
+				<div id="manualModeFld" class="mt-m" data-hide-if-active-or-not-read="true">
+					<h4><t:t>Manual activation (offline)</t:t></h4>
+
+					<p>
+						<t:t>To activate products manually you have to export an activation file and attach it to an email to send to</t:t> <a href="mailto:support@axelsw.it">support@axelsw.it</a>.
+					</p>
+					<p>
+						<t:t>Axel S.r.l will verify your license and send back an activation file; drag it into the apposit area or select it trough the apposite button</t:t>.
+					</p>
+
+					<div class="mt-m">
+						<label class="lbl"><t:t>Product Key</t:t>:</label>
+						<input class="input form-control" id="productKeyManTxt" placeholder="ABCDE-12345-FGHIL-67890"></input>
+					</div>
+
+					<div class="mt-m" align="center">
+						<button class="btn btn-default" title="Export activation file" onclick="exportActivatonLicense()">
+							<t:t>Export activation file</t:t>
+						</button>
+					</div>
+
+					<hr class="mt-m">
+
+					<div class="drop-file-zone" id="drop_file_zone" ondrop="uploadLicense(event)" ondragover="return false">
+						<div class="drag-upload-file" id="drag_upload_file">
+							<p style="margin-top: 20px;"><t:t>Drag your activation file here</t:t></p>
+							<p><t:t>or</t:t></p>
+							<p><input type="button" value="Select file" onclick="selectFile();" class="btn btn-default"></p>
+							<input type="file" id="selectfile" accept=".json" onchange="uploadLicenseBtn()">
+						</div>
+					</div>
+				</div>
+
+				<hr class="mt-m" data-hide-if-active-or-not-read="true">
+
+				<div style="text-align: center; cursor: pointer;" data-hide-if-active-or-not-read="true">
+					<a href="#" onclick="showForgotProductKeySection(true)"><t:t>Forgot your product key?</t:t></a>
+				</div>
+
+				<div class="mt-s" id="forgotPkeyDiv" align="center" style="display: none;">
+					<p>
+						<t:t>If you already had registered your product, this procedure will try to recover your previous license from Axel S.r.l. and restore it.</t:t>
+					</p>
+
+					<p>
+						<button onclick="tryForgottenActivation()" class="btn btn-default"><t:t>Try online activation</t:t></button>
+						<button onclick="exportForgottenPKey()" class="btn btn-default"><t:t>Export offline activation file</t:t></button>
+					</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+		InitPage()
+	</script>
+</body>
+
+</html>

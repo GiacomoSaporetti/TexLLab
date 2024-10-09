@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!--<meta http-equiv="refresh" content="10">-->
+	<title>Machine Configuration</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	var app = window.external
+	var extName = app.CallFunction("logiclab.get_TargetID");
+	var m_fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject")
+	var shell = app.CallFunction("common.CreateObject", "WScript.Shell");
+
+	const MACHINE_CFG_REMOTE_PATH = "E:";
+	const MACHINE_CFG_FILE_NAME = "PARAMS.XPT";
+	const EDITOR_FILE_NAME = "EDITOR.MSG";
+
+	const FTP_USER = "Tex_Flash_User";
+	const FTP_PASS = "48018";
+
+	var FileMode =
+	{
+		ForReading   : 1,
+		ForWriting   : 2, 
+		ForAppending : 8
+	};
+
+	function InitPage()
+	{
+		var path = app.GetCurrentWindowData()
+		SearchError(path)
+	}
+	
+
+
+	//			Load and store EDITOR.MSG @Giacomo Saporetti
+	
+	function LoadEditor()
+	{
+		let isConnected = (app.CallFunction("logiclab.get_Connected") && !app.CallFunction("logiclab.get_ConnectedInError"));
+		if (!isConnected) {
+			app.MessageBox(app.Translate("Please connect to the target"), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return;
+		}
+
+		let random = Math.random().toString(36).substring(2, 6);
+		let fileName = shell.ExpandEnvironmentStrings("%TEMP%") + "\\" + random + "_" + EDITOR_FILE_NAME;
+		let result = FTPDownloadFromTarget(EDITOR_FILE_NAME, fileName);
+		if (result !== 0)
+		{
+			app.MessageBox(app.Translate("Error downloading configuration from target"), "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}
+
+		var msg = genfuncs.FormatMsg(app.Translate("Can not open file '%1'"), fileName);
+		try
+		{
+			f = m_fso.OpenTextFile(fileName, FileMode.ForReading);
+			if(f == null)
+			{
+				app.MessageBox(msg, "", gentypes.MSGBOX.MB_ICONERROR);
+				return;
+			}
+		}
+		catch(exc)
+		{
+			app.MessageBox(msg, "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}
+		
+		var str = f.ReadAll();
+		f.Close();
+		app.CallFunction(extName + ".LoadMessages", str);
+
+		app.MessageBox(app.Translate("Configuration downloaded from target"), "", gentypes.MSGBOX.MB_ICONINFORMATION);
+
+		/*setTimeout(function() {
+			try {
+				m_fso.DeleteFile(fileName);
+			} catch (error) {}
+		}, 1000)*/
+	}
+
+	function DownloadEditor() {
+		let isConnected = (app.CallFunction("logiclab.get_Connected") && !app.CallFunction("logiclab.get_ConnectedInError"));
+		if (!isConnected) {
+			app.MessageBox(app.Translate("Please connect to the target"), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return;
+		}
+
+		let fileName = shell.ExpandEnvironmentStrings("%TEMP%") + "\\" + EDITOR_FILE_NAME;
+		/*let result = app.CallFunction(extName + ".SaveMessages", fileName);
+		if (!result)
+		{
+			app.MessageBox(app.Translate("Error generating configuration file"), "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}*/
+		app.MessageBox(fileName);
+		result = FTPUploadToTarget(EDITOR_FILE_NAME, fileName);
+		if (result !== 0)
+		{
+			app.MessageBox(app.Translate("Error uploading configuration to target"), "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}
+
+		app.MessageBox(app.Translate("Configuration uploaded to target"), "", gentypes.MSGBOX.MB_ICONINFORMATION);
+
+		/*setTimeout(function() {
+			try {
+				m_fso.DeleteFile(fileName);
+			} catch (error) {}
+		}, 1000)*/
+	}
+	//			END Load and Store EDITOR.MSG @Giacomo Saporetti		
+	
+	
+	function GetTargetIP() {
+		let commString = app.CallFunction("logiclab.get_CommString");
+		let commStrObj = app.CallFunction("common.SplitCommString", commString);
+		return commStrObj.address;
+	}
+
+	function FTPUploadToTarget(fileToSend, filePath) {
+		const ftpServer = GetTargetIP();
+		return FTPPut(ftpServer, FTP_USER, FTP_PASS, fileToSend, filePath);
+	}
+
+	function FTPDownloadFromTarget(fileToGet, filePath) {
+		const ftpServer = GetTargetIP();
+		return FTPGet(ftpServer, FTP_USER, FTP_PASS, MACHINE_CFG_REMOTE_PATH, fileToGet, filePath);
+	}
+</script>
+
+<style>
+	fieldset {
+		width: 500px;
+	}
+
+	label {
+		width: 50px;
+		display: inline-block;
+	}
+
+	input {
+		width: 280px;
+	}
+</style>
+</head>
+
+<body class="html5">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Message Configuration</t:t></span>
+	</div>
+	
+	<div class="Sfondo">
+	
+		<fieldset>
+			<legend><t:t>Message Editor</t:t></legend>
+	
+			<button class="ll-button" onclick="LoadEditor()"><t:t>Load Editor</t:t></button>
+			<button class="ll-button" onclick="DownloadEditor()"><t:t>Save Editor</t:t></button>
+		</fieldset>
+	</div>
+
+	<script>
+		InitPage()
+	</script>
+</body>
+</html>

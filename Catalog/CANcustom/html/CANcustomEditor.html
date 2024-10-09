@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Main page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png';
+		imgNew.src = csspath + imgPathPrefix + 'new.png';
+		imgOpen.src = csspath + imgPathPrefix + 'open.png';
+		imgSave.src = csspath + imgPathPrefix + 'save.png';
+		imgClose.src = csspath + imgPathPrefix + 'close.png';
+	}
+	
+	var m_oldName
+	var m_oldVersion
+	
+	function OnEditName()
+	{
+		if (txtName.value == m_oldName && txtVersion.value == m_oldVersion)
+			return
+		
+		// rigenera deviceid (il prefisso "CANcustom_" è obbligatorio
+		var deviceid = app.CallFunction("common.NormalizeName", txtName.value + "_" + txtVersion.value)
+		txtDeviceID.value = deviceid
+
+		// reset filename, il prossimo save sarà saveas
+		ResetFileName()
+
+		m_oldName = txtName.value
+		m_oldVersion = txtVersion.value
+	}
+	
+	// funzioni invocate dal CANcustomEditor_win.js per set/get valori dei campi
+	function GetField(id)
+	{
+		var elem = document.getElementById(id)
+		if (elem)
+		{
+			if (elem.type == "checkbox")
+				return elem.checked
+			else
+				return elem.value
+		}
+	}
+	function SetField(id, value)
+	{
+		var elem = document.getElementById(id)
+		if (elem)
+		{
+			if (elem.type == "checkbox")
+				elem.checked = value
+			else
+				elem.value = value
+		}
+	}
+	
+	// gestione comandi
+	function DoClose()
+	{
+		if (!PromptForSaving(true))
+			// annulla chiusura se errore salvataggio
+			return
+
+		CloseDlg();
+	}
+	function OnLoadPage()
+	{
+		var filename = app.TempVar("CANcustomEditor_filename")
+		if (filename)
+		{
+			if (!Open(filename))
+				New()
+		}
+		else
+			New()
+			
+		InitGrid()
+	}
+	function OnUnloadPage()
+	{
+		PromptForSaving(false)
+		// non si può annullare la chiusura...
+	}
+	</script>
+
+	<script type="text/javascript" src="CANcustomEditor.js"></script>
+	<script type="text/javascript" src="CANcustomEditor_grid.js"></script>
+	
+	<style>
+	label {
+		font-weight: bold;
+		display: inline-block;
+	}
+
+	fieldset {
+		width: 550px;
+	}
+	</style>
+</head>
+
+<body onload="OnLoadPage()" onunload="OnUnloadPage()" scroll="no" class="html5">
+
+<input type="hidden" id="txtDeviceID">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>CANopen Custom Editor</t:t></span>
+	</div>
+
+	<div class="tableHeader" style="display: flex; justify-content: space-between;">
+		<div>
+			<button onClick="New()" class="ll-button">
+				<img id="imgNew" alt="New CANopen Custom Device">
+				<span class="label"><t:t>New</t:t></span>
+			</button>
+
+			<button onClick="DoOpen()" class="ll-button" style="margin-left:20px">
+				<img id="imgOpen" alt="Open CANopen Custom Device">
+				<span class="label"><t:t>Open</t:t></span>
+			</button>
+
+			<button onClick="DoSave()" class="ll-button" style="margin-left:20px">
+				<img id="imgSave" alt="Save CANopen Custom Device">
+				<span class="label"><t:t>Save</t:t></span>
+			</button>
+			<span id="spnModif"></span>
+		</div>
+		<div>
+			<button onClick="DoClose()" class="ll-button">
+				<img id="imgClose" alt="Close CANopen Custom Device">
+				<span class="label"><t:t>Close</t:t></span>
+			</button>
+		</div>
+	</div>
+
+	<div class="menu">
+		<div id="tab1" onclick="ChangeTab(1)" class="menu_on"><a href="#"><t:t>General</t:t></a></div>
+		<div id="tab2" onclick="ChangeTab(2)" class="menu_off"><a href="#"><t:t>Dictionary</t:t></a></div>
+	</div>
+
+	<div id="page1" class="fill-height-container">
+		<div style="vertical-align: top; padding: 20px;">
+			<fieldset>
+				<legend><t:t>Device Version</t:t></legend>
+				<label style="width:100px" for="txtName"><t:t>Name</t:t>:</label>
+				<input type="text" id="txtName" size="30" onkeyup="OnEditName()" onchange="SetModifiedFlag()">
+				<br>
+				<label style="width:100px" for="txtVersion"><t:t>Version</t:t>:</label>
+				<input type="text" id="txtVersion" size="5" onkeyup="OnEditName()" onchange="SetModifiedFlag()">
+				<br>
+				<label style="width:100px" for="txtComment"><t:t>Description</t:t>:</label>
+				<input type="text" id="txtComment" size="70" onchange="SetModifiedFlag()">
+			</fieldset>
+
+			<fieldset>
+				<legend><t:t>Device Info</t:t></legend>
+				<label style="width:140px" for="txtNumPDOTx"><t:t>Num PDO Tx</t:t>:</label>
+				<input type="text" id="txtNumPDOTx" size="5" onchange="SetModifiedFlag()">
+				<br>
+				<label style="width:140px" for="txtNumPDORx"><t:t>Num PDO Rx</t:t>:</label>
+				<input type="text" id="txtNumPDORx" size="5" onchange="SetModifiedFlag()">
+				<br>
+				<label style="width:140px" for="chkDynamicPDOMapping"><t:t>Variable PDO mapping</t:t>:</label>
+				<input type="checkbox" id="chkDynamicPDOMapping" style="margin-left:-4px" onclick="SetModifiedFlag()">
+				<br>
+				<label style="width:140px" for="txtGranularity"><t:t>Granularity</t:t>:</label>
+				<input type="text" id="txtGranularity" size="5" onchange="SetModifiedFlag()">
+			</fieldset>
+		</div>
+	</div>
+
+	<div id="page2" style="display: none;" class="fill-height-container">
+		<div class="tableHeader" style="display: flex; justify-content: space-between;">
+			<div>
+				<button class="ll-button" onClick="AddRow()">
+					<img id="imgPlus" alt="Add">
+					<span class="label"><t:t>Add</t:t></span>
+				</button>
+
+				<button class="ll-button" onClick="DeleteRow()">
+					<img id="imgMinus" alt="Delete">
+					<span class="label"><t:t>Remove</t:t></span>
+				</button>
+			</div>
+			<div>
+				<label class="TitlesMinor_table" for="chkHexMode"><t:t>Show def value in Hex</t:t></label>
+				<input type="checkbox" id="chkHexMode" checked="true" onClick="grid.update(-1,-1)">
+			</div>
+		</div>
+		<div class="fill-height">
+			<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0" style="margin: 0px">
+				<param name="margin" value="50">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="CANcustomEditor_grid_events.js"></script> 
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

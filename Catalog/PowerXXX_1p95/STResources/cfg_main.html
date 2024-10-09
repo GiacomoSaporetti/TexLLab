@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Device Configuration</title>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var app = window.external
+	
+	var m_device = app.CallFunction("configurator.GetCurrentDevice")
+	var cfgtypes = app.CallFunction("configurator.GetGeneralTypes")
+	// salva il percorso corrente dell'albero, in modo da settare la caption corretta se si cambia pagina cliccando sull'albero
+	var m_treePath = app.HMIGetCurElementPath("tree1")
+	/*var WatchdogValueOld2
+	var WatchdogValueOld1
+	var WatchdogValue*/
+	
+	function InitPage()
+	{
+		var path = app.GetCurrentWindowData()
+		pageTitle.innerText = app.DataGet(path + "@name", 0) + " Configuration"
+		
+		// ottiene deviceid (nome del nodo)
+		var deviceid = app.SelectNodesXML(path + ".")[0].nodeName
+		// ottiene l'indirizzo dell'immagine dal catalog
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']")
+		if (nodelist && nodelist.length != 0)
+		{
+			deviceImage.src = nodelist[0].getAttribute("image")
+			version.value = nodelist[0].getAttribute("version")
+		}
+	}
+	
+	function butConfig_onclick()
+	{
+		var newstring = m_device.ConfigComm(commstring.value)
+		if (newstring && newstring != commstring.value)
+		{
+			commstring.value = newstring
+			app.DataSet(datapath.value + "config/commstring", 0, newstring)
+			
+			UpdateCommString()
+			
+			if (app.CallFunction("configurator.IsConnected"))
+			{
+				// se era connesso riconnette per prendere le modifiche
+				app.CallFunction("configurator.Disconnect")
+				app.CallFunction("configurator.Connect")
+			}
+		}
+	}
+	function UpdateTreeCaption()
+	{
+		// aggiorna la nuova caption sull'albero sull'elemento attivo
+		app.HMISetCaption("tree1", m_treePath, caption.value)
+	}
+	
+	function onload()
+	{
+		app.CallFunction("configurator.OnOpenHTML", true)
+		
+		UpdateCommString(true)
+		
+		UpdatePage()
+		setInterval("UpdatePage()", 500)
+		
+		// disabilita la configurazione della comunicazione se la comunicazione è disabilitata o la commstring è forzata (es. simulazione)
+		UpdateCommEnablingStatus(m_device.IsDisabled() || m_device.forcedCommString)
+	}
+	
+	function onunload()
+	{
+		app.CallFunction("configurator.OnCloseHTML")
+	}
+	
+	function UpdateCommString(isonload)
+	{
+		if (commstring.value)
+		{
+			var s = app.CallFunction("common.SplitCommString", commstring.value)
+			if (!s) return
+			protocol.innerText = s.protocol
+			address.innerText = s.address
+			port.innerText = s.portType + ":" + s.portNum
+			//baud.innerText = s.baud ? s.baud : ""
+			
+			if (!isonload)
+				// aggiornamento ultima porta COM usata in file INI
+				app.WriteINIString("Communication", "Port_" + s.portType, s.portNum)
+		}
+	}
+	
+	// abilita/disabilita i vari controlli in base allo stato di abilitazione della comunicazione
+	function UpdateCommEnablingStatus(isDisabled)
+	{
+		butConfig.disabled = isDisabled
+		protocol.disabled = isDisabled
+		address.disabled = isDisabled
+		port.disabled = isDisabled
+		//baud.disabled = isDisabled
+	}
+	
+	var m_advanced = false
+	
+	function butAdvanced_onclick()
+	{
+		m_advanced = !m_advanced
+		
+		butAdvanced.innerText = app.Translate("Advanced")   //translate
+		butAdvanced.innerText += (m_advanced ? " <<<" : " >>>")
+		advanced.style.display = m_advanced ? "" : "none"
+	}
+	
+	function OnDisableComm()
+	{
+		// forza lo stato di disabilitazione come parametro visto che non è ancora stato scritto nell'xml
+		m_device.SetDisabled(chkDisabled.checked)
+		UpdateCommEnablingStatus(chkDisabled.checked)
+		
+		// se era connesso riconnette per prendere le modifiche
+		if (app.CallFunction("configurator.IsConnected"))
+		{
+			app.CallFunction("configurator.Disconnect")
+			// ciclo di attesa e svuotamento eventi, per cercare di evitare blocchi dovuti a concorrenza di thread che si stanno fermando
+			for (var i = 0; i < 10; i++)
+			{
+				app.CallFunction("dllext.sleep", 10)
+				app.CallFunction("dllext.DoEvents")
+			}
+			app.CallFunction("configurator.Connect")
+		}
+	}
+	
+	var m_strConn     = app.Translate("Connected")
+	var m_strDisconn  = app.Translate("Offline")
+	var m_strErr      = app.Translate("Comm Error")
+	
+	function UpdatePage()
+	{
+	
+		switch (m_device.connState)
+		{
+		case cfgtypes.CONNSTATE.connDisconnected:
+			connstate.innerText = m_strDisconn
+			connstate.className = "box"
+			break
+			
+		case cfgtypes.CONNSTATE.connNoCommString:
+		case cfgtypes.CONNSTATE.connInvalidCommString:
+		case cfgtypes.CONNSTATE.connPollingError:
+			connstate.innerText = m_strErr
+			connstate.className = "boxErr"
+			break
+			
+		case cfgtypes.CONNSTATE.connConnected:
+			connstate.innerText = m_strConn
+			connstate.className = "boxConn"
+			break
+		}
+	}
+	
+
+</script>
+
+<style>
+.box, .boxConn, .boxErr {
+	font: bold 14px arial;
+	border: 2px inset white;
+	width: 100px;
+	background-color: #cccccc;
+	text-align:center;
+}
+.boxConn {
+	background-color: green;
+	color: white;
+}
+.boxErr {
+	background-color: red;
+	color: white;
+}
+
+button#butConfig {
+	width:170px; 
+	height:35px; 
+	margin-left: 20px;
+}
+button#butAdvanced {
+	margin: 36px 20px 0px 20px;
+	width: 100px;
+}
+img#deviceImage {
+	margin: 10px 50px 0px 50px; 
+	float:left
+}
+#chkDisabled {
+	margin-left: 20px;
+}
+</style>
+</head>
+
+<body onload="onload()" onunload="onunload()">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle">Device Configuration</td>
+	</tr>
+	<tr>
+		<td class="Sfondo">
+			<fieldset>
+				<legend><t:t>General</t:t></legend>
+				<table>
+					<tr>
+						<td width="80px"><label for="caption"><t:t>Name</t:t>:</label></td>
+						<td><input id="caption" type="text" name=".D(@caption)" size="40" onblur="UpdateTreeCaption()"></td>
+					</tr>
+					<tr>
+						<td width="80px"><label for="version"><t:t>File version</t:t>:</label></td>
+						<td><input id="version" type="text" class="box" readonly="readonly"></td>
+					</tr>
+				</table>
+			</fieldset>
+			
+			<fieldset>
+				<legend><t:t>Communication</t:t></legend>
+				<table style="float:left">
+					<tr>
+						<td width="80px"><label><t:t>Protocol</t:t>:</label></td>
+						<td><div class="box" id="protocol"></div></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Address</t:t>:</label></td>
+						<td><div class="box" id="address"></div></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Port</t:t>:</label></td>
+						<td><div class="box" id="port"></div></td>
+					</tr>
+					<!--<tr>
+						<td><label><t:t>Baud rate</t:t>:</label></td>
+						<td><div class="box" id="baud"></div></td>
+					</tr>-->
+				</table>
+				<button class="bottone" id="butConfig" onclick="butConfig_onclick()"><t:t>Configure</t:t></button>
+				<br>
+				<button id="butAdvanced" class="bottone" onclick="butAdvanced_onclick()"><t:t>Advanced</t:t> >>></button>
+				<span id="advanced" style="display:none">
+					<input type="text" id="commstring" name=".D(config[1]/commstring[1])" size="40" onchange="UpdateCommString()">
+				</span>
+				
+				<input id="chkDisabled" type="checkbox" name=".D(config[1]/commDisabled[1])" onclick="OnDisableComm()">
+				<label for="chkDisabled"><t:t>Disable communication</t:t></label>
+			</fieldset>
+			
+			<img id="deviceImage" src="">
+			<fieldset>
+				<legend><t:t>Information</t:t></legend>
+				<table>
+					<tr>
+						<td><label><t:t>Status</t:t>:</label></td>
+						<td><div class="box" id="connstate" style="width:110px"></div></td>
+					</tr>
+				</table>
+			</fieldset>
+		</td>
+	</tr>
+</table>
+
+<input type="text" id="StatusWord" style="display:none">
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

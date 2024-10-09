@@ -1,0 +1,163 @@
+<template>
+	<hmi>
+		<menu name="menu_AddWebMenu">
+			<command caption="Add Table Page" handler="WebServer.AddWebMenu" />
+			<command caption="Import Custom Page" handler="WebServer.AddWebCustomPage" />
+			<command caption="Add Template Page" handler="WebServer.AddWebTemplatePage" />
+			<separator/>
+			<command caption="Build Web site" handler="WebServer.BuildWebSiteEmbedded" statusmsg="Build HTML Web site" />
+			<command caption="Web site preview" handler="WebServer.OpenWebSitePreview" statusmsg="Show Web site preview" />
+			<command caption="Download Web site" handler="WebServer.DownloadWebSite" statusmsg="Download Web site on target" updatehandler="WebServer.OnUpdateGetConnected" />
+		</menu>
+		<menu name="menu_DeleteWebMenu">
+			<command caption="Rename" handler="common.RenameNode" />
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+			<separator/>
+			<command caption="Add Table Page" handler="WebServer.AddWebMenu" />
+			<command caption="Import Custom Page" handler="WebServer.AddWebCustomPage" />
+			<command caption="Add Template Page" handler="WebServer.AddWebTemplatePage" />
+			<separator/>
+			<command caption="Delete Page" handler="WebServer.DeleteWebPage" />
+		</menu>
+
+		<window type="html" link="html\webmenu.html">webMenuWin</window>
+		<window type="html" link="html\webcustompage.html">webCustompageWin</window>
+		<window type="html" link="html\webtemplatepage.html">webTemplatePageWin</window>
+
+		<form type="html" link="html\ImagesWizard.html" xsize="550" ysize="450" modal="true">ImagesWizard</form>
+		<form type="html" link="html\EnumsWizard.html" xsize="550" ysize="450" modal="true">webEnumsWizard</form>
+
+		<tree name="tree1">
+			<node name="webMenu" caption="New Menu" icon="img\webpage.ico" window="webMenuWin" menu="menu_DeleteWebMenu" captionedit="true" datalink="webmenu" onendcaptionedit="WebServer.OnEndMenuEdit" ondrop="WebServer.OnDropWebMenu"/>
+			<node name="webCustompage" caption="New Custom Page" icon="img\webpagecustom.ico" window="webCustompageWin" menu="menu_DeleteWebMenu" captionedit="true" datalink="webcustompage" onendcaptionedit="WebServer.OnEndMenuEdit"/>
+			<node name="webTemplatePage" caption="New Template Page" icon="img\webtemplatepage.ico" window="webTemplatePageWin" menu="menu_DeleteWebMenu" captionedit="true" datalink="webtemplatepage" onendcaptionedit="WebServer.OnEndMenuEdit"/>
+		</tree>
+	</hmi>
+
+	<extensions>
+		<script alias="WebServer">WebServerEmbedded.js</script>
+	</extensions>
+
+	<templatedata>
+		<webmenu caption="New Menu" title="" filename="" sitetemplate="" refresh="1000" enabled="1">
+			<webmenuItems/>
+		</webmenu>
+
+		<webmenuItem>
+			<name/>
+			<ctrlType>0</ctrlType>
+			<label/>
+			<size>10</size>
+			<section/>
+			<enumValues/>
+			<imgWidth>0</imgWidth>
+			<imgHeight>0</imgHeight>
+			<format/>
+			<readOnly>0</readOnly>
+		</webmenuItem>
+
+		<webcustompage caption="New Custom page" filename="" link="" enabled="1"/>
+		
+		<webmenus/>
+	</templatedata>
+
+	<datadef version="2.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+			<xs:complexType name="TwebmenuItem">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string"/>
+					<xs:element name="ctrlType" type="xs:integer"/>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="size" type="xs:integer"/>
+					<xs:element name="section" type="xs:string"/>
+					<xs:element name="enumValues" type="xs:string"/>
+					<xs:element name="imgWidth" type="xs:integer"/>
+					<xs:element name="imgHeight" type="xs:integer"/>
+					<xs:element name="format" type="xs:string"/>
+					<xs:element name="readOnly" type="xs:boolean"/>
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:string"/>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+
+			<xs:complexType name="Twebcustompage">
+				<xs:sequence>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="webcustompage" type="Twebcustompage"/>
+						<xs:element name="webmenu" type="Twebmenu"/>
+						<xs:element name="webtemplatepage" type="Twebtemplatepage"/>
+					</xs:choice> 
+				</xs:sequence>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="link" type="xs:string"/>
+				<xs:attribute name="filename" type="xs:string"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="enabled" type="xs:boolean"/>
+			</xs:complexType>
+
+			<xs:complexType name="Twebtemplatepage">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="webtemplateItems">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="webtemplateItem" type="TwebmenuItem"/>
+								</xs:sequence>
+								<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="webmenu" type="Twebmenu"/>
+						<xs:element name="webcustompage" type="Twebcustompage"/>
+						<xs:element name="webtemplatepage" type="Twebtemplatepage"/>
+					</xs:choice> 
+				</xs:sequence>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="filename" type="xs:string"/>
+				<xs:attribute name="sitetemplate" type="xs:string"/>
+				<xs:attribute name="refresh" type="xs:integer"/>
+				<xs:attribute name="title" type="xs:string"/>
+				<xs:attribute name="pagetemplate" type="xs:string"/>
+				<xs:attribute name="enabled" type="xs:boolean"/>
+			</xs:complexType>
+		
+			<xs:complexType name="Twebmenu">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="webmenuItems">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="webmenuItem" type="TwebmenuItem"/>
+								</xs:sequence>
+								<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="webmenu" type="Twebmenu"/>
+						<xs:element name="webcustompage" type="Twebcustompage"/>
+						<xs:element name="webtemplatepage" type="Twebtemplatepage"/>
+					</xs:choice> 
+				</xs:sequence>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="filename" type="xs:string"/>
+				<xs:attribute name="sitetemplate" type="xs:string"/>
+				<xs:attribute name="refresh" type="xs:integer"/>
+				<xs:attribute name="title" type="xs:string"/>
+				<xs:attribute name="enabled" type="xs:boolean"/>
+			</xs:complexType>
+
+			<xs:complexType name="Twebmenus">
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="webmenu" type="Twebmenu"/>
+					<xs:element name="webcustompage" type="Twebcustompage"/>
+					<xs:element name="webtemplatepage" type="Twebtemplatepage"/>
+				</xs:choice>
+				<!-- permette l'aggancio del nodo al proprio template di riferimento e abilita gli aggiornamenti -->
+				<xs:attribute name="ExtensionName" type="xs:string" fixed="WebServer"/>
+				<xs:attribute name="template" type="xs:string"/>
+				<xs:attribute name="version" type="xs:decimal"/>
+			</xs:complexType>	
+		</xs:schema>
+	</datadef>
+</template>

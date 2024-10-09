@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<devicetemplate>
+	<deviceinfo caption="Modbus FC-16" name="Modbus FC-16" version="1.0" icon="img\FC.ico" deviceid="FC16">
+		<description>Write Multiple Register - Function 16 (0x10)</description>
+		<protocols>
+			<protocol>modbus_message</protocol>
+		</protocols>
+	</deviceinfo>
+
+	<plcconfig>
+
+		<hmi>
+			<window type="html" link="html/FC16.html" helpContext="ModbusMessagePage">win_FC16</window>
+
+            <tree name="tree1">
+                <node name="FC16" caption="" icon="img\FC.ico" window="win_FC16" datalink="FC16" menu="menuRemove" captionedit="yes"/>
+            </tree>
+
+		</hmi>
+
+        <templatedata>
+            <FC16>
+                <FC_config>
+                    <block>output</block>
+                    <funcode>16</funcode>
+                    <type>word</type>
+                    <startAddress>0</startAddress>
+                    <pollTime>0</pollTime>
+                    <tmo>1000</tmo>
+                    <FC_images_out> 
+                        <FC_image> 
+                            <label/> 
+                            <type/> 
+                            <description/> 
+                            <dataBlock/>
+                            <ioObject name="Register" subindex="0" objtype="WORD" inout="out"/>
+                        </FC_image> 
+                    </FC_images_out>
+					<turnAround>0</turnAround>
+                    <oneshot/>					
+                </FC_config>
+            </FC16>
+		</templatedata>
+
+		<datadef version="3.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:element name="FC16">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+                                    <xs:element name="FC_config">
+										<xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="block" type="xs:string"/>
+                                                <xs:element name="funcode" type="xs:integer"/>
+                                                <xs:element name="type" type="xs:string"/>
+                                                <xs:element name="startAddress" type="xs:integer"/>
+                                                <xs:element name="pollTime" type="xs:integer"/>
+                                                <xs:element name="tmo" type="xs:integer"/>
+                                                <xs:element name="FC_images_out">
+                                                    <xs:complexType>
+            											<xs:sequence>
+            												<xs:element name="FC_image" type="FC_image" maxOccurs="123"/>
+            											</xs:sequence>
+														<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="turnAround" type="xs:integer"/>
+                                                <xs:element name="oneshot" type="xs:string"/>												
+                                            </xs:sequence>
+										</xs:complexType>
+									</xs:element>
+                                </xs:sequence>
+								<xs:attribute name="window" type="xs:string" fixed="win_FC16"/>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="ModbusFC"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="ModbusCustom.UnassignAllPLCVarsFromDevice"/>
+								<xs:attribute name="onpastenode"  type="xs:string" fixed="ModbusCustom.ClearAllPLCVarsFromDevice"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+           </xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

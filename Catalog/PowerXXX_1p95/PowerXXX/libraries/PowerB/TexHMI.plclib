@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="TexHMI" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexHMI">
+				<Pou name="TexHMI_openPMT"/>
+				<Pou name="TexHMI_closePMT"/>
+				<Pou name="TexHMI_infoPMT"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="TexHMI_openPMT" version="1.0.0" creationDate="1713971982" lastModifiedDate="1714989269">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute OPEN PMT operation</descr>
+						</var>
+						<var name="pageNumber" type="WORD">
+							<descr>PMT page number</descr>
+						</var>
+						<var name="suspend" type="BOOL">
+							<descr>open PMT as suspended</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexHMI_openPMT
+
+VAR_INPUT
+	execute 					: BOOL;			(* execute OPEN PMT operation *)
+	pageNumber 					: WORD;			(* PMT page number *)
+	suspend						: BOOL;			(* open PMT as suspended *)
+END_VAR
+
+VAR_OUTPUT
+	done 						: BOOL;			(* operation was executed *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexHMI_closePMT" version="1.0.0" creationDate="1713971996" lastModifiedDate="1714989319">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute CLOSE PMT operation</descr>
+						</var>
+						<var name="pageNumber" type="WORD">
+							<descr>PMT page number</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexHMI_closePMT
+
+VAR_INPUT
+	execute 					: BOOL;			(* execute CLOSE PMT operation *)
+	pageNumber 					: WORD;			(* PMT page number *)
+END_VAR
+
+VAR_OUTPUT
+	done 						: BOOL;			(* operation was executed *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TexHMI_infoPMT" version="1.0.0" creationDate="1713972186" lastModifiedDate="1714990413">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute INFO PMT operation</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="pageOpenAsActive" type="WORD">
+							<descr>s224 (word) - page actually open</descr>
+						</var>
+						<var name="pageOpenNotActive" type="WORD">
+							<descr>info 0088 - number of pages actually open and not active</descr>
+						</var>
+						<var name="pageMostRecentlyNonActive" type="WORD">
+							<descr>info 0089 - parametric page most recently made not active</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TexHMI_infoPMT
+
+VAR_INPUT
+	execute 					: BOOL;			(* execute INFO PMT operation *)
+END_VAR
+
+VAR_OUTPUT
+	done 						: BOOL;			(* operation was executed *)
+	pageOpenAsActive			: WORD;			(* s224 (word) - page actually open *)
+	pageOpenNotActive			: WORD;			(* info 0088 - number of pages actually open and not active *)
+	pageMostRecentlyNonActive	: WORD;			(* info 0089 - parametric page most recently made not active *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

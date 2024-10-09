@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<form type="html" link="html\importEDS.html" xsize="500" ysize="530" modal="true" helpContext="ImportEDSPage">importEDS</form> 
+		<form type="html" link="html\varsList_CAN.html" xsize="420" ysize="350" modal="true">varsList_CAN</form>
+		
+		<window type="html" link="html\custom1.html" helpContext="CANcustomPage">CANcustom1</window>
+		<window type="html" link="html\custom2.html" helpContext="CANcustomPage">CANcustom2</window>
+		<window type="html" link="html\custom4.html" helpContext="CANcustomPage">CANcustom4</window>
+		<window type="html" link="html\custom5.html" helpContext="CANcustomPage">CANcustom5</window>
+		<window type="html" link="html\custom6.html" helpContext="CANcustomPage">CANcustom6</window>
+		
+		<form type="html" link="html\CANcustomEditor.html" resizable="true" modal="true" xsize="800" ysize="600" helpContext="CANcustomEditor">CANcustomEditor</form>
+	</hmi>
+	
+	<templatedata>
+		<!-- ___________________   CAN CUSTOM   ___________________ -->
+		<SDOset>
+			<label/>
+			<index>0</index>
+			<subindex>0</subindex>
+			<type></type>
+			<value/>
+			<timeout>100</timeout>
+		</SDOset>
+		
+		<SDOscheduled>
+			<label/>
+			<direction>0</direction>
+			<timeout>100</timeout>
+			<ioObject name="" objtype="" inout="none" subindex="0" objectIndex="0" objectSubIndex="0" />
+			<polling>1</polling>
+			<oneshot></oneshot>
+		</SDOscheduled>
+		
+		<SDOcheck>
+			<label/>
+			<index>0</index>
+			<subindex>0</subindex>
+			<type></type>
+			<value/>
+			<timeout>100</timeout>
+		</SDOcheck>
+		
+		<SDOinput>
+			<label/>
+			<name/>
+			<signed>0</signed>
+			<timeout>100</timeout>
+			<enable/>
+			<ioObject name="" objtype="" inout="in" subindex="0" objectIndex="0" objectSubIndex="0"/>
+		</SDOinput>
+		
+		<SDOoutput>
+			<label/>
+			<name/>
+			<timeout>100</timeout>
+			<enable/>
+			<ioObject name="" objtype="" inout="out" subindex="0" objectIndex="0" objectSubIndex="0" />
+		</SDOoutput>
+		
+		<PDOmapping>
+			<label/>
+			<size>0</size>
+			<name/>
+			<dataBlock/>
+			<type/>
+			<ioObject name="" objtype="" inout="in" subindex="0" objectIndex="0" objectSubIndex="0" PDONumber="0" PDOStartBit="0"/>
+		</PDOmapping>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		
+			<!-- *********************************** CAN CUSTOM ****************************** -->
+			<xs:complexType name="TSDOset">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="index" type="xs:integer"/>
+					<xs:element name="subindex" type="xs:integer"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="value" type="xs:string"/>
+					<xs:element name="timeout" type="xs:integer"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TSDOcheck">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="index" type="xs:integer"/>
+					<xs:element name="subindex" type="xs:integer"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="value" type="xs:string"/>
+					<xs:element name="timeout" type="xs:integer"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TSDOscheduled">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="direction" type="xs:integer"/>
+					<xs:element name="timeout" type="xs:integer"/>
+					<xs:element name="ioObject" type="ioObjectType"/>
+					<xs:element name="polling" type="xs:integer" minOccurs="0"/>
+					<xs:element name="oneshot" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TPDOmapping">
+				<xs:sequence>
+					<xs:element name="label" type="xs:string"/>
+					<xs:element name="size" type="xs:integer"/>
+					<xs:element name="name" type="xs:string"/>
+					<xs:element name="dataBlock" type="xs:string"/>
+					<xs:element name="type" type="xs:string"/>
+					<xs:element name="ioObject" type="ioObjectType"/>
+				</xs:sequence>
+				<xs:attribute name="COBID" type="xs:integer" default="0"/>
+				<xs:attribute name="COBIDstr" type="xs:string" default=""/>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TCANcustom_config"> 
+				<xs:sequence>
+					<xs:element name="nodeNumber" type="xs:integer"/>
+					<xs:element name="nodeGuardPeriod" type="xs:integer"/>
+					<xs:element name="lifeTimeFactor" type="xs:integer"/>
+					
+					<xs:element name="SDOsetList">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="SDOset" type="TSDOset"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="CANcustom2" />
+						</xs:complexType>
+					</xs:element>
+
+					<xs:element name="PDOTxMappingList">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="PDOmapping" type="TPDOmapping"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="CANcustom4" />
+						</xs:complexType>
+					</xs:element>
+					
+					<xs:element name="PDORxMappingList">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="PDOmapping" type="TPDOmapping"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="CANcustom5" />
+						</xs:complexType>
+					</xs:element>
+					
+					<xs:element name="PDOTxTransmission" type="xs:integer"/>
+					<xs:element name="PDOTxCyclicTime" type="xs:integer"/>
+					<xs:element name="PDORxTransmission" type="xs:integer"/>
+					<xs:element name="BootTime" type="xs:integer"/>
+					<xs:element name="NodeHbPTime" type="xs:integer"/>
+					<xs:element name="NodeHbCTime" type="xs:integer"/>
+					<xs:element name="MasterHbCTime" type="xs:integer"/>
+					
+					<!-- aggiungere con minOccurs=0 i nuovi settaggi, andranno poi aggiunti in CANcustom.OnLoadNode per compatibilita' con i vecchi PCT -->
+					<xs:element name="identityObjectCheck" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="MandatorySlave" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="PDOAutoMapping" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="identityObjectCheckRevision" type="xs:string" minOccurs="0"/>
+					<xs:element name="identityObjectCheckSerial" type="xs:string" minOccurs="0"/>
+					<xs:element name="SDOscheduling" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="SDOscheduled" type="TSDOscheduled"/>
+							</xs:sequence>
+							<xs:attribute name="locationPage" type="xs:string" fixed="CANcustom6" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PDORxCycleNum" type="xs:integer" minOccurs="0"/>
+					<xs:element name="dyncfgNodeNumber" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="nodeNumberVar" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="locationPage" type="xs:string" fixed="CANcustom1" />
+			</xs:complexType>
+		
+			<xs:complexType name="TCANcustom">
+				<xs:complexContent>	<xs:extension base="insertableDevice">
+					<xs:sequence>
+						<xs:element name="CANcustom_config" type="TCANcustom_config"/>
+					</xs:sequence>
+					<xs:attribute name="ExtensionName" type="xs:string" fixed="CANcustom"/>
+					<xs:attribute name="ValidateFunc" type="xs:string" fixed="CANcustom.Validate"/>
+					<xs:attribute name="oncreatenode" type="xs:string" fixed="CANcustom.OnCreateNode"/>
+					<xs:attribute name="onloadnode" type="xs:string" fixed="CANcustom.OnLoadNode"/>
+					<xs:attribute name="ondeletenode" type="xs:string" fixed="script.UnassignAllPLCVarsFromDevice"/>
+					<xs:attribute name="onpastenode"  type="xs:string" fixed="script.ClearAllPLCVarsFromDevice"/>
+					<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+					<xs:attribute name="canBeDisabled"  type="xs:boolean" fixed="true"/>
+					<xs:attribute name="enabled"  type="xs:boolean"/>
+					<xs:attribute name="RefactorFunc" type="xs:string" fixed="CANcustom.Refactor"/>
+				</xs:extension>	</xs:complexContent>
+			</xs:complexType>
+		</xs:schema>
+	</datadef>
+	
+	<extensions>
+		<script alias="EDS">EDS.js</script>
+		<script alias="CANcustom">CANcustom.js</script>
+
+		<eventhandler event="OnLoadTemplate">CANcustom.OnLoadTemplate_CANCustom</eventhandler>
+	</extensions>
+</template>

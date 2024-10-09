@@ -1,0 +1,13 @@
+<target>
+	<resources>
+		<resource name="POWERZ" processor="PowerPC_E200">
+			<task id="0" name="Fast" period="1000" type="cyclic" descr="Fast task"/>
+			<task id="1" name="User" period="10000" type="cyclic" descr="User task"/>
+			<task id="2" name="Background" period="100000" type="cyclic" descr="Background task"/>
+			<task id="3" name="Init" period="0" type="single" descr="Init task"/>
+			<task id="4" name="CopMBoot" type="single" period="0" descr="CANopen boot task" hidden="true"/>
+			<task id="5" name="CopMPrm" type="single" period="0" descr="CANopen network parametrization task" hidden="true"/>
+			<task id="6" name="CopMEve" type="single" period="0" descr="Boot task - executes once at every PLC full restart configuration code for fieldbus"/>
+		</resource>
+	</resources>
+</target>

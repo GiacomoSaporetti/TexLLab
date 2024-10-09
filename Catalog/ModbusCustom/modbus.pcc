@@ -1,0 +1,4 @@
+<devicecategory name="ModbusCustom" icon="modbus.ico">
+    <description>Modbus Custom</description>
+</devicecategory>
+

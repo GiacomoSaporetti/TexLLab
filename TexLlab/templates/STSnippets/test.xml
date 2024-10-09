@@ -1,0 +1,22 @@
+<snippets>
+	<snippet name="prova1" descr="descrizione">
+						<![CDATA[
+	(*	Pre condizioni	*)
+	enableOut := enable AND nomAcc > 0.0 AND nomDec > 0.0;
+
+	(*	Gestione enable e fine posizionamento *)
+	IF NOT enableOut THEN
+		posOk := FALSE;
+		quies := TRUE;
+		decel := FALSE;
+		actPos := targPos;
+		actTargPos := targPos;
+		absSpeed := 0.0;
+		prevSpeed := 0.0;
+		actSpeed := 0.0;
+		actAcc := 0.0;
+		rSpeed := 0.0;
+		RETURN;
+	END_IF;
+]]></snippet>
+</snippets>

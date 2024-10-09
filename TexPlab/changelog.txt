@@ -1,0 +1,459 @@
+PageLab 5.0.0.4 (released 2023-12-11)
+ 
+PageLab 5.0.0.3 (released 2023-10-25)
+[defect     ]         (General)  Fixed integrated HMI (PageLabGUI)
+ 
+PageLab 5.0.0.2 (released 2023-09-07)
+[defect     ]         (General)  Fixed integrated HMI (PageLabGUI)
+ 
+PageLab 5.0.0.1 (released 2023-06-27)
+ 
+PageLab 5.0.0.0 (released 2023-05-31)
+[defect     ]  #0547  (General)  Visibility expressions are wrongly generated
+[defect     ]  #0548  (General)  PARVIS pseudo functions is not visible on local procedures
+[enhancement]  #0550  (General)  Additional project info on most recent file list (welcome page)
+[enhancement]  #0551  (General)  Filters on select variable/parameter dialog
+[enhancement]  #0552  (General)  Project backup and restore
+[enhancement]  #0553  (General)  Add "On-line" menu (for LogicLab consistency)
+[enhancement]  #0554  (General)  Possibility to get the number of items in a set
+[enhancement]  #0555  (General)  Procedure can call other procedures
+[enhancement]  #0557  (General)  Add support to 64bit IEC types (integers/double)
+ 
+PageLab 4.19.0.0 (released 2023-01-03)
+[defect     ]  #0416  (General)  Missing warning emission on duplication of selection order
+[enhancement]  #0539  (General)  Import/Export pages with resources
+[enhancement]  #0540  (General)  Properties window display control type information
+[enhancement]  #0541  (General)  PageLab should disable simulation mode when the simulator is manually closed
+ 
+PageLab 4.11.0.4 (released 2019-12-16)
+[defect     ]  #0481  (General)  Z-Order redraw optimization
+[defect     ]  #0487  (General)  Error saving remote device parameters from pct that uses external files
+ 
+PageLab 4.11.0.3 (released 2019-10-21)
+[defect     ]         (General)  Various translation fixes
+ 
+PageLab 4.11.0.2 (released 2019-08-29)
+ 
+PageLab 4.11.0.1 (released 2019-08-06)
+[defect     ]  #0460  (General)  Usage of reserved keywords leads to a generic not significant LLC error
+[enhancement]  #0474  (General)  Support for resizable HMI window area
+[defect     ]  #0476  (General)  GDI handle leaks can lead to crash after a certain time of use
+[defect     ]  #0477  (General)  PageLabGUI: "Close all" crashes
+[defect     ]  #0478  (General)  Recent file list (.ini) must be encoded as UTF16
+[defect     ]  #0479  (General)  Wrong popup pages resize at opening project using frameset
+[enhancement]  #0480  (General)  Allow usage of PLK fonts from the catalog
+[enhancement]         (General)  First release with Visual Studio 2017
+ 
+PageLab 4.11.0.0 (released 2019-01-25)
+[enhancement]  #0469  (PLC code generator)  ComboBox and EditBox must be editable if used into frameset
+ 
+PageLab 4.9.0.0 (released 2018-10-02)
+[defect     ]  #0221  (General)  An empty enumeration defined in user interface cause a crashes.
+[defect     ]  #0449  (Runtime)  Wrong handling of dynamic visibility status for remote slave parameters
+[defect     ]  #0461  (Runtime)  Static with overlapped animation and image and zorder option enable, blink when changing animation
+[defect     ]  #0463  (General)  Generated code with z-order must be incompatible with runtimes without z-order
+[enhancement]  #0464  (General)  New option for LLC: /USELASTPORT
+[mainFeature]  #0465  (General)  Alpha channel for 32 bitmap images
+ 
+PageLab 4.7.0.3 (released 2018-07-30)
+[enhancement]  #0028  (Graphical User Interface)  less click in the properties window
+[defect     ]  #0431  (PLC code generator)  TM172DC: wrong handling of set values
+[defect     ]  #0439  (Runtime)  Missing control for reaching maximum number of elements per page
+[defect     ]  #0445  (Runtime)  TM172DC: wrong handling of dynamic visibility for buttons
+[enhancement]  #0453  (General)  Add warning if number of a certain element per page has been reached
+[defect     ]  #0455  (PLC code generator)  When creating subfont, also set list must be parsed
+[defect     ]  #0459  (PLC code generator)  When creating subfont, also textInSelection attribute should be parsed
+ 
+PageLab 4.7.0.2 (released 2018-07-04)
+[defect     ]  #0458  (General)  Global procedures and variables disappear from project tree after a change language operation
+[enhancement]         (General)  Alphabetic sort of pages in the project tree
+ 
+PageLab 4.7.0.1 (released 2018-04-11)
+ 
+PageLab 4.7.0.0 (released 2018-04-06)
+[mainFeature]  #0457  (PLC code generator)  Z-Order effective even with dynamic controls
+ 
+PageLab 4.5.0.2 (released 2018-03-02)
+[defect     ]  #0448  (General)  Parameters management should save local .parx file with different name
+[enhancement]  #0450  (General)  Task draw e refresh rehentrant
+[defect     ]  #0451  (Graphical User Interface)  Minimum offset of controls position is calculated wrongly
+ 
+PageLab 4.5.0.1 (released 2018-02-15)
+[defect     ]  #0407  (PLC code generator)  Param on message does not work
+[defect     ]  #0446  (General)  Popup pages are wrongly resized
+[enhancement]  #0447  (General)  "Remove frameset" feature is missing
+ 
+PageLab 4.5.0.0 (released 2017-12-22)
+[enhancement]  #0420  (General)  Rearrangement of draw events
+[defect     ]  #0436  (Runtime)  Wrong visualization of REAL values
+[defect     ]  #0440  (General)  Bugfix in optimized font PLK generation
+[enhancement]  #0441  (General)  Pointer can be used inside script
+[enhancement]  #0443  (General)  Generation of LST and EXP should be disabled for auto-generated PLC projects
+[defect     ]  #0444  (General)  Using single line comment on procedure leads to a parser error
+ 
+PageLab 4.3.0.4 (released 2017-10-09)
+ 
+PageLab 4.3.0.3 (released 2017-07-18)
+ 
+PageLab 4.3.0.2 (released 2017-06-20)
+ 
+PageLab 4.3.0.1 (released 2017-05-26)
+[defect     ]  #0429  (General)  Bug in PLK v 1 generation. PLK generated size mistake
+[defect     ]         (General)  Bugfix in optimized font PLK generation
+ 
+PageLab 4.3.0.0 (released 2017-05-22)
+[defect     ]  #0218  (General)  Delete base language causes inconsistency and project cannot be saved
+[mainFeature]  #0425  (General)  PageLab should download only used character from a font and not the whole font
+[defect     ]  #0419  (Runtime)  Unnecessary refresh on target without restore area when click on an edit made non editable
+[enhancement]  #0421  (General)  Key codes declaration should allow values up to 255 (currently 127)
+[defect     ]  #0422  (General)  TM172DC: editing of set values refresh the wrong page
+[defect     ]  #0427  (General)  Font styles do not work with strings on target (wrong auto-generated code)
+[defect     ]  #0428  (General)  Font variables used in procedures are not declared as VAR_EXTERNALS with "fonts on target"
+ 
+PageLab 4.1.0.4 (released 2017-01-30)
+ 
+PageLab 4.1.0.3 (released 2017-01-18)
+[mainFeature]  #0406  (General)  Support for single PLC+HMI area on the target
+[mainFeature]  #0414  (General)  Parameters management enhancement to access .PCT devices par and configure basic network settings
+ 
+PageLab 4.1.0.2 (released 2016-12-20)
+[defect     ]  #0411  (Simulation Runtime)  Title bar display issue on simulator
+ 
+PageLab 4.1.0.1 (released 2016-11-23)
+[enhancement]    (General)  Changed variable groups generation with "_vars" suffix (required for LogicLab >= 5.3.0.0)
+ 
+PageLab 4.1.0.0 (released 2016-10-28)
+[mainFeature]  #0401  (General)  New layout
+[enhancement]  #0408  (General)  Support for special constant datablocks for bitmaps, fonts, strings
+ 
+PageLab 3.17.0.1 (released 2016-05-26)
+[defect     ]  #0396  (General)  Even if checkbox has readonly flag compile error is given when datablock read only variable is used
+ 
+PageLab 3.17.0.0 (released 2016-05-23)
+[defect     ]  #0245  (Graphical User Interface)  right click on local/global actions gives program error
+[mainFeature]  #0394  (General)  Image color depth optimization
+ 
+PageLab 3.15.0.2 (released 2016-04-08)
+[defect     ]  #0388  (Runtime)  ImageList flickering when change image
+[mainFeature]  #0391  (General)  Remote display management
+ 
+PageLab 3.15.0.1 (released 2016-03-09)
+[defect     ]  #0382  (General)  PageLab assert error if character in a staticbox does not exist
+[defect     ]  #0383  (General)  Cannot view chinese translated strings on the PageLab form using FontStyles
+[defect     ]  #0384  (General)  Wrong error emission after change target : Font already exists in project
+[defect     ]  #0385  (Runtime)  EditBox with %08X format show "#" and spaces if it is near the right border of a window
+[defect     ]  #0387  (General)  Enable expressions on set of strings
+ 
+PageLab 3.15.0.0 (released 2016-02-05)
+[mainFeature]  #0381  (PLC code generator)  Boolean expressions in PageLab resources to manage controls visibility property
+ 
+PageLab 3.13.0.4 (released 2015-12-11)
+[defect     ]  #0379  (General)  HMI runtime crash if resource string is specified as label prop of an EditBox
+[defect     ]  #0380  (PLC code generator)  Cannot use local variable array item to set refresh property in a Trend component
+[enhancement]  (General)  Various improvement to PLC libraries: always locally copied, updating on change target and refresh target
+ 
+PageLab 3.13.0.3 (released 2015-11-16)
+[defect     ]    (General)  Can load AlPagImp.dll as a AlFramework plugin inside LogicLab
+[defect     ]    (General)  Error importing PLC vars of user defined types with types defined in the PLC
+ 
+PageLab 3.13.0.2 (released 2015-11-09)
+[enhancement]  #0376  (General)  Automatic download of bitmaps to target
+ 
+PageLab 3.13.0.1 (released 2015-11-05)
+[enhancement]  #0371  (General)  Unused bitmaps should not be compiled inside the project (optional)
+ 
+PageLab 3.13.0.0 (released 2015-10-30)
+[enhancement]  #0371  (General)  Unused bitmaps should not be compiled inside the project
+[defect     ]  #0373  (General)  Crash on deleting selection from combo properties
+[mainFeature]  #0374  (General)  New Chart v2 control
+[enhancement]  #0375  (General)  Revision of Chart and Trend controls, with better properties order and default values
+ 
+PageLab 3.11.0.7 (released 2015-10-06)
+[defect     ]  #0193  (Graphical User Interface)  In "Array value" dialog the "Edit" tab does not work
+ 
+PageLab 3.11.0.6 (released 2015-10-01)
+[mainFeature]  #0366  (General)  Support for external PLC libraries
+[mainFeature]  #0369  (General)  Allow to specify members of structures as variables
+ 
+PageLab 3.11.0.5 (released 2015-09-23)
+[defect     ]  #0359  (General)  Changing string id in resources tab results in string duplication
+[enhancement]  #0367  (General)  Strings editing: allow to specify max number of chars and check string length
+ 
+PageLab 3.11.0.4 (released 2015-09-15)
+[mainFeature]  #0361  (General)  Proportional fonts
+[mainFeature]  #0362  (General)  Font styles
+[mainFeature]  #0363  (General)  Fonts on target
+[mainFeature]  #0364  (General)  Replace all fonts in a project
+[enhancement]  #0365  (General)  Pre-download event to execute external commands
+[enhancement]         (General)  New PLK file format for fonts with CRC32
+ 
+PageLab 3.11.0.3 (released 2015-08-03)
+[enhancement]  (General)  Support for proportional fonts
+ 
+PageLab 3.11.0.2 (released 2015-07-17)
+[defect     ]  #0352  (Graphical User Interface)  The user should use the array characters '[' ']' in the string table (caption)
+ 
+PageLab 3.11.0.1 (released 2015-07-10)
+[defect     ]  #0355  (General)  PageLab crashes when selecting background color on a combobox
+[defect     ]  #0357  (General)  PageLab crashes when selecting background color on a staticbox
+ 
+PageLab 3.11.0.0 (released 2015-03-06)
+[defect     ]  #0233  (General)  Objects linked to parameters that do not exist in the pages
+[defect     ]  #0251  (PLC code generator)  declaring  an array of bool locally to a page and using it as image visibilty the generated code for external variables is wrong
+[defect     ]  #0263  (Graphical User Interface)  Creating an image list is fill with first available bitmap but gives compile error : " Image list includes a bitmap not defined in the projects "
+[defect     ]  #0272  (Graphical User Interface)  The user should use the array characters '[' ']' in the set elements
+[enhancement]  #0273  (Runtime)  Adding autorepeat mode for editbox object
+[enhancement]  #0274  (Runtime)  an editbox with the decimal point format shouldn't modify the point in editing mode
+[enhancement]  #0277  (Graphical User Interface)  Put in alphabetical order name of the images in the the image lists
+[defect     ]  #0289  (Graphical User Interface)  The decimal point format is not shown in HMI page editor
+[defect     ]  #0331  (PLC code generator)  Problem setting transparent background when creating new control
+[defect     ]  #0332  (PLC code generator)  Static area is not properly managed in frameset section
+[defect     ]  #0337  (PLC code generator)  When tracks 3 to 8 are drawn a black horizontal line is also drawn at zero value
+[defect     ]  #0338  (PLC code generator)  Problems in sets navigation if elements of the first page are defined with selectable FALSE
+[defect     ]  #0339  (General)  Incoerency between selectable attribute in set definition and set var associated to control
+[defect     ]  #0341  (General)  Animations in frameset can be used, but are lost when reopening project
+[defect     ]  #0343  (Integration with plc compiler)  A set of string shows the same string
+[mainFeature]  #0346  (General)  plk font optimization is used only when project is opened but is ignored at compile time
+[defect     ]  #0348  (General)  When popup page is opened frameset visible controls are not refreshed
+[defect     ]  #0350  (PLC code generator)  Strings in a Set are not properly refreshed in change page
+[defect     ]  #0353  (General)  Cannot Link pagimp file
+ 
+PageLab 3.9.3.0 (released 2013-11-27)
+[defect     ]  #0308  (PLC code generator)  Popup message event freeze HMI
+ 
+ 
+ 
+PageLab 3.9.0.0 (released 2013-11-05)
+[enhancement]  #0298  (Integration with plc compiler)  the HMI IDE should open the PLC IDE to debug the errors
+[defect     ]  #0299  (PLC code generator)  error on compiling project using variable as visibility on a combobox
+[defect     ]  #0301  (Graphical User Interface)  the button 'cut' on the ide doesn't change the status of the project as modified
+[defect     ]  #0302  (PLC code generator)  the min/max field of an editbox is not correctly initialized if a variable is assigned
+[defect     ]  #0303  (Graphical User Interface)  Can't add new colors if there is transparent color
+[enhancement]  #0306  (Graphical User Interface)  add custom ini path
+[defect     ]  #0307  (General)  Sometimes the dialog fix script errors appears
+ 
+PageLab 3.3.3.0 (released 2012-10-29)
+[enhancement]  #0227  (Graphical User Interface)  Properties format "Password" in the edit and keyboard input
+ 
+ 
+ 
+ 
+PageLab 3.3.0.0 (released 2012-10-16)
+[enhancement]  Transparency management
+[defect     ]  #0224  (PLC code generator)  Combo boxes and check boxes are always refreshed, regardless of the value of the Refresh property set by the developer
+[defect     ]  #0225  (Runtime)  trend object has memory leaks after downloading
+ 
+PageLab 3.1.6.0 (released 2012-07-02)
+[defect     ]  #0200  (Graphical User Interface)  Font list in the properties window are not sorted
+[defect     ]  #0219  (Graphical User Interface)  In properties box the combo font with many fonts in the list is difficult to use in screen with low resolution
+ 
+PageLab 3.1.5.0 (released 2012-06-20)
+[defect     ]  #0201  (General)  SetSVValues set used in the Status page is not displayed correctly
+[defect     ]  #0210  (Graphical User Interface)  When drag-and-dropping a variable onto a page to create a new combo box control, the variable is not set  as the combo box variable
+[enhancement]  #0211  (General)  The name of an enumerative should be considered as a project symbol and should act as the enumerative's ID
+[enhancement]  #0212  (General)  Support for import script files, in order to import resources (enumeratives, resource strings, etc.) into project, shall be added
+[enhancement]  #0213  (General)  The environment does not allow to unlink the PLC exported variables file
+[enhancement]  #0214  (Graphical User Interface)  The environment does not allow to add a font file to the project
+[defect     ]  #0215  (PLC code generator)  In the generated IEC 61131-3 code, some variables of type BOOL are treated as USINT, eventually leading to the emission of many compiler warnings (which are meaningless to the developer)
+ 
+PageLab 3.1.4.0 (released 2012-06-08)
+[defect     ]  #0106  (Graphical User Interface)  Change name of enumeration is not replicated on all languages
+[defect     ]  #0155  (Graphical User Interface)  cannot insert ' char in string table
+[defect     ]  #0157  (PLC code generator)  OnGotFocus and OnLostFocus events in an editbox don't create the script code in the final plc project
+[defect     ]  #0164  (Runtime)  in some case the selection of the controls in a page is not correct
+[defect     ]  #0167  (PLC code generator)  when deleting a bitmap from the project and the bitmap is used by an image list the compiler give an undetectable error
+[defect     ]  #0174  (General)  Bug initializing local variables in pages
+[defect     ]  #0206  (General)  Problem opening old projects with not traslated enums
+ 
+PageLab 3.1.3.0 (released 2012-02-17)
+[defect     ]  #0195  (Graphical User Interface)  When defining a new enumerative, the default value of the first element is 1 (but it should be 0)
+ 
+ 
+PageLab 3.1.0.1 (released 2012-02-06)
+[enhancement]  #0173  (General)  "Refresh current target" functionality
+ 
+PageLab 3.1.0.0 (released 2012-01-31)
+[defect     ]  #0142  (PLC code generator)  when the user send two events that change pages, the application can jump two drawing function blocks before the refresh can execute once
+[defect     ]  #0171  (General)  Combo boxes do not work properly with 8- and 16-bit variables
+ 
+PageLab 2.100.0.0 (released 2011-10-18)
+[enhancement]  #0017  (Graphical User Interface)  apertura automatica albero di progetto
+[defect     ]  #0132  (PLC code generator)  writing script code in local/global procedures, if the code has PLC syntax errors, when the user re-open the project has an error in preprocessing
+[defect     ]  #0144  (PLC code generator)  insert a background image corresponding to the same image unexpectedly close the program when compiling
+[defect     ]  #0146  (General)  on changing the language the sets node collapse and it cant'open the set elements.
+[defect     ]  #0149  (PLC code generator)  an editbox that has both limits min-max defined as parameters isn't editable
+[defect     ]  #0150  (Runtime)  after inserted a value out of range in an editbox the control doesn't refresh the value until the user moves to another controls
+[defect     ]  #0151  (General)  in an editbox that uses sets with even elements and shows two elements in a page the user can't modify immediatly the value
+[defect     ]  #0152  (Graphical User Interface)  selecting a new value of min or max in a set, the set loses the min if it changes the max and viceversa
+[enhancement]  #0158  (General)  Toggle mode should be made available for buttons
+[enhancement]  #0159  (General)  Add a "Welcome page" in HTML
+[defect     ]  #0160  (General)  Fix background color of the document selector bar
+[enhancement]  #0161  (General)  Support for check box controls should be added
+[enhancement]  #0163  (General)  Support for combo box controls should be added
+ 
+PageLab 2.11.0.0 (released 2011-03-21)
+[usability  ]  #0074  (General)  order-first / order -last buttons don't show tooltip
+[usability  ]  #0105  (General)  new format manager for editbox control
+[usability  ]  #0107  (Graphical User Interface)  set start page from mouse right click menu
+[defect     ]  #0110  (Runtime)  system button on title bar doesnt' work in runtime
+ 
+PageLab 2.9.0.0 (released 2010-12-10)
+[defect     ]  #0037  (General)  invalid compiler error with string resource with spaces
+[enhancement]  #0040  (Integration with plc compiler)  read and write parameters with functions
+[defect     ]  #0041  (PLC code generator)  error on generation code if KEY_CONFIRM missed
+[defect     ]  #0042  (PLC code generator)  local actions don't override global actions
+[enhancement]  #0043  (General)  support for not homogenous sets
+[enhancement]  #0044  (Graphical User Interface)  copy and paste on sets grid
+[enhancement]  #0045  (General)  create a backup copy of .pagx before saving
+[defect     ]  #0046  (PLC code generator)  error on using unicode string in page title
+[enhancement]  #0047  (Graphical User Interface)  views parameters in variables window
+[enhancement]  #0048  (PLC code generator)  support for enumeratives format when using sets
+[enhancement]  #0050  (General)  support for visible and selectable for elements of sets
+[defect     ]  #0051  (General)  generation of enumeratives with unicode fonts build in wrong way
+[defect     ]  #0052  (General)  in some cases add elements of set doesn't fill the alignment
+[enhancement]  #0053  (General)  hide old targets  in new project window
+[defect     ]  #0054  (Graphical User Interface)  import page from file doesn't show local var / procedures
+[enhancement]  #0057  (Graphical User Interface)  in sets view use 'STRING' description instead 'RESOURCES'
+[enhancement]  #0060  (Graphical User Interface)  in system properties change 'alarms' description with 'global ontimer' description
+[enhancement]  #0068  (PLC code generator)  a page with set that call another page must reopen from first element of set
+[defect     ]  #0070  (Graphical User Interface)  properties system menu, title bar in frameset must not exist
+[defect     ]  #0071  (General)  Hide tool window when detached, appear anymore
+[enhancement]  #0073  (General)  support for dynamic sets
+[defect     ]  #0080  (General)  Button with Action "Edit" and no variables crashes
+[defect     ]  #0090  (Manual)  change save-as image on page 43 because it's in italian
+[defect     ]  #0091  (General)  The application sometimes crashed due to a thread-unsafe access to resource strings.
+[defect     ]  #0093  (General)  when inserting a set the type is not set automatically
+ 
+PageLab 2.8.0.1 (released 2010-06-18)
++ --DEV-- when add edit refresh must be true
++ --DEV-- implement set on static with string resources
++ --DEV-- added string parameters
++ --DEV-- menu parameters management more visible
++ --DEV-- enable refresh parameters
++ --DEV-- default language on new project
++ --DEV-- ihnerit decimal point format from parx file
++ --DEV-- system menu non selectable in project with options
++ --DEV-- when add progress the colors of background and bar must be different
++ --BUG-- copy page doesn't work without saving
++ --BUG-- multiple selection with shift key
+
+PageLab 2.8.0.0 (released 2010-06-07)
++ --DEV-- created automatic documentation
++ --BUG-- import page from template crashes if the template just exists
+
+PageLab 2.6.0.2 (released 2010-06-22)
++ --BUG-- invalid compiler error with string resource with spaces
++ --DEV-- new llc compiler 2.10.0.3
+
+PageLab 2.6.0.1 (released 2010-05-20)
++ --BUG-- variables cannot be assigned on animations
+
+PageLab 2.6.0.0 (released 2010-05-14)
++ --DEV-- support for decimal points on integer
++ --DEV-- unicode fonts
++ --DEV-- import/export/link template page in project
++ --DEV-- new event after build code
++ --DEV-- associated project extension .PAJX with Pagelab
++ --DEV-- measure unit for formatting editboxes ( inches, etc )
++ --DEV-- support for template projects on creating new project
++ --DEV-- support for creating new project from command line
++ --DEV-- support for using set of elements as variables
++ --DEV-- target parameters and device support
++ --DEV-- manage selection for target buttons 
++ --DEV-- compile code for selecting first object in page on target
++ --DEV-- select or not external border of page on target
+
+
+PageLab 2.4.0.0 (released 2010-03-22)
++ --DEV-- automatic id generation for new message page
++ --DEV-- selection of first page like initial page if exists only one
++ --DEV-- can remove border of the new page and messages
++ --DEV-- implemented runtime selection for button controls
++ --DEV-- insert new object parameter device
++ --DEV-- insert variable with drag&drop ehnanced
+
+PageLab 2.3.0.0 (released 2010-02-18)
++ --BUG-- zoom draw controls in page with errors
++ --DEV-- support for custom compiler
++ --DEV-- environment totally in unicode
+
+PageLab 2.2.3.0 (released 2010-01-27)
++ --BUG-- write absolute path in the project
++ --DEV-- can copy/paste pages and messages
+
+PageLab 2.2.0.0 (released 2010-01-12)
++ --DEV-- integration with catalog, .DEF files now obsolete
+
+PageLab 2.1.3.0 (released 2010-01-08)
++ --DEV-- RSM (redistributable source module) support
++ --BUG-- fixed grid movement with 1px width
++ --BUG-- fixed number of chars in font characteristics
++ --BUG-- fixed LLC "request download" flag (/RQ)
++ --BUG-- fixed bitmap size generation
++ --BUG-- fixed old project import
++ --BUG-- fixed particular chars [] in edit boxes
+
+PageLab 2.1.2.0 (released 2009-09-02)
++ --DEV-- add new compiler 2.6.0.5
++ --BUG-- error on selOrder when adding more than 255 edit 
+
+PageLab 2.1.1.0 (released 2009-07-31)
++ --DEV-- save .pagx formatted
++ --BUG-- error on update sel-order when added or copied an editbox 
+
+PageLab 2.1.0.5 (released 2009-07-13)
++ --BUG-- INIT edit in fb without refresh doesn't change in kACS_PRINT 
+
+PageLab 2.1.0.4 (released 2009-07-09)
++ --BUG-- open .pagx file with attribute UPPERCASE crash
++ --DEV-- CTRL-C and CTRL-V with enumerators and obj properties
++ --DEV-- new llc 2.5.3.4
+
+PageLab 2.1.0.3 (released 2009-07-02)
++ --DEV-- new llc 2.5.3.3
+
+PageLab 2.1.0.2 (released 2009-07-01)
++ --BUG-- error on add string resource if there are more languages
++ --BUG-- llc gave assert error on fb error
+
+PageLab 2.1.0.1 (released 2009-06-24)
++ --DEV-- add new llc compiler 2.5.3.1
++ --BUG-- llc gave windows error when launched
+
+PageLab 2.1.0 (released 2009-06-16)
++ --DEV-- add new llc compiler with support for i960 dynamic link
+
+PageLab 2.0.7 (released 2009-05-25)
++ --BUG-- had error on background controls of parent page
+
+PageLab 2.0.6 (released 2009-05-22)
++ --BUG-- added new compiler for bugs on x86
++ --DEV-- added comunication string in ppjx generated
+
+PageLab 2.0.5 (released 2009-05-19)
++ --BUG-- errors on loading old projects
+
+PageLab 2.0.3 (released 2009-05-06)
++ --BUG-- bug on z-order of strings
++ --DEV-- generate PLC code without listing
++ --BUG-- added new compiler
++ --DEV-- added bitmap in binary mode (optimized for opening and compiling)
++ --DEV-- added comunication parameters on status bar
++ --DEV-- no compile on 'download only' if ok
++ --DEV-- added dimension (height, width ) when open a bitmap
+
+PageLab 2.0.2 (released 2009-04-22)
++ --DEV-- no preprocess on 'download only' if ok
++ --DEV-- full support for z-order
+
+PageLab 2.0.1 (released 2009-04-10)
++ --DEV-- refactored bmp struct for future support of z-order
++ --DEV-- imported image JPG, BMP, GIF, etc with more than 256 colors
+
+PageLab 2.0.0 (released 2009-03-24)
++ --DEV-- preview loaded images
++ --DEV-- main projects files coded with XML
++ --DEV-- added 'save as' of a project
++ --DEV-- added menus for postbuild and postdownload commands
++ --DEV-- beautify GUI
++ --DEV-- import and export of pages, variables, functions

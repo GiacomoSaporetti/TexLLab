@@ -1,0 +1,720 @@
+﻿
+	(************************)
+	(*      STRUCTURES      *)
+	(************************)
+
+TYPE
+	COPM_NET_ENUM: ( { DE:"CANopen network" }
+		COPM_NET_0 := 0,	{ DE:"CANopen network 0" }
+		COPM_NET_1 := 1		{ DE:"CANopen network 1" }
+	);
+
+	COPM_CHN_ENUM: ( { DE:"CAN physical channel" }
+		COPM_CHN_CAN0 := 0,{ DE:"CAN channel 0" }
+		COPM_CHN_CAN1 := 1,	{ DE:"CAN channel 1" }
+		COPM_CHN_CAN2 := 2	{ DE:"CAN channel 2" }
+	);
+
+	COPM_BAUD_ENUM: ( { DE:"Baud rate CAN, Kbit/s" }
+		COPM_BAUD_AUTO := 0,		{ DE:"Selected by driver" }
+		COPM_BAUD_1000K := 1000000,	{ DE:"1000 Kbit/s" }
+		COPM_BAUD_800K := 800000,	{ DE:"800 Kbit/s" }
+		COPM_BAUD_500K := 500000,	{ DE:"500 Kbit/s" }
+		COPM_BAUD_250K := 250000,	{ DE:"250 Kbit/s" }
+		COPM_BAUD_125K := 125000,	{ DE:"125 Kbit/s" }
+		COPM_BAUD_100K := 100000,	{ DE:"100 Kbit/s" }
+		COPM_BAUD_50K := 50000,		{ DE:"50 Kbit/s" }
+		COPM_BAUD_20K := 20000,		{ DE:"20 Kbit/s" }
+		COPM_BAUD_10K := 10000		{ DE:"10 Kbit/s" }
+	);
+
+	COPM_STATE_ENUM: ( { DE:"CANopen NMT state, according to DSP302" }
+		COPM_STATE_NOT_KNOWN := 0,			{ DE:"Unknown, not present" }
+		COPM_STATE_MISSING := 1,			{ DE:"Node missing" }
+		COPM_STATE_COMM_OPENED := 2,		{ DE:"Communication channel opened" }
+		COPM_STATE_COMM_ERROR := 3,			{ DE:"Communication channel open error" }
+		COPM_STATE_STOPPED := 4,			{ DE:"Stopped" }
+		COPM_STATE_OPERATIONAL := 5,		{ DE:"Operational" }
+		COPM_STATE_RESET_NODE := 6,			{ DE:"Reset Node" }
+		COPM_STATE_RESET_COMM := 7,			{ DE:"Reset communication" }
+		COPM_STATE_CONFIGURED := 8,			{ DE:"Master configured" }
+		COPM_STATE_PREOPERATIONAL := 127	{ DE:"Pre-operational" }
+	);
+
+	COPM_CSNMT_ENUM: ( { DE:"CANopen NMT Control Command Specifier, according to DS301" }
+		COPM_CSNMT_START := 1,		{ DE:"Enter in Operational state" }
+		COPM_CSNMT_STOP := 2,		{ DE:"Enter in Stopped state" }
+		COPM_CSNMT_PREOP := 128,	{ DE:"Enter in Pre-operational state" }
+		COPM_CSNMT_RSTNODE := 129,	{ DE:"Reset node" }
+		COPM_CSNMT_RSTCOMM := 130	{ DE:"Reset communication" }
+	);
+
+	COPM_BOOTST_ENUM: ( { DE:"Boot-up procedure DSP302 status code" }
+		COPM_BOOTST_INIT := 0,			{ DE:"Init" }
+		COPM_BOOTST_DEVTYPE_RQ := 1,	{ DE:"Device Type (1000h DS301) upload request" }
+		COPM_BOOTST_DEVTYPE_RSP := 2,	{ DE:"Device Type (1000h DS301) upload wait response" }
+		COPM_BOOTST_VENDOR_RQ := 3,		{ DE:"Vendor ID (1018.1h DS301) upload request" }
+		COPM_BOOTST_VENDOR_RSP := 4,	{ DE:"Vendor ID (1018.1h DS301) upload wait response" }
+		COPM_BOOTST_PCODE_RQ := 5,		{ DE:"Product code (1018.2h DS301) upload request" }
+		COPM_BOOTST_PCODE_RSP := 6,		{ DE:"Product code (1018.2h DS301) upload wait response" }
+		COPM_BOOTST_REV_RQ := 7,		{ DE:"Revision number (1018.3h DS301) upload request" }
+		COPM_BOOTST_REV_RSP := 8,		{ DE:"Revision number (1018.3h DS301) upload wait response" }
+		COPM_BOOTST_SERIAL_RQ := 9,		{ DE:"Serial number (1018.4h DS301) upload request" }
+		COPM_BOOTST_SERIAL_RSP := 10,	{ DE:"Serial number (1018.4h DS301) upload wait response" }
+		COPM_BOOTST_PRM_RQ := 11,		{ DE:"Parameter download request" }
+		COPM_BOOTST_PRM_RQ := 12,		{ DE:"Parameter download wait response" }
+		COPM_BOOTST_END := 13,			{ DE:"End" }
+		COPM_BOOTST_WAIT_BOOTUP_MSG := 14,	{ DE:"Waiting for bootup msg" }
+		COPM_BOOTST_NMT_START_SENT := 15	{ DE:"Boot completed, NMT start command sent" }
+	);
+	
+	COPM_BOOTRES_ENUM: ( { DE:"Error status codes during the boot-up procedure DSP302" }
+		COPM_BOOTRES_E_BOOTED := 0,	{ DE:"The slave exists in the network list" }
+		COPM_BOOTRES_E_A := 1,		{ DE:"The slave no longer exists in the Network list" }
+		COPM_BOOTRES_E_B := 2,		{ DE:"No response on access to Actual Device Type (object 1000h) received" }
+		COPM_BOOTRES_E_C := 3,		{ DE:"Actual Device Type (object 1000h) of the slave node did not match" }
+		COPM_BOOTRES_E_D := 4,		{ DE:"Actual Vendor ID (object 1018h) of the slave node did not match" }
+		COPM_BOOTRES_E_J := 10,		{ DE:"Automatic download configuration failed" }
+		COPM_BOOTRES_E_M := 13,		{ DE:"Actual ProductCode (object 1018h) of the slave node did not match" }
+		COPM_BOOTRES_E_N := 14,		{ DE:"Actual RevisionNumber (object 1018h) of the slave node did not match" }
+		COPM_BOOTRES_E_O := 15,		{ DE:"Actual SerialNumber (object 1018h) of the slave node did not match" }
+		COPM_BOOTRES_E_P := 16		{ DE:"Node skipped by user configuration" }
+	);
+
+	COPM_ERROR_ENUM: ( { DE:"Copm error code" }
+		COPM_E_OK := 0,						{ DE:"No error" }
+		COPM_E_CAN_NOT_IMPLEMENTED := 1,	{ DE:"Function has not been implemented" }
+		COPM_E_CAN_MEM_POOL_INIT := 2,		{ DE:"Memory pool initialization error" }
+		COPM_E_CAN_BAUDRATE := 3,       	{ DE:"Baudrate was not set" }
+		COPM_E_CAN_TX_BUSY := 4,        	{ DE:"Transmitting hardware busy" }
+		COPM_E_CAN_OBJECTS_FULL := 5,		{ DE:"No more rx or tx objects available" }
+		COPM_E_CAN_ALLOC_MEM := 6,			{ DE:"Unable to allocate memory from pool" }
+		COPM_E_CAN_DEALLOC_MEM := 7,		{ DE:"Unable to deallocate memory" }
+		COPM_E_CAN_TIMEOUT := 8,			{ DE:"Timeout expired" }
+		COPM_E_CAN_UNEXIST_CTRL := 9,		{ DE:"Controller does not exist" }
+		COPM_E_CAN_UNEXIST_CHN := 10,		{ DE:"Channel does not exist" }
+		COPM_E_DLL_SYS := 100,				{ DE:"System error" }
+		COPM_E_DLL_COBID := 101,			{ DE:"Cob Id of message already exists" }
+		COPM_E_DLL_COBID_FULL := 102,		{ DE:"Cob Id table full" }
+		COPM_E_DLL_QUEUE := 103,			{ DE:"System error" }
+		COPM_E_DLL_RX_OVERFLOW := 104,		{ DE:"Message lost" }
+		COPM_E_DLL_RX_TMO := 105,			{ DE:"No message in receive buffer" }
+		COPM_E_COPM_SYS := 200,				{ DE:"System error" }
+		COPM_E_COPM_CMD_TMO := 201,			{ DE:"Cop master does not responding" }
+		COPM_E_COPM_SDO_ERR := 202,			{ DE:"Error on User Service Data Object request"}
+		COPM_E_COPM_NO_BOOTUP_MSG := 203,	{ DE:"Bootup msg from node missing"}
+		COPM_E_COPM_CFG := 212,				{ DE:"Master not configured"}
+		COPM_E_CFG_SYS := 300,				{ DE:"System error" }
+		COPM_E_CFG_COMM_CHN := 301,			{ DE:"Error on opening communication channel" }
+		COPM_E_CFG_MASTER_ADDR := 302,		{ DE:"Invalid master address" }
+		COPM_E_CFG_SLAVE_MAX := 303,		{ DE:"Slave netlist full" }
+		COPM_E_CFG_SLAVE_ADDR := 304,		{ DE:"Invalid slave address" }
+		COPM_E_CFG_SLAVE_EXISTS := 305,		{ DE:"Slave already exists in netlist" }
+		COPM_E_CFG_SLAVE_NOT_EXISTS := 306,	{ DE:"Slave does not exists in netlist" }
+		COPM_E_CFG_SLAVE_PRM := 307,		{ DE:"Slave parametrization error" }
+		COPM_E_CFG_TX_PDO_MAX := 308,		{ DE:"Total number of Tx Process Data Object" }
+		COPM_E_CFG_RX_PDO_MAX := 309,		{ DE:"Total number of Rx Process Data Object" }
+		COPM_E_CFG_PDO_LEN := 310,			{ DE:"Invalid Process Data Object length" }
+		COPM_E_CFG_PDO_TT := 311,			{ DE:"Invalid Process Data Object type" }
+		COPM_E_CFG_OUT_IEC_MAX := 312,		{ DE:"Total number of Out IEC Process Data Object" }
+		COPM_E_CFG_INP_IEC_MAX := 313,		{ DE:"Total number of Inp IEC Process Data Object" }
+		COPM_E_CFG_OUT_IEC_LEN := 314,		{ DE:"Invalid Out IEC Process Data Object length" }
+		COPM_E_CFG_INP_IEC_LEN := 315,		{ DE:"Invalid Inp IEC Process Data Object length" }
+		COPM_E_CFG_FRMW_VER := 316,		{ DE:"Firmware mismatch, allocated size for COPM is different from required size" }
+		COPM_E_CFG_SYNC_COBID := 317,		{ DE:"Sync is used for both lines: sync COBID must be the same" }
+		COPM_E_CFG_SYNC_CYCLE := 318		{ DE:"Sync is used for both lines: sync cycle must be the same" }
+	);
+
+	COPM_EVETYP_ENUM: ( { DE:"CANopen Master Event Callback type" }
+		COPM_EVETYP_BOOTUP_M := 0,	{ DE:"Master Boot sequence ended, master enter in COPM_STATE_ENUM#COPM_STATE_PREOPERATIONAL state" }
+		COPM_EVETYP_BOOTUP_S := 1,	{ DE:"Slave Boot up sequence ended with COPM_BOOTRES_ENUM code Booted" }
+		COPM_EVETYP_EMCY := 2,	{ DE:"Emergency occured" }
+		COPM_EVETYP_NG	:= 3	{ DE:"Node guarding event occured" }
+	);
+
+	COPM_SDO_STATUS_ENUM: ( { DE:"CANopen SDO procedure execution state" }
+		COPM_SDO_INIT := 0,	{ DE:"Initialization" }
+		COPM_SDO_WAIT := 1,	{ DE:"Busy" }
+		COPM_SDO_RQ := 2,	{ DE:"Send request" }
+		COPM_SDO_RSP := 3,	{ DE:"Wait response" }
+		COPM_SDO_END := 4	{ DE:"Terminated" }
+	);
+	
+	COPM_SDO_ABORT_ENUM: ( { DE:"CANopen SDO abort code, according to DS301" }
+		COPM_SDO_ABORT_OK := 16#00000000,		{ DE:"No error" }
+		COPM_SDO_ABORT_TGBIT := 16#05030000,	{ DE:"Toggle bit not alternated" }
+		COPM_SDO_ABORT_TMO := 16#05040000,		{ DE:"SDO protocol timed out" }
+		COPM_SDO_ABORT_CSC := 16#05040001,		{ DE:"Client/server command specifier not valid or unknown" }
+		COPM_SDO_ABORT_BCKS := 16#05040002,		{ DE:"Invalid block size (block mode only)" }
+		COPM_SDO_ABORT_SEQN := 16#05040003,		{ DE:"Invalid sequence number (block mode only)" }
+		COPM_SDO_ABORT_CRC := 16#05040004,		{ DE:"CRC error (block mode only)" }
+		COPM_SDO_ABORT_OUTM := 16#05040005,		{ DE:"Out of memory" }
+		COPM_SDO_ABORT_UNACC := 16#06010000,	{ DE:"Unsupported access to an object" }
+		COPM_SDO_ABORT_WRONLY := 16#06010001,	{ DE:"Attempt to read a write only object" }
+		COPM_SDO_ABORT_RDONLY := 16#06010002,	{ DE:"Attempt to write a read only object" }
+		COPM_SDO_ABORT_NOOBJ := 16#06020000,	{ DE:"Object does not exist in the object dictionary" }
+		COPM_SDO_ABORT_MAPOBJ := 16#06040041,	{ DE:"Object cannot be mapped to the PDO" }
+		COPM_SDO_ABORT_EXCPDO := 16#06040042,	{ DE:"The number and length of the objects to be mapped would exceed PDO length" }
+		COPM_SDO_ABORT_PARINC := 16#06040043,	{ DE:"General parameter incompatibility reason" }
+		COPM_SDO_ABORT_GENINC := 16#06040047,	{ DE:"General internal incompatibility in the device" }
+		COPM_SDO_ABORT_HWERR := 16#06060000,	{ DE:"Access failed due to an hardware error" }
+		COPM_SDO_ABORT_OBJLEN := 16#06070010,	{ DE:"Data type does not match, length of service parameter does not match" }
+		COPM_SDO_ABORT_TOOHG := 16#06070012,	{ DE:"Data type does not match, length of service parameter too high" }
+		COPM_SDO_ABORT_TOOLW := 16#06070013,	{ DE:"Data type does not match, length of service parameter too low" }
+		COPM_SDO_ABORT_NOSI := 16#06090011,		{ DE:"Sub-index does not exist" }
+		COPM_SDO_ABORT_RANGE := 16#06090030,	{ DE:"Value range of parameter exceeded" }
+		COPM_SDO_ABORT_LIMHG := 16#06090031,	{ DE:"Value of parameter written too high" }
+		COPM_SDO_ABORT_LIMLW := 16#06090032,	{ DE:"Value of parameter written too low" }
+		COPM_SDO_ABORT_HGLW := 16#06090036,		{ DE:"Maximum value is less than minimum value" }
+		COPM_SDO_ABORT_GENERIC := 16#08000000,	{ DE:"General error" }
+		COPM_SDO_ABORT_TRANSF := 16#08000020,	{ DE:"Data cannot be transferred or stored to the application" }
+		COPM_SDO_ABORT_TRANSFLOC := 16#08000021,	{ DE:"Data cannot be transferred or stored to the application  because of local control" }
+		COPM_SDO_ABORT_TRANSSTAT := 16#08000022,	{ DE:"Data cannot be transferred or stored to the application because of the present device state" }
+		COPM_SDO_ABORT_OBJDICT := 16#08000023	{ DE:"Object dictionary dynamic generation fails" }
+	);
+	
+	COPM_RXCOBID_LIST_ENUM: ( { DE:"CANopen RX COBID list" }
+		COPM_RXCOBID_LIST_SDO := 1,		{ DE:"SDO list - SDO response cobid managed list ID" }
+		COPM_RXCOBID_LIST_NMTE := 2,	{ DE:"NMTE list - Node guarding response cobid managed list ID" }
+		COPM_RXCOBID_LIST_EMCY := 3		{ DE:"EMCY list - EMCY response cobid managed list ID" }
+	);
+	
+	COPM_MEMORYMAPPING_ARRAY_ENUM: ( { DE:"Memory mapping array indexes" }
+		MEMMAP_ADDR_COPMNETLIST := 0,		{ DE:"addrCopmNetList" }
+		MEMMAP_ADDR_COPMNETLIST_CFG := 1,	{ DE:"addrCopmNetListCfg" }
+		MEMMAP_ADDR_WORK_NMTE := 2,			{ DE:"addrWorkNMTE" }
+		MEMMAP_ADDR_WORK_SDO := 3,			{ DE:"addrWorkSdo" }
+		MEMMAP_ADDR_WORK_PRM := 4,			{ DE:"addrWorkPrm" }
+		MEMMAP_ADDR_WORK_RX_PDO := 5,		{ DE:"addrWorkRxPDO" }
+		MEMMAP_ADDR_INP_PROC_IMAGE := 6,	{ DE:"addrInpProcImage" }
+		MEMMAP_ADDR_WORK_TX_PDO := 7,	 	{ DE:"addrWorkTxPDO" }
+		MEMMAP_ADDR_OUT_PROC_IMAGE := 8,	{ DE:"addrOutProcImage" }
+		MEMMAP_ADDR_WORK_PLC_IN := 9,		{ DE:"addrWorkPlcIn" }
+		MEMMAP_ADDR_WORK_PLC_OUT := 10		{ DE:"addrWorkPlcOut" }
+	);
+	
+	COPM_MONITOR_STRUCT : STRUCT { DE:"CANopen diagnostic"}
+		numSlot : UINT;
+		levelMax : UINT;
+		levelNow : UINT;
+		overrunCount : UINT;
+		can0_txQueueFull: UINT;
+	END_STRUCT;
+	
+	COPM2_MONITOR_STRUCT : STRUCT { DE:"CANopen diagnostic"}
+		numSlot : UINT;
+		levelMax : UINT;
+		levelNow : UINT;
+		overrunCount : UINT;
+		can0_txQueueFull: UINT;
+		can1_txQueueFull: UINT;
+	END_STRUCT;
+	
+	COPM_NET_CFG_STRUCT : STRUCT { DE:"Main net configuration"}
+		used : BOOL;			{ DE:"Indicate if network is used in current configuration" }
+		can : USINT;			{ DE:"CAN physical channel, 0 for CAN-A, 1 for CAN-B" }
+		node : USINT;			{ DE:"CANopen Master unique node in network, 1 to 127" }
+		reserved : USINT;		{ DE:"Reserved" }
+		syncCob : UINT;			{ DE:"Synchronization object COB-ID" }
+		hbTime : UINT;			{ DE:"Heartbeat Producer time, ms" }
+		syncCycle : UDINT;		{ DE:"Synchronization object cycle period, us" }
+		baud : COPM_BAUD_ENUM;	{ DE:"Baud rate CAN, referred to enumerative COPM_BAUD_ENUM" }
+	END_STRUCT;
+	
+	COPM_NET_STATUS_STRUCT : STRUCT { DE:"Main net status"}
+		active : BOOL;				{ DE:"Indicate if network is used in current configuration" }
+		n_slave_pres : USINT;		{ DE:"CAN physical channel, 0 for CAN-A, 1 for CAN-B" }
+		rqStopNet : BOOL;			{ DE:"CANopen Master unique node in network, 1 to 127" }
+		isBusOff : BOOL;			{ DE:"Network is in bus off condition" }
+	END_STRUCT;
+	
+	COPM_STATUS_STRUCT : STRUCT	{ DE:"Status of CANopen Master"}
+		net : COPM_NET_CFG_STRUCT; { DE:"Configuration of the available networks" }
+		net_status : COPM_NET_STATUS_STRUCT; { DE:"Status of the networks" }
+		cfg : BOOL;				{ DE:"CANopen Master configured" }
+		net_cfg : BOOL;			{ DE:"CANopen Master network configuration result" }
+		running : BOOL;			{ DE:"CANopen Master entered in one of running state according to DSP302" }
+		rqRst : BOOL;			{ DE:"Restart communication request from system" }
+		rqBoot : BOOL;			{ DE:"Boot request from system" }
+		rqStop : BOOL;			{ DE:"Stopped request from system" }
+		exchRx : BOOL;			{ DE:"PDO data can be received" }
+		exchRxTx : BOOL;		{ DE:"Data exchange active" }
+		n_slave : UINT;			{ DE:"Total number of Configurated Slave in Net list" }
+		n_prm : UINT;			{ DE:"Total number of Parametrization Slave Message" }
+		n_pdoRx : USINT;		{ DE:"Total number of Receive Process Data Object" }
+		n_pdoTx : USINT;		{ DE:"Total number of Transmit Process Data Object" }
+		n_iecInp : USINT;		{ DE:"Total number of Input IEC Process Data Object" }
+		n_iecOut : USINT;		{ DE:"Total number of Output IEC Process Data Object" }
+		status : COPM_STATE_ENUM;	{ DE:"State, referred to enumerative COPM_STATE_ENUM" }
+		error : COPM_ERROR_ENUM;	{ DE:"Last error, referred to enumerative COPM_ERROR_ENUM" }
+		readyToReboot : BOOL;	{ DE:"Ready to reboot. All nodes have sent bootup message" }
+		rqStart : BOOL;			{ DE:"Start from stopped by user status" }
+		rqRstNode : BOOL;		{ DE:"Request reset node" }
+		reserved : USINT;		{ DE:"Reserved" }
+	END_STRUCT;
+
+	COPM2_STATUS_STRUCT : STRUCT	{ DE:"Status of CANopen Master"}
+		net : ARRAY[ 0..1 ] OF COPM_NET_CFG_STRUCT; { DE:"Configuration of the available networks" }
+		net_status : ARRAY[ 0..1 ] OF COPM_NET_STATUS_STRUCT; { DE:"Status of the networks" }
+		cfg : BOOL;				{ DE:"CANopen Master configured" }
+		net_cfg : BOOL;			{ DE:"CANopen Master network configuration result" }
+		running : BOOL;			{ DE:"CANopen Master entered in one of running state according to DSP302" }
+		rqRst : BOOL;			{ DE:"Restart communication request from system" }
+		rqBoot : BOOL;			{ DE:"Boot request from system" }
+		rqStop : BOOL;			{ DE:"Stopped request from system" }
+		exchRx : BOOL;			{ DE:"PDO data can be received" }
+		exchRxTx : BOOL;		{ DE:"Data exchange active" }
+		n_slave : UINT;			{ DE:"Total number of Configurated Slave in Net list" }
+		n_prm : UINT;			{ DE:"Total number of Parametrization Slave Message" }
+		n_pdoRx : USINT;		{ DE:"Total number of Receive Process Data Object" }
+		n_pdoTx : USINT;		{ DE:"Total number of Transmit Process Data Object" }
+		n_iecInp : USINT;		{ DE:"Total number of Input IEC Process Data Object" }
+		n_iecOut : USINT;		{ DE:"Total number of Output IEC Process Data Object" }
+		status : COPM_STATE_ENUM;	{ DE:"State, referred to enumerative COPM_STATE_ENUM" }
+		error : COPM_ERROR_ENUM;	{ DE:"Last error, referred to enumerative COPM_ERROR_ENUM" }
+		readyToReboot : BOOL;	{ DE:"Ready to reboot. All nodes have sent bootup message" }
+		rqStart : BOOL;			{ DE:"Start from stopped by user status" }
+		rqRstNode : BOOL;		{ DE:"Request reset node" }
+		reserved : USINT;		{ DE:"Reserved" }
+	END_STRUCT;
+
+	COPM_NETLIST_CFG_STRUCT : STRUCT	{ DE:"Status of CANopen Master"}
+		net : USINT;	{ DE:"CANopen network, 0 or 1" }
+		node : USINT;	{ DE:"Slave unique node in network, 1 to 127" }
+(*		deviceTypeIdentification : DWORD;	{ DE:"Device type (1000h DS301)" }	*)
+(*		vendorIdentification : DWORD;	{ DE:"Vendor ID (1018.1h DS301)" }		*)
+(*		productCode : UDINT;	{ DE:"Product code (1018.2h DS301)" }			*)
+(*		revisionNumber : UDINT;	{ DE:"Revision number (1018.3h DS301)" }		*)
+(*		serialNumber : UDINT;	{ DE:"Serial number (1018.4h DS301)" }			*)
+		bootTime : UINT;	{ DE:"Boot time elapsed, ms" }
+		guardTime : UINT;	{ DE:"Guard time, ms" }
+		ltf : USINT;		{ DE:"Life time factor" }
+		mandatory : USINT;	{ DE:"Node is mandatory (1) or not" }
+		n_prm : UINT;		{ DE:"Total number of Parametrization Slave Message" }
+		n_pdoRx : USINT;	{ DE:"Total number of Receive Process Data Object" }
+		n_pdoTx : USINT;	{ DE:"Total number of Transmit Process Data Object" }
+	END_STRUCT;
+	
+	COPM_NETLIST_STRUCT : STRUCT	{ DE:"CANopen Master Net list"}
+		pNodeCfg : @COPM_NETLIST_CFG_STRUCT;	{ DE:"CANopen Slave configuration settings" }
+		cfg	: BOOL;			{ DE:"CANopen Slave configured" }
+		pres : BOOL;		{ DE:"CANopen Slave present on network" }
+		bootupMsg : BOOL;	{ DE:"Bootup msg has been reached by master" }
+		bootStatus : USINT;	{ DE:"Boot-up procedure status, referred to enumerative COPM_BOOTST_ENUM" }
+		bootRes : COPM_BOOTRES_ENUM;	{ DE:"Boot-up procedure result, referred to enumerative COPM_BOOTRES_ENUM" }
+		bootErr : COPM_SDO_ABORT_ENUM;	{ DE:"Boot-up procedure SDO result, referred to enumerative COPM_SDO_ABORT_ENUM" }
+		bootStart : UDINT;	{ DE:"Boot-up start time" }
+		n_emcy : UINT;		{ DE:"Total number of Emergency message received from node" }
+		n_pdoRxSyncRequired : USINT; { DE:"Number of sync PDO required from node" }
+		n_pdoRxSyncReceived : USINT; { DE:"Number of sync PDO received from node" }
+		pdoRxSyncMissed : BOOL;	 { DE:"PDO missed from node" }
+		pdoRxSyncMissCount : USINT; { DE:"Number of sync PDO missed from node" }
+		status : USINT;	{ DE:"State, referred to enumerative  COPM_STATE_ENUM" }
+		n_slaveLoss : USINT;		{ DE:"Number of slave loss" }
+		error : COPM_ERROR_ENUM;	{ DE:"Last error, referred to enumerative COPM_ERROR_ENUM" }		
+	END_STRUCT;
+
+	COPM_EVENT_STRUCT : STRUCT	{ DE:"CANopen Master Event Callback management" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		reserved : USINT;	{ DE:"Reserved" }
+		reserved1 : UINT;	{ DE:"Reserved" }
+		event : COPM_EVETYP_ENUM;	{ DE:"Event type, referred to enumerative COPM_EVETYP_ENUM" }
+		status : COPM_STATE_ENUM;	{ DE:"State, referred to enumerative  COPM_STATE_ENUM" }
+		emcyErrCode : WORD;	{ DE:"Emergency error code" }
+		emcyErrReg : BYTE;	{ DE:"Error register (1001h DS301)" }
+		emcyErrField_0 : BYTE;	{ DE:"Emergency error field, manufacturer 0" }
+		emcyErrField_1 : BYTE;	{ DE:"Emergency error field, manufacturer 1" }
+		emcyErrField_2 : BYTE;	{ DE:"Emergency error field, manufacturer 2" }
+		emcyErrField_3 : BYTE;	{ DE:"Emergency error field, manufacturer 3" }
+		emcyErrField_4 : BYTE;	{ DE:"Emergency error field, manufacturer 4" }
+	END_STRUCT;
+	
+	COPM_PLC_HDLR_STRUCT : STRUCT	{ DE:"CANopen PLH handler struct used for IEC mappings configuration" }
+		pPlcImage : DWORD;			{ DE:"PLC variable address" }
+		pProcImage : DWORD;			{ DE:"Process image address" }
+		mappingBitOffBitLen : WORD; { DE:"Bit 0-7 offset bit, Bit 8-15 length bit" }
+		mappingNElem : WORD;		{ DE:"Number of elements" }
+	END_STRUCT;
+	
+	COPM_SDO_SCHEDULING_DIAGNO_STRUCT : STRUCT
+		pConfig : @COPM_SDO_SCHEDULING_CONFIG_STRUCT;	{ DE:"Pointer to relative object" }
+		lastValueSent : DWORD;		{ DE:"Last value read (for Read or ReadWrite commands)" }
+		lastValueReceived : DWORD;	{ DE:"Last value sent (for Write or ReadWrite commands)" }
+		timestampLastRqOk : UDINT;	{ DE:"Last successfull request timestamp (ms)" }
+		isFirstTime : BOOL;			{ DE:"Working flag" }
+		reserved : ARRAY[0..2] OF USINT;
+		lastError : COPM_ERROR_ENUM;		{ DE:"Error code of the last request" }
+		lastAbort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+		execCount : UDINT;			{ DE:"Number of successful executions" }
+		errorCount : UDINT;			{ DE:"Number of failed executions" }
+	END_STRUCT;
+	
+	COPM_SDO_SCHEDULING_CONFIG_STRUCT : STRUCT
+		net : USINT;			{ DE:"CANopen network, 0 or 1" }
+		node : USINT;			{ DE:"Slave unique node in network, 1 to 127" }
+		objIndex : UINT;		{ DE:"Object index" }
+		objSubIndex : USINT;	{ DE:"Object sub index" }
+		objLen : USINT;			{ DE:"Object sub index" }
+		cmdDirection : USINT;	{ DE:"0 Read, 1 Write, 2 Read/Write" }
+		reserved1 : USINT;
+		timeout : UINT;			{ DE:"Timeout of the command" }
+		diagnoRecIndex : UINT;	{ DE:"Index of the relative working/diagnostic structure record" }
+		polling : UDINT;			{ DE:"Polling time in ms" }
+		variableAddress : PVOID;	{ DE:"Address of the variable" }
+		pOneshotVar : @BOOL;		{ DE:"Address of the one shot variable" }
+	END_STRUCT;
+
+END_TYPE
+
+{ ALLOCATE:sysCopmStatus }
+{ ALLOCATE:sysCopmEvent }
+{ ALLOCATE:sysCopmMonitor }
+VAR_GLOBAL
+	{G:"CANopen Master"}
+	sysCopmStatus 	AT %IB60002.0 : COPM2_STATUS_STRUCT; 					{ DE:"Status of CANopen Master" }
+	sysCopmEvent 	AT %IB60004.0 : COPM_EVENT_STRUCT; 					{ DE:"Event from CANopen Master" }
+	sysCopmMonitor 	AT %IB60005.0 : COPM2_MONITOR_STRUCT; 					{ DE:"Diagnostic for CANopen Master" }
+END_VAR
+
+FUNCTION sysCopm_Reboot : BOOL
+	{ DE:"CANopen Master system reboot" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_GetSlaveHandle : USINT
+	{ DE:"CANopen Master get offset in Netlist of corresponding slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+		node : USINT;			{ DE:"Slave unique node in network, 1 to 127" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_MemoryMapping : DINT
+	{ HIDDEN:ON }
+	{ DE:"Memory mapping configuration" }
+	VAR_INPUT
+		addrCopmNetList : DWORD;	{ DE:"Address of the array used to manage network status" }
+		addrCopmNetListCfg : DWORD;	{ DE:"Address of tha array used to manage network (constant) configuration" }
+		addrWorkNMTE : DWORD;	{ DE:"Address of array of CopM_NMTE_HDLR type to manage NMTE" }
+		addrWorkSdo : DWORD;	{ DE:"Address of array of CopM_SDO_HDLR type to manage SDO" }
+		addrWorkPrm : DWORD;	{ DE:"Address of array of CopM_PRM_HDLR type to manage parametrization" }
+		nSlaves : UINT;	{ DE:"Number of slaves" }
+		addrWorkRxPDO : DWORD;	{ DE:"Address of array of CopM_PDO_HDLR type to manage PDO rx" }
+		addrInpProcImage : DWORD;	{ DE:"Address of array used to store process images for input data" }
+		nPdoRx : UINT;	{ DE:"Number of PDO rx" }
+		addrWorkTxPDO : DWORD;	{ DE:"Address of array of CopM_PDO_HDLR type to manage PDO tx" }
+		addrOutProcImage : DWORD;	{ DE:"Address of array used to store process images for output data" }
+		nPdoTx : UINT;	{ DE:"Number of PDO tx" }
+		addrWorkPlcIn : DWORD;	{ DE:"Address of array of CopM_PLC_HDLR type to manage PDO rx mappings" }
+		nPdoRxIecMapping : UINT;	{ DE:"Number of rx IEC mappings" }
+		addrWorkPlcOut : DWORD;	{ DE:"Address of array of CopM_PLC_HDLR type to manage PDO tx mappings" }
+		nPdoTxIecMapping : UINT;	{ DE:"Number of tx IEC mappings" }
+		memoryAllocated : UDINT;	{ DE:"PLC side memory allocation" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_MemoryMappingArr : DINT
+	{ HIDDEN:ON }
+	{ DE:"Memory mapping configuration (for compiler that do not support more than 8 parameters passing (PowerPC)" }
+	VAR_INPUT
+		addrMemMapArr : DWORD; 	{ DE:"Address of the memory mapping configuration array" }
+		nSlaves : UINT;	{ DE:"Number of slaves" }
+		nPdoRx : UINT;	{ DE:"Number of PDO rx" }
+		nPdoTx : UINT;	{ DE:"Number of PDO tx" }
+		nPdoRxIecMapping : UINT;	{ DE:"Number of rx IEC mappings" }
+		nPdoTxIecMapping : UINT;	{ DE:"Number of tx IEC mappings" }
+		memoryAllocated : UDINT;	{ DE:"PLC side memory allocation" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SetConstPDORxCobIDMap : DINT
+	{ HIDDEN:ON }
+	{ DE:"Constant table configuration" }
+	VAR_INPUT
+		addrPDORxCobIDMap : DWORD;	{ DE:"Address of array of PLCArrayPDORxCobIDMap" }
+		firstIndex : UINT;
+		numRecords : UINT;
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SetConstNetIDMap : DINT
+	{ HIDDEN:ON }
+	{ DE:"Constant table configuration" }
+	VAR_INPUT
+		addrNetIDMap : DWORD;	{ DE:"Address of array of PLCArrayNetIDMap" }
+		maxNodeId : USINT;
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_NetAssign : DINT
+	{ HIDDEN:ON }
+	{ DE:"Line configuration set, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		baud : COPM_BAUD_ENUM;	{ DE:"Baud rate CAN, referred to enumerative COPM_BAUD_ENUM" }
+		node : USINT;	{ DE:"Master unique node in network, 1 to 127" }
+		syncCob : DWORD;	{ DE:"Synchronization object COB-ID" }
+		syncCycle : UDINT;	{ DE:"Synchronization object cycle period, us" }
+		hbTime : UINT;	{ DE:"Heartbeat producer time, ms" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SdoServerOpen : DINT
+	{ HIDDEN:ON }
+	{ DE:"Open SDO server channel. Only if master is not configured" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_MasterAssign : DINT
+	{ HIDDEN:ON }
+	{ DE:"Copm initialized, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		numLines : USINT;	{ DE:"Number of CAN net" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SlaveAssign : COPM_ERROR_ENUM
+	{ HIDDEN:ON }
+	{ DE:"Copm adding slave to netlist, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Slave unique node in network, 1 to 127" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_PdoRxInstall : COPM_ERROR_ENUM
+	{ HIDDEN:ON }
+	{ DE:"Copm install new rx PDO from slave node, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		cob : WORD;		{ DE:"COB-ID 11 bit PDO" }
+		TT :  UINT;		{ DE:"Transmission type CANopen DS301" }
+		len : USINT; 	{ DE:"PDO size" }
+		cycle : UDINT;	{ DE:"Cycle time for rtr request, ms" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_PdoTxInstall : COPM_ERROR_ENUM
+	{ HIDDEN:ON }
+	{ DE:"Copm install new tx PDO to slave node, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		cob : WORD;		{ DE:"COB-ID 11 bit PDO" }
+		TT :  UINT;		{ DE:"Transmission type CANopen DS301" }
+		len : USINT; 	{ DE:"PDO size" }
+		cycle : UDINT;	{ DE:"Cycle time for transmit, ms" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+		
+FUNCTION sysCopm_PdoIecMappingsSet : COPM_ERROR_ENUM 
+	{ HIDDEN:ON }
+	{ DE:"Copm setting of IEC image, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		addrIECTxMappingTableAdr : DWORD;	{ DE:"Address of the table of COPM_PLC_HDLR_STRUCT with Tx mappings" }
+		numMappingsTx : DWORD;				{ DE:"Number of records / mappings Tx" }
+		addrIECRxMappingTableAdr : DWORD;	{ DE:"Address of the table of COPM_PLC_HDLR_STRUCT with Rx mappings" }
+		numMappingsRx : DWORD;				{ DE:"Number of records / mappings Rx" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SlavePrmSet : COPM_ERROR_ENUM
+	{ HIDDEN:ON }
+	{ DE:"Copm slave parametrization, refers to enumerative COPM_ERROR_ENUM for return value" }
+	VAR_INPUT
+		addrParamTable : DWORD;	{ DE:"Address of the array of constant used to define param list" }
+		numParams : UDINT;		{ DE:"Number of records in the list"}
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION_BLOCK sysCopm_SlaveSetObjInteger
+	{ DE:"Copm master set integer object on slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		objd : USINT;	{ DE:"Slave Object size, 1 to 4" }
+		val : DINT;		{ DE:"Integer Value to be written" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;			{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;						{ DE:"Offset in Netlist of corresponding slave"}
+		val_buff : ARRAY[ 0..3] OF USINT;	{ DE:"Internal buffer"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCopm_SlaveSetObjReal
+	{ DE:"Copm master set real object on slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		val : REAL;		{ DE:"Real Value to be written" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;						{ DE:"Offset in Netlist of corresponding slave"}
+		val_buff : ARRAY[ 0..3] OF USINT;	{ DE:"Internal buffer"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCopm_SlaveSetObjBuffer
+	{ DE:"Copm master set buffer object on slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		vald : UINT;	{ DE:"Size of buffer to be written" }
+		val : @BYTE;	{ DE:"Buffer of Value to be written" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;		{ DE:"Offset in Netlist of corresponding slave"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCopm_SlaveGetObjInteger
+	{ DE:"Copm master get integer object from slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		val : DINT;						{ DE:"Integer Value that was read" }
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;						{ DE:"Offset in Netlist of corresponding slave"}
+		val_buff : ARRAY[ 0..3] OF USINT;	{ DE:"Internal buffer"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCopm_SlaveGetObjReal
+	{ DE:"Copm master get real object from slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		val : REAL;						{ DE:"Real Value that was read" }
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;						{ DE:"Offset in Netlist of corresponding slave"}
+		val_buff : ARRAY[ 0..3] OF USINT;	{ DE:"Internal buffer"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION_BLOCK sysCopm_SlaveGetObjBuffer
+	{ DE:"Copm master get buffer object from slave" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;	{ DE:"CAN physical channel, referred to enumerative COPM_CHN_ENUM" }
+		node : USINT;	{ DE:"Corresponding slave node in network, 1 to 127" }
+		obji : WORD;	{ DE:"Slave Object index" }
+		objs : BYTE;	{ DE:"Slave Object sub-index" }
+		vald : UINT;	{ DE:"Buffer destination size"}
+		val : @BYTE;	{ DE:"Buffer destination of Value that was read" }
+		tmo	: UINT;		{ DE:"Time out (ms)" }
+	END_VAR
+	VAR_OUTPUT
+		end	: BOOL;						{ DE:"Request terminated, TRUE only for one cycle"}
+		status : COPM_SDO_STATUS_ENUM;	{ DE:"Status of request, referred to enumerative COPM_SDO_STATUS_ENUM"}
+		objd : UINT;					{ DE:"Size of valid data in buffer that was read" }
+		error : COPM_ERROR_ENUM;		{ DE:"Error of request, referred to enumerative COPM_ERROR_ENUM for returned value" }
+		abort : COPM_SDO_ABORT_ENUM;	{ DE:"Abort code of request, referred to enumerative COPM_SDO_ABORT_ENUM for returned value" }
+	END_VAR
+	VAR
+		net : USINT;	{ DE:"Offset in Netlist of corresponding slave"}
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION_BLOCK
+
+FUNCTION sysCopm_SetSkipNodeMask : BOOL
+	{ HIDDEN:ON }
+	{ DE:"Skip nodes at startup. Each bit is related to a node of the network. Value 1 to skip" }
+	VAR_INPUT
+		can : COPM_CHN_ENUM;		{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		skipMask : PVOID;			{ DE:"Skip nodes mask. Bit 0 first node in the network (by its position)" }
+		skipMaskNumBytes : USINT;	{ DE:"Number of bytes of the mask" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_SdoSchedulingAssign : BOOL
+	{ HIDDEN:ON }
+	{ DE:"Diagnostic scheduling table configuration" }
+	VAR_INPUT
+		netId : COPM_CHN_ENUM;		{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		numRecords : UINT;			{ DE:"Number of records" }
+		configTable : @COPM_SDO_SCHEDULING_CONFIG_STRUCT;	{ DE:"SDO scheduling configuration table" }
+		diagnoTable : @COPM_SDO_SCHEDULING_DIAGNO_STRUCT;	{ DE:"SDO scheduling diagno table" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysCopm_GetSlaveDiagno : @COPM_NETLIST_STRUCT
+	{ DE:"Return the diagnostic structure referred to the specified node" }
+	VAR_INPUT
+		netId : COPM_CHN_ENUM;			{ DE:"CAN physical channel, refers to enumerative COPM_CHN_ENUM" }
+		node : USINT;					{ DE:"Corresponding slave node in network, 1 to 127" }
+		@errorCode : COPM_ERROR_ENUM; 	{ DE:"Error code" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION

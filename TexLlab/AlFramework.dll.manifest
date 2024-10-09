@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+<assemblyIdentity
+    type="win32"
+    name="AlFramework.dll"
+    version="1.0.0.0" />
+
+<file name="AlFramework.dll">
+
+    <comClass
+        description="AlCOMInterface Class"
+        clsid="{908E6536-75C4-4EFB-91FF-C1826A13A1CB}"
+        threadingModel="Apartment"
+        progid="AlFramework.AlCOMInterface"
+        tlbid="{FBCF5D39-78B3-40A5-9190-E7760B26EA90}" />
+
+    <typelib tlbid="{FBCF5D39-78B3-40A5-9190-E7760B26EA90}"
+        version="1.0"
+        helpdir="" />
+
+</file>
+
+<comInterfaceExternalProxyStub
+    name="_IAlCOMInterfaceEvents"
+    iid="{120368D8-AAF5-4BF3-9B37-049A3D57D7DD}"
+    proxyStubClsid32="{00020420-0000-0000-C000-000000000046}"
+    baseInterface="{00000000-0000-0000-C000-000000000046}"
+    tlbid="{FBCF5D39-78B3-40A5-9190-E7760B26EA90}" />
+
+<comInterfaceExternalProxyStub
+    name="IAlCOMInterface"
+    iid="{DAC1F300-23FC-44AA-A911-19DA7D9243CB}"
+    proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
+    baseInterface="{00000000-0000-0000-C000-000000000046}"
+    tlbid="{FBCF5D39-78B3-40A5-9190-E7760B26EA90}" />
+
+</assembly>

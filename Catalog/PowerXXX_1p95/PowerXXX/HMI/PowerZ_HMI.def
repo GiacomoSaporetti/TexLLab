@@ -1,0 +1,154 @@
+;
+;	Target properties
+;
+SCREEN	800 480
+SAVESCREEN 0
+REFRESH 50
+USE_WAITING	1
+FONT_FORMAT	"VH"
+JOYPAD 0
+INIT   1
+BMPFULL 0
+FONTPLK_CODE 1
+UNICODE 1
+USEZORDER 1
+USETRANSPARENCY 0
+USEBACKGROUNDPARAMS 0
+DEFAULT_TITLE_FORECOLOR 1
+DEFAULT_TITLE_BACKCOLOR 0
+DEFAULT_TITLE_FONTNAME "DroidSansMono_12x24"
+DEFAULT_PAGE_FONTNAME "DroidSansMono_12x24"
+;STRINGS_ON_TARGET 1
+;FONTS_ON_TARGET 1
+;BMPS_ON_TARGET 1
+BMPCOLORSET "RGB_16"
+PPJX_TEMPLATE "PowerZ_HMI_template.ppjx"
+
+;
+;	Versions of controls
+;
+CTRL	"Static"		2
+CTRL	"EditBox"		3
+CTRL	"TextBox"		-1
+CTRL	"ComboBox"		-1
+CTRL	"Button"		5
+CTRL	"CheckBox"		2
+CTRL	"Progress"		2
+CTRL	"Animation"		2
+CTRL	"Image"			2
+CTRL	"CustomCtrl"	-1
+CTRL	"Chart"			-1
+CTRL	"Trend"			-1
+CTRL	"Line"			1
+CTRL	"Rect"			1
+
+
+; se attivato GlobalTimer viene eseguito nel refresh invece che nel draw
+;CTRL	"GlobalTimer"   1 
+;
+;	Enumeratives
+;
+; ENUM 100: key codes
+;
+ENUM	100	27	"Esc"
+ENUM	100	13	"Enter"
+ENUM	100	127	"Del"
+ENUM	100	8	"Left"
+ENUM	100	12	"Right"
+ENUM	100	11	"ArrowUp"
+ENUM	100	10	"ArrowDw"
+ENUM	100	4	"Back"
+ENUM	100	9	"Tab"
+ENUM	100	6	"Shift"
+ENUM	100	5	"Caps"
+ENUM	100	14	"Confirm"
+ENUM	100	64	"Waiting"
+ENUM	100	30	"VK_F1"
+ENUM	100	31	"VK_F2"
+ENUM	100	32	"VK_F3"
+ENUM	100	33	"VK_F4"
+ENUM	100	34	"VK_F5"
+ENUM	100	35	"VK_F6"
+ENUM	100	36	"VK_F7"
+ENUM	100	37	"VK_F8"
+ENUM	100	38	"VK_F9"
+ENUM	100	39	"VK_F10"
+;
+; ENUM 101: key-related actions
+;
+ENUM	101	0	"Call"
+ENUM	101	1	"OpenPage"
+ENUM	101	2	"Close"
+ENUM	101	3	"NextField"
+ENUM	101	4	"PrevField"
+ENUM	101	9	"Edit"
+;
+; ENUM 102: editing-mode keys
+;
+ENUM	102	0	"Enter"
+ENUM	102	1	"Esc"
+ENUM	102	2	"Del"
+ENUM	102	3	"Left"
+ENUM	102	4	"Right"
+ENUM	102	5	"ArrowUp"
+ENUM	102	6	"ArrowDw"
+ENUM	102	7	"Back"
+ENUM	102	8	"Tab"
+ENUM	102	9	"Shift"
+ENUM	102	10	"Caps"
+ENUM	102	11	"Confirm"
+ENUM	102	12	"AutoIncUp"
+ENUM	102	13	"AutoIncDown"
+ENUM	102	14	"Waiting"
+;
+; ENUM 103: color codes
+;                    BBGGRR
+ENUM	103	0	"0x00000000"  ; Nero
+ENUM	103	1	"0x00c0c0c0"  ; Grigio
+ENUM	103	2	"0x000000ff"  ; Rosso
+ENUM	103	3	"0x0000ff00"  ; Verde
+ENUM	103	4	"0x00ff0000"  ; Blu
+ENUM	103	5	"0x00000066"  ; Rosso Amaranto
+ENUM	103	6	"0x00006600"  ; Verde Marcio
+ENUM	103	7	"0x00550000"  ; Quasi nero
+ENUM	103	8	"0x00556666"  
+ENUM	103	9	"0x00ffffff"  ; Bianco
+ENUM	103	10	"0x00ffff00"  ; Azzurro
+ENUM	103	11	"0x00ff00ff"
+ENUM	103	12	"0x0000ffff"  ; Giallo
+ENUM	103	13	"0x00aabb00"
+ENUM	103	14	"0x00aa00bb"
+ENUM	103	15	"0x0000bbbb"
+ENUM	103	16	"0x00556600"
+ENUM	103	17	"0x00808080" ; Grigio 1
+ENUM	103	18	"0x00aabbbb" ; Grigio scuro
+ENUM	103	19	"0x00ffff66"
+ENUM	103	20	"0x00ff66ff"
+ENUM	103	21	"0x0066ffff"  ; Giallino
+ENUM	103	22	"0x00007Fff"  ; Arancione
+ENUM	103	23	"0x0055ff66"
+ENUM	103	24	"0x00BD7B4A"  ; Blu Sfondo
+ENUM	103	25	"0x00aabbff"  ; Rosa tenue
+ENUM	103	26	"0x00aaffbb"
+ENUM	103	27	"0x00ffbbbb"
+ENUM	103	28	"0x00aabb66"
+ENUM	103	29	"0x00aa66bb"
+ENUM	103	30	"0x0073BB73"  ; Verde Bottone
+ENUM	103	31	"0x001873E7"  ; Arancione Bottone
+ENUM	103	32	"0x0000DDFF"  ; Giallo				255		221		0
+ENUM	103	33	"0x00D4A462"  ; Celeste				98		164		212
+ENUM	103	34	"0x7FFFFF00"  ; Colore di trasparenza
+;
+; ENUM 103: controls appearance
+;
+ENUM	104	0	"Flat"
+ENUM	104	1	"Raised"
+ENUM	104	2	"Sunken"
+;
+; ENUM 106: supported network protocols
+;
+;ENUM	106	0	""
+;ENUM	106	1	"Local device"
+;ENUM	106	2	"Remote Modbus RTU node"
+;ENUM	106	3	"Remote Modbus TCP node"
+;ENUM	106	4	"Remote CANopen slave"

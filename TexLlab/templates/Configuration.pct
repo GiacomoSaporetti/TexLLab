@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<toolbar name="toolbarConfiguration" caption="Configuration">
+			<button cmd="32878"/> <!-- IDM_COMPILE -->
+			<button cmd="32775"/> <!-- IDM_CONNECT -->
+			<button cmd="32779"/> <!-- IDM_DOWNLOADCODE -->
+		</toolbar>
+		
+		<menubar name="menubarConfiguration">
+			<menu caption="&amp;File">
+				<command caption="New project" cmd="32794" />
+				<command caption="Open project" cmd="32777" />
+				<command caption="Save project" cmd="32789" />
+				<command caption="Save project as..." cmd="32784" />
+				<command caption="Close project" cmd="32776" />
+				<separator/>
+				<command caption="Options..." cmd="32853" />
+				<separator/>
+				<command caption="Print..." cmd="0xE107" />
+				<command caption="Print preview" cmd="0xE109" />
+				<command caption="Printer setup..." cmd="32840" />
+				<separator/>
+				<command caption="Recent" cmd="0xE110" />
+				<separator/>
+				<command caption="Exit" cmd="0xE141" />
+			</menu>
+			<menu caption="&amp;View">
+				<menu caption="Toolbars">
+					<command caption="All toolbars!" cmd="0xE800"/>
+				</menu>
+				<menu caption="Tool windows">
+					<command caption="All dockbars!" cmd="56507"/>
+				</menu>
+				<command caption="Full screen" cmd="32855"/>
+			</menu>
+			<menu caption="&amp;Project">
+				<command caption="Compile" cmd="32878"/>
+				<separator/>
+				<command caption="Select target..." cmd="32844"/>
+				<command caption="Refresh current target" cmd="33041"/>
+			</menu>
+			<menu caption="&amp;On-line">
+				<command caption="Setup communication..." cmd="32773"/>
+				<command caption="Connect" cmd="32775"/>
+				<separator/>
+				<command caption="Download code" cmd="32779"/>
+			</menu>
+			<menu caption="&amp;Help">
+				<command caption="Index" cmd="0xE142"/>
+				<command caption="Context" cmd="0xE146"/>
+				<separator/>
+				<command caption="About..." cmd="0xE140"/>
+			</menu>
+		</menubar>
+	</hmi>
+	
+	<extensions>
+	</extensions>
+</template>

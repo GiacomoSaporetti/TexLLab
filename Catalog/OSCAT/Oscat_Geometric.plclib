@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Geometric" fullXml="true">
+		<descr>WARNING: some elements of this library (function TRIANGLE_A) require also Oscat_Mathematics library to be included inorder to work properly. Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Geometric" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="CIRCLE_SEG"/>
+				<Pou name="CIRCLE_A"/>
+				<Pou name="CIRCLE_C"/>
+				<Pou name="CONE_V"/>
+				<Pou name="TRIANGLE_A"/>
+				<Pou name="ELLIPSE_A"/>
+				<Pou name="SPHERE_V"/>
+				<Pou name="ELLIPSE_C"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="CIRCLE_SEG" version="1.0.0" creationDate="0" lastModifiedDate="1631603909" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Area of a circle segment is enclosed by a Sektantlinie</title>
+				<descr>&lt;HTML&gt;IRCLE_SEG calculates the area of a circle segment is enclosed by a chord and the circle.&lt;br&gt;&lt;br&gt;
+						&lt;img src= circle_seg.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="RX" type="REAL">
+							<descr>Circle radius</descr>
+						</var>
+						<var name="HX" type="REAL">
+							<descr>Height of the chord</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	10. Mar 2010
+programmer 	hugo
+tested by		tobias
+
+CIRCLE_SEG calculates the Area of a circle segement enclosed between a sectant line and the circumference.
+
+
+*)
+
+IF RX > 0.0 THEN
+	CIRCLE_SEG := 2.0 * ACOS(1.0 - LIMIT(HX / RX, 0.0, 2.0));
+	CIRCLE_SEG := (CIRCLE_SEG - SIN(CIRCLE_SEG)) *RX * RX / 2.0;
+END_IF;
+
+
+(* revision histroy
+hm	10. mar 2010	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="CIRCLE_A" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Area of a circle segment</title>
+				<descr>&lt;HTML&gt;CIRCLE_A calculates the area of a circle segment with the angle AX and radius RX.&lt;br&gt;
+						&lt;br&gt;
+						If the angle is set AX = 360 then the circle area is calculated.&lt;br&gt;&lt;br&gt;
+						&lt;img src= circle_a.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="rx" type="REAL">
+							<descr>Circe radius length</descr>
+						</var>
+						<var name="ax" type="REAL">
+							<descr>Circle angle (degrees)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	22. feb 2008
+programmer 	hugo
+tested by		tobias
+
+circle_A calculates the Area of a circle segement if ax = 360 the whole circle is calculated
+
+
+*)
+
+
+circle_A := Rx * RX * 8.726646E-3 * Ax;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	4. dec 2007		rev 1.1
+	changed code for better performance
+
+hm	22. feb 2008	rev 1.2
+	improved performance
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="circle_a.jpg" width="140" height="126" icon="false">
+						<![CDATA[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]]>
+					</image>
+				</images>
+			</function>
+			<function name="CIRCLE_C" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Arc length</title>
+				<descr>&lt;HTML&gt;CIRCLE_C calculates the arc length of an arc with the angle AX and radius RX.&lt;br&gt;
+						If the angle is set AX = 360 then the circumference is calculated.&lt;br&gt;&lt;br&gt;
+						&lt;img src= circle_c.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="Rx" type="REAL">
+							<descr>Circle radius length</descr>
+						</var>
+						<var name="Ax" type="REAL">
+							<descr>Circle angle (degrees)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	22 feb 2008
+programmer 	hugo
+tested by		tobias
+
+circle_C calculates the Circumference of a circle  if ax = 360 the whole circle is calculated
+
+*)
+
+
+circle_C := 1.7453293E-2 * Rx * Ax;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	22. feb 2008	rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="circle_c.jpg" width="133" height="124" icon="false">
+						<![CDATA[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]]>
+					</image>
+				</images>
+			</function>
+			<function name="CONE_V" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Volume of a cone</title>
+				<descr>&lt;HTML&gt;KONE_V calculated the volume of a cone with the radius RX and height HX.&lt;br&gt;&lt;br&gt;
+						&lt;img src= cone_v.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="rx" type="REAL">
+							<descr>Radius of base</descr>
+						</var>
+						<var name="hx" type="REAL">
+							<descr>Height of cone</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	4 dec 2007
+programmer 	hugo
+tested by		tobias
+
+cone_V calculates the Volume of a cone
+
+*)
+
+
+cone_V := 1.047197551 * RX * RX * hx;
+
+(* revision histroy
+hm	17. oct 2007	rev 1.0
+	original version
+
+hm	4. dec 2007		rev 1.1
+	changed code for better performance
+
+hm	22. feb 2008	rev 1.2
+	changed code for better performance
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="cone_v.jpg" width="141" height="143" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CACPAI0DASIAAhEBAxEB/8QAHQAAAgIDAQEBAAAAAAAAAAAAAAYBBwIEBQgDCf/EAEoQAAED
+AwIDBAMMBAsJAAAAAAECAwQABREGBxIhMRNBUWEUInEIJDI1N0JidHWBsrMVI5HwCTNScnOC
+g6HB0dMWFyZDU2NkhOH/xAAaAQEAAgMBAAAAAAAAAAAAAAAAAQMCBAUG/8QAIhEBAAICAQQD
+AQEAAAAAAAAAAAECAxEEEiExMgUTQUJS/9oADAMBAAIRAxEAPwD9U6KKKAooooCiioUSEkgZ
+OOlBNFVzuZrO/WiTBtmmGmpd3DT1zlMqa7TMRgZKE4PqreWUNpJzyKz1TTrYrzHv9ngXOG8m
+RDmsNyGXUdFoWkKSoeRBGPbQdGiiigKKKKAoqD0PdWldIsifCdYjzn7a44MJlRktqca8wHEq
+Tn2pPsoN6iqg3SduO2O2uqdXzNxNSmLY7XJuK0ej2v1w02V8I959TgJA8TSz7mfV12372J0Z
+rxG4OokP3WEFS2W49s4USm8tSED3n0DqF48gO6g9C0Vz7THkQoEePInvXJ1CQlUuQltLjpzz
+JDaUoHLwSK6FAUUUUBRRRQFQcAHPSg8gaSd1LrLY02m0210t3a/PC1RFpAy0pYUXHfY22lxf
+tSPGg1NtQNRzL9q1xRWm6SBGgFWfVhx+JtBHktZedB6kOpo26J05eb9o9WG2bc+mdbkcuUGQ
+VFCfYh1L6AB0SlunG02qLY7dEt8FrsosVhDDLSScIQgBIHM+GP2Um7kKGl7tYNYpwiPbXVQ7
+k4eggvcKVLPk26llw+CQ5jqchYdFfBDiiR63LkCDjOc/vn7q+9AUUUUBWKgkJUSM8u7rWVFB
+XO+219n3l2s1Bo7UL0tFouDKVSRAk9g6ezUHQArHwSpCcjvGR0JpU9yDszp/Y/ZGw2jTCrgb
+bc22rwpufJ7ctuvMNlYQQkBKOWceJPiauG+IAslwxke9nByP0TS/tChKtptEkgfEkHljl/EI
+7qBv4RU0UUBRRRQFFFYrOEk+AoJV8E+yq/tZGrt1bhPPrQNNMG3RyPnTHglyQfahsMJB+m4K
+7+ttUp0dpa6Xd0B4xWlLaYB5vOH1W2h5rWUJH0lCvjt/ptektKwIL7vb3BWX50jvfkuErdWf
+MqUryAwBgAAAzBABJxzJz/hWneLPDvtqm26cyH4ctlbDzSicKQpPCofeDit6igSNqbtJl6ZT
+bbi4ty8WV9VqmrcPrOKaACXT49o2W15/7nlTvVe3FR0rurbrgSlFu1KyLY99GYyFux1f12u2
+ST4ttDwqwATy8e/NBlRRRQFFFFBo3z4kuH1dz8Jpe2g+SXRP2JB/IRTDfPiS4fV3Pwml7aD5
+JdE/YkH8hFA30UUVGwUUUVIKg9Dzx50Hpy6183nQyytxa0oQhJUpSzhIAHUnwoELVBGqtwNP
+adCSuHb8Xy4jPq5QSiK2fMu8TmPGOKsAoSSDjp0pB2mS5c7XN1U8gh7Usoz2krTwqRE4QiKk
+j5v6lIWR/LcX41YFAVCiACT0qaKBW1/pl/VWlZUOM8li5NlEqHIUMhqU0oONKP0eJKQcdRkd
+Ca2tFama1dpa13ZtBYMtlKlx1/DYcGQ40rPzkKSpJHik13SgY6HOPHnVe6USjTG4V7sR9WHd
+iq+2/rjiJSmWkZ7+0Uhz/wBhXgaCxKKKKAooooNC/wDxFcuePeznMfzTVaWjXzG3Wxeg7o/F
+clsOxbLbwhtQTwmQWGErJPckuZI6nFWXfzw2K4kgECM5yJwD6p76pe9bar3W9zjonTnYQ5kZ
+1mxSZTFxGWnmGXY7rqFDBCipDZABwDnqKwsygx623yGldUXGw2/T8zUs+HYTqDsLc62XX2ky
+EtLabRnKnAklaR87GAcmsNJ76t7kS569FWxGo7HEbYzevTAxGedcSVllslJ41NoLRXjklTnD
+8JKsJEv3N7ugtdXS/bR2XS2i03DTgsqRFhiMlp9UpKzJLbTfCsttcSkgnmsAdCa6W2+0GqNh
+V3SxaLbhXjRb5alQ4d1nusSIUpQPpWFhCgtDq+F7Axwrce5YIqak6X5RRRWTFB5A/wCFV/uo
++5d7ZbdJMOkTdRvGK5wEgpiJwZbgPcA2SkH+U43VgHpVfaSxqfX9/wBQj1oUACxwFHoeAhUp
+Q9rvC2fOP7aB5ZZSyltCUpQhOAE4AwkDAHLz/ZWzWPCB3YrKgKKKKCOtIW6rSrbaYWq4yOKV
+pt8XBSU9VxiCiUnz/VKcUB3rQmn0jIxXyfjtPNOIdbDragQpChkKHgR3jyoBiQmQ2262oLac
+SFIUk5Cge/8AZivtSBtOtdpiXPSchSlSNOyfRmVLUSVw1jjjKBPMgIUWsnJKmFZJNP8AQFFF
+FBo334kuH1dz8Jpd2gQP902iVd5skLPPr+oR1pivnxJcPq7n4TS9tB8kuifsSD+QigbS2k9R
+nnnnQltKScDGayoqNAqFHhST4CpqD05VIWdwtUO6T0pNmxUB64rKIsFlQ5OSXVhtlJ8uNSc+
+WTWxorTLWkdMW2zsrLoiNBK3VdXnMkuOHzWsqXnxVS7cVjVu6dsgJy5A02yLjIz8FUp5K246
+T4lLYfWR3FbR64NP4bSMcunn+/jQZUUVB5d9BNFYgnNZVGwVB6HnjzqaKkV/rH/hXXGntTp/
+VxJaxY7kT0CHFExln+a8eH2SFeHJ9C8kDnkk8j+yuVqzTcbVumrlZ5KlIZmMLa7RHNTZUCAt
+P0kkhQ8CB4Vytt9RyNS6VhvzkBq7RyqHcWQc9nKaUW3R7CpBUPFJSfnCgbaKKKDRvnxJcPq7
+n4TS9tB8kuifsSD+QimG+fElw+rufhNL20HyS6J+xIP5CKBvooooIJwCa0Ltd4tjtc2fPfDM
+KGwuQ+6r5jaEkrUfIAE1vnoar3ckm/3LT+kkHibucn0menBPvJghbgUB81bimWvDDivCoG3t
+Ra5MfTf6VubJYvN8eN0mtk/xa3Ep4Wh5NtpbR/UJPPJp3PIHHWq01VvrpvTV0dt0ZM7UFzjq
+4H4loZLoYV/JccUQ02rkPUUsKHXFI9x3y1veDi2We06dYOf1lwdXOkEeJbb4EJP9ooVsUwZM
+nrCi2bHTzK/i4cgZBz059R49Kkk8hkBX7a8sTbhqy8JP6R1zelpUACi3BqE2QDkcJbbCxj+k
+Oe+ueuxLf9eTetRSXc/xjt+mg4+50Ct6Pjss95ak87H+PXAXjv6VHaHxH3Yrx2vb/Tbrhdet
+jT755qkSlrccP85aiVH7zSpq6+WLbqfb7RFtGqX5VwbdkNwNKuSQAhspC1rQ06hPIrRjPjS3
+x96+ZhMc2k/j3f2mf3/fNZgnP+YxXhex7nwZRsZgap1jZF3CY9bWWZtwfCYcxsBSo76H1LCX
+CAoJCgoLweY6U8aG3l1ldbOLrYtTJvlrWtaI51FbEgPpQrgLjbjIa9RRzhRBzyIGM1VPCyfz
+MSzjl0/ez1iRkEVXsPOlN1nmAAi3aoZElvAwETWEBLg/tGA2QP8Axlk0oW33Rk6ISnUWk5TL
+YwDMsj6ZbfmotrDbgHfhKVnwzTFf7/bt0dDvXLR81u5XOzyUTobICm3USmTxdi4hQC2y4nib
+IUEnhWrqDWnfHfH7Q2q5KX9ZWhRXM09fouprLb7pBd7WHNYRIaURglKkhQ+/mK6dVrGjfPiS
+4fV3Pwml7aD5JdE/YkH8hFMN8+JLh9Xc/CaXtn/kl0T9hwfyEUDfRRRQfKS8iNGdddWltttB
+UpayAlIAySSegryJP1bK3d1FfdQRLotvRs/ggW5MVJaemQ2irKluH1ksuu9soBABcT2ZUrhA
+Feht+Yrk3Y3cSOytxt57TlxbQtk4WlRjOAFOQeeenI1QtmYhRbPBatim1W1EdtEVTS+JJZCR
+wYX84YA594x311eBgrltNrR4c7mZrY66j9fWFBj22IzFiMNxozKeBtppISlCfAAdBX35nHM8
+vOiivSV1Hq4MzvvPcf3eyoAx0qaBzPM4HjWW5/Udhji5Yznuqs9w9rlbg7hWGTKcusW1RrXN
+Ycm2i5PQnUPOLYLfrNLSpWUoWcEkeqOVWFcm5rlvc/R7kduUccC5TK3GgM8+IJUDn+6uCYmt
+CQTcdPHHjb5Hhj/rVTkrFo1LOk9M7hU8XafUN82yjbYXK2mBbXZ7xu2pGpIedmtIXxolN+sp
+YkvqKeNSh6vC7jGRVsbaovcfR0K36ggMQrnb/eazF4QxIS2ClD7SUckJW2AeE4KckYHIUGHr
+QjBuGniDnIMCRg56/wDO781Jja1USTcdPkkkn3hI/wBbyH7KqpjrSdwstebxqTODwkHvHea0
+XLSpNxbukCVKtV4aSEt3GCQl4NjGEK5EOJyR6qwU8zyrjei617rlp8efoEj/AFqpX3VVj3nu
+2irE3oSWld7F4bWr/Z5DkVwN9i8CXFuPcBazjPFyyU1Oaa2rPVGzFWa2jU6eu/c57iPLvd90
+FevR2bzCdcukH0dPAzLgurBUppJUSns3lKSpBJ4AprmoKBF+nocczX5++5RsW9bO8ui5G5N5
+09PlMxrgk/o9hRmehFpIWl1aShvhL4jHkhRJQk9MY95XgXBdtfTbXYrU5ScNLmNqcZBPepKS
+CR5ZHtFeTy1itp09JjmZr3VZ7rPXmrdtfc8a01ZoqLBn3qzwjNMa5NLW0qMlQ9IJCFJIKWi4
+oc8eoM99Jf8AB8bn603e9zZYdRaxh223BTi4VpatrK2u0hRwlgLcC1rPGXG3OYIHTlVj6h0n
+uBqjT9ystyuWj5NuuEV2HJZctUspW04goWk++uhSSPvrkbZ7Z622s2/07o6xXbSjdqskFmDG
+7SzSQpSW0AdosCT8NR9ZXiTVS1dFFc+0fpBEBhNyeYfnBOHVxWi20T4hJUoj7zXQoMXUhba0
+kBQIIIIyDXnPWe1900LKlTbHCXddMuOqd9CjAGVBClFRS2jI7VkKJKUJ9dJwEpWMV6NIyMVi
+ptOCcVdhzXw266Spy4q5q9Nnk61XiDfIwkwJTcpniKCWyDwqGcpIBOCOWRnPlW5yA5gjHI5H
+f7Ku3WGzeldYzlT5dvXEu6k8BudueXGkrGAMLWgguAYHJfEPKq/uGwOobelxVk1ciahHwY99
+hJUo+Ce2ZKMDkOZQo81HB5AdzF8jSYiLxqXIycG1fTwUqK+ty0prmwFap+lUTYqPhSrRcWXE
+9cDk8WVfdwn20mXfcy16cl+h3mNOtc9KAtUZ5CFnB7wpta0/dmt+vJx28S0/ovvWjbgZB78Y
+z3n2nvqc1Xsjf3QkTIkXzsFj5i4j+R7SltQrJO++i5CVLi3NyU0CcuIjupAwPpIB/uq2ctIj
+e2H1WmdaWBmjJ8a5On7tc9YRGZen9M3K7xJGRHfQ9FZQ7jOcdo8FDoeqabrZtPuFeygusWXT
+TR6qlvLnPAf0bfAjP9oa178vFXvtdXjXntpx8Ek8OVZ6YP8AkDWlGnP3e6OWnT0F2/3VIw5H
+iKAbjjOf1zhwlnnzwSVHHIE4q0LX7nC3uFJ1FqK7XzuVFYWIMYjvHCzhZB8FLNWlYtM2nTFt
+at9ot0a2wWvgR4rYbQnxOB3nvPU99c7L8j21ihu4+B/smbV7bHRDT8u5Ps3HUM0p9IlNoKW2
+WwPVZZSclLYIzkklSlEnuAsXhA7vvrFLSUnIGP3/APtZ1xLWm0zaXXrWKR0wggEEEZBrENpS
+MAffnnWdFYskYqaKKD//2Q==]]>
+					</image>
+				</images>
+			</function>
+			<function name="TRIANGLE_A" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Area of any triangle</title>
+				<descr>&lt;HTML&gt;TRIANGLE_A calculates the area of any triangle.&lt;br&gt;
+The triangle can be defined either by &lt;br&gt;
+-2 sides  and the angle between (S1, S2 and A)&lt;br&gt;
+-3 sides if A = 0 (S1, S2 and S3).&lt;br&gt;
+&lt;br&gt;
+&lt;img src= triangle_a.jpg /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;WARNING!&lt;/b&gt;&lt;br&gt;
+This function require Oscat_mathematics library to be included in order to work properly.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="S1" type="REAL">
+							<descr>Side 1</descr>
+						</var>
+						<var name="A" type="REAL">
+							<descr>Angle between Side1 and Side2</descr>
+						</var>
+						<var name="S2" type="REAL">
+							<descr>Side 2</descr>
+						</var>
+						<var name="S3" type="REAL">
+							<descr>Side 3</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+triangle_A calculates the Area of a triangle.
+if any input is 0 it will be neglected and the are will be calculated from eiter:
+two sides and an angle (s1 and S2 and the angle A1) or 3 sides.
+
+
+*)
+
+
+IF A = 0.0 THEN
+	TRIANGLE_A := SQRT((s1+s2+S3) * (s1+s2-S3) * (S2+S3-S1) * (S3+S1-S2)) * 0.25;
+ELSE
+	TRIANGLE_A := S1 * S2 * SIN(RAD(A)) * 0.5;
+END_IF;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	22. feb 2008	rev 1.1
+	improved performance
+
+hm	10. mar. 2009	rev 1.2
+	changed syntax of real constants to 0.0
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="triangle_a.jpg" width="141" height="94" icon="false">
+						<![CDATA[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
+TsytYl2ZdCdzbaAQG5dsZxuOMlRgLEhCEB//2Q==]]>
+					</image>
+				</images>
+			</function>
+			<function name="ELLIPSE_A" version="1.0.0" creationDate="0" lastModifiedDate="1637685921" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Area of an ellipse</title>
+				<descr>&lt;HTML&gt;ELLIPSE_A calculates the area of an ellipse that is defined by the radius R1 and R2.&lt;br&gt;&lt;br&gt;
+						&lt;img src= ellipse.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="R1" type="REAL">
+							<descr>Radius 1</descr>
+						</var>
+						<var name="R2" type="REAL">
+							<descr>Radius 2</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="PI" type="REAL">
+							<descr>Kreiszahl PI</descr>
+							<initValue>3.14159265358979323846264338327950288</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+ellipse_A calculates the Area of an ellipe based on the two radians R1 and R2
+
+
+*)
+
+
+ELLIPSE_A := PI * R1 * R2;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	using math constants
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="ellipse.jpg" width="152" height="77" icon="false">
+						<![CDATA[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]]>
+					</image>
+				</images>
+			</function>
+			<function name="SPHERE_V" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Volume of a sphere</title>
+				<descr>Calculates the volume of a sphere with a radius of RX</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="rx" type="REAL">
+							<descr>Sphere radius</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	22. feb 2008
+programmer 	hugo
+tested by		tobias
+
+sphere_V calculates the Volume of a Sphere
+
+
+*)
+
+
+sphere_V := 4.188790205 * Rx * RX * RX;
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	4. dec 2007		rev 1.1
+	changed code for better performance
+
+hm	22. feb 2008		rev 1.2
+	changed code for better performance
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="ELLIPSE_C" version="1.0.0" creationDate="0" lastModifiedDate="1637685992" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Circumference of an ellipse</title>
+				<descr>&lt;HTML&gt;ELLIPSE_C calculates the circumference of an ellipse that is defined by the radius R1 and R2.&lt;br&gt;&lt;br&gt;
+						&lt;img src= ellipse.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="R1" type="REAL">
+							<descr>Radius 1</descr>
+						</var>
+						<var name="R2" type="REAL">
+							<descr>Radius 2</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="PI" type="REAL">
+							<descr>Kreiszahl PI</descr>
+							<initValue>3.14159265358979323846264338327950288</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	10. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+ellipse_C calculates the circumference of an ellipe based on the two radians R1 and R2
+
+*)
+
+
+ELLIPSE_C := PI * (3.0 * (R1+R2) - SQRT((3.0 * r1 + R2) * (3.0 * r2 + r1)));
+
+(* revision histroy
+hm	16. oct 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	using math constants
+
+hm	10. mar. 2009	rev 1.2
+	changed syntax of real constants to 0.0
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="ellipse.jpg" width="152" height="77" icon="false">
+						<![CDATA[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]]>
+					</image>
+				</images>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

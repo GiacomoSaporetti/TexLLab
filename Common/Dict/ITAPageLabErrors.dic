@@ -1,0 +1,245 @@
+# ITA Italiano
+
+<A list must consist of two or more records
+>
+
+<Associated procedure does not exist
+>
+
+<Associated variable does not exist
+>
+
+<Bad definition of default record
+>
+
+<Bad definition of range limits
+>
+
+<Bad enumerated record definition
+>
+
+<Bad enumerated type declaration
+>
+
+<Bad resource string definition
+>
+
+<Bad variable/parameter specification
+>
+
+<Can't close a frame window using flat page model
+>
+
+<Cannot open library file
+>
+
+<Couldn't find the module with the associated procedures
+>
+
+<Duplicated page name
+>
+
+<Enumerative-type value not declared in the project
+>
+
+<Enumerative type not declared in the project
+>
+
+<Error on file copy
+>
+
+<Error on opening the project file
+>
+
+<Format incompatible with associated variable
+>
+
+<Illegal reference to an alarm page
+>
+
+<Image list includes a bitmap not defined in the project
+>
+
+<Image was set as background image of itself
+>
+
+<Incoherent enumerative definition between languages: manual fix of this issue required (check enum translations and then remove one enum definition)
+>
+
+<Incompatible data type
+>
+
+<Initial page not specified
+>
+
+<Invalid access mode specification
+>
+
+<Invalid action name
+>
+
+<Invalid bitmap format
+>
+
+<Invalid colorset
+>
+
+<Invalid definition of the X-axis scale
+>
+
+<Invalid definition of the Y-axis scale
+>
+
+<Invalid font format
+>
+
+<Invalid format specification
+>
+
+<Invalid image list name
+>
+
+<Invalid language definition
+>
+
+<Invalid language file
+>
+
+<Invalid limit specified for var
+>
+
+<Invalid number of the divisions
+>
+
+<Invalid page import script file
+>
+
+<Invalid page import script version
+>
+
+<Invalid parameters
+>
+
+<Invalid sampling period
+>
+
+<Invalid set or variable of set
+>
+
+<Invalid size in declaration of array of constants
+>
+
+<Invalid specification of image order
+>
+
+<Invalid use of set elements in page
+>
+
+<Invalid value for Grid Step
+>
+
+<Invalid value for Hmi Buffer
+>
+
+<Invalid value for the track bar value
+>
+
+<Invalid value for the track label y step
+>
+
+<Invalid variable for Clear Data
+>
+
+<Invalid variable for refresh
+>
+
+<Invalid variable for sampling time
+>
+
+<Invalid variable for selection
+>
+
+<Invalid variable for visibility
+>
+
+<Invalid variable for visibility track
+>
+
+<Invalid variable for X Offset
+>
+
+<Invalid variable for X Scale
+>
+
+<Invalid variables for bars
+>
+
+<Invalid variables for track left
+>
+
+<Invalid variables for track offset y
+>
+
+<Invalid variables for track right
+>
+
+<Invalid variables for track scale y
+>
+
+<Invalid variables of Len data
+>
+
+<Invocation of pages from messages or frameset is not allowed
+>
+
+<Missing or invalid page name
+>
+
+<Missing/illegal reference to parent page
+>
+
+<More than one default record in the list
+>
+
+<Object already exists in project
+>
+
+<Parent page invoked as child
+>
+
+<Pop-up pages can't invoke frame pages
+>
+
+<Range limits in the wrong order
+>
+
+<Recursive background image definition
+>
+
+<Recursive page invocation
+>
+
+<Reference to non-existent page
+>
+
+<Selection variabile will be cast to 32-bit signed integer
+>
+
+<String ID not declared in the project
+>
+
+<Two or more records with overlapping ranges
+>
+
+<Unable to start the compiler
+>
+
+<Undefined event
+>
+
+<Unsupported old file version
+>
+
+<Unsupported page import script version: software update may be required
+>
+

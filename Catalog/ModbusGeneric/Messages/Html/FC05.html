@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Modbus function 05(0x05) - Write Single Coil</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+	var m_tabsMap = {}
+
+	var FIELD_ONESHOT = "FC_config/oneshot"
+	
+	
+	var m_dataPath
+	var m_useAlModbusRTU
+	var m_oneShotEnabled
+
+	function InitPage()
+	{
+		try
+		{
+			grid_out.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		var node = app.SelectNodesXML(app.GetCurrentWindowData() + ".")[0]
+		DetectFeatures(node);
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		imgOut.src = csspath + imgPathPrefix + 'arrowOut.png';
+		imgIn.src = csspath + imgPathPrefix + 'arrowIn.png';
+		imgOut_oneshot.src = csspath + imgPathPrefix + 'arrowOut.png';
+		imgIn_oneshot.src = csspath + imgPathPrefix + 'arrowIn.png';
+
+		InitGrid_out(datapath.value)
+
+		//ottengo il datapath corrente
+		m_dataPath = app.GetCurrentWindowData()
+		SearchError(m_dataPath)
+
+		oneshotvalvar.value = app.DataGet(m_dataPath + FIELD_ONESHOT, 0)
+		
+		if (node.parentNode.selectSingleNode("GenericRTU_config/addressType").text == "jbus")
+			lblwrAddress.innerHTML = "(0 .. 65535)";
+
+		FixStyleForGrids();
+	}
+
+	</script>
+	<script src="FCOneshot.js"></script>
+	<script src="gridFC_out.js"></script>
+</head>
+
+<body onload="InitPage()" class="html5">
+<input type="hidden" name=".DATAPATH" id="datapath" >
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Modbus FC 05(0x05) - Write Single Coil</t:t></span>
+	</div>
+
+	<div class="menu">
+		<div id="tab1" class="menu_on" onclick="ChangeTab(1)"><a href="#" onclick="return false"><t:t>General</t:t></a></div>
+		<div id="tab2" class="menu_off" onclick="ChangeTab(2)"><a href="#" onclick="return false"><t:t>Coil</t:t></a></div>
+		<div>&nbsp;</div>
+	</div>
+
+	<div class="fill-height">
+		<div id="page1" style="height:100%" class="Sfondo">
+			<div style="float:left">
+				<fieldset>
+					<legend><t:t>Settings</t:t></legend>
+					<table>
+						<tr>
+							<td><label for="wrAddress" ><t:t>Address:</t:t></label></td>
+							<td><input id="wrAddress" type="text" name=".D(FC_config[1]/startAddress[1])" onkeyup="grid_out.Update(-1,-1)"></td>
+							<td ><label for="wrAddress"  id="lblwrAddress"><t:t>(1 .. 65536)</t:t></label></td>
+						</tr>
+						<tr>
+							<td ><label for="pollTime" ><t:t>Polling time:</t:t></label></td>
+							<td><input id="pollTime" type="text" name=".D(FC_config[1]/pollTime[1])" ></td>
+							<td ><label for="pollTime" ><t:t>ms &nbsp; (0 = write on variation)</t:t></label></td>
+						</tr>
+						<tr>
+							<td ><label for="tmo" ><t:t>Time out:</t:t></label></td>
+							<td><input id="tmo" type="text" name=".D(FC_config[1]/tmo[1])" ></td>
+							<td ><label for="tmo" ><t:t>ms</t:t></label></td>
+						</tr>
+						<tr id="rowTurnAround">
+							<td><label for="turnaround" ><t:t>Wait before send:</t:t></label></td>
+							<td><input id="turnaround" type="text" name=".D(FC_config[1]/turnAround[1])" ></td>
+							<td><label for="turnaround"><t:t>ms</t:t></label></td>
+						</tr> 
+						<tr id="rowOneShot">
+							<td><label for="oneshotvalvar"><t:t>Oneshot variable</t:t></label></td>
+							<td>
+							<input type="text" id="oneshotvalvar" onkeydown="Modify_OnKeyDown( oneshotvalvar )" onBlur="Modify( oneshotvalvar )">	
+							</td> 
+							<td>
+								<button class="ll-button" onClick="Assign( oneshotvalvar )" title="Assign">
+									<img id="imgIn_oneshot" alt="Assign">
+								</button>
+								<button class="ll-button" onClick="UnAssign( oneshotvalvar )" title="Unassign">
+									<img id="imgOut_oneshot" alt="Unassign">
+								</button>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+			</div>
+		</div>
+		<div id="page2" style="display:none" class="fill-height-container">
+			<div class="tableHeader">
+				<button id="butAssignOut" class="ll-button" onClick="Assign_out()">
+					<img id="imgIn" alt="Assign">
+					<span class="label"><t:t>Assign</t:t></span>
+				</button>
+
+				<button id="butUnAssignOut" class="ll-button" onClick="UnAssign_Rows_out()">
+					<img id="imgOut" alt="UnAssign">
+					<span class="label"><t:t>UnAssign</t:t></span>
+				</button>
+			</div>
+			<div style="height: 100%">
+				<object id="grid_out" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+					<param name="margin" value="50">
+					<param name="multiselect" value="1">
+				</object>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="gridFC_events_out.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,1119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="TexMotion" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexMotion">
+				<folder name="Administrative">
+					<Pou name="Tex_readActualPosition"/>
+					<Pou name="Tex_readActualVelocity"/>
+					<Pou name="TEX_ReadAxisError"/>
+					<Pou name="Tex_readAxisInfo"/>
+					<Pou name="TEX_ReadBoolParameter"/>
+					<Pou name="TEX_ReadMotionState"/>
+					<Pou name="TEX_ReadParameter"/>
+					<Pou name="TEX_ReadStatus"/>
+					<Pou name="TEX_Stop"/>
+					<Pou name="TEX_WriteBoolParameter"/>
+					<Pou name="TEX_WriteParameter"/>
+					<Pou name="TEX_Power"/>
+					<Pou name="Tex_reset"/>
+				</folder>
+				<folder name="Motion">
+					<Pou name="TEX_GearIn"/>
+					<Pou name="TEX_GearOut"/>
+					<Pou name="Tex_homing"/>
+					<Pou name="Tex_jog"/>
+					<Pou name="Tex_moveAbsolute"/>
+					<Pou name="Tex_setPosition"/>
+					<Pou name="TEX_agearOff"/>
+					<Pou name="Tex_agearOn"/>
+				</folder>
+				<folder name="Definition">
+					<Definition name="TEX_SET_POSITION_MODE"/>
+					<Definition name="TEX_OWNER"/>
+					<Definition name="TEX_MOTION_TYPE"/>
+				</folder>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="Tex_readActualPosition" version="1.0.0" creationDate="1706622165" lastModifiedDate="1715611590">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="position" type="REAL">
+							<descr>New absolute position (in axis unit [u]).</descr>
+						</var>
+						<var name="pulsePosition" type="DWORD">
+							<descr>New absolute position (in pulses).</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_readActualVelocity" version="1.0.0" creationDate="1706622270" lastModifiedDate="1715759642">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="velocity" type="REAL">
+							<descr>Value of current velocity (in axis unit [u/s])</descr>
+						</var>
+						<var name="pulseVelocity" type="DWORD">
+							<descr>Value of current velocity (in pulses)</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_ReadAxisError" version="1.0.0" creationDate="1706622026" lastModifiedDate="1706867478" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="AxisError" type="BOOL">
+							<descr>TRUE: An axis error has occurred.</descr>
+						</var>
+						<var name="AxisErrorID" type="WORD">
+							<descr>Drive-specific identification of the axis error.</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_ReadAxisError
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+END_VAR
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+    AxisError : BOOL;     (*TRUE: An axis error has occurred.*)
+    AxisErrorID : WORD;     (*Drive-specific identification of the axis error.*)
+END_VAR
+
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_readAxisInfo" version="1.0.0" creationDate="1706622719" lastModifiedDate="1715856363">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="limitSwitchPositive" type="BOOL">
+							<descr>finecorsa positivo attivato</descr>
+						</var>
+						<var name="limitSwitchNegative" type="BOOL">
+							<descr>finecorsa negativo attivato</descr>
+						</var>
+						<var name="limitSwitchZero" type="BOOL">
+							<descr>finecorsa zero attivato.</descr>
+						</var>
+						<var name="enabledPositiveDirection" type="BOOL">
+							<descr>[8]  - abilitato il movimento ad una posizione superiore a quella attuale</descr>
+						</var>
+						<var name="enabledNegativeDirection" type="BOOL">
+							<descr>[9]  - abilitato il movimento ad una posizione inferiore a quella attuale</descr>
+						</var>
+						<var name="communicationReady" type="BOOL">
+							<descr>[63] - la rete è stata inizializzata ed è pronta per la comunicazione (bit[63] di asse</descr>
+						</var>
+						<var name="motionOperative" type="TEX_MOTION_TYPE">
+							<descr>moto operativo</descr>
+						</var>
+						<var name="motionSetToBeOperative" type="TEX_MOTION_TYPE">
+							<descr>moto settato</descr>
+						</var>
+						<var name="simulation" type="BOOL">
+							<descr>servodrive in modalità simulazione</descr>
+						</var>
+						<var name="isHomed" type="BOOL">
+							<descr>[2]  - il punto di riferimento è valido (asse nel punto di riferimento)</descr>
+						</var>
+						<var name="internalError" type="BOOL">
+							<descr>[3]  - asse in errore per causa sua</descr>
+						</var>
+						<var name="externalError" type="BOOL">
+							<descr>[4]  - asse in errore per causa esterna</descr>
+						</var>
+						<var name="trajectoryCompleted" type="BOOL">
+							<descr>[5]  - traiettoria completata</descr>
+						</var>
+						<var name="owner" type="TEX_OWNER">
+							<descr>ambiene che sta gestendo il movimento dell'asse</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_readAxisInfo
+
+VAR_INPUT
+	enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+END_VAR
+
+VAR_OUTPUT
+	valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* Error identification *)
+	limitSwitchPositive : BOOL;	(* finecorsa positivo attivato *)
+	limitSwitchNegative : BOOL;	(* finecorsa negativo attivato *)
+	limitSwitchZero : BOOL;	(* finecorsa zero attivato. *)
+	enabledPositiveDirection: BOOL;	(* [8]  - abilitato il movimento ad una posizione superiore a quella attuale*)
+	enabledNegativeDirection: BOOL;	(* [9]  - abilitato il movimento ad una posizione inferiore a quella attuale*)
+	communicationReady : BOOL;	(* [63] - la rete è stata inizializzata ed è pronta per la comunicazione (bit[63] di asse *)
+	motionOperative : TEX_MOTION_TYPE;	(* moto operativo *)
+	motionSetToBeOperative : TEX_MOTION_TYPE;	(* moto settato *)
+	simulation : BOOL;	(* servodrive in modalità simulazione *)
+	isHomed : BOOL;	(* [2]  - il punto di riferimento è valido (asse nel punto di riferimento) *)
+	internalError : BOOL;	(* [3]  - asse in errore per causa sua *)
+	externalError : BOOL;	(* [4]  - asse in errore per causa esterna *)
+	trajectoryCompleted : BOOL;	(* [5]  - traiettoria completata *)
+	owner : TEX_OWNER;	(* ambiene che sta gestendo il movimento dell'asse *)
+END_VAR
+
+VAR_IN_OUT
+	axis : STRING[ 12 ];	(* Axis involved in the movement *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_ReadBoolParameter" version="1.0.0" creationDate="1706623743" lastModifiedDate="1707833414" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+						<var name="ParameterNumber" type="INT"/>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="Value" type="BOOL">
+							<descr>Value of the parameter specified in input``ParameterNumber``.</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_ReadBoolParameter
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+	ParameterNumber : INT; 
+END_VAR
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+	Value: BOOL; (*Value of the parameter specified in input``ParameterNumber``.*)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_ReadMotionState" version="1.0.0" creationDate="1706622950" lastModifiedDate="1706867501" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="ConstantVelocity" type="BOOL">
+							<descr>TRUE: Viene eseguito un movimento a velocità costante.</descr>
+						</var>
+						<var name="Accelerating" type="BOOL">
+							<descr>TRUE: Il motore accelera.</descr>
+						</var>
+						<var name="Decelerating" type="BOOL">
+							<descr>TRUE: Il motore decelera.</descr>
+						</var>
+						<var name="DirectionPositive" type="BOOL">
+							<descr>TRUE: L'albero motore ruota in direzione positiva.</descr>
+						</var>
+						<var name="DirectionNegative" type="BOOL">
+							<descr>TRUE: L'albero motore ruota in direzione negativa.</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_ReadMotionState
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+END_VAR
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+	ConstantVelocity : BOOL;     (* TRUE: Viene eseguito un movimento a velocità costante.*)
+	Accelerating : BOOL;     (* TRUE: Il motore accelera.*)
+	Decelerating : BOOL;     (* TRUE: Il motore decelera.*)
+	DirectionPositive : BOOL;     (* TRUE: L'albero motore ruota in direzione positiva.*)
+	DirectionNegative : BOOL;     (* TRUE: L'albero motore ruota in direzione negativa.*)
+END_VAR
+
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_ReadParameter" version="1.0.0" creationDate="1706623351" lastModifiedDate="1707833414" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+						<var name="ParameterNumber" type="INT"/>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="Value" type="REAL">
+							<descr>Value of the parameter specified in input``ParameterNumber``.</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_ReadParameter
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+	ParameterNumber : INT; 
+END_VAR
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+	Value: REAL; (*Value of the parameter specified in input``ParameterNumber``.*)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_ReadStatus" version="1.0.0" creationDate="1706615629" lastModifiedDate="1709739111" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+						<var name="Disabled" type="BOOL"/>
+						<var name="ErrorStop" type="BOOL"/>
+						<var name="Stopping" type="BOOL"/>
+						<var name="StandStill" type="BOOL">
+							<descr>TRUE: Axis is in state standstill</descr>
+						</var>
+						<var name="DiscreteMotion" type="BOOL">
+							<descr>TRUE: Axis is in state discrete_motion</descr>
+						</var>
+						<var name="ContinuousMotion" type="BOOL">
+							<descr>TRUE: Axis is in state continuous_motion</descr>
+						</var>
+						<var name="SynchronizedMotion" type="BOOL">
+							<descr>TRUE: Axis is in state synchronized_motion</descr>
+						</var>
+						<var name="Homing" type="BOOL"/>
+						<var name="ConstantVelocity" type="BOOL">
+							<descr>TRUE: Motor moves with constant velocity.</descr>
+						</var>
+						<var name="Accelerating" type="BOOL">
+							<descr>TRUE: Energy of motor increases.</descr>
+						</var>
+						<var name="Decelerating" type="BOOL">
+							<descr>TRUE: Energy of motor decreases.</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_Stop" version="1.0.0" creationDate="1706279481" lastModifiedDate="1706867518" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Execute" type="BOOL">
+							<descr>Starts execution</descr>
+						</var>
+						<var name="Deceleration" type="REAL">
+							<descr>Maximum deceleration, positive, in [u/s²]</descr>
+						</var>
+						<var name="Jerk" type="REAL">
+							<descr>???Maximum jerk, positive, in [u/s³]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Done" type="BOOL">
+							<descr>The axis has reached the velocity 0</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>TRUE: Execution of the function block has not been finished yet.</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>TRUE: Error has occurred within the function block during execution.</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_Stop
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+
+	Execute	 				: BOOL;				(* Starts execution *)
+	Deceleration 			: REAL;     		(*Maximum deceleration, positive, in [u/s²]*)
+	Jerk 					: REAL;     		(*???Maximum jerk, positive, in [u/s³]*)
+
+END_VAR
+
+VAR_OUTPUT
+
+	Done 					: BOOL;		(* The axis has reached the velocity 0 *)
+	Busy 					: BOOL;     (* TRUE: Execution of the function block has not been finished yet.*)
+	Error 					: BOOL;     (* TRUE: Error has occurred within the function block during execution.*)
+	ErrorID 				: WORD;     (* Error identification*)
+
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_WriteBoolParameter" version="1.0.0" creationDate="1706624534" lastModifiedDate="1707833414" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+						<var name="ParameterNumber" type="INT"/>
+						<var name="Value" type="BOOL">
+							<descr>Value of the parameter specified in input``ParameterNumber``.</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_WriteBoolParameter
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+	ParameterNumber : INT; 
+	Value: BOOL; (*Value of the parameter specified in input``ParameterNumber``.*)
+END_VAR
+
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_WriteParameter" version="1.0.0" creationDate="1706624477" lastModifiedDate="1707833414" excludeFromBuild="TRUE">
+				<vars>
+					<inoutVars>
+						<var name="Axis" type="STRING" length="1">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="Enable" type="BOOL">
+							<descr>Get the value of the parameter continuously while enabled</descr>
+						</var>
+						<var name="ParameterNumber" type="INT"/>
+						<var name="Value" type="REAL">
+							<descr>Value of the parameter specified in input``ParameterNumber``.</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Valid" type="BOOL">
+							<descr>A valid set of outputs is available at the FB</descr>
+						</var>
+						<var name="Busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="Error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="ErrorID" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK TEX_WriteParameter
+
+VAR_IN_OUT
+	Axis   : STRING[1];	(* Axis involved in the movement *)
+END_VAR
+
+VAR_INPUT
+	Enable : BOOL;	(* Get the value of the parameter continuously while enabled *)
+	ParameterNumber : INT; 
+	Value: REAL; (*Value of the parameter specified in input``ParameterNumber``.*)
+END_VAR
+
+
+VAR_OUTPUT
+	Valid : BOOL;	(* A valid set of outputs is available at the FB *)
+	Busy : BOOL;	(* The FB is not finished and new output values are to be expected *)
+	Error : BOOL;	(* Signals that an error has occurred within the Function Block *)
+	ErrorID : WORD;	(* Error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_reset" version="1.0.0" creationDate="1709569607" lastModifiedDate="1715611592">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>Resets all internal axis-related errors</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>Standstill or Disabled state is reached</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>The FB is not finished and new output values are to be expected</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>Signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_homing" version="1.0.0" creationDate="1706196019" lastModifiedDate="1715700415">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>Start the action at rising edge</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>standstill has been achieved.</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>TRUE: Execution of the function block has not been finished yet.</descr>
+						</var>
+						<var name="firstPhase" type="WORD">
+							<descr>first phase internal state machine</descr>
+						</var>
+						<var name="secondPhase" type="WORD">
+							<descr>second phase internal state machine</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE: Error has occurred within the function block during execution.</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_homing
+
+VAR_INPUT
+	execute : BOOL;	(* Start the action at rising edge *)
+END_VAR
+
+VAR_OUTPUT
+	done : BOOL;	(* standstill has been achieved. *)
+	busy : BOOL;	(* TRUE: Execution of the function block has not been finished yet. *)
+	firstPhase : WORD;	(* first phase internal state machine *)
+	secondPhase : WORD;	(* second phase internal state machine *)
+	error : BOOL;	(* TRUE: Error has occurred within the function block during execution. *)
+	errorId : WORD;	(* Error identification *)
+END_VAR
+
+VAR_IN_OUT
+	axis : STRING[ 12 ];	(* Axis involved in the movement *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_jog" version="1.0.0" creationDate="1706268347" lastModifiedDate="1715611631">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="jogForward" type="BOOL">
+							<descr>TRUE: Axis is moved with the specified dynamic values Velocity, Acceleration, Deceleration, and Jerk in a positive direction.</descr>
+						</var>
+						<var name="jogBackward" type="BOOL">
+							<descr>TRUE: Axis is moved with the specified dynamic values Velocity, Acceleration, Deceleration, and Jerk in a negative direction.
+                            			No motion is executed if JogForward is TRUE at the same time.</descr>
+						</var>
+						<var name="velocity" type="WORD">
+							<descr>Velocity in [u/s]</descr>
+						</var>
+						<var name="acceleration" type="WORD">
+							<descr>Acceleration in [u/s²]</descr>
+						</var>
+						<var name="deceleration" type="WORD">
+							<descr>Deceleration in [u/s²]</descr>
+						</var>
+						<var name="jerk" type="WORD">
+							<descr>Jerk in [u/s³]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="busy" type="BOOL">
+							<descr>TRUE: Execution of the function block has not been finished yet.</descr>
+						</var>
+						<var name="commandAborted" type="BOOL">
+							<descr>TRUE: Execution is interrupted by another function block instance operating on Axis.</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE: Error has occurred within the function block during execution.</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_moveAbsolute" version="1.0.0" creationDate="1706268721" lastModifiedDate="1715611647">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>TRUE: Starts execution.</descr>
+						</var>
+						<var name="continuosUpdate" type="BOOL">
+							<descr>TRUE: Allows to change the Position, Speed, acceleration, deceleration, jerk parameters while the FB is running</descr>
+						</var>
+						<var name="position" type="REAL">
+							<descr>Target position of the motion in technical units [u], can be negative or positive.</descr>
+						</var>
+						<var name="velocity" type="REAL">
+							<descr>Maximum velocity in technical units per second [u/s].</descr>
+						</var>
+						<var name="acceleration" type="REAL">
+							<descr>Acceleration in [u/s²].</descr>
+						</var>
+						<var name="deceleration" type="REAL">
+							<descr>Deceleration in [u/s²].</descr>
+						</var>
+						<var name="jerk" type="REAL">
+							<descr>Maximum magnitude of jerk in [u/s³]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>TRUE: End position has been reached.</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>TRUE: Function block is in operation.</descr>
+						</var>
+						<var name="active" type="BOOL">
+							<descr>Indicates that the FB has control on the axis.</descr>
+						</var>
+						<var name="commandAborted" type="BOOL">
+							<descr>TRUE: The execution is interrupted by another function block.</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE: Error has occurred.</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_setPosition" version="1.0.0" creationDate="1706193280" lastModifiedDate="1715611647">
+				<vars>
+					<inoutVars>
+						<var name="axis" type="STRING" length="12">
+							<descr>Axis involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>Rising edge: Starts the execution of the function block.</descr>
+						</var>
+						<var name="position" type="REAL">
+							<descr>Position unit [u] (means 'Distance' if Mode = RELATIVE)</descr>
+						</var>
+						<var name="mode" type="TEX_SET_POSITION_MODE">
+							<descr>SET_ABSOLUTE (default) or SET_RELATIVE</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>TRUE: La posizione è stata modificata.</descr>
+						</var>
+						<var name="busy" type="BOOL">
+							<descr>TRUE: Execution of the function block has not been finished yet.</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE: Error has occurred within the function block during execution.</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="TEX_agearOff" version="1.0.0" creationDate="1707138971" lastModifiedDate="1715611601">
+				<vars>
+					<inoutVars>
+						<var name="axisSlave" type="STRING" length="12">
+							<descr>Axis slave involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>Rising edge: Starts the execution of the function block.</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>TRUE: Cam has been disengaged.</descr>
+						</var>
+						<var name="busy" type="BOOL"/>
+						<var name="error" type="BOOL">
+							<descr>TRUE: Error has occurred within the function block during execution.</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>Error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_agearOn" version="1.0.0" creationDate="1706277762" lastModifiedDate="1715611611">
+				<vars>
+					<inoutVars>
+						<var name="axisMaster" type="STRING" length="12">
+							<descr>Axis master involved in the movement</descr>
+						</var>
+						<var name="axisSlave" type="STRING" length="12">
+							<descr>Axis slave involved in the movement</descr>
+						</var>
+					</inoutVars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>Rising edge: Starts the execution of the function block.</descr>
+						</var>
+						<var name="forceSyncronization" type="BOOL"/>
+						<var name="notReverseSpeed" type="BOOL"/>
+						<var name="gearRatio" type="REAL"/>
+						<var name="posSyncronizationMaster" type="REAL"/>
+						<var name="posSyncronizationSlave" type="REAL"/>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL"/>
+						<var name="busy" type="BOOL"/>
+						<var name="error" type="BOOL"/>
+						<var name="errorId" type="WORD"/>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums>
+			<enum name="TEX_SET_POSITION_MODE" baseType="DINT" version="1.0.0">
+				<elements>
+					<element name="SET_ABSOLUTE">
+						<value>0</value>
+					</element>
+					<element name="SET_RELATIVE">
+						<value>1</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="TEX_OWNER" baseType="DINT" version="1.0.0">
+				<elements>
+					<element name="NO_OWNER">
+						<value>0</value>
+					</element>
+					<element name="PLC">
+						<descr>controlled by plc</descr>
+						<value>1</value>
+					</element>
+					<element name="CNC">
+						<descr>controlled by cnc</descr>
+						<value>2</value>
+					</element>
+					<element name="JOG">
+						<descr>controlled by jpg</descr>
+						<value>3</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="TEX_MOTION_TYPE" baseType="DINT" version="1.0.0">
+				<elements>
+					<element name="MOTO_RILASCIATO">
+						<value>0</value>
+					</element>
+					<element name="FERMATA_BRUSCA">
+						<value>1</value>
+					</element>
+					<element name="MOTO_IN_TENSIONE">
+						<value>2</value>
+					</element>
+					<element name="MOTO_IN_POSIZIONE_TENSIONE">
+						<value>3</value>
+					</element>
+					<element name="MOTO_IN_POSIZIONE">
+						<value>4</value>
+					</element>
+					<element name="MOTO_IN_VELOCITA">
+						<value>5</value>
+					</element>
+					<element name="MOTO_IN_POSIZIONE_AD_ESSE">
+						<value>6</value>
+					</element>
+					<element name="MOTO_IN_VELOCITA_AD_ESSE">
+						<value>7</value>
+					</element>
+					<element name="MOTO_DIPENDENTE">
+						<value>8</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_1">
+						<value>9</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_2">
+						<value>10</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_3">
+						<value>11</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_4">
+						<value>12</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_5">
+						<value>13</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_6">
+						<value>14</value>
+					</element>
+					<element name="MOTO_DIPENDENTE_7">
+						<value>15</value>
+					</element>
+					<element name="MOTO_INTERPOLATO">
+						<value>16</value>
+					</element>
+				</elements>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[TEX_MOTION_TYPE: DINT (
+	MOTO_RILASCIATO				:= 0,
+	FERMATA_BRUSCA	 			:= 1,
+	MOTO_IN_TENSIONE    		:= 2,
+	MOTO_IN_POSIZIONE_TENSIONE 	:= 3,
+	MOTO_IN_POSIZIONE			:= 4,
+	MOTO_IN_VELOCITA			:= 5,
+	MOTO_IN_POSIZIONE_AD_ESSE	:= 6,
+	MOTO_IN_VELOCITA_AD_ESSE	:= 7,
+	MOTO_DIPENDENTE				:= 8,
+	MOTO_DIPENDENTE_1			:= 9,
+	MOTO_DIPENDENTE_2			:= 10,
+	MOTO_DIPENDENTE_3			:= 11,
+	MOTO_DIPENDENTE_4			:= 12,
+	MOTO_DIPENDENTE_5			:= 13,
+	MOTO_DIPENDENTE_6			:= 14,
+	MOTO_DIPENDENTE_7			:= 15,
+	MOTO_INTERPOLATO			:= 16
+);
+
+]]>
+				</iecDeclaration>
+			</enum>
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

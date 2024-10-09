@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Arithmetic" fullXml="true">
+		<descr>Arithmetic Functions. Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Arithmetic" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="F_POLY"/>
+				<Pou name="POLYNOM_INT"/>
+				<Pou name="F_POWER"/>
+				<Pou name="F_QUAD"/>
+				<Pou name="FRMP_B"/>
+				<Pou name="LINEAR_INT"/>
+				<Pou name="F_LIN"/>
+				<Pou name="F_LIN2"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="F_POLY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>(NOT WORKING FIXME)</title>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL"/>
+						<var name="C" type="REAL" dim0="8"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	18. mar. 2011
+programmer 	hugo
+tested by		tobias
+
+this function calculates the polynom C[0] + C[1]*X^1 + C[2]*X^2 * C[3]*X^3 + C[4]*X^4 + C[5]*X^5 + C[6]*X^6 + C[7]*X^7
+
+*)
+
+F_POLY := ((((((( c[7] * x + c[6] ) * x + c[5] ) * x + c[4] ) * x + c[3] ) * x + c[2] ) * x + c[1] ) * x + c[0] ) ;
+
+
+(* revision history
+hm		20. may. 2008		rev 1.0
+	original version
+
+hm	18. mar. 2011	rev 1.1
+	improved performance
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="POLYNOM_INT" version="1.0.0" creationDate="0" lastModifiedDate="1632315738" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Polynomial interpolation module (NOT WORKING FIXME)</title>
+				<descr>&lt;HTML&gt;POLYNOM_INT interpolates a number of pairs of values with a polynomial
+						of N times degree.
+						&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The number of points is PTS&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;Any characteristic curve is described by a maximum of 5 coordinate-values (X, Y) and internally described by a polynomial.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;The defnition of the coordinate values is passed in an array which describes the characteristic with individual X, Y value pairs. The value pairs
+						must be sorted by the x_value.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;If an X value is queried outside the range of the defined values, it will be calculated according to the determined polygon. In this case oscillations above and below
+						the defined values are frequent with high degree polynomial, thus calculated values are often not useful in this area.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;In order to use the application of a polynomial correctly it is recommended to read at least the basics, for example, in Wikipedia.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;To keep the number of defnition points flexible, at the input PTS is given the number of actual points defined. Values are in the range from 3 to 5,
+						wherein each individual dot is shown with X-and Y-value. A Polynomial with more than 5 points leads to an increased tendency to oscillate and has been refused for
+						this reason.&lt;/li&gt;&lt;/ul&gt;
+						&lt;br&gt;&lt;br&gt;
+						EXAMPLE : ARRAY[1..5,0..1] := -10,-0.53, 10,0.53, 100,88.3, 200,122.2;
+						&lt;br&gt;&lt;br&gt;
+						for the above defnition, the following results are valid:
+						&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;POLYNOM_INT(0, example, 4) = -1.397069;&lt;/li&gt;
+						&lt;li&gt;POLYNOM_INT(30.0, example, 4) = 11.4257;&lt;/li&gt;
+						&lt;li&gt;POLYNOM_INT(66.41, example, 4) = 47.74527;&lt;/li&gt;
+						&lt;li&gt;POLYNOM_INT(800.0, example, 4) = -19617.94;&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;Looking at the results of the example is clear that the last value of -19617.94 (for the input X = 800) makes no sense, because it is outside the
+						defned X range of -10 to +200.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;The following trace recording shows the variation of output to input. Here, clearly, the overshoot of the polygon with respect to a linear interpolation
+						can be seen. Green = input X, Red = linear interpolation, Blue = polynomial
+						interpolation.&lt;/li&gt;
+						&lt;/ul&gt;
+						&lt;br&gt;
+						The following trace recording shows the variation of output to input. Here, clearly, the overshoot of the polygon with respect to a linear interpolation
+						can be seen.
+						&lt;ul&gt;
+						&lt;li&gt;Green = input X&lt;/li&gt;
+						&lt;li&gt;Red = linear interpolation&lt;/li&gt;
+						&lt;li&gt;Blue = polynomial interpolation&lt;/li&gt;
+						&lt;/ul&gt;
+						&lt;img src= polynom_int.jpg /&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>X value of the requested interpolated point</descr>
+						</var>
+						<var name="XY" type="REAL" dim0="5" dim1="2">
+							<descr>Curve points (array of max 5 point values (X,Y))</descr>
+						</var>
+						<var name="Pts" type="INT">
+							<descr>Actual number of points (X,Y) in the array (min 3, max 5)</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="I" type="INT">
+							<descr>Local variable</descr>
+						</var>
+						<var name="J" type="INT">
+							<descr>Local variable</descr>
+						</var>
+						<var name="stop" type="INT">
+							<descr>Local variable</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+	version 1.3	10. mar. 2009
+	programmer 	oscat
+	tested BY		oscat
+
+POLYNOM_INT calculates an output based on a Polynom interpolation of up to 5 coordinates given in an array
+the input coordinates have to start at the lowest array position and must be sorted by ascending X values.
+
+*)
+
+(*make sure n is bound within the array size *)
+pts := MIN(pts, 5);
+
+(* this part is only to calculate the polynom parameters, which are then stores in the Y array
+	the array values, it is not needed during runtime, unless the parameters will change during runtime
+	the remaining code without this setup code can be used within a function to calculate specific functions
+	the content of the arrays is then used as constant values within the function *)
+
+FOR i := 1 TO pts DO
+	stop := i + 1;
+   	FOR j := pts TO stop BY -1 DO
+   		XY[j,1] := (XY[j,1] - XY[j-1,1]) / (XY[j,0] - XY[j-i,0]);
+	END_FOR;
+END_FOR;
+
+
+(* this part is the actual calculation *)
+POLYNOM_INT := 0.0;
+FOR i := pts TO 1 BY -1 DO
+       POLYNOM_INT := POLYNOM_INT * (X - XY[i,0]) + XY[i,1];
+END_FOR;
+
+
+(* revision history
+hm	8. okt 2007	rev 1.0
+	original version
+
+hm	17. dec 2007	rev 1.1
+	init makes no sense for a function
+
+hm	22. feb 2008	rev 1.2
+	improved performance
+
+hm	10. mar. 2009	rev 1.3
+	changed syntax of real constants to 0.0
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="polynom_int.jpg" width="392" height="276" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CAEUAYgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9KKK4nxd8UYPCGqanZTaPfXZsdLbVjNDJ
+AsbxK6qwy8g2H5uN4AbawXJGKxPDfi7RPjl4zn0W2vvEmirokUsssNvO9kLti4iO5o3DgxOj
+rsbH3s4IxSTT0RXK7XPUaKx1+DOlNI4/t3xX8pH/ADMd56f9dKb/AMKb0vyQ/wDbvizJx/zM
+d56/9dKZJtUVjN8GdKEiL/bvizBz/wAzHef/AByhfgzpTSOP7d8V4XH/ADMd56f9dKANmisX
+/hTel/Zw/wDbvivJx/zMd56/9dKc3wZ0sSIv9veK8HP/ADMd5/8AHKANiisdfgzpRkcf274r
+wMf8zHeen/XSm/8ACm9L8kN/b3ivP/Yx3nr/ANdKANqisdvgzpQkUf274rwc/wDMx3n/AMco
+X4M6UXcf274rwMf8zHeen/XSgDYorF/4Uzpfkhv7e8V5/wCxjvPX/rpT2+DGleYo/t3xXg5/
+5mO8/wDjlAGvRWQvwZ0rew/t3xXgY/5mO8/+OU3/AIUzpfk7v7e8V5/7GO89f+ulAGzRWQ3w
+X0reo/t3xXg5/wCZjvP/AI5QvwX0rew/t3xXgY/5mO8/+OUAa9FY3/CmdL8nd/b3ivP/AGMd
+56/9dKc3wX0reo/t3xXg5/5mO8/+OUAa9FZC/BfSt7D+3fFeBj/mY7z/AOOU3/hTOl+Xu/t7
+xXn/ALGO89f+ulAGzRWQ3wX0rco/t3xXz/1Md5/8coX4L6VuYf274r4/6mO8/wDjlAGvRWN/
+wpnS/L3f294rz/2Md56/9dKc3wX0rco/t3xXz/1Md5/8coA16KyF+C+lbmH9u+K+P+pjvP8A
+45Tf+FM6X5e7+3vFef8AsY7z1/66UAbNFZDfBfSt6j+3fFeDn/mY7z/45QvwX0rew/t3xXgY
+/wCZjvP/AI5QBr0Vjf8ACmdL8nd/b3ivP/Yx3nr/ANdKc3wX0reo/t3xXg5/5mO8/wDjlAGv
+RWQvwX0rew/t3xXgY/5mO8/+OU3/AIUzpfk7v7e8V5/7GO89f+ulAGzRWQ3wZ0reo/t3xXg5
+/wCZjvP/AI5QvwY0rzGH9u+K8DH/ADMd5/8AHKANeisX/hTOl+SW/t7xXn/sY7z1/wCulOb4
+M6UHQf274rwc/wDMx3np/wBdKANiisdfgzpRkYf274rwMf8AMx3n/wAcpv8AwpvS/JLf294r
+z/2Md56/9dKANqisdvgzpQkQf274rwc/8zHeen/XShfgzpZkdf7e8V4GP+ZjvP8A45QBsUVi
+/wDCm9L+zl/7d8V5Gf8AmY7z1/66UrfBnSlkQf274rw2f+ZjvPT/AK6UAbNFYy/BnSjI6/27
+4swMf8zHef8Axyk/4U3pfkl/7d8WZGf+ZjvPX/rpQBtUVjt8GdKWRB/bviv5if8AmY7z0/66
+Ui/BnSjI6/274swMf8zHef8AxygDbi/1ifUUVwjeHf8AhC/id4VtbLVtaurXULLUGuINS1Se
+7Rmja22ECRiFI3tyMH5jRQBrax8N/CviK8vrrVPDum39zfRRwXUtxbq7TxxsGjVyR8wVgCM9
+COKg0mzsfCvxR0i10nTLGwGuWd5NqEsFuqyztB9nERLjngSN9c1Jr3jBtHvdRtUggkltbFby
+MPPhpSX2bNoUkHOADzknt1q54ba31/xtNPd24g1TQYmgjENx5g23CRs+5QOMGMAZ9PfAPQfq
+egR/66T6j+VR/wDLqv4fzpY5B5knDdR/CfSmeYPsqjDdv4T60CJm/wBdH9D/AEoj/wBdL9R/
+KmtIPOQ4bof4T7URyDzJOG6j+E+lADf+XVfw/nUrf65Poag8wfZVGG7fwn1qRpB5iHDdD/Ca
+AHR/6x/qP5Uz/l1H4fzpUkHmScN1H8J9KZ5g+zgYbt/CfWgCZv8AXJ9DSR/6x/qP5U1pB5iH
+DdD/AAmhJB5knDdR/CfSgA/5dx/nvT2/1ifjUPmD7OBhu38J9ae0g8xOG7/wmgByf6yT8P5U
+n/Lv/n1pFkHmPw3b+E+lN8wfZwMN/wB8n1oAlb/WJ+NC/wCsf8Ka0g8xOG7/AMJoWQeY/Ddv
+4TQAf8u/+fWnN/rE/GovMHkYw3/fJ9ac0g8xPlbv/CaAHr/rH/Cm/wDLv/n1pFkHmP8AK3b+
+E03zB5H3W/75PrQBK3+sT8aF/wBY/wCFMaQeYnyt3/hNCyDzH+Vu38JoAX/l3/z605v9Yn41
+F5o8j7rf98n1pzSDzE+Vu/8ACaAHr/rH/Cm/8u/+fWkWQeY/yt2/hNN8weR91v8Avk+tAErf
+6xPxoX/WP+FMaQeYnyt3/hNCyDzH+Vu38JoAX/l3/wA+tOb/AFifjUXmDyMYb/vk+tPaQeYn
+Dd/4TQA5f9Y/4U3/AJd/8+tCyDzH4bt/CaZ5g+zkYb/vk+tAEj/6yP8AH+VKv+sf8KjaUeYn
+Dd/4T6UqyjzH4bt/CaAD/l3P+e9Ok/1ifU/yqjcatZ2cOJ7iOLOcBmwTz6VCdeWZk+z2l3cH
+J6QmMdPV9tRzxTtcXMjUX/WPx6Uz/l2P4/zrNFzqc0jeXbR2gOOZmMjD/gK8f+Pf4U37DdSw
+nz9RmK8/LbxCIHnueT+RFLmvsgv2RqyuI2RiQqgnJPA6VR/t+wWVglys7kD5LcGVvyXNR/2L
+Yeahkga5PPzXJaU9O27NaEZSN3CoQOOAho999l+Iamb/AGpcTW7C306Zhz885ES9ffLf+O09
+/wC1ZJEObODk4Uh5D09cr/Krm8fZWGG7/wAJ9akeQeZH97qf4T6Ucr6sVvMoLHq/mP8A6RZ5
+wP8Alg/v/t0zy9W+zt/pFnt5/wCWD+v+/Wksg85zhug/hPvTPMH2Vhhu/wDCfWlyLux8pTeP
+V/MT/SLPOTj9w/p/v0LHq/mN/pFnnAz+4f3/ANutCSQeZHw3U/wn0oWQec5w3Qfwn3o5F3Yc
+p5j4mW7X4ueBftMkDj7Dqu3yY2X+K1znLGirHi9t3xa8B/8AXjqvb/atKKv4dBnQ7F3bto3e
+uOaw31K5tfil4WsoZmjtLux1GSeJcYkZDbbCfpvbH+8a2ZLiGHf5k0cZRd7b3A2rnG456DPe
+sj+y7i++J3hy+gVZLbT7K/jumV1zE0ptzGCuc/N5b9u1UB6DH/rpfqP5VH/y6r+H86kj/wBd
+L9R/Ko/+XVfw/nQBI3+uj+h/pRH/AK6X6j+VDf66P6H+lEf+ul+o/lQBH/y6r+H86lb/AFyf
+Q1F/y6r+H86lb/XJ9DQAkf8ArH+o/lTP+XUfh/Onx/6x/qP5Uz/l1H4fzoAkb/XJ9DSR/wCs
+f6j+VK3+uT6Gkj/1j/UfyoAb/wAu4/z3p7f6xPxpn/LuP896e3+sT8aAET/WSfh/Kk/5d/8A
+PrSp/rJPw/lSf8u/+fWgBzf6xPxoX/WP+FDf6xPxoX/WP+FADf8Al3/z605v9Yn403/l3/z6
+05v9Yn40AC/6x/wpv/Lv/n1py/6x/wAKb/y7/wCfWgBzf6xPxoX/AFj/AIUN/rE/Ghf9Y/4U
+AN/5d/8APrTm/wBYn403/l3/AM+tOb/WJ+NAAv8ArH/CmZ/cY/z1p6n94/4VnT63YW6lHuov
+M6eWrbn+m0c0uZR3YXXU0W/1ifjSL/rH/Cs1tYeZl+z2F3KOcMyCMf8Aj5B/SkU6rNIw22tq
+OOdzSkfhhR+tRzLpqTzdjR48j3/+vSXE0dvteR1RBnLOQAOKzf7JnlhHn6jcSD+5HtiXr/sj
+OPx/Opk0OwhmVxaRvIDnzJBvb65OTReT2Qa9hn/CQWTSOIpWuW4+W3RpP/QQcfjTf7QvpoSI
+dOZPe6kVB19F3GtRR+8cfSm4/cZ/z1o5ZdWGvczmt9SmZRJdxQA5/wBRDlhx6sSP0/KlXQ4p
+WYXM9xdjj5ZZSF+hVcA/iK0m/wBZH+P8qVf9Y/4Uci66jsinbafa2cLG3to4SevloFJ59qty
+f6xPqf5U3/l3P+e9Ok/1ifU/yq0ktEMVf9c/0FR/8up/H+dSL/rn+gqP/l1P4/zpgPk/1ifU
+/wAqVf8AXP8AQUkn+sT6n+VKv+uf6CgCL/l1b8f51JJ/rovqf5VH/wAurfj/ADqST/XRfU/y
+oAF/10n0H9aj/wCXVvx/nUi/66T6D+tR/wDLq34/zoAkk/10X1P8qF/10n0H9aJP9dF9T/Kh
+f9dJ9B/WgDzfxh/yVrwJ/wBeOq/+hWlFHjD/AJK14E/68dV/9CtKKAI/EHgmPXrnU5WuI4Rf
+WK2TqbUORh9wfJYZIzx6VN4dt7Hwx4+Nt515cX/iKCW4LNt8tTb7N3P3hnzlAHOAuM10Fc1d
+f8lg8F/9g7Vf52lAHpEcY8yTluo/iPpTPLH2VTlu38R9amj/ANdL9R/Ko/8Al1X8P50AOaMe
+cgy3Q/xH2pI4x5knLdR/EfSnt/ro/of6UR/66X6j+VAEPlj7Kpy3b+I+tSNGPNQZbof4jTf+
+XVfw/nUrf65PoaAGJGPMk5bqP4j6Uzyx9nBy3b+I+tSx/wCsf6j+VM/5dR+H86AFaMeagy3Q
+/wARoSMeZJy3UfxH0p7f65PoaSP/AFj/AFH8qAIvLH2cHLdv4j609ox5ict3/iNH/LuP896e
+3+sT8aAGLGPMflu38R9Kb5Y+zg5b/vo+tSJ/rJPw/lSf8u/+fWgAaMeYnLd/4jQsY8x+W7fx
+GnN/rE/Gm7lVnLEKOOScUAM8seRnLf8AfR9ac0Q8xPmbv/Eaz5NesY1KC4WVh1WAGQjnuFBx
+Q2qzzOnkadcMOcNMViH5E7v0rPnXRk3RoLGPMflu38RpnljyfvN/30fWqax6rO7ky2tqOPlV
+GlP5kr/Ko/7F8yPNzeXVwfTzfLXr6Jijmb2QXfRFy6urWzZDPcrADn/WS7f5mqa61ayM3kC5
+uumDBG7Kf+Bfd/WrVvpNnZyAxW0SM2cttBY/U9TVxV/eOPpR7z8h6mR9o1GaPMdksK/3rifB
+6/3VB/nT20+/mKibUmjBz8ttEF/VtxrR/wCWP+fWnt/rE/Gly92xW7mWPDtpI5M5muTxnzp3
+YH6rnb+lW4bGG3twsMaxKOgjG0dfQVZX/WP+FM/5d/8APrVKMY62HZdAaIeYnLd/4jQsY8x/
+mbt/Eae3+sT8aF/1j/hVjIvLHkZy3/fR9ae0Y8xOW7/xGj/l3/z605v9Yn40ANWMeY/Ldv4j
+TPLH2cnLf99H1qVf9Y/4U3/l3/z60AI0Y8xOW7/xH0oWMeY/Ldv4jTn/ANZH+P8AKlX/AFj/
+AIUAQ+WPs5OW7/xH1p7xjzI+W6n+I+lH/Luf896dJ/rE+p/lQA1Yx5rjLdB/EaZ5Y+zk5bv/
+ABH1qZf9c/0FR/8ALqfx/nQArxjzI+W6n+I+lCxjzXGW6D+I06T/AFifU/ypV/1z/QUAQeWP
+srHLd/4j60+SMeZHy3U/xH0pP+XVvx/nUkn+ui+p/lQA1Yx5zjLdB/Efeo/LH2Vjlu/8R9am
+X/XSfQf1qP8A5dW/H+dACyRjzI+W6n+I+lKsY85xlug/iPvTpP8AXRfU/wAqF/10n0H9aAPN
+/F/y/FrwH/146r3/ANq0oo8Yf8la8Cf9eOq/+hWlFAF7xNqdxo+iXF5apDJNFtO2dsLjcAe4
+ycZwMjJwKi8Jr/b3iqTU7qyXOmQmGymCvHIPOWN5lZS2DjbEM9iCOxraDFeQcGufnvrmH4qe
+ErVLiVLaaw1JpYVchHKm12lh0JG5sZ6bj60AehRyHzJPkbqPT0+tR7j9lUbG7c8etTx/66X6
+j+VR/wDLqv4fzoAVpD5yfI3Q+nt70RyHzJPkbqPT0+tPb/XR/Q/0oj/10n1H8qAINx+yqNjd
+uePWpWkPmp8jdD6f403/AJdV/D+dSt/rk+hoAjSQ+ZJ8jdR6en1pm8/ZwNrduePWlkuIrcyt
+NKsSjB3OwAxj3rO/t+zkhCwu123HFvG0nfuQMD8anmjHdhdLc02kPmL8jdD6f40Kx8x/kbqP
+T0+tZ51C/nkXydNaPg/Ncyqg/JdxpUt9TuJG8y6htRkZW3j3N0/vNx/47U8/ZMXN2Lu4+QBt
+bt6etQXer2llIn2ieOFufld1B/LNVv7DhkhBuJri7/2ZpTt691XCn8RVy30+2sZFFvBFDnOf
+LQAmi8n0sLUqLrYmkf7La3N10wVj2L0/vPgflTftGqXEPyWsNov96d/Mbr/dXj/x6tVP9Y/4
+fypP+Xf/AD60csnuws+rM1rC9mdTPfzL1+W3jRB+u4/rSx6FY7maW1a5b+9cMZT0/wBomtQ5
+8xPxoH+sf8KOSPVXDlRXjVYbYIkOxR0CgAVKznzE+Ru/p/jS/wDLv/n1pzf6xPxrQoYsh8x/
+kbt6f403zD5P3G/T1qVf9Y/4U3/l3/z60AI0h8xP3bd/T/GhZD5j/u27en+NPb/WJ+NC/wCs
+f8KAIvMPk/cb9PWnNIfMT923f0/xpf8Al3/z605v9Yn40AMWQ+Y/7tu3p/jTfMPk/cb9PWpV
+/wBY/wCFN/5d/wDPrQAjSHzE+Ru/p/jQsh8x/kbt6f409v8AWJ+NC/6x/wAKAIfMPkfcb9PW
+ntIfMT5G7+n+NL/y7/59ac3+sT8aAGLIfMf5G7en+NM8w+Qfkb9PWpl/1j/hTf8Al3/z60AN
+aQ+YnyN39PT60qyHzH+Ru3p/jTn/ANZH+P8AKlX/AFj/AIUAQeYfs5Gxu/p6095D5kfyN1Pp
+6fWl/wCXc/5706T/AFifU/yoAash81/kboPT/Go95+zkbG788etTr/rn+gqP/l1P4/zoAHkP
+mR/I3U+np9aVZD5r/I3Qen+NOk/1ifU/ypV/1z/QUAV9x+ysNjd+ePWpJJD5kfyN1Pp6fWk/
+5dW/H+dSSf66L6n+VADFkPnP8jdB6e/vUe4/ZWGxu/PHrU6/66T6D+tR/wDLq34/zoAWSQ+Z
+H8jdT6en1oWQ+c/yN0Hp7+9Pk/10X1P8qF/10n0H9aAPN/F5z8WvAfGP9B1X/wBCtKKPGH/J
+WvAn/Xjqv/oVpRQB0VYMNj/a3xN0O9tJreSLSbS+hvFWUeZG0xt/LG3rz5b/AExS+J/Gmm+F
+NN1K6uHa7l062+2XFjZsj3Kw5OZNjMuFGCdxIHBrlfhT4w8M+JfHPieDw1NdT6xCBJcR6gpi
+VI3kYkoAN+PM3cOFPcfKclX6Ds7cx7Yn+tk+o/lTB/x6r+H86z10++maQS6j5QyMi3iCnp6s
+Wpn/AAj9lJCGnWS7PBH2iVpAOewJwPwqOaT2RN32J59asYJ1RrqMyDIMaNuftxtGTTE1d5ZH
++zWF1N0+Zk8pen+2R+gNXI7OC3aNIYlhTBG2MbR29KkSMeZJy3UfxH0otJ7sNe5mY1Wa3HFr
+ajjnLTHr6fKKkbSZZJEE+oXMo5+VCsQ/8dAP61b8sfZlPPbufWpWjXzUHzdD/EaOVddQ5V1K
+NvollDKzC3R5FIIklzI/T+82TVxf+Pdfw/nSpGPMk+91H8R9KbsX7ODznjufWqUVHZDSXQmb
+/XJ9DSR/6x/qP5U1o181B83Q/wARpEjHmSfe6j+I+lUAv/LuP896e3+sT8ah8tfs4PPb+I+t
+PaFfMT73f+I0AOT/AFkn4fypP+Xf/PrTVhXzH+92/iPpSeWv2cHn/vo+tAErf6xPxoX/AFj/
+AIUxoV8xPvd/4jQsK+Y/3u38RoAX/l3/AM+tOb/WJ+NQ+Wv2fPP5n1p7Qr5ide/8RoAev+sf
+8Kb/AMu/+fWkWFfMfr2/iNN8lfJ7/mfWgCVv9Yn40L/rH/CmNCvmJ17/AMRoWFfMfr2/iNAC
+/wDLv/n1pzf6xPxqLyV8nv8AmfWnNCvmJ17/AMRoAev+sf8ACm/8u/8An1pFhXzH69v4jTfJ
+Xye/5n1oAlb/AFifjQv+sf8ACmNCvmJ17/xGhYV8x+vb+I0AL/y7/wCfWnN/rE/GofLX7Pnn
+8z609oV8xPvd/wCI0APX/WP+FN/5d/8APrSLCvmP97t/Eab5a/Zyef8Avo+tAEj/AOsj/H+V
+Kv8ArH/Co2hXzE+93/iPpSrCvmP97t/EaAD/AJdz/nvTpP8AWJ9T/KovLX7OTz3/AIj6054x
+5kf3up/iPpQBIv8Arn+gqP8A5dT+P86VY181x83QfxGmeWv2cnnPPc+tAEsn+sT6n+VKv+uf
+6Co3jHmR/e6n+I+lKsa+a4+boP4jQA3/AJdW/H+dSSf66L6n+VQ+Wv2VjznnufWnyRr5kf3u
+p/iPpQA9f9dJ9B/Wo/8Al1b8f50qxr5zj5ug/iPvTPLX7Kx5zz3PrQBNJ/rovqf5UL/rpPoP
+60ySNfMj+91P8R9KFjXznHzdB/EfegDzrxh/yVrwJ/146r/6FaUUeL12/FrwHj/nx1X/ANCt
+KKAPO/jp8SvCugaf4q0bxZ4cm1PT7XR7fU2C3Ih+3ZnKpCGRg6BXQEuxC9eD33fhrrkGrfEj
+XrfQNLtdMu2sbW+uNSvJZrt9QtpImFuULMpQI4+YDcpy2CGJI7xtD019Rl1BtOs2v5ofs0l2
+bdDM8P8AzzZ8ZKf7JOPasizZNB+KGhWWnW9tY2+r2t/cX4t7eNGuZIvswjZ2AySodh170l5l
+eh1VvD4p8weZe6QTm18zbZyjOB/pGP3vG7jZ12/xbqha38WfYCFvtGEvkyBS1lNtEvmgxEjz
+c7RHwwzktyCBxXTR/wCul+o/lUf/AC6r+H86ZJjyQ+I/t2Vu9LEHnSlVNrLv8nywEBPmY3CT
+knGCvAAPNRW8HijI8y90gt/ovmbbOUZI/wCPjH73jcMbP7v8W6uhb/XR/Q/0oj/10v1H8qAO
+ZaHxZ9gOy90UTeTIELWc23zTKPKJHm52hOGGcluQQOKtPD4i+3Ard6X5HnSFV+yy7/J8oBBn
+zMbhJyTjBXgAHmtj/l1X8P51K3+uT6GgDnbeDxTkb73SC2LXzNtnKMkf8fGP3vG4Y2f3f4t1
+RtD4s+wtsvdFE3kyhC1nMV80yDySR5udoTIYZyW5BUcV0sf+sf6j+VM/5dR+H86AMaSHxH9u
+BF3pfkefIVU2su/yfKAUZ8zG8Sck4wV4AB5qKCDxTx5l7pBbFt5m2zlAJH/Hxj97wGGNn93+
+LdXRN/rk+hpI/wDWP9R/KgDmpLfxZ9hcJfaMJfKmCM1nMV8wyDySR5udoTIYZyW5BUcVZeLx
+J9uUi70s2/2hyF+yy7/J8rCjPmY3+ZyTjG3jAPzVtf8ALuP896e3+sT8aAOcgh8VYXzL3Ry+
+223lbOUAsD/pGP3vAYY2f3T97d0pklv4s+xvsvtGEvlTBC1nMV8wyDySR5v3QmQw6luQVHFd
+Kn+sk/D+VJ/y7/59aAMRofEn24EXel/Z/PYhfssu/wAnysKM+Zjf5nJOMbeMZ+aoYIfFSqok
+vtHL7bYSFbOUAsD/AKQR+94DLjZ/dPXd0ro2/wBYn40L/rH/AAoA5mSHxX9kcJe6OJfKnCFr
+OYqJDIPIJHm/dCZDDqx5BUcVbeHxF9uBF3pn2fz2IX7LJv8AJ8rAGfMxv8znOMbeMZ+atn/l
+3/z605v9Yn40Ac5Bb+KlVQ97o7PsttxWzlwWDH7QQPN4BXGwfwnru6U2SDxX9mk8u90cS+XO
+E3WcxG8uPIJ/e9AuQ46seQVHFdKv+sf8Kb/y7/59aAMZofEf2wH7Xpf2fzyQv2WTf5PlYxnz
+Mb/M5zjG3jGfmqvDbeK9iiS+0cybLfeRaS4Lhj55A83gFcbB/CeTu6V0bf6xPxoX/WP+FAHN
+y2/io2snl3ujhzHcBN1nKQHLjyCf3vIC5Dj+I8gqOKsND4j+2qftel/Z/PJ2/ZZd/k+VjGfM
+xv8AM5zjG3jGfmra/wCXf/PrTm/1ifjQBzcNv4rWNQ97o5l8u3DlbOYKXDHzyB5vAK4CD+E8
+ksOKbJb+LPssnl3ujrJsuNm6zmI3lx5BP73oFzvH8R5G3pXTL/rH/Cm/8u/+fWgDF8nxH9uQ
+m70v7P8AaM7fssu/yfKwRnzMb/M5zjG3jGfmqvDb+K9gV73RvN8m3DstnMFMgc+eQPN4UpgI
+M5U8ksOK6Rv9Yn40L/rH/CgDmpofFRtZfLvdHD7LgJus5SAxb/Ryf3vIVc7/AO8em3pVhofE
+f25CbvS/s32gHb9ll3+T5WGXPmY3+ZyDjG3jGea2/wDl3/z605v9Yn40Ac3Db+LNgDX2jGXy
+oA7LZzBTIHPnEDzeFKYCjOQeSWHFJND4qNvL5d9o4bbc7N1nKQGLD7OT+95CjO/+8em2ulX/
+AFj/AIU3/l3/AM+tAGI0PiP7YhN3pYtvtAO37NLv8nysMufMxv8AM5BxgLxgnmoIbfxbtUPf
+aMZvKhDstnMFMgc+cQPN4UpgKM5DcksOK6N/9ZH+P8qVf9Y/4UAc3JD4p+zy+Xe6OG23OzdZ
+ykBi3+j5/e8hRnf/AHj93bU7QeI/tkTG70v7N9oUlfssu/yfKw658zG8ycg4wF4wTzW1/wAu
+5/z3p0n+sT6n+VAHORW/i3bh77RjP5MAdlsptpkDnzSB5v3SnCjOQ3JJHFJLD4p+zTeXe6QO
+LrZutJTglv8AR8/veQozv/vfw7a6Vf8AXP8AQVH/AMup/H+dAGN5PiT7bGWutLNt9oUlRayh
+/J8rDjPmY3mTkHGAvBBPNQRw+LPLAe+0Uz+TCHZbObb5okJlIHm/dMfCjOQ3JJHFdHJ/rE+p
+/lQrDzn57ClcDm5YfFH2eby73SBxdbN1nKcEn/R8/vedvO/+9/DtqfyPEZvIi93pZt/PQlRa
+y7/J8rEgz5mNxk5BxgLwQTzV261WysbUm5u7e3BJUNLIqjOTxyetVJPGWhrIgOq2vBPSVT29
+qzdSEdG0vmaRpzlsmyvHB4s8sBr3RjP5EIdls5tpl8w+aQPN+6Y+FGchuSSOKJoPFHkTeXe6
+QB/pWzdZynGT/o+f3vO3nf8A3v4dtWF8aaH5rn+1bXoP+Wopv/CZaH9nYf2ra55/5aD1pe1p
+/wAyK9jU/lf3CLD4k+1xb7vSzb+fGSq2su/yvKPmAHzMbjJypxgLwQTzUUcPizy8NfaKbjyI
+QzCzm2+b5hMhA837pj4UZyG5JI4qy3jTQ/MjP9qWvU/8tR6UL4z0PzWP9qWvIH/LUe9HtqX8
+y+8PY1P5X9xwevrqS/F3wUL+W1lX7NrRj+zRMmI/MtPLDbmOWC53EYBPQDpRR4g1qx1b4ueB
+1s7qK5MdjqhcRsG25a1xmirUlJXizNxcdJIm8SeItV0u61WKzt0mEGnrc2+baV90u/DISvDE
+jGFHPrWt4WYat4uv7i6skeTTVCWFz5MiMIpkQyDc3BOUUHHTAFalc5cTyL8W/B8SyOIn0/VC
+yBjtYg2mCR3xk/nVkno0bt5kn7tuo7j0pm5vsqjYccc5HrU0f+ul+o/lUf8Ay6r+H86AFZ28
+5Pkboe49qI3bzJP3bdR3HpT2/wBdH9D/AEoj/wBdL9R/KgCHc32VRsOOOcj1p7M3mJ+7boe4
+pP8Al1X8P51K3+uT6GgCNHbzJP3bdR3HpTNzfZwNhxxzketTR/6x/qP5Uz/l1H4fzoAGZvMT
+923Q9xQjt5kn7tuo7j0qRv8AXJ9DSR/6x/qP5UARbm+zj5D27j1p7O3mJ+7bv3FH/LuP896e
+3+sT8aAI1ZvMf923buPSk3N9nHyH8x61In+sk/D+VJ/y7/59aAEZm8xP3bd+4oVm8x/3bdu4
+p7f6xPxoX/WP+FAEW5vs/wBw/mPWnMzeYn7s9+4pf+Xf/PrTm/1ifjQAxWbzH/dnt3FM3t5P
++rP5j1qZf9Y/4U3/AJd/8+tACMzeYn7s9+4oVm8x/wB2e3cU9v8AWJ+NAYeY/PpQBDvbyfuH
+8x609mbzE+Q9+4qvNfW1rbu808cSoMsXYKFHqc9KoS+MtEjkUf2rak8/dlU/yNZynGO7SLjT
+nLZNmurN5j/uz27imb28n7h/MetZX/CXWLM3lx30vTOyxmOPr8lR/wBv3kkf7jRL516hnMSZ
+GevzPn8CM1PtodHf01L9jPqrfgbjM3mJ8h79xQrt5j/uz27isZtR1yZlMekwQgg4+0XeGH1C
+ow/ImhY/ENwzEzafZHgbVR5z9ckp+WPxpe1T2Tfyt+Yeza3aXzv+RrZbyfuH8x609pG8xPkP
+fuKxP7J1iSLMuuFAOn2W1RM899+/9MfjTm8L+Y6/aNU1Gfrj/SPKx/37C5/HNHtJvaL+bQck
+F9pfK/6mwsjb2+Qjp3FVLrVLaxt2a4mjgReC0siqBzxnJqmvg/SmZvNt3uenFzPJMM+uGYgH
+3qa18N6VZqHg021ikXIDrCoYfjjNF6vZL5h+7XVv5W/Uhk8Y6OJEA1GB35wkUgdm9gFySfYc
+03/hMLPexjt7+bp9yyl4+uVFbXkojIFUKMngDHanKo8x+PSjlqfzL7g5qfZ/f/wDB/t6+kjK
+poF9j1doFHX/AK6UNqGvSSLt0i1iGflM17z07hUPP0Jrbx+4J/z1p8n+sj+p/lT9nL+Zhzx6
+RX4/5mEsfiGRmPn2FvnGVWJ5Sv8AwIuufyFM/svVpoCZtZmj7YtbeJBjP+1vOffP4V0C/wCt
+f8Kj/wCXc/j/ADo9lHq394e1fRL7v8zFbw48jL9o1LUp+eP9IEWOP+mYXP45pR4S0wswltJL
+kcfLczvKv1w7EZ963W/1ifU/yoX/AFr/AIUexp9Un6i9tPo2jItdD06wjZrfTreBsFS0cSKc
+Z6EitPAjaNVi2jJ+XgdqOfszfj/OpH/10X1P8quMYx0SsQ5Se7GKx81/3Z6Djj3pm4/Z2Ow9
++cj1qZf9dJ9B/Wo/+XVvx/nVWRIrMfMj/dt1Pp6UKx81/kPQcce9Pk/10X1P8qF/10n0H9aL
+IDzfxgxb4teA8gj/AEHVev8AvWlFHjD/AJK14E/68dV/9CtKKYG1f38Gl2ct1dSeVbxDc77W
+baPXABOKydPtk8QfEbRtSsLy3mi0iyuo7qLcfMX7SIGiIGO4iY8nuK1NT06HVrGazuNxgmAV
+1RtpYZBxn0OMH1BNZelNp/hv4iWllbWGJvEFvdXM83nMVVoGjPCHIyxnPTHSgD0SP/XS/Ufy
+qP8A5dV/D+dOjhTzJPkXqO3tUflJ9lU7Rnjt70ATN/ro/of6UR/66X6j+VNaFPOQbBjB7fSi
+OFPMk+Reo7e1ADf+XVfw/nUrf65Poag8tPsqnaM8dvepGhTzUGwYwe1ADo/9Y/1H8qZ/y6j8
+P50qQp5knyL1Hb2pnlp9nB2jPHb3oAmb/XJ9DSR/6x/qP5U1oU81BsGMHtQkKeZJ8i9R29qA
+D/l3H+e9Pb/WJ+NQ+Wn2cHaM8dventCnmINg79qAHJ/rJPw/lSf8u/8An1pFhTzH+Re3b2pn
+kp9nB2jP096AJm/1ifjQv+sf8Ka0SeYnyDv2qreXlnpqPLdSw28Qx80rBR+tJtRV2NJt2RZ/
+5Y/59adIcOn41gf28LqLbp2mz3p7TMnkx9eu5+SPdQ1KdP1i9ZfOvINPRs5jtYt8g9vMbj/x
+z/GsfaJ/Cm/Q19m18TS/rsbFxdQ2ccks8qQRryXkYKBx6msj/hKIbiMLp9tc6kT0eGPbH1/5
+6NhSPoTUlp4V06GczSwm8uFIYTXTGRw3qN3C/wDAQBWp5aeV90D/APXRapLdpfiwvTjsm/wR
+km31zUGBmuoNLj5+S1XzpP8AvtwF/wDHPxoHhCwkLfaVnvm7/abh5Fb6qTt/TjtWwYk3J8gz
+z2pRCnmN8oHTtT9lF/Fr6h7WS+F29DLg8L6RaqkkWm2iOhyrCBcg565xmtVYkjKqqhRycKMU
+zyU8n7oz/wDXpzQx+YnyDv2q4wjHZWM3KUt3ceoHmPx6U3/l3/z60iwx+Y/yDt2pvkp5Odoz
+/wDXqySVv9Yn40L/AKx/wprQp5ifIO/ahYU8x/kHbtQAf8u/+fWnN/rE/GofJT7PnaM//XqR
+oU8xPkXv2oAcv+sf8Kb/AMu/+fWhYU8xxsHbtUfkp9nJ2jP096AJX/1kf4/ypV/1j/hTGhTz
+E+Re/b2oWFPMcbB27UAH/Luf896dJ/rE+p/lUXlp9nJ2jPPb3p7wp5kfyL1Pb2oAev8Arn+g
+qP8A5dT+P86VYU81xsGMDtTPLT7OTtGee3vQBLJ/rE+p/lSr/rn+gpjwp5kfyL1Pb2oWFPNc
+bBjA7UAN/wCXVvx/nUkn+ui+p/lUPlp9lY7Rnnt71JJCnmR/IvU9vagBy/66T6D+tR/8urfj
+/OnLCnnONgxgdvrUflJ9lY7Rnnt70ATSf66L6n+VC/66T6D+tNkhTzI/kXqe3tQsKec42DGB
+2+tAHnPjD/krXgT/AK8dV/8AQrSijxcoX4teA8DH+g6r/wChWlFAHRVzVz/yWDwX/wBg7Vf5
+2laniH7WdFuxYNKt7s/ctCqlg3bhiBj1yelM8Fw6gut3EuqyKZ2hRbWGZoywwiGd0KgHaXIG
+P9kHuKAO6j/10v1H8qj/AOXVfw/nSx+Z5knyr1Hf2+lMy/2VeFxx39/pQBM3+uj+h/pRH/rp
+fqP5Uxmk81PlXOD3Pt7UR+Z5knyr1Hf2+lACf8uq/h/OpW/1yfQ1Bl/sq8Ljjv709mk81PlX
+OD3P+FAD4/8AWP8AUfypn/LqPw/nQvmeZJ8q9R39vpTfn+zjhccd/f6UASt/rU/GkT/WP9R/
+Kmsz+YnC9D3P+FZ99r1npchW5nijlbBWIMTI3+6gG5vwFTKSirt2Q1Ft2SuaH/LH/PrT/wDl
+onGOtYH9vXl5Ht0/S5ZF/wCe92Tbxjn0I3n8Fx70raPqV6yG+1ORA2d0FkBEmPTcQXP1BH4V
+l7Tm+BN/ka+y5fiaX5mleataaWu+7uYrcMcL5jgFjjoB3PsKzv7fubyP/iXaZPOn/Pa6/wBH
+Tr/tDf8A+O496tadoNnpszyQWkazNjdOxLyN9XOSfxNXsyeT0XH19/pRy1Jbu3pr+LDmpx2V
+/X/L/gmQ2m6vfuputQWxQ/8ALGxQFh7F3ByPooqxY+HdPsJzNHbBrgdJ5mMkvT++xJx7ZrRZ
+pN6cLnnuf8KF373+Ve3c/wCFNUop3er89ROpJqydl5aC/wDLv/n1p7f6xPxqL955HRcfX3pz
+NJ5ifKvfuf8ACtjIev8ArH/Cm/8ALv8A59aRWk8x/lXt3P8AhTP3nk9Fx9T60ATN/rE/Ghf9
+Y/4Uxmk8xPlXv3P+FCtJ5j/Kvbuf8KAF/wCXf/PrTm/1ifjUX7zyei/mfWnM0nmJ8q9+5/wo
+Aev+sf8ACm/8u/8An1pFaTzH+Ve3c/4Uz955PRcfU+tAEzf6xPxoX/WP+FMZpPMT5V79z/hQ
+rSeY/wAq9u5/woAX/l3/AM+tOb/WJ+NRfvPI6Lj6+9OZpPMT5V79z/hQA9f9Y/4U3/l3/wA+
+tIrSeY/yrnjuf8KbmTyDwuPr7/SgCR/9ZH+P8qVf9Y/4VGzSeYnyr37n0+lCtJ5j8Lnjuf8A
+CgBf+Xc/5706T/WJ9T/Kovn+znhcc9/f6U5vM8yP5V6nv7fSgCRf9c/0FR/8up/H+dCtJ5r/
+ACrnA7n/AApvz/ZzwuOe/v8ASgCWT/WJ9T/KlX/XP9BUbeZ5kfyr1Pf2+lCtJ5r/ACrnA7n/
+AAoAT/l1b8f51JJ/rovqf5VDl/srcLjnv70+TzPMj+Vep7+30oAev+uk+g/rUf8Ay6t+P86V
+Wk81/lXOB3Pv7UzL/ZW4XHPf3+lAE0n+ui+p/lQv+uk+g/rTJPM8yP5V6nv7fShWk81/lXOB
+3Pv7UAedeMP+SteBP+vHVf8A0K0oo8X5/wCFteA8/wDPjqv/AKFaUUAdFXM3X/JYPBf/AGDt
+V/naV01c1pl1pniH4jWd1FfeXPoNvdwSQyR4WXzniUlXz/C0BBGOc+nJBo9Kj/10n1H8qZ/y
+6r+H86iTULXzHJuYcEjH7wen1qpc69p1lCiT39tCSAR5kyrnn3NQ5xjuyuWT6Go3+uj+h/pR
+H/rpPqP5Vkt4r0XzUP8AatljB/5eE/xph8XaOsjiO9juZGxtjtT5ztx2VMmp9rDuivZz7Gr/
+AMuy/h/OpG/1ifQ1z51TVLyALa6elmhxia+kGevXy0yT9CymnNocl5Ip1LU5rpTnMMJ8iIeo
+wvzEezMan2jl8EW/wQ/ZqPxNL8WXLzxBp2m3DxTXka3BxiBTulPHGEGWP5VT/tbUb6HFjpjR
+x9p79vKB57IMv+BC1padY2OmRtFaQw2yZ4WJQo/SpvMT7OBuXPHf3o5Zy+J29P8AMOaEdlf1
+/wAjI/sK8vJF/tDVJZF5/c2g8hPzBL/+PY9qvabo9lpZkFpaxw7iCzKvzMcdSepP1q60i+Yu
+HXoe9Isq+ZJ8y9R39qqNOKd0tSXUlJWb08tBf+Xcf5709v8AWJ+NQ+Yn2cDcufr71I0qeYnz
+r371qZip/rJPw/lSf8u/+fWkWVPMf517d/am+Yn2fG5c/X3oAlb/AFifjQv+sf8ACmtKnmJ8
+69+9Cyp5j/OvbvQAf8u/+fWnN/rE/GovMT7Pjcufr709pU8xPnXv3oAcv+sf8Kb/AMu/+fWh
+ZU8x/nXt3pvmJ5ONy5+vvQBI3+sT8aF/1j/hTWlTzE+de/ehZU8x/nXt3oAP+Xf/AD605v8A
+WJ+NR+Ynk43Ln6+9OaVPMT51796AHL/rH/Cm/wDLv/n1oWVPMf517d6b5ieTjcufr70ASN/r
+E/Ghf9Y/4U1pU8xPnXv3oWVPMf517d6AD/l3/wA+tOb/AFifjUXmJ9nxuXP196e0qeYnzr37
+0AOX/WP+FN/5d/8APrQsqeY/zr270zzE+z43Ln6+9AEj/wCsj/H+VKv+sf8ACmNKnmJ869+/
+tSrKnmP869u9ACf8u5/z3p0n+sT6n+VReYn2cjcufr7095U8yP516nv7UAPX/XP9BUf/AC6n
+8f505ZU81/nXoO9R+Yn2cjcuee/vQBLJ/rE+p/lSr/rn+gpjyp5kfzr1Pf2pVlTzX+deg70A
+M/5dW/H+dSSf66L6n+VReYv2ZhuXPPf3p8kqeZH869T39qAHL/rpPoP61H/y6t+P86VZU86T
+516Dv9ab5ifZWG5c89/egCWT/XRfU/yoX/XSfQf1pskqeZH869T39qRZU86T516Dv9aAPOvG
+H/JWvAn/AF46r/6FaUUeMGDfFrwHg5/0HVf/AEK0ooAb4t8eaf4T0/Vp2/068020F9Pp8Esa
+TeTkjf8AvGVQOD1POMDJwKreAbzQfF/ifxDDBoMllJYtC16upWag3DzRLMjoCxK4DMGyoJbP
+1PF/GD4kWltceJPCl/4d0nX7az0m11g2upajGiTqboI26Nh8vl4DjkliAAM4yz4K+PLXxx8U
+/GVl4b0Wz8ONYxwNeakbN2k1RTCVi3bthUxnHDZOAVwOtRpK6epprFXWjPc08JaJ5jj+ybHA
+I/5d09PpU1roun2Nti3sre3DEFhHEq5Oe+BWfb6d4iWQb9cs32m18z/iWkbto/f4/e8eZxt6
+7Mfx1C2l+JvsOF1+xWUwyIsh0skCQygxvjzuQqfKVz8x+bI6VKhFa2QueT0udC1pB5qfuk6H
++Ee1OhhSOSUKiqMjO0AdqxnsNf8AtwYazZiEzSusf9nkkRGMBE3eb1V/mLY5Hy4H3qjt9N8R
+Kyh9ds3Zfsvmf8S0jdt/1+P3vHmcbf7mP46uyWyFdvdm7/y6r+H86kZR5ycdjXMyaX4laxKr
+r9ksrQyKsn9lkgSNKDG+PO5Cp8pXPzH5sr0q1JYa99uDDWLUQmaR1j/s8kiIxBUTd5vUSfOW
+xyPlwPvVRJuJjzJPqP5Uz/l1H4fzrBt9N8RggPr1m5UWocjTSNxX/XkfvePMGNv9z/bqKTS/
+ErWLKviCyWQwyqrnSyQJGkBifHnchE+Urn5j82V6UAdMyjzk47GhMeZJ9R/KsN9P1/7cHGs2
+gh8+RxH/AGeciIxBVTd5vUSfOWxyPlwPvVFb6Z4iVgH12zdlFsHI0wjcV/15H73jzBgL/cx/
+HQBvcfZxx6fzqRgPMTj1rmZNL8TNYsqeILJZTFMqudMJAkaQGJ8edyET5SufmPOV6Vak0/X/
+ALcGGs2gg893Ef8AZ5yIjFtVN3m9RJ8+7HI+XA+9QBtoB5knHp/Km4H2ccf5zWBBpviRVUPr
+tk7qtsHb+zSAWU5nIHm8eYMBR/B1+fpUcmmeJms3VPEFkshimVXOmEhXaQGJsedyETKkZ+Y8
+5XpQB0zAeYnHrSKB5j8en8qw20/X/tqsNZtRB57OI/7POfK8raE3eb1Enz7scj5cfxVDDpfi
+VdofXbN5FW2Dt/ZpAZlOZyB5vHmDAA/gxn5+lAHQYH2fp/nNPYDzE49a5mTTfErWbqmvWKyG
+KdVc6YSFdpAYWx53IRcqR/Eecr0q01hr/wBuD/2xa+R57OI/7POfK8raI93m9fM+fdjp8uP4
+qANtQPMfj0/lTdo+z9P85rn4dN8SoFDa/ZPIEtg7DTSAzKxMzAedwJFwAP4MZy3Smyab4la1
+kVNeskcxzqrHTCQrs4MLY87kIuVI/jPOV6UAdKyjzE49aFUeY/HpWI2n6/8AbQ/9s2vkeeXE
+f9nnPleVt2bvN6+Z8+7HT5cfxVBFpviWNFD69ZM4S3Dt/ZpAZlYmZgPO4DrgAfwYzlulAG/t
+H2fp/nNPZR5icetc3JpniVraRU16zRzHcBGOmE7WZwYWI83kIuQR/Gecr0qy2n6/9tV/7Ztf
+I88v5f8AZ5z5Xlbdm7zevmfPux0+XH8VAG2qjzH49KZtH2fp/nNc/HpniVUAfXrJ5BHbq7f2
+YQGdWJmYDzuA64AGfkIzlulJJpviVrWQJr1mjlLgI/8AZhO1mcGFsebyEXII/j65XpQB0bAe
+YnHr/KlUDzH49Kw/7P177cr/ANs2pg+0b/L/ALPOfK8raY93m9fM+fdjp8uP4qgj03xMqBX1
++yeURW6u40wgM6uTMwHncB1woGfkPOW6UAdBgfZ+n+c05gPMTj1/lXNzaX4ka1lCa9Zo5S4C
+MdMJ2szZgJHm8iMZBH8fX5elWW0/XxfI51m1Nv8AaA/l/wBnnPleVtMe7zepk+fdjgfLj+Kg
+DcUDzH49KZgfZzx/nNc9DpfiZUCvr9k0oit1ZxphAZ1cmVgPO4DphQM/Kect0pJtL8SNbzCP
+X7NGK3IRjppO1mYGAn97z5YyGH8ec/L0oA6RwPMj49f5UqgeY/HpWF9g177cjnWbTyPtAfy/
+sBz5Qi2tHu83qZPn3Y4Hy4P3qgj0vxMsYVtfsmmEUCs40sgNIrkysB53AdPlC5+U85bpQB0H
+H2c8ev8AOnvjzI/qf5VzkumeI2t5RHrtmhK3IRjppO0s37gn97z5YyG/v5/hqdtP177bGx1i
+1MH2hXMf9nnPlCLaybvN6mT5w2OB8uD96gDcVR5z8dhTP+XU/j/Oufi0vxMq7W8QWLTCGBWc
+aWQDIrkyvjzuA6fKFz8p+bLdKSbTfEbW83l67ZoSLoJnTSdpZv3BP73nyxnd/fz/AAUAdI+P
+Mj+p/lQqjzn47CsP7Br32yNm1m1MP2hXMY08g+UItrpu83qZPnDY4Hy4P3qgj0vxL5e19fsn
+nEMKtJ/ZZAMiyEyPjzuAyfKFz8p+bLdKAN//AJdW/H+dPkA8yLjuf5Vzkum+Imt5vL12zTIu
+tmdMJ2lj+4J/e8+Xzu/v5/gqx9g1/wC2RM2s2jQ+ejmMaeQTEIsOm7zerP8AMGxwPlwfvUAb
+i486TjsP61H/AMurfj/OsBNL8TCPY3iCyacQQq0g0sgGQSEyPjzuAyfKFz8p+bJ6Us2m+Imh
+mMeu2aZ+1bM6YTt3H9xn97z5fO7+/n+CgDoZAPMi47n+VKuPOk47D+tYX9n6+t1Cz6zatB58
+bmMaeQTGIiJE3ebwWf5g2PlHy4PWoY9L8T+WUbX7FpxBCjSf2WQDIJCZHx53Rk+ULn5T82T9
+2gDmvGH/ACVrwJ/146r/AOhWlFUdft7+H4u+Cvtt7FdhrbWmjEdv5W1DJaFFPzNkqMgnjdnO
+B0ooA6qSzt5mLSQRSMRgsyAkj0rHe/uLX4p+GLSGUxW17ZajJcxqABM0ZthGW9Su9sfU1U8R
+aprVne6klnBcywLYo9sbaz8w/aC+Cu45DcEEjHAB6mtPwnHe3fiy5mv7ZJVtrZRaXMlv5bRu
++PPVCQG2nah79Bk5GAAd5H/rpfqP5VH/AMuq/h/OljZ/Mk+Veo/i9vpTNz/Zl+UY47+/0oAm
+b/XR/Q/0oj/10v1H8qYzP5yfKM4P8X09qI2fzJPlXqP4vb6UAJ/y6r+H86lb/XJ9DUGX+zL8
+oxx39/pT2Z/NT5RnB/i/+tQA+P8A1j/Ufypn/LqPw/nQjP5knyr1H8Xt9KZuf7OPlGOO/v8A
+SgCdv9cn0NJH/rH+o/lTGZ/NT5RnB/i/+tQjP5knyr1H8Xt9KAF/5dx/nvT2/wBYn41Duf7O
+PlGOP4vf6U9mfzE+Qd/4v/rUAOT/AFkn4fypP+Xf/PrTVZ/Mf5F7fxe30pNz+QPlGP8Ae9/p
+QBK3+sT8aF/1j/hTGaTzE+Ud/wCL/wCtQrP5j/Ivb+L/AOtQAv8Ay7/59ac3+sT8ai3P9n+6
+Mf73vTmaTzE+Ud/4v/rUAPX/AFj/AIU3/l3/AM+tIrSeY/yjt/F/9am7n8n7gx/ve9AErf6x
+PxoX/WP+FMZpPMT5B3/i/wDrUK0nmP8AIO38X/1qAF/5d/8APrTm/wBYn41FufyfuDH+9705
+mk8xPkHf+L/61AD1/wBY/wCFN/5d/wDPrSK0nmP8g7fxf/Wpu5/J+4Mf73vQBK3+sT8aF/1j
+/hVDVdas9FhFxqF1b2UK9ZJ5gg9O9Ya+Portm/svStT1fOMPb2xijPuJJdikdOhPBz0qoxb1
+SA6n/l3/AM+tOb/WJ+Ncl5/i/Uo/3drpmixE/emke7lAz/cUIoP/AAMjjHPWnSeFdVvJAb/x
+NfPuyGisVjto8dwMKzj678jnBHZ8qW7A6lpFjaRnYBQASzHAFYN9458O6askV1rmnwSpw0TX
+Sbxn1XOaqr8OdBaQtPpq6jIuDv1KeS6IPfHmFsZ74xmtmx0m00y1SOz0+2tEjyEWCNUC5Jzg
+Acf/AF6Pc83+AGP/AMLG0WZlNrJeah12mxsJ50f12uqFWx7HsaF8cGZj9l8P69djjd/ofkbf
++/zJn8M+9dMzP5ifKvf+L2+lCs/mP8g7fxf/AFqLx6IDmP8AhMrvySP+EU13H+5b+v8A12pz
+eLtQWRDL4S1lc5KeW1s+Rjv++4PtXQ7n8g/KMc/xe/0p7s/mR/KvU/xe30o5l2A5pfGl0sjM
+3hXXVXjc2yA4HrgTEn6AE03/AIWBp6wsJrPWLdOfnm0i5C9en+rrp1Z/Nf5Vzgfxf/Wpm5/s
+5+UY553e/wBKOaPVAYcPxC8OXE0cY1qzhmzgw3MohkBPABR8MD7EZroIJkmLPG6uvAypyKgv
+LOO82JcW0MycjbIAwORz1FYEnw78Peczw6Pb2E3GJdPJtnH0aPafw70e4+6/EDpP+XZvx/nU
+kn+ui+p/lXKDwzrGnwFtN8R3QQZxBqca3adem75ZPxLn8aVtW8U6cyJdaDBqzAkCbTbpY93u
+Y5iNv4O1HJf4Wvy/MDqV/wBdJ9B/Wmf8urfj/OuaXxRr/mMf+EMvskDI+22v/wAcpn/CTa95
+JX/hDb7bz832219f+ulPkl5fev8AMDrJM+dF9T/KkX/XP9B/WuXbxRr5ZSfBl8CDx/ptrzx/
+10oXxRr/AJjH/hDL7JAyPttr/wDHKOSXl96/zAwPGH/JWvAn/Xjqv/oVpRWVquqX+pfF7wUL
+3RrjSVSw1QoZp4ZBJlrTIHls2Me9FZvQDt65q4/5K/4L/wCwfqv87StzUNSttJs3uryZbe3T
+AaRgT1OAMDkkk9qydNgi8Q/ELQ9UsbyCaHSrK7SePLByLjyDGy8YK/uX5z/XAB6LH/rpfqP5
+VH/y6r+H86kj/wBdL9R/Ko/+XVfw/nQBI3+uj+h/pRH/AK6X6j+VDf66P6H+lEf+ul+o/lQB
+H/y6r+H86lb/AFyfQ1F/y6r+H86lb/XJ9DQAkf8ArH+o/lTP+XUfh/Onx/6x/qP5Uz/l1H4f
+zoAkb/XJ9DSR/wCsf6j+VK3+uT6Gkj/1j/UfyoAb/wAu4/z3p7f6xPxpn/LuP896e3+sT8aA
+ET/WSfh/Kk/5d/8APrSp/rJPw/lSf8u/+fWgBzf6xPxoX/WP+FDf6xPxoX/WP+FADf8Al3/z
+605v9Yn403/l3/z605v9Yn40AC/6x/wpv/Lv/n1py/6x/wAKb/y7/wCfWgBzf6xPxoX/AFj/
+AIVmaz4i07QVje/vI4Cx2pH96SRj0CIMsx9gCayl8TatqzMNG0ORU6i71ZjbRMPVUAaQn2ZV
++tNRdr9AOl/5d/8APrWPrHjHRtDult7zUoEu+otVbfO2RwBGuWJPbA5rO/4RS/1SPGt65cXM
+R4a009PskDDPRsEyH/vsAjt1zuaXoOnaDGsOnWNvYxZJ228YQEn1x1/+tVe7Hd3Axl8Razqk
+jf2ToMkUXGLrV5PsyH1xGA0mf95V+vq3/hGtY1KPdqniGdFPDWukxLbRkZ6bm3Sc85Ice2K6
+tf8AWP8AhTf+Xf8Az60c3ZWAxNM8E6Ho95Hc22mwC8BP+lzAyz9P+ej5bpx16Vur/rH/AAob
+/WJ+NC/6x/wqW29WwG/8u/8An1pzf6xPxpv/AC7/AOfWnN/rE/GkAL/rH/Cm/wDLv/n1py/6
+x/wpv/Lv/n1oAV/9ZH+P8qVf9Y/4Uj/6yP8AH+VKv+sf8KAGf8u5/wA96dJ/rE+p/lTf+Xc/
+5706T/WJ9T/KgBV/1z/QVH/y6n8f51Iv+uf6Co/+XU/j/OgB8n+sT6n+VKv+uf6Ckk/1ifU/
+ypV/1z/QUARf8urfj/OpJP8AXRfU/wAqj/5dW/H+dSSf66L6n+VAAv8ArpPoP61H/wAurfj/
+ADqRf9dJ9B/Wo/8Al1b8f50ASSf66L6n+VC/66T6D+tEn+ui+p/lQv8ArpPoP60Aeb+MP+St
+eBP+vHVf/QrSijxh/wAla8Cf9eOq/wDoVpRQBpa/oVp4m0mfTb5We1mxvVSBnBBHUEEZHQgi
+s/QfsnhXxvpujwRT3H9sWk8hmuJ9/krbCFVRRtyQRL3PGCepNdBXNXP/ACWDwX/2DtV/naUA
+ekxwp5knyL1Hb2qPyk+yqdozx296mj/10v1H8qj/AOXVfw/nQA5oU85BsGMHt9KI4U8yT5F6
+jt7U5v8AXR/Q/wBKI/8AXS/UfyoAh8tPsqnaM8dvepGhTzUGwYwe1N/5dV/D+dSt/rk+hoAY
+kKeZJ8i9R29qZ5afZwdozx296lj/ANY/1H8qZ/y6j8P50AK0Keag2DGD2oSFPMk+Reo7e1Pb
+/XJ9DSR/6x/qP5UAReWn2cHaM8dventCnmINg79qP+Xcf5709v8AWJ+NADFhTzH+Re3b2pnk
+p9nB2jP096lT/WSfh/Kk/wCXf/PrQANCnmINg79qFhTzH+Re3aiVljZXYhVUElicAVzk3jqx
+kuJrfS4rjXLtW2mOwj3RgjqDM2IwR3BbPtTUW+gG/wCSn2fO0Z/+vUOoXllpkXn3c0NtCoJa
+SZwigAdya5/yfFGtQjzZ7fw7b9Qtri6uTz0LOvlr74V/YjrVq08D6Rb3UVxcQvql6p3LdalI
+biRCOcpvyE55+QAVXKo7v7gKo8YHUmYaHo11qvQfaJU+y26+h3yAFh3yitxSL4d1vVI86rrQ
+tYTw1ro8fkgjPIaVt0ntlCn68dav+sf8Kb/y7/59aOZLZWAyNH8IaP4fmE1lp0MNwwKtcsC8
+7j0aRsu34mtdYU8x/kHanN/rE/Ghf9Y/4VF23qBF5KeR90Z/+vTmhj8xPkHftS/8u/8An1pz
+f6xPxoAYsMfmP8g7dqb5KeTnaM//AF6lX/WP+FN/5d/8+tAA0KeYnyDv2oWFPMf5B27U5v8A
+WJ+NC/6x/wAKAIfJT7PnaM//AF6kaFPMT5F79qP+Xf8Az605v9Yn40ANWFPMcbB27VH5KfZy
+doz9Pepl/wBY/wCFN/5d/wDPrQAjQp5ifIvft7ULCnmONg7dqc/+sj/H+VKv+sf8KAIfLT7O
+TtGee3vT3hTzI/kXqe3tR/y7n/PenSf6xPqf5UANWFPNcbBjA7Uzy0+zk7Rnnt71Mv8Arn+g
+qP8A5dT+P86AFeFPMj+Rep7e1Cwp5rjYMYHanSf6xPqf5Uq/65/oKAIPLT7Kx2jPPb3qSSFP
+Mj+Rep7e1N/5dW/H+dSSf66L6n+VADVhTznGwYwO31qPyk+ysdozz296mX/XSfQf1qP/AJdW
+/H+dADpIU8yP5F6nt7ULCnnONgxgdvrTpP8AXRfU/wAqF/10n0H9aAPN/Fyhfi14DwMf6Dqv
+/oVpRR4w/wCSteBP+vHVf/QrSigC74oGrNoN2uieWNTZMRNKwAX1IyCN3pnjPWneDpL9vEV8
+uqIok8tDYmURghdiecsZX5iA+Mkj07YrTrmrn/ksHgv/ALB2q/ztKAPSI/M8yT5V6jv7fSmZ
+f7KvC447+/0qaP8A10v1H8qj/wCXVfw/nQArNJ5qfKucHufb2oj8zzJPlXqO/t9Ke3+uj+h/
+pRH/AK6X6j+VAEOX+yrwuOO/vT2aTzU+Vc4Pc/4Un/Lqv4fzqVv9cn0NAEa+Z5knyr1Hf2+l
+N+f7OOFxx39/pUsf+sf6j+VM/wCXUfh/OgAZpPNT5Vzg9z/hQvmeZJ8q9R39vpVbVNYsNHVZ
+r+8t7KEZ/eXEqoPzJrDXx5BeSN/Y+nX+uKcYmtIQkB+kshVG/wCAk1Si3qkB0WX+zjhccd/f
+6U9mfzEJCjg9/wD61cx/xVmqRAj+z9Bh/usrXkx569UVT7fN9fV3/CA2N3IravdXmvMckrqM
+26H/AL8qFj49dufeq5Uvif3agPm8e6YtxLBYyNrV0Dt8nS1M+G6bWcfIh/32FQfaPFmrRgRW
+tloEPeS6c3c+D/sIVRSP99h04rp7O1hs0MMESQRLgLHGoVQMdgKf/wAu/wDn1pcyWyA5geAb
+K6lSXWXk8RXA+62pbWjX/diVRGv1C5PrXRWsAtY/JhhjiijAVY4/lVQBwAAOBVhv9Yn40L/r
+H/Cpcm92BF+88jouPr705mk8xPlXv3P+FL/y7/59ac3+sT8aQDFaTzH+Ve3c/wCFM/eeT0XH
+1PrUy/6x/wAKb/y7/wCfWgBGaTzE+Ve/c/4UK0nmP8q9u5/wp7f6xPxoX/WP+FAEX7zyei/m
+fWnM0nmJ8q9+5/wpf+Xf/PrTm/1ifjQAxWk8x/lXt3P+FM/eeT0XH1PrUy/6x/wpv/Lv/n1o
+ARmk8xPlXv3P+FCtJ5j/ACr27n/Cnt/rE/Ghf9Y/4UARfvPI6Lj6+9OZpPMT5V79z/hS/wDL
+v/n1pzf6xPxoAYrSeY/yrnjuf8KbmTyDwuPr7/SpV/1j/hTf+Xf/AD60ANZpPMT5V79z6fSh
+Wk8x+Fzx3P8AhT3/ANZH+P8AKlX/AFj/AIUAQ/P9nPC457+/0pzeZ5kfyr1Pf2+lL/y7n/Pe
+nSf6xPqf5UAMVpPNf5Vzgdz/AIU35/s54XHPf3+lTL/rn+gqP/l1P4/zoAG8zzI/lXqe/t9K
+FaTzX+Vc4Hc/4U+T/WJ9T/KlX/XP9BQBBl/srcLjnv70+TzPMj+Vep7+30pP+XVvx/nUkn+u
+i+p/lQAxWk81/lXOB3Pv7UzL/ZW4XHPf3+lTL/rpPoP61H/y6t+P86AFk8zzI/lXqe/t9KFa
+TzX+Vc4Hc+/tT5P9dF9T/Khf9dJ9B/WgDzfxfn/hbXgPP/Pjqv8A6FaUUeMP+SteBP8Arx1X
+/wBCtKKAOirmNOvNK174j2d2l+IZ9Dt7uB4ZEAWbzniUlXz/AAtAQRjnPpyY/HnxCtPA+iax
+etF9pudNtFvHgmdreJkLbQBOUKbyeAgyxJAxyKp/D290Lxx4s8UafceFLeKSx+zzXElwY7kN
+JKhfY64xFMoOWQZ++pJycUXV7Mqztc9dj/1kh7Ej+VR8/ZVGOeOPxrm1+F/hIySD/hHtP4I/
+5YD0pn/CsfCf2dW/4R7T88f8sB61fud393/BJOgbVLJZlzeW4K5yPNXj9ayZviD4XtWlMniL
+S1wwBUXkZIPToDml/wCFfeF1kRR4c0nbg9bGI+n+zWva6fa2ch8i2hh24VfLjC4GOgwKPc8w
+OcX4kaJNCFtHvdRPGDY6fPMrDPJVlTaw9wac3izVLmQfZPC19zkCS+ngt09ifnZwP+Akj0rp
+s/6MpPPT+dSMB5ycdjRzRWy+/wDpAcosni2+Zj5mjaOpIG0iS8f65zEAfbB/Ck/4RW6vIv8A
+iY+JtTuo+Mw27R2idfWJQ+Pbd065rrEx5kn1H8qZ/wAuo/D+dHN20Aw9P8G+H9JuUnt9Ntft
+PObqUebMfrI+WP4mt1ZE8yT5l6jv7U5lHnJ9DRGP3j/UfyqeZvVsCLzE+zgblz9fepGlTzE+
+de/em8fZxx6fzqRgPMTj1pAMWVPMf517d/am+Yn2fG5c/X3qRAPMk49P5U3A+zjj/OaAFaVP
+MT51796FlTzH+de3enMB5icetIoHmPx6fyoAj8xPs+Ny5+vvT2lTzE+de/ekwPs/T/OaewHm
+Jx60ANWVPMf517d6b5ieTjcufr709ceY/Hp/Km7R9n6f5zQArSp5ifOvfvQsqeY/zr270rKP
+MTj1oVR5j8elADPMTycblz9fenNKnmJ869+9JtH2fp/nNOZR5icetACLKnmP869u9N8xPJxu
+XP196eqjzH49KbtH2fp/nNACtKnmJ869+9Cyp5j/ADr270rAeYnHr/KlUDzH49KAIvMT7Pjc
+ufr709pU8xPnXv3pMD7P0/zmnMB5icev8qAEWVPMf517d6Z5ifZ8blz9fepVA8x+PSmYH2c8
+f5zQANKnmJ869+/tSrKnmP8AOvbvSuB5kfHr/KlUDzH49KAIfMT7ORuXP196e8qeZH869T39
+qTj7OePX+dPfHmR/U/yoARZU81/nXoO9R+Yn2cjcuee/vUqgec/HYUz/AJdT+P8AOgBXlTzI
+/nXqe/tSrKnmv869B3pXx5kf1P8AKhQPOfjsKAIvMX7Mw3Lnnv70+SVPMj+dep7+1N/5dW/H
++dPkA8yLjuf5UANWVPOk+deg7/Wm+Yn2VhuXPPf3qVcedJx2H9aj/wCXVvx/nQA6SVPMj+de
+p7+1IsqedJ869B3+tOkx5kXHc/yoXHnScdh/WgDzjxgwb4teA8HP+g6r/wChWlFHjD/krXgT
+/rx1X/0K0ooA2dS0my1y3n0/UbO31Cyb79vdQrLG23LDKsCDgqD07V5j8R57nwZ4t8NQ+F54
+vDJ1aK+lv5tNsbUSXJhSLyg5eJsgb29+aKKBoim8SeLVs4XXxlqaOUYswtbHLESMBnNv6AdK
+sPr3in+1JYv+Ev1LyV8zEX2WywMIzDn7PnqB37UUVBoV4fEni2SK4DeMtTLq0YWT7LY7gG3Z
+/wCXfHYdu1Yul+PPGmoa7r1g3jDUI49Oe3WOSO0st8nmQLKS+bcjILYGAOAM5PNFFBJ0f9ve
+Kf7UlT/hLtS8hTJiH7LZbeELDn7Pnr71Xh8SeLXjnVvGWplwY9sn2Wx3LndnH+j47DqO1FFB
+Q7/hIfFjRWZHjHU0eRX3utrY5bDlR1t/T0rF+H/j7xl4q8N6Rq134svY5L6GSR7eG0sxEhAY
+jbmAt2HVjRRQBq2/ibxbJZ3DN4y1IyKY9r/ZLHI3E5/5d6LjxN4ujt4CvjLUg5Dbm+y2OWw+
+Bn/R/T0oooAy/HXj7xl4Y0m9vrXxZeuYpIVWCa0szGA8yRnpAG4DEjnqB1HFa6eJPFv+kofG
+WpllMYWT7LY7lyTn/l3x+lFFBI248T+Lo7eEr4y1JXIbc32Sxy2GwM/6P/KrP/CReKv7UZP+
+Ev1Hycn9z9lstv3N3X7Pnr70UUAc7eePvGlr4g0PTl8YX7RagLgySNZ2W9PKRWG3/R8clucg
+9BjFbFx4o8XJbQlfGOpByH3P9kscttPGf9Hx+VFFAFn/AISLxV/ahT/hL9R8nJ/c/ZbLb9zd
+1+z56+9VrfxP4uktJmbxjqRceXtf7JY5Xcecf6P/ADoooAyNL8e+NNR1/XdPfxhqEcen/Z/L
+kjtLLe/mQ+Yd2bcjg8DAHHXPWug/4SLxV/auz/hL9S8nP+q+y2WPubuv2fPX3oooKK0Hibxa
+9rOzeMdSLjy9rfZLHK7jzj/R/wCdSN4k8WmGzx4y1NWkMm9xa2OWweP+XeiigDJ8C+PfGXib
+R7DULrxbfI0+8tBFaWYj+WR0GMwFv4QevX24rSt/E3i17W4LeMdSLgR7W+yWOV3HnH+j/wA6
+KKAFn8T+LUtYGXxjqQc+Zuf7JY5baeM/6P8AyrK8f/EDxl4V0PUNRtPFl7I9uEKQzWlmY+XR
+DnEAbuT16+3FFFAGuPEni1YbzPjLU3aMx7Ha1scrlsHpb+lMuPE/i6O0hZfGOpBz5m5/sljl
+tp4z/o/8qKKCSz/wkXir+1An/CX6j5OR+5+y2W37m7r9nz1965/VPH3jXT9f0PT08Y38keof
+aPMkks7Lenlw+YNuLcDk8HIPHTHWiigDXn8UeLls4GXxjqQc+Zuf7JY5baRjP+j4/KrX/CRe
+Kv7UVP8AhL9R8nI/c/ZbLb9zd1+z56+9FFAFa38T+LpLeYt4y1JnAXa32SxyuWwcf6P/ADrG
+tPH3jS58Qa5px8YX6x2C2xjkWzst7+ark7s2+ONvGAOpzmiigDoP+Ei8Vf2nGn/CX6l5JIzF
+9lssfc3dfs+evvVe38T+Lnt52bxlqRcBdrfZLHK5fBx/o/p60UUAObxJ4tAtkHjLUwzmQNJ9
+lsdxwVx/y747ntWT4B8feMvFGlWN/d+LL5DNJOjwRWlmIyI52jHWAtyFBPPUnGBxRRQUa0Pi
+Txa1qxbxlqbuyxkMbWxymZADjFv6euaWbxJ4tSOBV8ZamHJk3SfZbHc2NuM/6Pjueg70UUAZ
+Hj3x94x8K+HdY1W08WXsj2UKSJbzWlmYnJRSQ2IA2Mk9GFbC+IvFix3efGWpu0arsZrWxyMu
+FPS39PWiigkZN4k8WxxW4XxlqYdmkDSfZbHcQu3H/Lvjue3erMeveKf7Uii/4S/UvJby8xfZ
+bLByisefs+epPfvRRQUc5q3j7xppmt6DYJ4wv5Y9RlnSSSSzst8eyB5QUxbgZJUA5B4J6Hmt
+ufxJ4tjtYHXxlqQkYyBn+y2OWxsx/wAu/ufzoooA2fCNnf614+ttT1XXL7UpNNtXhtoZo7dI
+188w+Yx8uJWJPljqccnjpgoopkS3P//Z]]>
+					</image>
+				</images>
+			</function>
+			<function name="F_POWER" version="1.0.0" creationDate="0" lastModifiedDate="1632142463" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Power function mutiplied by a factor</title>
+				<descr>The function F_POWER returns the result of the formula:  a * (x^n) .</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="a" type="REAL">
+							<descr>multiplier factor</descr>
+						</var>
+						<var name="x" type="REAL">
+							<descr>base value</descr>
+						</var>
+						<var name="n" type="REAL">
+							<descr>power value</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	1 sep 2006
+programmer 	hugo
+tested by		tobias
+
+this function calculates the power equation f_power = a*x^n
+
+*)
+
+F_POWER := a * POW(X, N);
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_QUAD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Calculates the result of a quadratic equation</title>
+				<descr>The function F_QUAD returns the result of a quadratic equation using the formula
+						F_QUAD = A * X² + B * X + C.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>x value</descr>
+						</var>
+						<var name="A" type="REAL">
+							<descr>a coefficient</descr>
+						</var>
+						<var name="B" type="REAL">
+							<descr>b coefficient</descr>
+						</var>
+						<var name="C" type="REAL">
+							<descr>c coefficient</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	18. Mar. 2011
+programmer 	hugo
+tested by		tobias
+
+this function calculates the quadratic equation f_lin = a*x + b
+
+*)
+
+F_QUAD :=  (A * X + B) * X + C;
+
+(* revision history
+
+hm	1. sep. 2006	rev 1.0
+	original version
+
+hm	18. mar. 2001	rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="FRMP_B" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Value of a ramp (8bit) at a given time TD</title>
+				<descr>&lt;HTML&gt;FRMP_B calculates the value of a ramp at a given time TD.
+						&lt;ul&gt;
+						&lt;li&gt;The module ensures that no bufer overrun or underrun can take place at the output.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;The output value is limited in all cases to 0 .. 255. TR sets the time for a full ramp 0 .. 255 and TD is the elapsed time. &lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;If DIR = TRUE, a rising ramp is calculated and if DIR = FALSE a falling ramp. &lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;Changin the start value let to calculated different ramps from any starting point.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>BYTE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="START" type="BYTE">
+							<descr>Start value</descr>
+						</var>
+						<var name="DIR" type="BOOL">
+							<descr>Direction of the ramp (TRUE = rising, FALSE = falling)</descr>
+						</var>
+						<var name="TD" type="TIME">
+							<descr>Elapsed time</descr>
+						</var>
+						<var name="TR" type="TIME">
+							<descr>Time for rising ramp (0..255) or falling ramp (255..0)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+
+(*
+version 1.0		17. feb. 2011
+programmer 	hugo
+tested by		oscat
+
+this function calculates a ramp and limits the output to 0 .. 255 without overflow problems
+
+*)
+
+IF TD < TR THEN
+	FRMP_B := MIN(TO_BYTE(SHL(TO_DWORD(TD), 8) / TO_DWORD(TR)), SEL(DIR, START, BYTE#255 - START));
+	IF DIR THEN
+		FRMP_B := START + FRMP_B;
+	ELSE
+		FRMP_B := START - FRMP_B;
+	END_IF;
+ELSE
+	FRMP_B := SEL(DIR, 0, 255);
+END_IF;
+
+
+(* revision history
+
+17. feb. 2011	rev 1.0
+	new module
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="LINEAR_INT" version="1.0.0" creationDate="0" lastModifiedDate="1632315725" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Linear interpolation module</title>
+				<descr>&lt;HTML&gt;LINEAR_INT is a linear interpolation module for a given polygonal chain.
+						&lt;ul&gt;
+						&lt;li&gt;A polygonal chain is described by a maximum of 20 coordinate values (X, Y), that represents a polygonal chain of up to 19 linear
+						segments.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;The defnition of the coordinate values is passed in an array which describes the characteristic with individual X, Y value pairs. The value pairs must be sorted by the x_value.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;If the function is called with an X value that is before or after the X values in the polygonal chain, then respectively the first or the
+						last linear segment will be used to extrapolate the output value.&lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;To keep the number of definition points fexible, the input PTS tell how many is given
+						points are currently defined. &lt;/li&gt;
+						&lt;br&gt;
+						&lt;li&gt;The possible points values (Pts) are in the range from 3 to 20, wherein each individual dot is shown with X-and Y-value.&lt;/li&gt;
+						&lt;/ul&gt;
+						&lt;br&gt;
+						&lt;br&gt;
+						Example : ARRAY[1..20,0..1] := -10,-0.53, 10,0.53, 100,88.3,
+						200,122.2;
+						&lt;br&gt;&lt;br&gt;
+						For the above definition the following results are valid:
+						&lt;ul&gt;
+						&lt;li&gt;LINEAR_INT (0, example, 4) = 0&lt;/li&gt;
+						&lt;li&gt;LINEAR_INT (30.0, example, 4) = 20.0344&lt;/li&gt;
+						&lt;li&gt;LINEAR_INT (66.41, example, 4) = 55.54229&lt;/li&gt;
+						&lt;li&gt;LINEAR_INT (66.41, example, 4) = 55.54229&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>X value of the requested interpolated point</descr>
+						</var>
+						<var name="XY" type="REAL" dim0="20" dim1="2">
+							<descr>Polygonal chain (array of max 20 point values (X,Y))</descr>
+						</var>
+						<var name="Pts" type="INT">
+							<descr>Actual number of points (X,Y) in the array (min 3, max 20)</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="i" type="INT">
+							<descr>Local variable</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+	version 1.1	27 dec 2007
+	programmer 	oscat
+	tested BY		oscat
+
+LINEAR_INT calculates an output based on a linear interpolation of up to 20 coordinates given in an array
+the input coordinates have to start at the lowest array position and must be sorted by ascending X values.
+
+*)
+
+(*make sure n is bound within the array size *)
+pts := MIN(pts,20);
+
+(* calculate the linear segement interpolation *)
+i := 2;
+(* search for segment and calculate output
+	below and above the defined segments we interpolate the last segment *)
+WHILE (i < pts) AND (XY[i,0] < X) DO
+	i := i + 1;
+END_WHILE;
+
+(* calculate the output value on the corresponding segment coordinates *)
+LINEAR_INT := ((XY[i,1] - XY[i-1,1]) * X - XY[i,1] * XY[i-1,0] + XY[i-1,1] * XY[i,0]) / (XY[i,0] - XY[i-1,0]);
+
+(* revision history
+hm	7. oct 2007		rev 1.0
+	original version
+
+hm	27 dec 2007		rev 1.1
+	changed code for better performance
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_LIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Linear function</title>
+				<descr>The function F_LIN returns the Y value of a linear equation. F_LIN = A*X + B</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>Variable</descr>
+						</var>
+						<var name="A" type="REAL">
+							<descr>Coeff A</descr>
+						</var>
+						<var name="B" type="REAL">
+							<descr>Coeff B</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	1 sep 2006
+programmer 	hugo
+tested by		tobias
+
+this function calculates the linear equation f_lin = a*x + b
+
+*)
+
+F_lin := A * X + B;
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_LIN2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Calculates the linear equation</title>
+				<descr>The function F_LIN2 returns the Y value of a linear equation.
+						The straight line here is defned by the specifcation of two coordinate points (X1, Y1, X2, Y2).
+						Returns value on the line passing through the above 2 points defned</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="X" type="REAL">
+							<descr>X value</descr>
+						</var>
+						<var name="X1" type="REAL">
+							<descr>Point 1 X</descr>
+						</var>
+						<var name="Y1" type="REAL">
+							<descr>Point 1 Y</descr>
+						</var>
+						<var name="X2" type="REAL">
+							<descr>Point 2 X</descr>
+						</var>
+						<var name="Y2" type="REAL">
+							<descr>Point 2 Y</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	1 jan 2007
+programmer 	hugo
+tested by		tobias
+
+this function calculates the linear equation f_lin = a*x + b given by two points x1/y1 and x2/y2.
+
+*)
+
+F_LIN2 := (Y2 - Y1) / (X2 - X1) * (X - X1) + Y1;
+
+
+(* revision history
+hm	1. jan. 2007	rev 1.0
+	original release
+
+hm	17. dec. 2008	rev 1.1
+	optimized formula
+
+*)
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

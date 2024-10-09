@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.9.5" name="TexAlarm" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexAlarm" excludeFromBuildIfNotDef="">
+				<Pou name="TexAlarm_FAL"/>
+				<Pou name="TexAlarm_clearFAL"/>
+				<Pou name="TexAlarm_currentAlarm"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions>
+			<function name="TexAlarm_FAL" version="1.0.0" creationDate="1722855094" lastModifiedDate="1722855233">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="messageNumber" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexAlarm_clearFAL" version="1.0.0" creationDate="1722855214" lastModifiedDate="1722955047">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="dummy" type="WORD"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="TexAlarm_currentAlarm" version="1.0.0" creationDate="1722855094" lastModifiedDate="1726499552">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="timeAlarm" type="@UDINT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION TexAlarm_currentAlarm: WORD
+
+VAR_INPUT
+	timeAlarm : @UDINT;
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

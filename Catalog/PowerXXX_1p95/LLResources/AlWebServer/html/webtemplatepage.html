@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+<head>
+	<title>Menu</title>
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<LINK href='../../../../../Common/CSS/style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	
+	function InitPage()
+	{
+		var path = _DATAPATH
+		pageTitle.innerText = "'" + app.DataGet(path + "@caption", 0) + "' Web template page"
+
+		imgIn.src = csspath + '../img/arrowIn.png';
+		imgOut.src = csspath + '../img/arrowOut.png';
+		
+		SearchError(path)
+
+		FixStyleForGrids();
+	}
+	
+	function ChooseSiteTemplate()
+	{
+		var device = app.SelectNodesXML("/*[@IsRootDevice]")[0];
+		var PCTpath = app.CatalogPath + device.getAttribute("template");
+		var baseFolder = PCTpath.substr(0, PCTpath.lastIndexOf("\\")) + "\\templates";
+		
+		var filename = app.CallFunction("extfunct.ShowOpenFileDlgEx", "WebSite template (*.sitetempl)|*.sitetempl||s", ".sitetempl", baseFolder)
+		if (!filename)
+			return
+		
+		// salva path relativo al catalogo
+		filename = filename.substr(app.CatalogPath.length)
+		sitetemplate.focus()
+		sitetemplate.value = filename
+		sitetemplate.blur()
+	}
+	
+	// id icone di overlay per l'albero
+	var TREE_OVERLAY_NONE = 0
+	var TREE_OVERLAY_DISABLED = 1
+	
+	function OnClickEnabled()
+	{
+		app.HMISetOverlayImg("tree1", app.HMIGetCurElementPath("tree1"), chkEnabled.checked ? TREE_OVERLAY_NONE : TREE_OVERLAY_DISABLED)
+	}
+	</script>
+	
+	<script type="text/javascript" src="grid_webtemplatepage.js"></script>
+	<script type="text/javascript" src="web_common.js"></script>
+	
+	<style>
+	#filename {
+		background-color: #eeeeee;
+	}
+
+	/*override altezza in style.css*/
+	.tableHeader{
+		height: 195px;
+	}
+	</style>
+</head>
+
+<body onload="InitGrid(datapath.value)">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<div class="fill-height-container">
+
+	<div class="TitlePag">
+		<div id="pageTitle">Template Page</div>
+	</div>
+
+	<div class="tableHeader">
+		<button class="icon-button" onClick="Assign()">
+			<img id="imgIn" alt="Assign"> <t:t>Assign</t:t>
+		</button>
+		<button class="icon-button" onClick="UnAssign()">
+			<img id="imgOut" alt="UnAssign"> <t:t>UnAssign</t:t>
+		</button>
+
+		<br><br>
+
+		<table border="0">
+			<tr>
+				<td nowrap> <label for="refresh"><t:t>Refresh (ms)</t:t>:</label> </td>
+				<td> <input id="refresh" name=".D(@refresh)" type="text" size="10"> <label><t:t>(0=disable refresh</t:t>)</label></td>
+				<td width="100%" colspan="2">
+					<input id="chkEnabled" type="checkbox" name=".D(@enabled)" style="margin-left:40px" onclick="OnClickEnabled()"><label for="chkEnabled"><t:t>Enable build</t:t></label>
+				</td>
+			</tr>
+			<tr>
+				<td nowrap> <label for="title"><t:t>Page title</t:t>:</label> </td>
+				<td> <input id="title" name=".D(@title)" type="text" size="30"> </td>
+				<td> <label for="filename" style="margin-left: 50px"><t:t>Filename</t:t>:</label> </td>
+				<td width="100%"> <input id="filename" name=".D(@filename)" type="text" size="10" disabled> </td>
+			</tr>
+			<tr>
+				<td nowrap> <label for="pagetemplate"><t:t>Page template</t:t>:</label> </td>
+				<td colspan="3"> <input id="pagetemplate" name=".D(@pagetemplate)" type="text" size="100" disabled> </td>
+			</tr>
+			<tr>
+				<td nowrap> <label for="sitetemplate"><t:t>Site template</t:t>:</label> </td>
+				<td colspan="3"> <input id="sitetemplate" name=".D(@sitetemplate)" type="text" size="100">
+				<button onclick="ChooseSiteTemplate()"><t:t>Choose...</t:t></button> </td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="gridElem" class="fill-height">
+		<object id="grid" classid="clsid:D62247DB-3391-4236-936F-80EF7F4EA476" width="100%" height="100%" border="0">
+			<param name="margin" value="40">
+			<param name="multiselect" value="1">
+		</object>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="grid_webtemplatepage_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

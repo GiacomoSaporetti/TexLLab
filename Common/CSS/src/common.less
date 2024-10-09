@@ -1,0 +1,25 @@
+//**************************************************************************
+//*      non produce un CSS standalone ma viene incluso dai vari less      *
+//**************************************************************************
+
+@header-color: rgb(34, 86, 118);
+@base-font: Arial;
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Status indicator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// usato in diagnostics.less e license.less
+// https://codepen.io/tbugai/pen/GJojI
+.color-dot(@color) {
+	background-color: @color;
+	border-color: darken((@color), 5%);
+	box-shadow: 0px 0px 4px 1px @color;
+}
+
+.dot-before-definition(@sizePx) {
+	content: ' ';
+	display: inline-block;
+	width: @sizePx;
+	height: @sizePx;
+	margin-right: 10px;
+	border: 1px solid #000;
+	border-radius: 7px;
+}

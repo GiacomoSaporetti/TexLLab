@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Generic Modbus node</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	// salva il percorso corrente dell'albero, in modo da settare la caption corretta se si cambia pagina cliccando sull'albero
+	var m_treePath = window.external.HMIGetCurElementPath("tree1")
+	
+	var m_useAlModbusRTU = false
+	var m_useSwapWords = false
+	var m_protocol
+	var m_path
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+		
+		m_path = app.GetCurrentWindowData()
+		var node = app.SelectNodesXML(m_path + ".")[0]
+		// ottiene il protocol dal parent del device corrente (la porta)
+		m_protocol = node.parentNode.getAttribute("protocol")
+		var targetDevice  = node.selectSingleNode(XPATH_ROOTDEVICE)
+		if ( targetDevice.getAttribute("useAlModbusRTU") == "true" )
+			m_useAlModbusRTU = true
+		if (m_protocol == "ModbusTCP_master")
+		{
+			if ( targetDevice.getAttribute("useModbusTCPSwapWords") == "true" )
+				m_useSwapWords = true
+		}
+		else
+		{
+			if ( targetDevice.getAttribute("useModbusRTUSwapWords") == "true" )
+				m_useSwapWords = true
+		}
+
+		// con dark theme vengono usate altre immagini
+		var imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png';
+
+		InitGrid(m_path)
+
+		// mostra indirizzo Ip solo per modbus TCP
+		var hasMinPollTime;
+		var allowSlaveAddressConfigMode;
+		if (m_protocol == "ModbusTCP_master")
+		{
+			rowIPAddress.style.display = ""
+			lblAddressRange.innerText = "(255 , or 1..247 for bridge)"
+			hasMinPollTime = false;      // non esiste mai su TCP
+			allowSlaveAddressConfigMode = parseInt(targetDevice.getAttribute("ModbusTCPMasterDynamicSlaveAddressConfig"));
+			if (isNaN(allowSlaveAddressConfigMode)) allowSlaveAddressConfigMode = 0
+		}
+		else
+		{
+			rowIPAddress.style.display = "none"
+			lblAddressRange.innerText = "(1 .. 247)"
+			hasMinPollTime = m_useAlModbusRTU;   // non c'è su LLExec
+			allowSlaveAddressConfigMode = parseInt(targetDevice.getAttribute("ModbusRTUMasterDynamicSlaveAddressConfig"));
+			if (isNaN(allowSlaveAddressConfigMode)) allowSlaveAddressConfigMode = 0
+		}
+		
+		rowNodeNumber.style.display = !m_useAlModbusRTU ? "" : "none";   // c'è solo su LLExec
+		rowMinPollingTime.style.display = hasMinPollTime ? "" : "none";
+		rowSwapWordsMode.style.display = m_useSwapWords ? "" : "none";
+		rowAddressConfigMode.style.display = allowSlaveAddressConfigMode ? "" : "none";
+		
+		var slaveAddressConfigMode = parseInt(app.DataGet(m_path + "GenericRTU_config[1]/slaveAddressConfigMode[1]", 0))
+		OnChangeAddressConfigMode(slaveAddressConfigMode)
+		
+		SearchError(m_path)
+
+		FixStyleForGrids();
+	}
+	
+	function UpdateTreeCaption()
+	{
+		// aggiorna la nuova caption sull'albero sull'elemento attivo
+		window.external.HMISetCaption("tree1", m_treePath, caption.value)
+	}
+	
+	function OnChangeAddressConfigMode(value)
+	{
+		//	update value
+		app.DataSet(m_path + "GenericRTU_config[1]/slaveAddressConfigMode[1]", 0, value)
+		
+		var slaveAddressConfigMode = parseInt(app.DataGet(m_path + "GenericRTU_config[1]/slaveAddressConfigMode[1]", 0))
+
+		if (m_protocol == "ModbusTCP_master")
+		{
+			lblModbusAddress.innerText = app.Translate("IP address:")
+			rowIPAddress.style.display = slaveAddressConfigMode == 0 ? "" : "none"
+		}
+		else
+		{
+			rowModbusAddress.style.display = slaveAddressConfigMode == 0 ? "" : "none"
+		}
+			
+		rowDynamicSlaveAddress.style.display = slaveAddressConfigMode == 0 ? "none" : ""
+	}
+	</script>
+	<script src="grid.js"></script>
+</head>
+	
+<body onload="InitPage()" class="html5">
+<input type="hidden" name=".DATAPATH" id="datapath" >
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Generic Modbus node</t:t></span>
+	</div>
+
+	<div class="menu">
+		<div id="tab1" class="menu_on" onclick="ChangeTab(1)"><a href="#" onclick="return false"><t:t>General</t:t></a></div>
+		<div id="tab2" class="menu_off" onclick="ChangeTab(2)"><a href="#" onclick="return false"><t:t>Parametrization</t:t></a></div>
+	</div>
+
+	<div class="fill-height">
+		<div id="page1" style="height: 100%;" class="Sfondo">
+			<fieldset class="mt-s">
+				<legend><t:t>Settings</t:t></legend>
+				<table>
+					<tr>
+						<td width="160px"><label for="caption"><t:t>Name:</t:t></label></td>
+						<td colspan="2"><input id="caption" type="text" name=".D(@caption)" onchange="UpdateTreeCaption()" ></td>
+					</tr>
+					<tr>
+						<td colspan="3">&nbsp;</td>
+					</tr>
+					<tr id="rowAddressConfigMode">
+						<td><label style="width:160px" for="addressConfigMode"><t:t>Address config mode:</t:t></label></td>
+						<td colspan="2">
+							<select id="addressConfigMode" name=".D(GenericRTU_config[1]/slaveAddressConfigMode[1])" onchange="OnChangeAddressConfigMode(this.value)">						
+								<option value="0"><t:t>Address configured statically</t:t></option>
+								<option value="1"><t:t>Address specified by variable name</t:t></option>
+								<option value="2"><t:t>Address specified by modbus parameter</t:t></option>
+								<option value="4"><t:t>Address specified by 32bit key value</t:t></option>
+							</select>
+						</td>
+					</tr>
+					<tr id="rowIPAddress">
+						<td><label for="IPAddress"><t:t>IP address:</t:t></label></td>
+						<td colspan="2"><input id="IPAddress" type="text" name=".D(GenericRTU_config[1]/ip[1])" ></td>
+					</tr>
+					<tr id="rowDynamicSlaveAddress">
+						<td><label style="width:160px" id="lblModbusAddress" for="dynModbusAddress"><t:t>Modbus address:</t:t></label></td>
+						<td width="120px"><input type="text" id="dynModbusAddress" name=".D(GenericRTU_config[1]/dynamicSlaveAddress[1])"></td>
+						<td></td>
+					</tr>
+					<tr id="rowModbusAddress">
+						<td><label for="modbusAddress"><t:t>Modbus address:</t:t></label></td>
+						<td width="120px"><input id="modbusAddress" type="text" name=".D(GenericRTU_config[1]/modbusAddress[1])" ></td>
+						<td><label id="lblAddressRange">(1 .. 247)</label></td>
+					</tr>
+					<tr id="rowNodeNumber">
+						<td><label for="nodeNumber" title="To be used in PLC with sysMbMRtuNodeStatus[]"><t:t>Node number:</t:t></label></td>
+						<td><input id="nodeNumber" type="text" name=".D(GenericRTU_config[1]/nodeNumber[1])" title="To be used in PLC with sysMbMRtuNodeStatus[]"></td>
+						<td><label>(1 .. 247)</label></td>
+					</tr>
+					<tr id="rowMinPollingTime">
+						<td><label for="minPollTime"><t:t>Minimum polling time:</t:t></label></td>	
+						<td><input id="minPollTime" type="text" name=".D(GenericRTU_config[1]/minPollTime[1])"></td>
+						<td><label>ms</label></td>
+					</tr>
+					<tr>
+						<td><label><t:t>Address type:</t:t></label></td>
+						<td colspan="2">
+							<input type="radio" id="radAddressTypeModbus" name=".D(GenericRTU_config[1]/addressType[1])" value="modbus">
+							<label for="radAddressTypeModbus" style="width:50px" title="Range: 1..65536"><t:t:>Modbus</t:t:></label>
+							<input type="radio" id="radAddressTypeJbus"   name=".D(GenericRTU_config[1]/addressType[1])" value="jbus">
+							<label for="radAddressTypeJbus"   style="width:50px" title="Range: 0..65535"><t:t:>Jbus</t:t:></label>
+						</td>
+					</tr>
+					<tr id="rowSwapWordsMode">
+						<td><label for="swapWordsMode"><t:t>Swap words mode:</t:t></label></td>	
+						<td colspan="2">
+							<select id="swapWordsMode" name=".D(GenericRTU_config[1]/swapWordsMode[1])">
+								<option value="0">Little endian compliant (No words swapping)</option>
+								<option value="1">Big endian compliant (32/64bits int values only)</option>
+								<option value="2">Big endian compliant (32/64bits float values only)</option>
+								<option value="3">Big endian compliant (all 32/64bits types)</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+		</div>
+		<div id="page2" style="display: none;" class="fill-height-container">
+			<div class="tableHeader">
+				<button class="ll-button" onClick="grid_AddRowXML()">
+					<img id="imgPlus" alt="Add">
+					<span class="label"><t:t>Add</t:t></span>
+				</button>
+
+				<button class="ll-button" onClick="grid_DeleteRowXML()">
+					<img id="imgMinus" alt="Delete">
+					<span class="label"><t:t>Remove</t:t></span>
+				</button>
+			</div>
+			<div style="height: 100%">
+				<object id="grid" classid="clsid:7E61CABD-EB07-425A-9315-B6B2D454BAC1" width="100%" height="100%" border="0">
+					<param name="margin" value="50">
+					<param name="multiselect" value="1">
+				</object>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="grid_events.js"></script>
+</body>
+</html>
+
+

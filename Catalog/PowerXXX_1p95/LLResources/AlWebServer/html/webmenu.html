@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+<head>
+	<title>Menu</title>
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+	function InitPage()
+	{
+		try
+		{
+			grid.SetDarkTheme(m_darkTheme);
+		}
+		catch(err){}
+
+		// con dark theme vengono usate altre immagini
+		let imgPathPrefix = m_darkTheme ? "../img/btn/dark_theme/" : "../img/btn/";
+
+		// inizializza le immagini che risiedono nell'area common
+		imgPlus.src = csspath + imgPathPrefix + 'plus.png';
+		imgMinus.src = csspath + imgPathPrefix + 'minus.png';
+		imgUp.src = csspath + imgPathPrefix + 'arrowUp.png';
+		imgDown.src = csspath + imgPathPrefix + 'arrowDown.png';
+		imgIn.src = csspath + imgPathPrefix + 'arrowIn.png';
+
+		var path = _DATAPATH
+		var str = "'" + app.DataGet(path + "@caption", 0) + "'"
+		pageTitle.innerText = str + " " + app.Translate("Web table page")
+		
+		SearchError(path)
+
+		FixStyleForGrids();
+	}
+	
+	function ChooseSiteTemplate()
+	{
+		var fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject");
+
+		var device = app.SelectNodesXML("/*[@IsRootDevice]")[0];
+		var PCTpath = app.CatalogPath + fso.GetParentFolderName(device.getAttribute("template"));
+		// NB: pare che un path con i punti all'interno non funzioni... genera quindi il path assoluto risolto
+		var baseFolder = fso.GetAbsolutePathName(PCTpath + "\\..\\WebServer\\templates");
+		
+		var filename = app.CallFunction("commonDLL.ShowOpenFileDlg", "WebSite template (*.sitetempl)|*.sitetempl||s", ".sitetempl", baseFolder)
+		if (!filename)
+			return
+		
+		// salva path relativo al catalogo
+		filename = filename.substr(app.CatalogPath.length)
+		sitetemplate.focus()
+		sitetemplate.value = filename
+		sitetemplate.blur()
+	}
+	
+	function OnBeforePrint()
+	{
+		divPrint.innerHTML = grid.CreateHTMLTable("class='tblPrint'")
+	}
+	
+	function OnAfterPrint()
+	{
+		divPrint.innerHTML = ""
+	}
+	
+	// id icone di overlay per l'albero
+	var TREE_OVERLAY_NONE = 0
+	var TREE_OVERLAY_DISABLED = 1
+	
+	function OnClickEnabled()
+	{
+		app.HMISetOverlayImg("tree1", app.HMIGetCurElementPath("tree1"), chkEnabled.checked ? TREE_OVERLAY_NONE : TREE_OVERLAY_DISABLED)
+	}
+	</script>
+	
+	<script type="text/javascript" src="grid_webmenu.js"></script>
+	<script type="text/javascript" src="web_common.js"></script>
+	<style>
+	#filename {
+		background-color: #eeeeee;
+	}
+
+	/* fix titolo per pagina HTML5 */
+	.TitlePag {
+		height: 36px;
+		padding-top: 3px;
+	}
+	</style>
+</head>
+
+<body onload="InitGrid(datapath.value)" onbeforeprint="OnBeforePrint()" onafterprint="OnAfterPrint()">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<div class="fill-height-container">
+
+	<div class="TitlePag">
+		<div id="pageTitle">Menu</div>
+	</div>
+
+	<div class="tableHeader html5 hideOnPrint">
+		<button class="ll-button" onClick="grid_AddRowXML(true)">
+			<img id="imgPlus" alt="Add">
+			<span class="label"><t:t>Add</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="grid_DeleteRowXML()">
+			<img id="imgMinus" alt="Delete">
+			<span class="label"><t:t>Remove</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="Assign()">
+			<img id="imgIn" alt="Assign">
+			<span class="label"><t:t>Assign</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="GridMoveUp(grid, gridDatapath)">
+			<img id="imgUp" alt="Up">
+			<span class="label"><t:t>Up</t:t></span>
+		</button>
+
+		<button class="ll-button" onClick="GridMoveDown(grid, gridDatapath)">
+			<img id="imgDown" alt="Down">
+			<span class="label"><t:t>Down</t:t></span>
+		</button>
+
+		<input id="chkEnabled" type="checkbox" name=".D(@enabled)" style="margin-left:40px; visibility: hidden;" onclick="OnClickEnabled()"><label for="chkEnabled" style="visibility: hidden;"><t:t>Enable build</t:t></label>
+
+		<table border="0" class="mt-m">
+			<tr>
+				<td nowrap> <label for="refresh"><t:t>Refresh (ms)</t:t>:</label> </td>
+				<td> <input id="refresh" name=".D(@refresh)" type="text" size="10"> <label><t:t>(0=disable refresh</t:t>)</label></td>
+			</tr>
+			<tr>
+				<td nowrap> <label for="title"><t:t>Page title</t:t>:</label> </td>
+				<td> <input id="title" name=".D(@title)" type="text" size="30"> </td>
+				<td> <label for="filename" style="margin-left: 50px"><t:t>Filename</t:t>:</label> </td>
+				<td> <input id="filename" name=".D(@filename)" type="text" size="10" disabled> </td>
+			</tr>
+			<tr>
+				<td nowrap> <label for="sitetemplate"><t:t>Site template</t:t>:</label> </td>
+				<td colspan="3"> <input id="sitetemplate" name=".D(@sitetemplate)" type="text" size="100">
+				<button class="ll-button" onclick="ChooseSiteTemplate()"><t:t>Choose...</t:t></button> </td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="gridElem" class="fill-height">
+		<object id="grid" classid="clsid:D62247DB-3391-4236-936F-80EF7F4EA476" width="100%" height="100%" border="0" class="hideOnPrint">
+			<param name="margin" value="40">
+			<param name="multiselect" value="1">
+		</object>
+		<div id="divPrint" class="hideOnScreen"></div>
+	</div>
+</div>
+
+<script type="text/javascript" src="grid_webmenu_events.js"></script>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

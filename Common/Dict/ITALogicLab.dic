@@ -1,0 +1,8773 @@
+# ITA Italiano
+
+<-
+>
+
+<%d match found and replaced!
+>%d occorrenze trovate e sostituite
+
+<%d Reminders
+>%d richiami
+
+<%s Category
+>%s Categorie
+
+<%s Definitions
+>%s Definizioni
+
+<%s isn't a simple variable. Can't add to watch
+>%s non è una variabile, impossibile aggiungere alla watch
+
+<%s parameters
+>%s parametri
+
+<%s Project
+>Progetto %s
+
+<%s symbol not found. Can't add to watch
+>%s simbolo non trovato, impossibile aggiungere alla watch
+
+<&&&&  Ampersand (&&)
+>&&&& E commerciale (&&)
+
+<&&b   Left Alignment &&b Center Alignment &&b Right Alignment
+>&&b Allineamento a destra &&b allineamento al centro &&b allineamento a destra
+
+<&&D   Long date format
+>&&D data per esteso
+
+<&&d   Short date format
+>&&d data breve
+
+<&&P   Number of Pages
+>&&P numero di pagine
+
+<&&p   Page Number
+>&&p numero di pagina
+
+<&&t   Time
+>&&t Orario
+
+<&&T   Time (24 hour)
+>&&T Orario (24 ore)
+
+<&&w   Window Title
+>&&w Titolo della finestra
+
+<&Abort
+>&Interruzione
+
+<&About...
+>&Informazioni..
+
+<&Activate
+>&Attivazione
+
+<&Add
+>&Aggiungi
+
+<&Add >>
+>&Aggiungi >>
+
+<&Add pin to divergent transition
+>&Aggiungi pin a transizione divergente
+
+<&Add program
+>&Aggiungi programma
+
+<&Add symbol to a debug window\tF10
+>&Aggiungi simbolo a una finestra di debug
+
+<&Add to Quick Access Toolbar
+>&Aggiungi alla toolbar ad accesso veloce
+
+<&Add/toggle\tCtrl+F2
+>&Aggiungi/commuta\tCtrl+F2
+
+<&Address
+>&Indirizzo
+
+<&After
+>&Dopo
+
+<&All
+>&Tutti
+
+<&Apply
+>&Applica
+
+<&Arrange Icons
+>&Disponi icone
+
+<&Assign
+>&Assegna
+
+<&Attributes:
+>&Attributi:
+
+<&Auto connect
+>&Auto connessione
+
+<&Auto indentation
+>&Auto indentazione
+
+<&Automatic
+>&Automatica
+
+<&Autosave
+>&Auto-salva
+
+<&Binary
+>&Binario
+
+<&Blue:
+>&Blu:
+
+<&Bold
+>&Grassetto
+
+<&Bookmarks...
+>&Segnalibri..
+
+<&Bottom
+>&Sotto
+
+<&Bottom:
+>&Sotto:
+
+<&Browse
+>&Sfoglia
+
+<&Byte (8 bit)
+>
+
+<&Cancel
+>&Annulla
+
+<&Cascade
+>&Cascata
+
+<&Choose commands from:
+>&Scegli comando da:
+
+<&Clear
+>&Svuota
+
+<&Close
+>&Chiudi
+
+<&Close Window
+>&Chiudi finestra
+
+<&Code object
+>Oggetto &codice
+
+<&Color
+>&Colore
+
+<&Colors:
+>&Colori:
+
+<&Commands
+>&Comandi
+
+<&Communication
+>&Comunicazione
+
+<&Compile\tF7
+>&Compila\tF7
+
+<&Connect
+>&Connetti
+
+<&Constant
+>&Costante
+
+<&Contact
+>&Contatto
+
+<&Contact\tShift+F2
+>&Contatto\tMaiusc+F2
+
+<&Copy
+>&Copia
+
+<&Copy (name)\tCtrl+C
+>&Copia nome\tContr+C
+
+<&Copy action
+>&Copia azione
+
+<&Copy Button Image
+>&Bottone copia Immagine
+
+<&Copy Here
+>&Copia qui
+
+<&Copy macro
+>&Copia macro
+
+<&Copy transition
+>&Copia transizione
+
+<&Copy\tCtrl+C
+>&Copia\tContr+C
+
+<&Customize Quick Access Toolbar
+>&Personalizza toolbar accesso rapido
+
+<&Customize Quick Access Toolbar...
+>&Personalizza toolbar accesso rapido...
+
+<&Cut\tCtrl+X
+>&Taglia\tCtrl+X
+
+<&Daily
+>&Giornaliero
+
+<&Debug
+>
+
+<&Debug mode
+>&Modo debug
+
+<&Decimal
+>&Decimale
+
+<&Delete
+>&Elimina
+
+<&Delete action
+>&Cancella azione
+
+<&Delete function
+>&Cancella funzione
+
+<&Delete function block
+>&Cancella blocco funzionale
+
+<&Delete line\tCtrl+E
+>&Cancella linea\tContr+E
+
+<&Delete macro
+>&Cancella macro
+
+<&Delete object
+>&Cancella oggetto
+
+<&Delete objects
+>&Cancella oggetti
+
+<&Delete program
+>&Cancella programma
+
+<&Delete transition
+>&Cancella transizione
+
+<&Delete variable
+>&Cancella variabile
+
+<&Delete\tDel
+>&Elimina\tCanc
+
+<&Dismiss
+>&Abbandona
+
+<&Double word (32 bit)
+>&Doppia word (32 bit)
+
+<&Down
+>&Giù
+
+<&Download code\tF5
+>&Trasferimento codice\tF5
+
+<&Edit
+>&Modifica
+
+<&Edit Button Image...
+>&Modifica immagine bottone
+
+<&Edit source
+>&Modifica sorgente
+
+<&Enable EN/ENO pins
+>&Abilita pin EN/ENO
+
+<&Exit
+>&Esci
+
+<&Export function block to library
+>&Esporta blocco funzionale nella libreria
+
+<&Export function to library
+>&Esporta funzione nella libreria
+
+<&Export macros
+>&Esporta macro
+
+<&Export object to library
+>&Esporta oggetto nella libreria
+
+<&Export program to library
+>&Esporta programma nella libreria
+
+<&Export to library
+>&Esporta nella libreria
+
+<&Export variable to library
+>&Esporta variabile nella libreria
+
+<&FBD bar\tCtrl+D
+>Barra &FBD\tContr+D
+
+<&File
+>
+
+<&Find Next
+>Trova &successivo
+
+<&Find...\tCtrl+F
+>&Trova...\tContr+F
+
+<&Font:
+>
+
+<&Footer
+>&Pié di pagina
+
+<&Function
+>&Funzione
+
+<&Generate redistributable source module
+>&Genera modulo redistribuibile
+
+<&Go To
+>&Vai a
+
+<&Go to line
+>&Vai alla linea
+
+<&Go to line\tCtrl+G
+>&Vai alla linea\tContr+G
+
+<&Green:
+>&Verde:
+
+<&Grid
+>&Griglia
+
+<&Groups...
+>&Gruppi
+
+<&Header
+>&Intestazione
+
+<&Help
+>&Aiuto
+
+<&Hexadecimal
+>&Esadecimale
+
+<&Hide
+>&Nascondi
+
+<&Hide column
+>&Nascondi colonna
+
+<&Horizontal scrollbar
+>Barra di scorrimento &orizzontale
+
+<&Hue:
+>
+
+<&Ignore
+>&Ignora
+
+<&Import macros
+>&Importa macro
+
+<&Import object from library
+>&Importa oggetti dalla libreria
+
+<&Import objects
+>&Importa oggetti
+
+<&Index
+>&Indice
+
+<&Input
+>
+
+<&Insert
+>&Inserimento
+
+<&Insert new item
+>&Inserisci nuovo elemento
+
+<&Insert/Move mode
+>Modo &inserimento/spostamento
+
+<&Inserts new item into a debug window\tShift+F10
+>&Inserisci un nuovo elemento in una finestra di debug\tMaiusc+F10
+
+<&Inserts new item into watch\tShift+F8
+>&Inserisci un nuovo elemento nella finestra di watch\tMaiusc+F10
+
+<&Italic
+>&Corsivo
+
+<&Jump
+>&Salto
+
+<&Jump to label
+>&Salto a etichetta
+
+<&Keep Tabs
+>&Mantieni le tabulazioni
+
+<&Keyboard
+>&Tastiera
+
+<&Label
+>&Etichetta
+
+<&Large icons
+>&Icone grandi
+
+<&Left:
+>&Sinistra:
+
+<&Library
+>&Libreria
+
+<&Library manager
+>&Gestore librerie
+
+<&Library\tCtrl+L
+>&Libreria\tContr+L
+
+<&Line number (1 - %d):
+>&Numero di linea (1-%d):
+
+<&Line number:
+>&Numero di linea:
+
+<&Load watch list
+>&Carica lista di watch
+
+<&Lum:
+>
+
+<&Macros
+>&Macro
+
+<&Mapped variable
+>Variabile mappata
+
+<&Meeting
+>&Incontro
+
+<&Memory
+>&Memoria
+
+<&Menu animations:
+>&Animazione menu:
+
+<&Menus
+>&Menù
+
+<&Modify
+>&Modifica
+
+<&Monthly
+>&Mensile
+
+<&More Commands...
+>&Altri comandi
+
+<&Move Here
+>&Sposta qui
+
+<&Name:
+>&Nome:
+
+<&Negate contact
+>&Negazione contatto
+
+<&Negate contact\tShift+F3
+>&Negazione contatto\tMaiusc+F3
+
+<&Negate input pin
+>&Negazione connettore di ingresso
+
+<&Network
+>&Rete
+
+<&Network\tCtrl+N
+>&Rete\tContr+N
+
+<&New
+>&Nuovo
+
+<&New function
+>&Nuova funzione
+
+<&New function block
+>&Nuovo blocco funzionale
+
+<&New macro
+>&Nuova macro
+
+<&New object
+>&Nuovo oggetto
+
+<&New program
+>&Nuovo programma
+
+<&New text file
+>&Nuovo file di testo
+
+<&New...
+>&Nuovo...
+
+<&Next Page
+>&Pagina successiva
+
+<&Next Tip
+>&Prossimo suggerimento
+
+<&No
+>
+
+<&Normal Background:
+>&Background normale
+
+<&Object
+>&Oggetto
+
+<&Octal
+>&Ottale
+
+<&Ok
+>
+
+<&OK
+>
+
+<&Open
+>&Apri
+
+<&Open file
+>&Apri file
+
+<&Open Item
+>&Apri elemento
+
+<&Open macro source
+>&Apri sorgente macro
+
+<&Open object source
+>&Apri sorgente
+
+<&Open source
+>&Apri sorgente
+
+<&Operator
+>&Operatore
+
+<&Options
+>&Opzioni
+
+<&Options...
+>&Opzioni...
+
+<&Output
+>&Output
+
+<&Output\tCtrl+R
+>&Output\tContr+R
+
+<&Paste
+>&Incolla
+
+<&Paste action
+>&Incolla azione
+
+<&Paste Button Image
+>&Incolla immagine bottone
+
+<&Paste transition
+>&Incolla transizione
+
+<&Paste\tCtrl+V
+>&Incolla\tContr+V
+
+<&Prev\tShift+F2
+>&Precedente\Maiusc+F2
+
+<&Print
+>&Stampa
+
+<&Print...
+>&Stampa...
+
+<&Print...\tCtrl+P
+>&Stampa...\tContr+P
+
+<&Printer...
+>&Stampante...
+
+<&Private
+>&Privato
+
+<&Project
+>&Progetto
+
+<&Properties
+>&Proprietà
+
+<&Quick Access
+>&Accesso rapido
+
+<&Recompile all
+>&Ricompila tutto
+
+<&Red:
+>&Rosso:
+
+<&Redo %s\tCtrl+Y
+>&Ripristina %s\tContr+Y
+
+<&Redo\tCtrl+Y
+>&Ripristina\tContr+Y
+
+<&Redo\tCtrl+Z
+>&Annulla\tContr+Z
+
+<&Register
+>&Registra
+
+<&Remind me later
+>&Ricordamelo più avanti
+
+<&Reminder:
+>&Pro-memoria:
+
+<&Remove
+>&Rimuovi
+
+<&Remove all
+>&Rimuovi tutto
+
+<&Remove all triggers\tCtrl+Shift+F9
+>&Rimuovi tutti i trigger\tContr+Maiusc+F9
+
+<&Remove from Quick Access Toolbar
+>&Rimuovi dalla barra di accesso rapido
+
+<&Remove pin from divergent transition
+>&Rimuovi il pin dalla transizione divergente
+
+<&Remove program
+>&Rimuovi programma
+
+<&Remove recurrence
+>&Rimuovi occorrenza
+
+<&Rename...
+>&Rinomina...
+
+<&Replace
+>&Sostituisci
+
+<&Replace\tCtrl+H
+>&Sostituisci\tContr+H
+
+<&Reset
+>
+
+<&Reset menu and toolbar usage data
+>&Reset menù e toolbar
+
+<&Retain
+>&Ritentiva
+
+<&Retry
+>&Riprova
+
+<&Return
+>&Ritorno
+
+<&Ribbon
+>&Nastro
+
+<&Right:
+>&Destra:
+
+<&Sat:
+>
+
+<&Save
+>&Salva
+
+<&Save\tCtrl+S
+>&Salva\tContr+S
+
+<&Scheme
+>&Schema
+
+<&Select
+>&Seleziona
+
+<&Select target...
+>&Seleziona sistema...
+
+<&Selected Background:
+>&Seleziona sfondo:
+
+<&Selection
+>&Selezione
+
+<&Settings
+>&Impostazioni
+
+<&SFC bar
+>Barra &SFC
+
+<&SFC bar\tCtrl+Q
+>Barra comandi &SFC\tContr+Q
+
+<&Show Above the Ribbon
+>&Mostra sopra il nastro
+
+<&Show an additional time zone
+>&Mostra un zona orario addizionale
+
+<&Show Below the Ribbon
+>&Mostra sotto il nastro
+
+<&Show column
+>&Mostra colonna
+
+<&Show Menu:
+>&Mostra menù:
+
+<&Show Quick Access Toolbar Above the Ribbon
+>
+
+<&Show Quick Access Toolbar Below the Ribbon
+>
+
+<&Show tips at startup
+>
+
+<&Snooze
+>
+
+<&Source:
+>&Sorgente:
+
+<&Start/Stop watch
+>&Avvia/arresta watch
+
+<&Start:
+>&Avvia:
+
+<&Status Bar
+>&Barra di stato
+
+<&Step
+>&Passo
+
+<&Structure
+>&Struttura
+
+<&Subrange
+>&Subrange
+
+<&Tab size:
+>&Dimensione tab:
+
+<&Text Only
+>&Solo testo
+
+<&Tile
+>&Titolo
+
+<&Toolbar
+>&Barra degli strumenti
+
+<&Toolbar name:
+>&Nome della barra degli strumenti:
+
+<&Toolbars
+>&Barre degli strumenti
+
+<&Tools
+>&Strumenti
+
+<&Top
+>&Sopra
+
+<&Top:
+>&Sopra:
+
+<&Transition
+>&Transizione
+
+<&Typedef
+>&Typedef
+
+<&Underline
+>&Sottolineato
+
+<&Undo
+>&Annulla
+
+<&Undo %s\tCtrl+Z
+>&Annulla %s\tContr+Z
+
+<&Undo\tCtrl+Z
+>&Annulla\tContr+Z
+
+<&Unselect
+>&Deseleziona
+
+<&Up
+>&Su
+
+<&Upload IMG file
+>&Scarica file IMG
+
+<&Value format
+>&Formato del valore
+
+<&Variable
+>&Variabile
+
+<&Vertical scrollbar
+>&Barra degli strumenti verticale
+
+<&View
+>&Vista
+
+<&View project (read only)
+>&Vista progetto (sola lettura)
+
+<&Watch mode
+>&Modalità watch
+
+<&Weekly
+>&Settimanale
+
+<&Window
+>F&inestra
+
+<&Word (16 bit)
+>
+
+<&Workspace
+>&Spazio di lavoro
+
+<&Workspace\tCtrl+W
+>Spazio di lavoro\tContr+W
+
+<&Yearly
+>&Annuale
+
+<&Yes
+>&Si
+
+<( Empty )
+>(Vuoto)
+
+<(%s) was pressed. Waiting for second key of chord...
+>
+
+<(At least 4 characters)
+>(Almeno 4 caratteri)
+
+<(example: 1.0)
+>(esempio: 1.0)
+
+<(max %i chars)
+>(max %i car.)
+
+<(max. 0)
+>(massimo 0)
+
+<(no fields available)
+>(non ci sono campi disponibili)
+
+<(On the CD label or sent by Axel)
+>(Sull'etichetta del CD Axel)
+
+<(Requested only for manual registration)
+>(Richiesto solamente per registrazione manuale)
+
+<(System default)
+>(Impostazione di base)
+
+<*.*
+>
+
+<.
+>
+
+<...
+>
+
+<.ppjs
+>
+
+<.ppjx
+>
+
+</Decreasing
+>/Decrescente
+
+</Increasing
+>/Crescente
+
+<[Commands]
+>
+
+<[No code]
+>
+
+<[NoName]
+>
+
+<\n   New Line
+>\n Nuova linea
+
+<\n%d occurrence(s) have been found.\n
+>\nTrovate %d ricorrenze\n
+
+<\n&Add or Remove Buttons
+>\n&aggiungi o rimuovi bottoni
+
+<\n&Reset Toolbar
+>\n&Reset barra degli strumenti
+
+<\nC&ancel
+>\nC&ancella
+
+<\nClear
+>\nCancella
+
+<\nClose
+>\nChiudi
+
+<\nClose Window
+>\nChiudi finestra
+
+<\nCode generation ..
+>\nGenerazione codice...
+
+<\nCode size:               % 5Xh   (% 4d KByte)\nFree code space:         % 5Xh   (% 4d KByte)\n
+>\nDimensione codice:           % 5Xh   (% 4d KByte)\nSpazio codice libero:    % 5Xh   (% 4d KByte)\n
+
+<\nCopy
+>\nCopia
+
+<\nCustomize Quick Access Toolbar
+>\nPersonalizza barra degli strumenti rapida
+
+<\nData space:              % 5Xh   (% 4d KByte)\nFree data space:         % 5Xh   (% 4d KByte)\nBit data space:          % 5Xh   (% 4d KByte)\nFree bit data space:     % 5Xh   (% 4d KByte)\nRiten data space:        % 5Xh   (% 4d KByte)\nFree riten data space:   % 5Xh   (% 4d KByte)\nExt/aux data space:      % 5Xh   (% 4d KByte)\nFree ext/aux data space: % 5Xh   (% 4d KByte)\n\n\n
+>\nSpazio dati:                 % 5Xh   (% 4d KByte)\nSpazio dati libero:      % 5Xh   (% 4d KByte)\nSpazio dati bit:         % 5Xh   (% 4d KByte)\nSpazio dati bit libero:  % 5Xh   (% 4d KByte)\nSpazio dati ritentivi:   % 5Xh   (% 4d KByte)\nSpazio dati rit. libero: % 5Xh   (% 4d KByte)\nSpazio dati ext.:        % 5Xh   (% 4d KByte)\nSpazio ext libero:       % 5Xh   (% 4d KByte)\n\n\n
+
+<\nEllipse
+>\nEllisse
+
+<\nExpand
+>\nEspandi
+
+<\nFill Color
+>\nColore riempimento
+
+<\nImport from File
+>\nImporta da file
+
+<\nInvalid memory image file.\nPlease upload memory image from the target\n
+>\nImmagine memoria sistema non valida.\nAggiornare stato memoria dal sistema\n
+
+<\nLine
+>\nLinea
+
+<\nMinimize Window
+>\nMinimizza finestra
+
+<\nMore controls
+>\nAltri controlli
+
+<\nMove to Ne&xt Tab Group
+>\nSposta a &prossimo gruppo Tab
+
+<\nMove to P&revious Tab Group
+>\nSposta a p&recedente gruppo Tab
+
+<\nNew &Vertical Tab Group
+>\nNuovo gruppo Tab &verticale
+
+<\nNew Hori&zontal Tab Group
+>\nNuovo gruppo Tab &orizzontale
+
+<\nPaste
+>\nIncolla
+
+<\nPencil
+>\nMatita
+
+<\nPick Color
+>\nPreleva colore
+
+<\nRectangle
+>\nRettangolo
+
+<\nRedo
+>\nRipristina
+
+<\nRestore Window
+>\nRipristina finestra
+
+<\nTarget not enabled, project loading aborted.\n
+>\nSistema non abilitato, caricamento progetto interrotto.\n
+
+<\nTextFile\nLogicLab\n\n\nLogicLab.Document\nLogicLab Document
+>
+
+<\nToolbar Options
+>\nOpzioni barre di comando
+
+<\nUndo
+>\nAnnulla
+
+<+
+>
+
+<<<
+>
+
+<<devicecategory name="ConvertedTargetDefs"><description>Converted PLC Targets DEFs</description></devicecategory>
+>
+
+<<No forcing>
+>
+
+<>
+>
+
+<>>
+>
+
+<0
+>
+
+<0 minutes
+>0 minuti
+
+<0 reminders are selected
+>0 richiami selezionati
+
+<0.5 days
+>0.5 giorni
+
+<1 day
+>1 giorno
+
+<1 hour
+>1 ora
+
+<1 minute
+>1 minuto
+
+<1 week
+>1 settimana
+
+<10 hours
+>10 ore
+
+<10 minutes
+>10 minuti
+
+<11 hours
+>11 ore
+
+<123456789 123456789 123456789\n2\n3
+>
+
+<12345678901234567890
+>
+
+<15 minutes
+>15 minuti
+
+<18 hours
+>18 ore
+
+<2 days
+>2 giorni
+
+<2 hours
+>2 ore
+
+<2 weeks
+>2 settimane
+
+<3 days
+>3 giorni
+
+<3 hours
+>3 ore
+
+<30
+>
+
+<30 minutes
+>30 minuti
+
+<4 hours
+>4 ore
+
+<5 hours
+>5 ore
+
+<5 minutes
+>5 minuti
+
+<6 hours
+>6 ore
+
+<7 hours
+>7 ore
+
+<8 hours
+>8 ore
+
+<9 hours
+>9 ore
+
+<A new version of LogicLab (%s)
+>Una nuova versione di LogicLab (%s)
+
+<A sharing violation occurred.
+>Violazione di condivisione
+
+<A toolbar named '%s' already exists. Type another name.
+>Una barra degli strumenti '%s' esiste già. Fornisci un nuovo nome
+
+<A variabile already exists having the same name
+>È presente una variabile con lo stesso nome
+
+<A&dd pin to convergent transition
+>A&ggiungi connettore alla transizione divergente
+
+<A&utomatically adjust clock for daylight saving changes
+>
+
+<AaBbCc
+>
+
+<aborted.\n
+>annullato.\n
+
+<Access type
+>Tipo di accesso
+
+<Acquisition data error
+>Errore nell'acquisizione dati
+
+<Action associated with multiple steps\nUnable to set the trigger
+>Azione associata a più passi\nImpossibile impostare il trigger
+
+<Actions
+>Azioni
+
+<Activate debug mode\nDebug mode
+>Attivazione modalità debug\nModo debug
+
+<Activate live debug mode\nLive debug mode
+>Attivazione modalità debug interattiva\nDebug interattivo
+
+<Activate Task List
+>Attiva lista dei task
+
+<Activate this window
+>Attiva questa finestra
+
+<Activate/Deactivate full screen mode\nFull screen (Ctrl+U)
+>Attiva/disattiva la modalità a schermo intero\nSchermo intero (Contr+U)
+
+<Active Files
+>File attivi
+
+<Active Tool Windows
+>Barre di comando attive
+
+<Add  a new Typedef
+>Aggiungi nuova Typedef
+
+<Add &pin to simultaneous divergent transition
+>Aggiungi connettore a transizioni divergenti simultanee
+
+<Add &space before rightmost pin
+>Aggiungi &spazio prima del connettore più a destra
+
+<Add a jump to the SFC schema\nNew jump
+>Aggiungi un salto allo schema SFC\nNuovo salto
+
+<Add a new Structure
+>Aggiungi una nuova struttura
+
+<Add a step to the SFC schema\nNew step
+>Aggiungi un passo allo schema SFC\nNuovo passo
+
+<Add a transition to the SFC schema\nNew transition
+>Aggiungi una transizione allo schema SFC\nNuova transizione
+
+<Add item to watch window
+>Aggiungi elemento alla finestra di watch
+
+<Add new Enumeration
+>Aggiungi nuovo enumerativo
+
+<Add p&in to simultaneous convergent transition
+>Aggiungi &connettore a una transizione simultanea convergente
+
+<Add symbol to &watch\tF8
+>Aggiungi simbolo alla &watch\tF8
+
+<Add/remove breakpoint\tF12
+>Aggiungi/rimuovi punto di interruzione
+
+<Add/remove graphic tri&gger\tShift+F9
+>Aggiungi/rimuovi trigger grafico\tMaiusc+F9
+
+<Add/remove text &trigger\tF9
+>Aggiungi/rimuovi trigger testuale\tMaiusc+F9
+
+<Addr
+>Indir
+
+<Address
+>Indirizzo
+
+<Address\t\t: %s\r\n
+>Indirizzo\t\t: %s\r\n
+
+<Adds a new constant to project\nNew constant
+>Aggiunge una nuova costante al progetto\nNuova costante
+
+<Adds a new function block to project\nNew function block
+>Aggiunge un nuovo blocco funzionale al progetto\nNuovo blocco funzionale
+
+<Adds a new function to project\nNew function
+>Aggiunge una nuova funzione al progetto\nNuova funzione
+
+<Adds a new global variable to project\nNew variable
+>Aggiunge un nuova variabile globale al progetto\nNuova variabile globale
+
+<Adds a new Mapped variable to project\nNew Mapped variable
+>Aggiunge un nuova variabile mappata al progetto\nNuovo variabile mappata
+
+<Adds a new program to project\nNew program
+>Aggiunge un nuovo programma al progetto\nNuovo programma
+
+<Adds a new retain variable to project\nNew retain variable
+>Aggiunge una nuova variabile ritentiva al progetto\nNuova variabile ritentiva
+
+<Adds the selected item into the watch window\nAdd to watch
+>Aggiunge l'elemento selezionato alla finestra di watch\nAggiungi alla watch
+
+<Adds the selected symbol to one of the debug windows\nAdd to debug windows
+>Aggiunge il simbolo selezionato a una finestra di debug\nAggiungi a finestra di debug
+
+<Adds/remove a textual trigger in the actually selected position\nAdd/remove trigger
+>Aggiungi/rimuovi un trigger testuale nella posizione correntemente selezionata\nAggiungi rimuovi trigger
+
+<After
+>Dopo
+
+<Alarm
+>Allarme
+
+<Alarms
+>Allarmi
+
+<AlCatalogManager.CatalogInterface
+>
+
+<Align Center
+>Allinea al centro
+
+<Align Left
+>Allinea a sinistra
+
+<Align Right
+>Allinea a destra
+
+<Alignment
+>Allineamento
+
+<Aligns the paragraph at the left margin\nAlign Left
+>Allinea il paragrafo al margine sinistro\nAllinea a sinistra
+
+<Aligns the paragraph at the right margin\nAlign Right
+>Allinea il paragrafo al margine destra\nAllinea a destra
+
+<All
+>Tutto
+
+<All Commands
+>Tutti i comandi
+
+<All da&y event
+>Tutti gli &eventi giornalieri
+
+<All files (*.*)|*.*||
+>Tutti i files (*.*)|*.*||
+
+<All Files (*.*)|*.*||
+>Tutti i file (*.*)|*.*||
+
+<All parameters
+>Tutti i parametri
+
+<All Picture Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmaps (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiles (*.wmf;*.emf)|*.wmf;*.emf|Icons (*.ico;*.cur)|*.ico;*.cur|All Files (*.*)|*.*||
+>Tutti i file immagine|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmaps (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiles (*.wmf;*.emf)|*.wmf;*.emf|Icone (*.ico;*.cur)|*.ico;*.cur|Tutti i file (*.*)|*.*||
+
+<Allow only integer indexes for arrays
+>Ammessi solo indici interi per gli array
+
+<Alphabetical
+>Alfabetico
+
+<Also delete the associated code ?
+>Cancella anche il codice associato?
+
+<Always show full me&nus
+>Mostra sempre tutti i me&nu
+
+<An instance of the object already exist on this network
+>Un'istanza dello stesso oggetto esiste già in questa rete
+
+<An invalid address may cause
+>Un indirizzo non valido può causare
+
+<An unknown error number %d occured.
+>Errore sconosciuto %d
+
+<Anniversary
+>Anniversario
+
+<Another item exists having the same name
+>Esiste un altro elemento con lo stesso nome
+
+<Another PLC object has the same name
+>Esiste un altro oggetto PLC con lo stesso nome
+
+<Another program instance is already connected to the simulator\nFurther connections aren't allowed.
+>Un'altra istanza del programma è già connessa al simulatore\nUlteriori connessioni non sono ammesse
+
+<Any exceptions associated with this recurring appointment will be lost. If any of the exceptions are meetings, the attendees will not be notified. Is this OK?
+>
+
+<Append
+>Aggiungi
+
+<Append file property
+>Aggiungi proprietà al file
+
+<Append files
+>Aggiungi file
+
+<Application
+>Applicazione
+
+<Application Menus
+>Menù applicazione
+
+<Apply changes made to the Force I/O Bar\nApply changes
+>Conferma modifiche alla barra forzatura I/O\nApplica modifiche
+
+<Appointment and Event Details
+>
+
+<Appointment Recurrence
+>
+
+<Appointment time
+>
+
+<Aqua
+>
+
+<Are you sure you want to delete the '%s' toolbar?
+>Sicuro di cancellare la barra '%s'?
+
+<Are you sure you want to reset the changes made to the '%s' toolbar?
+>Sicuro di ripristinare le modifiche fatte alla barra comandi '%s'?
+
+<Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level.
+>Sicuro di ripristinare gli assegnamenti ai tasti? Questa azione rimuoverà ogni assegnamento ai tasti.
+
+<Are you sure you want to restore the Quick Access Toolbar to its default contents?
+>Sicuro di ripristinare la barra comandi di accesso rapido?
+
+<Arguments
+>Argomenti
+
+<Arrange horizontal scale to display all acquisition time\nHorizontal show all
+>Aggiusta la scala orizzontale per mostrare tutto il periodo di acquisizione\nMostra tutto orizzontale
+
+<Arrange icons at the bottom of the window\nArrange Icons
+>Disponi le icone in fondo alla finestra\nDisponi icone
+
+<Arrange vertical and horizontal scale to display all values\nShow all values
+>Aggiusta la scala orizzontale e verticale per mostrare tutti i valori\nMostra tutti i valori
+
+<Arrange vertical scale to display all range of the selected track\nSelected track's vertical show all
+>Aggiusta la scala verticale per mostrare tutti i valori della traccia selezionata\nMostra tutto della traccia selezionata
+
+<Arrange Windows
+>Disponi finestre
+
+<Arrange windows as non-overlapping tiles\nTile Windows
+>Affianca finestre senza sovrapposizioni.\nAffianca finestre
+
+<Arrange windows so they overlap\nCascade Windows
+>Disponi finestre in cascata\nFinestre in cascata
+
+<Array
+>
+
+<Array / matrix
+>Array/matrice
+
+<Array / Matrix
+>Array/matrice
+
+<Array value
+>Valore array
+
+<Array[%i] = %s \r\n
+>
+
+<As&ync Graph bar
+>Grafico &asincrono
+
+<As&ync graphic window\tCtrl+K
+>Finestra del grafico &asincrono\tContr+K
+
+<Assign to
+>Assegna a 
+
+<Associations code
+>Associazioni codice
+
+<Asynchronous graph property
+>Proprietà del grafico asincorono
+
+<Attribute
+>Attributo
+
+<Attribute\t\t: %s\r\n
+>Attributo\t\t: %s\r\n
+
+<Author : %s
+>Autore : %s
+
+<Author:
+>Autore:
+
+<Auto Hide
+>Nascondi automaticamente
+
+<Auto Indent
+>Rientro automatico
+
+<Automatic
+>Automatica
+
+<Automatic &reload of externally modified files
+>&Caricamento automatico dei file modificati esternamente
+
+<Automatic address
+>Indirizzo automatico
+
+<Automatic Color\nAutomatic Color
+>Colore Automatico\nColore automatico
+
+<Automatic variables
+>Variabili automatiche
+
+<Aux. Sources
+>Sorgenti ausiliari
+
+<Available columns
+>Colonne disponibili
+
+<Available Targets
+>Sistemi disponibili
+
+<B&efore
+>&Prima
+
+<B&it
+>
+
+<Background network color
+>Colore di sfondo delle reti
+
+<Backspace
+>Cancella indietro
+
+<Base addr.
+>Indirizzo base
+
+<Basic types
+>Tipi base
+
+<Begin a &Group
+>Inizia un &gruppo
+
+<Binary
+>Binario
+
+<Birthday
+>Compleanno
+
+<Black
+>Nero
+
+<Block
+>Blocco
+
+<Block pin position assignment
+>Assegnamento posizioni connettori blocco
+
+<Blocks
+>Blocchi
+
+<BLOCKS
+>BLOCCHI
+
+<Blue
+>Blu
+
+<Blue-Gray
+>Grigio-blu
+
+<Bold
+>Grassetto
+
+<Bold Italic
+>Grassetto corsivo
+
+<Boo&lean
+>Boo&leano
+
+<Bool value
+>Valore BOOL
+
+<Boolean
+>Booleano
+
+<Booting PLC on the target ..
+>Caricamento PLC nel sistema
+
+<Breakpoint hit in %s line %d\n
+>Punto di interruzione %s raggiunto alla linea %d\n
+
+<Breakpoint list
+>Lista punti di interruzione
+
+<Bright Green
+>Grigio chiaro
+
+<Brown
+>Marrone
+
+<Browse
+>Sfoglia
+
+<Buffer size
+>Dimensione area
+
+<Build
+>Compilazione
+
+<Build events
+>Eventi compilazione
+
+<Built-in Menus
+>Menù integerati
+
+<Business
+>Affari
+
+<Busy
+>Occupato
+
+<Button Editor
+>Bottone editor
+
+<C&ancel
+>&Annulla
+
+<C&lear
+>Cance&lla
+
+<C&lose project
+>&Chiudi progetto
+
+<C&oil
+>&Bobina
+
+<C&oil\tShift+F4
+>&Bobina\tMaiusc+F4
+
+<C&ollapsible Nodes
+>Nodi collassabili
+
+<C&ut
+>&Taglia
+
+<Calendar Page Setup
+>Impostazione calendario
+
+<Can't add more records
+>Non è possibile aggiungere altri record
+
+<Can't connect to the registration server
+>Impossibile connettersi al server di registrazione
+
+<Can't create output BIN file
+>Impossibile creare il file BIN di uscita
+
+<can't create parameter files.\n
+>impossibile creare il file parametri.\n
+
+<Can't force read-only variable
+>Non si può forzare una variabile in sola lettura
+
+<Can't force value because of different application running on the target
+>Non si possono forzare i valori perché sul sistema è in esecuzione un'applicazione differente
+
+<Can't force value of array items with variable index
+>Non si possono forzare gli elementi di un'array con indice variabile
+
+<Can't open COD file, project should be compiled.
+>Impossibile aprire il file COD, ricompilare l'applicazione
+
+<Can't open file : %s.
+>Impossibile aprire il file %s
+
+<Can't open parameter file.\n
+>Impossibile aprire il file parametri.\n
+
+<Can't set working directory\n
+>Impossibile impostare la directory corrente\n
+
+<Can't trace arrays with variable index
+>Impossibile tracciare array con indici variabili
+
+<Can't watch arrays with variable index
+>Impossibile visualizzare array con indice variabile
+
+<Can't write code file %s\n
+>Impossibile scrivere il file codice %s\n
+
+<Can not create new object\nMake sure that you have enough space
+>Impossibile creare il nuovo oggetto\nVerificare di avere spazio sufficiente
+
+<Can not execute this action while in DEBUG ERROR state.\nPlease try to restart the Debug Mode
+>Impossibile eseguire questa azione mentre ci si trova nello stato DEBUG ERROR.\nProvare a riavviare la modalità debug
+
+<Can not find variable in symbol table\nForcing of non-automatic target and global variables only is supported
+>Impossibile trovare la variabile nella tabella simboli\nLa forzatura è consentita solo sulle variabili di sistema
+
+<Can not force values of automatic variables
+>Impossibile forzare il valore delle variabili automatiche
+
+<Can not load device template '%s' from Catalog!\nResources configuration may be incomplete.\n\nPlease check you have all the necessary custom devices installed in the catalog.\n\nKeep the incomplete element in the project anyway? (choose 'No' to delete it)
+>Impossibile caricare il modello di sistema '%s' dal catalogo.\nLe risorse di configurazione possono essere incomplete.\n\nVerifica di avere tutti i necessari dispositivi installati nel catalogo\n\nMantieni l'elemento incompleti nel progetto? (Scegliere No per cancellarlo)
+
+<Can not watch variables with dereferenced pointers
+>Impossibile mostrare variabili con puntatori dereferenziati
+
+<Cancel
+>Annulla
+
+<Cannot connect to target. Unable to get target informations. (target likely to be incompatible)\n
+>Impossibile connettersi al sistema. Informazioni sistema non reperibili (il sistema potrebbe essere incompatibile).\n
+
+<Cannot connect to target.\nProject info and target device info mismatch.\n\nSee output window for details.
+>Impossibile connettersi al sistema\nLe informazioni del progetto e il sistema non corrispondono\nControllare la finestra di Output per dettagli.
+
+<Cannot find string "%s"
+>Stringa "%s" non trovata
+
+<Cannot find the string '%s'
+>Stringa "%s" non trovata
+
+<Cannot insert object
+>Impossibile inserire l'oggetto
+
+<Cannot open project:\n\n'%s'\n\nThis project is already opened by another LogicLab instance.\n
+>Impossibile aprire il progetto\n\n'%s'\n\nQuesto progetto è già aperto da un'altra sessione di LogicLab.\n
+
+<Cannot start PLC run-time monitor
+>Impossibile avviare il monitor PLC
+
+<Cannot transfer the START command to PLC run-time
+>Impossibile trasferire il comando START al run-time PLC
+
+<Cannot transfer the STOP command to PLC run-time
+>Impossibile trasferire il comando STOP al run-time PLC
+
+<Cannot update target information. Watch values of target data are not reliable.\n
+>Impossibile aggiornare le informazioni del sistema. I valori nella watch non sono attendibili.\n
+
+<CAP
+>
+
+<Casca&de
+>Casca&ta
+
+<Case sensitive
+>Rispetta maiuscole/minuscole
+
+<Case sensivity (IEC default=no)
+>Rispetta maiuscole/minuscole (IEC predefinito=no)
+
+<Catalog Manager not correctly installed !\nYou can not create new projects without it.\n\nPlease reinstall the application to solve this problem
+>Il gestore del catalogo non è correttamente installato\nNon è possibile creare progetti senza di esso.\n\nRe-installare il programma per risolvere il problema
+
+<Cate&gories:
+>Cate&gorie:
+
+<Cate&gory:
+>Cate&goria:
+
+<Categories
+>Categorie
+
+<Categorized
+>Catalogato
+
+<Centers the paragraph between the margins\nCenter
+>Centra paragrafo tra i margini\nCentra
+
+<Change
+>Cambia
+
+<Change &Button Image
+>Cambia l'immagine del &bottone
+
+<Change current instance\nChange current instance
+>Cambia l'istanza corrente\nCambia l'istanza corrente
+
+<Change selection case
+>Cambia modo di selezione
+
+<Change the item format value\nValue format
+>Cambia il formato dell'elemento\nFormato dell'elemento
+
+<Change the printer and printing options\nPrint Setup
+>Cambia la stampante e le opzioni di stampa\nImpostazioni di stampi
+
+<Change the printing options\nPage Setup
+>Opzioni di stampa\nOpzioni stampa
+
+<Change the window position
+>Cambia la posizione della finestra
+
+<Change the window size
+>Cambia la dimensione della finestra
+
+<Check all
+>Seleziona tutto
+
+<Check FB external variables
+>Verifica le variabili esterne dei blocchi funzionali
+
+<Check none
+>Deseleziona tutto
+
+<Checking compatibility between application binary file and run-time environment ..
+>Verifica compatibilità tra il binario dell'applicazione ed il sistema ..
+
+<Class
+>Classe
+
+<Clear all output window content\nClear outwin
+>Cancella tutto il contenuto della finestra di output\nCancella finestra di output
+
+<Click push pin to keep open
+>Premi sul connettore per mantenere aperto
+
+<Click Snooze to be reminded again in:
+>
+
+<Click to add appointment
+>
+
+<Close
+>Chiudi
+
+<Close Al&l
+>Chiudi tu&tto
+
+<Close all childs documents before delete the object
+>Chiudi tutti i documenti associati prima di cancellare l'oggetto
+
+<Close all open windows\nClose all
+>Chiudi tutte le finestre aperte\nChiudi tutto
+
+<Close print preview mode\nCancel Preview
+>Chiudi anteprima di stampa\nChiudi anteprima
+
+<Close the active document\nClose
+>Chiudi il documento attivo\nChiudi
+
+<Close the active window and prompts to save the documents
+>Chiudi la finestra attiva e richiedi il salvataggio dei documenti
+
+<Close the preview\nClose Preview
+>Chiudi l'anteprima\nChiudi anteprima
+
+<Close the project before transfer the license.
+>Chiudi il progetto prima di trasferire la licenza
+
+<Closes the current project\nClose project
+>Chiude il progetto corrente\nChiudi progetto
+
+<Closing target connection\n
+>Chiusura connessione con il sistema\n
+
+<ClpFormatXML
+>
+
+<Co&mmands:
+>Co&mandi:
+
+<Co&mment
+>Co&mmento
+
+<Code
+>Codice
+
+<Code already exist.
+>Il codice esiste già.
+
+<Code editor
+>Editor codice sorgente
+
+<Code encryption
+>Cripta codice
+
+<Code generation
+>Generazione codice
+
+<Code N
+>Codice N
+
+<Code P
+>Codice P
+
+<Code type\t: %s\r\n
+>Tipo codice\t: %s\r\n
+
+<Coil
+>Bobina
+
+<Collapse
+>Chiudi
+
+<Colors
+>Colori
+
+<COLUMN
+>
+
+<Comm setting error: current project '%s', target device '%s'.\n
+>Errore impostazioni comunicazione: progetto corrente '%s', sistema '%s'.\n
+
+<Comman&ds:
+>Coman&di:
+
+<Command
+>Comando
+
+<Command execute
+>Esecuzione comando
+
+<Comment
+>Commento
+
+<Comment color
+>Colore commento
+
+<Common settings
+>Impostazioni comuni
+
+<Communication
+>Comunicazione
+
+<Communication library failure, check for proper installation
+>Errore libreria di comunicazione, verifica la corretta installazione
+
+<Communication line settings\nCommunication settings
+>Impostazione comunicazione\nImpostazione comunicazione
+
+<Communication parameters non set.\nPlease configure communication
+>Parametri di comunicazione non impostati.\Impostare la comunicazione
+
+<Communication server failure\nopening COM%d port
+>Errore server di comunicazione\naprendo la porta COM%d
+
+<Communication, invalid image file or PLC file error
+>Errore comunicazione, file immagine corrotto o errore file PLC
+
+<Company
+>Azienda
+
+<Compile parameters file...
+>Compila fila parametri ..
+
+<Compiling function blocks ..
+>Compilazione blocchi funzionali ..
+
+<Compiling functions ..
+>Compilazione funzioni ..
+
+<Compiling programs ..
+>Compilazione programmi ..
+
+<completed.\n
+>completato.\n
+
+<completed.\nFile %s downloaded.\n
+>completato.\nFile %s scaricato.\n
+
+<completed.\nFile %s updated.\n
+>completato.\nFile %s aggiornato.\n
+
+<Comunication error
+>Errore di comunicazione
+
+<Comunication timeout
+>Timeout di comunicazione
+
+<Condition
+>Condizione
+
+<Configure buttons
+>Configurazione bottoni
+
+<Configure Connection
+>Configura connessione
+
+<Configure FBD Editor\nOption
+>Configura editor FBD\nOpzioni
+
+<Confirm Delete\nDelete this &occurrence.\nDelete the &series.\nDo you want to delete all occurrences of the recurring event "%s", or just this one?
+>Conferma cancellazione\nElimina questa ric&orrenza\nCancella la &serie.\nVuoi cancellare tutte le ricorrenze dell'evento "%s" o solamente questa?
+
+<Confirm password:
+>Conferma password:
+
+<Connect &Paral\tShift+F11
+>Connessione &parallela\tMaiusc+F11
+
+<Connect &series\tShit+F12
+>Connessione serie\tMaiusc+F12
+
+<CONNECTED
+>CONNESSO
+
+<Connected to %s on %s.\n
+>Connesso a %s su %s.\n
+
+<Connecting with the target...
+>Connessione con il sistema
+
+<Connecting with the target\n
+>Connessione con il sistema\n
+
+<Connection
+>Connessione
+
+<Connection &mode
+>&Modalità di connessione
+
+<Connection color
+>Colore connessione
+
+<Connection configured
+>Connessione configurata
+
+<Connection is off, can't add to watch window
+>Connessione non attiva, impossibile aggiungere a finestra di watch
+
+<Connection mode
+>Modalità connessione
+
+<Connection not available
+>Connessione non disponibile
+
+<Connection verified
+>Connessione verificata
+
+<Constant
+>Costante
+
+<Constant value
+>Valore costante
+
+<Constants
+>Costanti
+
+<Contact
+>Contatto
+
+<Conte&xt
+>Con&testo
+
+<Context Menus
+>Menù di contesto
+
+<Continue
+>Continua
+
+<Copy
+>Copia
+
+<Copy Ob&ject
+>Copia &oggetto
+
+<Copy only the name of the element
+>Copia solo il nome dell'elemento
+
+<Copy the entire element
+>Copia l'intero elemento
+
+<Copy the selection and put it on the Clipboard\nCopy
+>Copia la selezione e mettila in memoria\nCopia
+
+<CopyOf_%s
+>
+
+<Could not copy the source library file:\n%s
+>Impossibile copiare la libreria originale:\n%s
+
+<Could not find the source library file:\n%s
+>Libreria sorgente non trovata:\n%s
+
+<Could not install reference to trigger code
+>Impossibile installare codice di trigger
+
+<count
+>conteggio
+
+<Cover page
+>Copertina
+
+<Create a copy of the selected macro\nCopy macro
+>Crea una copia della macro selezionata
+
+<Create a copy of the selected object\nCopy object
+>Crea una copia dell'oggetto selezionato\nCopia oggetto
+
+<Create a duplicate of the selected object\nDuplicate object
+>Crea un duplicato dell'oggetto selezionato\nDuplica oggetto
+
+<Create a new action\nNew action
+>Crea una nuova azione\nNuova azione
+
+<Create a new document\nNew
+>Crea un nuovo documento\nNuovo
+
+<Create a new PLC project\nNew project
+>Crea un nuovo oggetto PLC\nNuovo oggetto
+
+<Create a new project macro\nNew macro
+>Crea una nuova macro di progetto\nNuova macro
+
+<Create a new project object\nNew object
+>Crea un nuovo oggetto di progetto\nNuovo oggetto
+
+<Create a new transition code\nNew transition code
+>Crea il codice di una transizione\nNuovo codice transizione
+
+<Creating source file %s ..
+>Creazione file sorgente %s ..
+
+<Creation of a new program\nNew program
+>Creazione di un nuovo programma\nNuovo programma
+
+<Critical error while creating folder !
+>Errore critico nella creazione di una cartella
+
+<Crypt
+>Criptazione
+
+<Crypt all objects
+>Criptazione di tutti gli oggetti
+
+<Cu&t
+>&Taglia
+
+<Cu&t\tCtrl+X
+>&Taglia\tContr+X
+
+<Current
+>Corrente
+
+<Current time zone
+>
+
+<Custom
+>Personalizzato
+
+<Custom %d
+>
+
+<Customize
+>Personalizza
+
+<Customize application appearance, toolbars, and menus\n&Customize...
+>Personalizza l'aspetto dell'applicazione, barre di comando, menù\nPersonalizza...
+
+<Customize project options/nPrj Options
+>Personalizza opzioni di progetto\nOpzioni progetto
+
+<Customize Status Bar
+>Personalizza barra di comando
+
+<Customize...
+>Personalizza...
+
+<Cut
+>Taglia
+
+<Cut the selection and put it on the Clipboard\nCut
+>Taglia la selezione e mettila in memoria\nTaglia
+
+<d
+>
+
+<D&ay
+>&Giorno
+
+<D&uplicate action
+>D&uplicazione azione
+
+<D&uplicate function
+>D&uplicazione funzione
+
+<D&uplicate function block
+>D&uplicazione blocco funzionale
+
+<D&uplicate object
+>D&uplicazione oggetto
+
+<D&uplicate program
+>D&uplicazione programma
+
+<D&uplicate transition
+>D&uplicazione transizione
+
+<D&uplicate variable
+>D&uplicazione variabile
+
+<D&uration:
+>D&urata:
+
+<Dark Blue
+>Blu scuro
+
+<Dark Green
+>Verde scuro
+
+<Dark Red
+>Rosso scuro
+
+<Dark Teal
+>
+
+<Dark Yellow
+>Giallo scuro
+
+<Data block
+>Blocco dati
+
+<Data blocks not defined
+>Blocco dati non definito
+
+<Data type
+>Tipo dato
+
+<Database
+>
+
+<Database field selection
+>Selezione campo database
+
+<Database size:       % 5Xh   (% 4d KByte)\n
+>Dimensione database: % 5Xh   (% 4d KByte)\n
+
+<Datablock full: cannot add a new variable
+>Blocco dati completo: impossibile aggiungere nuove variabili
+
+<Date header
+>Intestazione data
+
+<Date header font:
+>Font intestazione data:
+
+<Date:%s
+>Data:%s
+
+<DateTimePicker1
+>
+
+<DateTimePicker2
+>
+
+<Day
+>Giorno
+
+<Day view options
+>Opzioni vista giorno
+
+<day(s)
+>giorno/i
+
+<Days remaining
+>Giorni rimanenti
+
+<De&bug bar
+>Barra de&bug
+
+<Debug
+>
+
+<Debug bar\tCtrl+B
+>Barra de&bug\tContr+B
+
+<DEBUG ERROR
+>ERRORE DEBUG
+
+<DEBUG MODE
+>MODO DEBUG
+
+<Debug trace messages
+>Messaggi debug
+
+<Debug windows
+>Finestre di debug
+
+<Debug windows list
+>Lista finestre di debug
+
+<Decimal
+>Decimale
+
+<Decrease Indent
+>Diminuisci rientro
+
+<Decrease magnification of preview page\nZoom Out
+>Diminuisci ingrandimento anteprima\nZoom -
+
+<Decrease pins number of the selected object\nDec pins
+>Decremento connettori dell'oggetto selezionato\nDecremento connettori
+
+<Decrement of the horizontal zoom\nHorizontal zoom -
+>Decremento zoom orizzontale\nZoom orizzontale -
+
+<Decrement of the vertical zoom of the selected track\nSelected track's vertical zoom -
+>Decremento zoom verticale delle traccia selezionata\nZoom verticale traccia selezionata -
+
+<Decrement pins\t-
+>Decremento connettori\t-
+
+<Decrement pins\tCtrl + '-'
+>Decremento connettori\tContr+-
+
+<Decrement space before selected transition's rightmost pin\nRemove space before rightmost pin
+>Decremento spazio prima del connettore più a destra\nRimuovi spazio prima del connettore più a destra
+
+<Decrement the number of pins of selected convergent transition\nRemove pin from convergent transition
+>Decremento connettori della transizione convergente selezionata\nRimuovi connettore dalla transizione convergente
+
+<Decrement the number of pins of selected divergent transition\nRemove pin from divergent transition
+>Decremento connettori della transizione divergente selezionata\nRimuovi connettore dalla transizione divergente
+
+<Decrement the number of pins of selected simultaneous convergent transition\nRemove pin from simultaneous convergent transition
+>Decremento connettori della transizione convergente simultanea selezionata\nRimuovi connettore dalla transizione convergente simultanea 
+
+<Decrement the number of pins of selected simultaneous divergent transition\nRemove pin from simultaneous divergent transition
+>Decremento connettori della transizione divergente simultanea selezionata\nRimuovi connettore dalla transizione divergente simultanea 
+
+<Decrypt
+>Decritta
+
+<Decrypt all objects
+>Decritta tutti gli oggetti
+
+<DEF_ENUM
+>
+
+<DEF_ENUM_FOLD
+>
+
+<DEF_ROOT_FOLD
+>
+
+<DEF_STRUCT
+>
+
+<DEF_STRUCT_FOLD
+>
+
+<DEF_SUBR
+>
+
+<DEF_SUBR_FOLD
+>
+
+<DEF_TYPEDEF
+>
+
+<DEF_TYPEDEF_FOLD
+>
+
+<Defa&ult Style
+>Stile predefinito
+
+<Default [ English ]
+>
+
+<Default menu\nDefault application menu
+>Menù predefinito\nMenù predefinito
+
+<Definiti&ons
+>Definizi&oni
+
+<Definitions
+>Definizioni
+
+<Delete
+>Elimina
+
+<Delete &invalid connection\tCtrl+B
+>Cancella le connessioni non valide\tContr+B
+
+<Delete all invalid connection in the selected network\nDelete invalid
+>Cancella tutte le connessioni non valide della rete selezionata\nCancella connessioni non valide
+
+<Delete select record ?
+>Cancelli il record selezionato?
+
+<Delete selected network\nDelete network
+>Cancella la rete selezionata\nCancella rete
+
+<Delete selected variable ?
+>Cancelli variabile selezionata?
+
+<Delete Selection
+>Cancella selezione
+
+<Delete text block
+>Cancella blocco di testo
+
+<Delete the selected PLC Object ?\n\nType  - %s\nName - %s
+>Cancelli l'oggetto PLC selezionato?\n\nTipo  - %s\nNome - %s
+
+<Delete the selected project macro\nDelete macro
+>Cancella la macro selezionata\nCancella macro
+
+<Delete the selected project object\nDelete object
+>Cancello l'oggetto di progetto selezionato\nCancella oggetto
+
+<Delete the selected record\nDelete record
+>Cancella il record selezionato\nCancella record
+
+<Delete the selected variable record\nDelete var
+>Cancella la variabile selezionata\nCancella variabile
+
+<Delete the selection\nDelete
+>Cancella la selezione\nCancella
+
+<Delete:
+>Cancella:
+
+<Deletes the current line\nDelete line
+>Cancella la riga corrente\nCancella linea
+
+<Demo period is expired.\nRegister the program to proceed
+>Periodo dimostrativo scaduto.\nRegistra il programma per proseguire
+
+<Description
+>Descrizione
+
+<Description:
+>Descrizione:
+
+<Destination directory invalid or not found
+>Cartella di destinazione non valida o non trovata
+
+<Device disconnected: cannot add a new variable
+>Sistema non connesso: impossibile aggiungere una nuova variabile
+
+<Device disconnected: cannot apply changes to debug window
+>Sistema non connesso: impossibile applicare le modifiche della finestra di debug
+
+<Device disconnected: cannot download copy-variable code
+>Sistema non connesso: impossibile scaricare il codice di copia variabili
+
+<Device disconnected: cannot download trigger code
+>Sistema non connesso: impossibile scaricare il codice del trigger
+
+<Device disconnected: cannot install new trigger
+>Sistema non connesso: impossibile installare il nuovo trigger
+
+<Device disconnected: cannot remove trigger code
+>Sistema non connesso: impossibile rimuovere il codice di trigger
+
+<Device disconnected: cannot reset trigger count
+>Sistema non connesso: impossibile azzerare il contatore di trigger
+
+<Device disconnected: cannot restore trigger windows
+>Sistema disconnesso: impossibile ripristinare finestre di trigger
+
+<Device ID setting mismatch: current project '%s', target device '%s'.\n
+>Identificativo del sistema non corrispondente: progetto corrente '%s', sistema '%s'.\n
+
+<Did you know...
+>Lo sapevi ...
+
+<DIFF. CODE
+>CODICE DIFF.
+
+<DIFF. CODE (SYM)
+>CODICE DIFF. (SIM)
+
+<Dimensions
+>Dimensioni
+
+<Direction
+>Direzione
+
+<Directories:
+>Cartelle:
+
+<Directory
+>Cartella
+
+<Directory name:
+>Nome cartella
+
+<Disable warning emission
+>Disabilita emissione warning
+
+<Disabled warning codes:
+>Codici warning disabilitati:
+
+<Dismiss &All
+>
+
+<Display full pages\nPrint Preview
+>Mostra pagine intere\nAnteprima pagine intere
+
+<Display program information, version number and copyright\nAbout
+>Mostra informazioni del programma, numero versione etc.\nInformazioni
+
+<Do not import this object
+>Non importare questo oggetto
+
+<Do you wish to close the "Options Dialog" and open the schema file "%s%s" in the editor window?
+>Vuoi chiudere la finestra di output e aprire lo schema "%s%s" nella finestra dell'editor?
+
+<DOCKBAR
+>
+
+<Docu&ment bar
+>Barra dei docu&menti
+
+<Docu&ment bar\tCtrl+M
+>Barra dei docu&menti\tContr+M
+
+<done.\n
+>fatto.\n
+
+<Download in progress
+>Scaricamento in corso
+
+<Downloading code into target .. \n
+>Scaricamento codice nel sistema .. \n
+
+<Downloading database into target ..
+>Scaricamento database nel sistema ..
+
+<Downloading source code ..
+>Scaricamento del codice sorgente ..
+
+<Downloads PLC code to the target\nCode download
+>Scaricamento del codice PLC nel sistema\nScaricamento codice
+
+<Drag a column header here to group by that column.
+>Trascina un'intestazione qui per raggruppare per colonne
+
+<Drag And Drop
+>Trascina e rilascia
+
+<Due In
+>
+
+<Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?
+>La barra di comando '%s' è cambiata in seguito ad un aggiornamento software. Desideri eliminare la tua barra di comando e caricarne una nuova?
+
+<Duplicated records in the parameters file.\n\nDuplicated records :\n%s
+>Record duplicati nel file parametri.\nRecord duplicati:\n%s
+
+<E&nd:
+>F&ine:
+
+<E&very
+>O&gni
+
+<E&xit
+>U&scita
+
+<E&xport function block to library
+>E&sporta blocco funzionale nella libreria
+
+<E&xport program to library
+>E&sporta programma nella libreria
+
+<Edit
+>
+
+<Edit comment
+>Modifica commento
+
+<EDIT MODE
+>MODO MODIFICA
+
+<Edit object source\nOpen source
+>Modifica codice sorgente oggetto\nApri sorgente
+
+<Edit Options
+>Imposta opzioni
+
+<Edit the selected append file\nEdit append
+>Modifica il file ausiliario selezionato\nModifica file ausiliario
+
+<Edit value list
+>Modifica lista valori
+
+<Editor
+>
+
+<Editor Font
+>Font editor
+
+<Email : info@axelsw.it
+>
+
+<Empty
+>Vuoto
+
+<En/Eno
+>
+
+<Enable EN/ENO pins\nEN/ENO
+>Abilita connettori EN/ENO\nEN/ENO
+
+<Enable input
+>Abilita ingresso
+
+<Enable output
+>Abilita uscita
+
+<Enable Password
+>Abilita password
+
+<Enable/Disable auto connect mode\nAuto connect
+>Abilita/disabilita modalità di connessione automatica\nConnessione automatica
+
+<Enables the download of the source code into the target
+>Abilita lo scaricamento del codice sorgente nel sistema
+
+<End &by:
+>Fine &per:
+
+<End a&fter:
+>Fine &dopo:
+
+<End time:
+>Tempo di fine:
+
+<Enlarge the window to full size
+>Ingrandisci la finestra a tutta grandezza
+
+<Enter filter text here
+>Imposta il testo di filtro qui
+
+<Enter warning code here...
+>Inserisci il codice di warning qui...
+
+<Enu&m
+>Enu&merativo
+
+<Enum
+>Enumerativo
+
+<Enum - %s
+>Enumerativo - %s
+
+<Enum is linked to a parameter or a variable.
+>L'enumerativo è collegato a un parametro o una variabile.
+
+<Enumeration %s values:\r\n
+>Valori dell'enumerativo %s:\r\n
+
+<Enumerations
+>Enumerativi
+
+<Enumeratives name
+>Nome degli enumerativi
+
+<Enums
+>Enumerativi
+
+<Enums Definition
+>Definizione enumerativi
+
+<Environment Variables
+>Variabili d'ambiente
+
+<Erase everything\nErase All
+>Cancella tutto\nCancella tutto
+
+<Erase the selection\nErase
+>Cancella la selezione\nCancella
+
+<Erasing flash
+>Cancellazione flash
+
+<Error
+>Errore
+
+<ERROR
+>ERRORE
+
+<Error -> cannot restore trigger windows
+>Error -> impossibile ripristinare finestre di trigger
+
+<Error color
+>Colore di errore
+
+<Error converting old DEF files
+>Errore nella conversione del file DEF
+
+<ERROR copying %s to %s : code %i
+>Error nella copia di %s in %s: codice %i
+
+<Error copying network to clipboard
+>Errore nella copia della rete nella memoria
+
+<Error copying selected block to clipboard
+>Errore nella copia del blocco selezionato nella memoria
+
+<Error detected in the current Debug session.\nPlease restart the Debug Mode
+>Errore nella corrente sessione di debug.\nRiavviare la modalità di debug
+
+<Error detected in the current Debug session.\nTry to reset the target to solve this problem
+>Errore nella corrente sessione di debug.\nPer risolvere il problema provare a riavviare il sistema
+
+<Error loading catalog from\n
+>Errore caricando il catalogo da\n
+
+<Error loading project
+>Errore nel caricamento del progetto
+
+<Error loading sources from target.
+>Errore nel caricamento dei sorgenti dal sistema
+
+<Error loading target extension %s\n
+>Errore nel caricamento dell'estensione %s per il sistema.\n
+
+<Error on create a copy of '%s'
+>Errore nella creazione di una copia di '%s'
+
+<Error on insert a new contact.
+>Errore nell'inserimento di un nuovo contatto
+
+<Error on insert LD block
+>Errore nell'inserimento di un blocco LD
+
+<Error on load library files
+>Errore nel caricamento dei file di libreria
+
+<Error opening help\nPlease verify that Acrobat Reader is correctly installed
+>Errore nell'apertura del manuale\nVerificare che Acrobat Reader sia correttamente installato
+
+<Error querying target definitions from catalog!
+>Errore nella ricerca delle definizioni del sistema nel catalogo
+
+<Error reading file.
+>Errore nella lettura del file
+
+<Error while assembling reference to trigger code
+>Errore nel comporre i riferimenti al codice di trigger
+
+<Error while creating new project
+>Errore nella creazione del nuovo progetto
+
+<Error while downloading copy-variable code
+>Errore nello scaricamento del codice di copia variabili
+
+<Error while installing patch
+>Errore nell'installazione della modifica
+
+<Error while loading the symbol table: cannot add a new variable
+>Errore nel caricamento della tabella simboli: impossibile aggiungere la nuova variabile
+
+<Error while loading the symbol table: cannot apply changes to debug window
+>Errore nel caricamento della tabella simboli: impossibile applicare le modifiche alla finestra di debug
+
+<Error while reading current patch: cannot restore trigger windows
+>Errore nella lettura della correzione: impossibile ripristinare le finestre di trigger
+
+<Error while removing trigger from RealDebug !
+>Errore nella rimozione del trigger da RealDebug
+
+<Error while resetting index and flag
+>Errore nell'azzeramento di indice e flag
+
+<Error while saving the symbol table: cannot add a new variable
+>Errore nel salvataggio della tabella simboli: impossibile aggiungere una nuova variabile
+
+<Error while saving the symbol table: cannot apply changes to debug window
+>Errore nel salvataggio della tabella simboli: impossibile applicare le modifiche alla tabella dei simboli
+
+<Error while starting data acquisition
+>Errore nell'avvio dell'acquisizione dati
+
+<Error while suspending previously installed trigger code
+>Errore nella sospensione del codice di trigger installato
+
+<Error while trying to reset trigger count
+>Errore nel tentativo di azzerare il contatore del trigger
+
+<Error while updating array of interrupts
+>Errore nell'aggiornamento dell'array delle interruzioni
+
+<Error: current target '%s' not found in catalog!
+>Errore: il sistema '%s' non è presente nel catalogo
+
+<Error: duplicated macro parameter name
+>Errore: nome duplicato del parametro della macro
+
+<Estabilishes the communication with the target\nConnects to the target
+>Attiva la comunicazione con il sistema\nConnessione con il sistema
+
+<events
+>eventi
+
+<Events
+>Eventi
+
+<Exadecimal
+>Esadecimale
+
+<Executable file (*.exe)|*.exe||
+>File eseguibile (*.exe)|*.exe||
+
+<Exist another global object with this name.
+>Esiste già un oggetto globale con lo stesso nome.
+
+<Exists another field with this name
+>Esiste già un altro campo con lo stesso nome
+
+<Exit
+>Uscita
+
+<Expand
+>Espandi
+
+<Expession
+>Espressione
+
+<Export macro in external library\nExport to library
+>Esporta macro nella libreria\nEsporta nella libreria
+
+<Export object in external library\nExport to library
+>Esporta oggetto nella libreria\nEsporta nella libreria
+
+<Export PLC object
+>Esporta oggetto PLC
+
+<Export PLC object to library...
+>Esporta oggetto PLC nella libreria...
+
+<Export to a file.
+>Esporta verso un file.
+
+<Export to library
+>Esporta nella libreria
+
+<Export to library...
+>Esporta nella libreria...
+
+<Expressions
+>Espressioni
+
+<EXT
+>
+
+<Extern vars num\t: %d\r\n
+>Numero var esterne\t: %d\r\n
+
+<External variables
+>Variabili esterne
+
+<F&ind in project\tCtrl+Shift+F
+>T&rova nel progetto\tContr+Maiusc+F
+
+<F&ull screen\tCtrl+U
+>S&chermo intero\tContr+U
+
+<Fade
+>
+
+<Fail to change target file.
+>Errore nel cambio del file del sistema.
+
+<Failed to connect with the target\n
+>Errore nella connessione al sistema\n
+
+<Failed to read the code address from the target\n
+>Errore nella lettura dell'indirizzo codice dal sistema\n
+
+<Failed to save project
+>Errore nel salvataggio del progetto
+
+<failed.\n
+>fallito.\n
+
+<false
+>falso
+
+<False
+>Falso
+
+<FALSE
+>FALSO
+
+<FBD
+>
+
+<FBD bar
+>Barra comandi FBD
+
+<FBD object properties
+>Proprietà oggetto FBD
+
+<FBDOPR
+>
+
+<Fi&nd what:
+>Trova:
+
+<File '%s' is modified by outside source!\nDo you want to reload?
+>Il file '%s' è stato modificato esternamente\nVuoi ricaricarlo?
+
+<File '%s'\nis corrupted or not valid.
+>Il file '%s' è deteriorato o non valido.
+
+<File T&ype:
+>T&ipo file:
+
+<Files:
+>
+
+<Filters
+>Filtri
+
+<Find
+>Trova
+
+<Find & Replace
+>Trova e sostituisci
+
+<Find &next\tF3
+>Trova &successivo\tF3
+
+<Find error
+>Errore di ricerca
+
+<Find in project
+>Trova nel progetto
+
+<Find next
+>Trova successivo
+
+<Find Text
+>Trova testo
+
+<Find the next specified text in the current editor\nFind next
+>Trova il testo seguente nell'editor corrente\nTrova successivo
+
+<Find the specified text in the current editor\nFind
+>Trova il testo indicato nell'editor corrente\nTrova
+
+<Find the specified text in the current project\nFind in project
+>Trova il testo indicato nel progetto corrente\nTrova nel progetto
+
+<Find What
+>Trova
+
+<Find what :
+>Trova :
+
+<Finished searching!
+>Fine della ricerca
+
+<First
+>Primo
+
+<Flash address
+>Indirizzo flash
+
+<Flash not erased
+>Flash non cancellata
+
+<Float
+>
+
+<Float format
+>Formato float
+
+<Folder already exists !\nPlease choose another folder
+>La cartella esiste già\nSeleziona un'altra cartella
+
+<Font
+>
+
+<Font dimension
+>Dimensione font
+
+<Font name
+>Nome font
+
+<Font size
+>Dimensione font
+
+<Font St&yle:
+>S&tile font:
+
+<For
+>Per
+
+<Force I/O
+>Forza I/O
+
+<Force I/O bar
+>Barra comandi forzatura I/O
+
+<Force value
+>Forza valore
+
+<Forced Value
+>Valore forzato
+
+<Format
+>Formato
+
+<Found new version of libraries:\n%s\nDo you want to update them ?
+>Nuova versione delle librerie:\n%s\nVuoi aggiornarle?
+
+<Fourth
+>Quarto
+
+<Free
+>Libero
+
+<Free database space: % 5Xh   (% 4d KByte)\n\n
+>Spazio database libero: % 5Xh   (% 4d KByte)\n\n
+
+<Free space
+>Spazio libero
+
+<Friday
+>Venerdì
+
+<From
+>Da
+
+<Fuchsia
+>Fucsia
+
+<Function
+>Funzione
+
+<Function &Block
+>&Blocco funzionale
+
+<Function block &properties
+>Proprietà blocco funzionale
+
+<Function block instance
+>Proprietà istanza blocco 
+
+<Function block properties
+>Proprietà blocco funzionale
+
+<Function blocks
+>Blocchi funzionali
+
+<Function Blocks
+>Blocchi funzionali
+
+<Function properties
+>Proprietà funzione
+
+<Function result
+>Risultato funzione
+
+<Functions
+>Funzioni
+
+<General
+>Generale
+
+<General properties of the graph\nGraph properties
+>Proprietà generali del grafico\nProprietà grafico
+
+<Generate listing file
+>Generazione file listato
+
+<Generate redistributable source module
+>Generazione modulo di codice redistribuibile
+
+<Generate redistributable source module\nGenerate redistributable source module
+>Genera modulo sorgente redistribuibile\n>Genera modulo sorgente redistribuibile
+
+<Generated application image file: \n
+>File immagine generato: \n
+
+<Generating constants\n
+>Generazione costanti\n
+
+<Generating database ..
+>Generazione database ..
+
+<Generating function %s\n
+>Generazione funzione %s\n
+
+<Generating function block %s\n
+>Generazione blocco funzionale %s\n
+
+<Generating parameters file %s ..
+>Generazione file parametri %s ..
+
+<Generating parameters source file %s ..
+>Generazione sorgente file parametri %s ..
+
+<Generating program %s\n
+>Generazione programma %s\n
+
+<Generating source code module %s\n
+>Generazione modulo codice sorgente %s\n
+
+<Generating unresolved\n
+>Generazione irrisolti\n
+
+<Get password
+>Impostazione password
+
+<Global variables
+>Variabili globali
+
+<Go to line
+>Vai alla linea
+
+<Go To Line
+>Vai alla linea
+
+<Go to the next page\nNext Page
+>Vai alla prossima pagina\nProssima pagina
+
+<Go to the previous page\nPrevious Page
+>Vai alla pagina precedente\nPagina precedente
+
+<Goes to line in the source\nGo to line
+>Vai alla linea nel sorgente\nVai alla linea
+
+<Gold
+>Oro
+
+<Graph Objects
+>Oggetti grafici
+
+<Graphic debugger installed: cannot add any other debug windows
+>Debug grafico installato: impossibile aggiungere altre finestre di debug
+
+<Graphic Editor
+>Editor grafico
+
+<Graphic trace
+>Tracciato grafico
+
+<Graphic trace installed: cannot add any other debug windows
+>Tracciato grafico installato: impossibile aggiungere altra finestre di debug
+
+<Gray
+>Grigio
+
+<Gray-25%
+>Grigio-25%
+
+<Gray-40%
+>Grigio-40%
+
+<Gray-50%
+>Grigio-50%
+
+<Gray-80%
+>Grigio-80%
+
+<Green
+>Verde
+
+<Grid
+>Griglia
+
+<GRID
+>
+
+<Group
+>Gruppo
+
+<Group name
+>Nome gruppo
+
+<h
+>
+
+<HALTED
+>BLOCCATO
+
+<Header/Footer
+>Intestazione/Pié di pagina
+
+<Headers and Footers
+>Intestazioni e pié di pagina
+
+<Help
+>Aiuto
+
+<Hex
+>Esa
+
+<HF
+>
+
+<Hidden
+>Nascosto
+
+<Hide
+>Nascondi
+
+<Hide &Details
+>Nascondi &dettagli
+
+<Horizontal scale
+>Scala orizzontale
+
+<hour(s)
+>ora/e
+
+<http://www.axelsw.it
+>
+
+<I/O block free indexes
+>Indici liberi blocco I/O
+
+<I/O data block
+>Blocco dati I/O
+
+<ID
+>
+
+<If you would like to purchase LogicLab please contact Axel :
+>Se intendi acquistare LogicLab, contatta Axel:
+
+<IL
+>
+
+<Illegal keyword: '%s' at line %d
+>Parola non ammessa: '%s' alla linea %d
+
+<Illegal size of variable
+>Dimensione di variabile non ammessa
+
+<Image &and Text
+>Immagine e testo
+
+<Image target file set to: %s\n
+>File immagine impostato a: %s\n
+
+<Import from a file.
+>Importa da un file.
+
+<Import from...
+>Importa da...
+
+<Import macro from external library\nImport from library
+>Importa macro da libreria esterne\nImporta da libreria
+
+<Import object
+>Importa oggetto
+
+<Import PLC object from external library\nImport from library
+>Importa oggetto PLC dal libreria esterna\nImporta da libreria
+
+<Import PLC object from library...
+>Importa oggetto PLC da libreria...
+
+<Import project from target
+>Importa progetto dal sistema
+
+<Import sources from target
+>Importa sorgenti dal sistema
+
+<Important
+>Importante
+
+<Imports all records from a parameter file\nParameter file import
+>Importa tutti i record da un file parametri\nImporta file parametri
+
+<Impossible to decrypt POU %s
+>Impossibile decrittare la POU %s
+
+<impredictable result
+>risultato imprevisto
+
+<Include
+>Includi
+
+<Include file
+>Includi file
+
+<Include file already exist in the project\nOverwrite the existing file ?
+>File incluso esiste già nel progetto\nSovrascrivi il file esistente?
+
+<Increase magnification of preview page\nZoom In
+>Aumenta ingrandimento pagina di anteprima\nZoom +
+
+<Increase pins number of the selected object\nInc pins
+>Incrementa numero connettori dell'oggetto selezionato\nIncrementa connettori
+
+<Increment of the horizontal zoom\nHorizontal zoom +
+>Incrementa ingrandimento orizzontale\nZoom + orizzontale
+
+<Increment of the vertical zoom of the selected track\nSelected track's vertical zoom +
+>Incrementa ingrandimento veriticale della traccia selezioanta\nZoom + verticale traccia selezionata
+
+<Increment pins\t+
+>Incrementa connettori\t+
+
+<Increment pins\tCtrl + '+'
+>Incrementa connettori\nContr+ '+'
+
+<Increment space before selected transition's rightmost pin\nAdd space before rightmost pin
+>Incrementa spazio prima del connettore più a destra della transizione\nIncrementa spazio prima del connettore a destra
+
+<Increment the number of pins of selected convergent transition\nAdd pin to convergent transition
+>Incrementa numero di connettori della transizione convergente selezionata\nAggiungi connettori alla transizione convergente
+
+<Increment the number of pins of selected divergent transition\nAdd pin to divergent transition
+>Incrementa numero di connettori della transizione divergente\nAggiungi connettori alla transizione divergente
+
+<Increment the number of pins of selected simultaneous convergent transition\nAdd pin to simultaneous convergent transition
+>Incrementa numero di connettori della transizione convergente simultanea\nAggiungi connettori alla transizione convergente simultanea
+
+<Increment the number of pins of selected simultaneous divergent transition\nAdd pin to simultaneous divergent transition
+>Incrementa numero di connettori della transizione divergente simultanea selezionata\nAggiungi connettore alla transizione divergente simultanea
+
+<Indent
+>Rientro
+
+<Indentation
+>Rientro
+
+<Index
+>Indice
+
+<Indigo
+>
+
+<Init value
+>Valore iniziale
+
+<Init values
+>Valori iniziali
+
+<Init. Value
+>Valore iniziale
+
+<Init. Value\t\t: %s\r\n
+>Valore iniziale\t\t: %s\r\n
+
+<Initial array values:\r\n
+>Valori iniziali array:\r\n
+
+<Initialization exceeding string length
+>L'inizializzazione eccede la lunghezza della stringa
+
+<Inout vars num\t: %d\r\n
+>Num var ingresso-uscita : %d\r\n
+
+<Input
+>Ingresso
+
+<Input variables
+>Variabili ingresso
+
+<Input vars num\t: %d\r\n
+>Num var ingresso\t: %d\r\n
+
+<Input/output variables
+>Variabili ingresso/uscita
+
+<Insert a coil\nCoil(Shift+F4)
+>Inserisci bobina\nBobina (Maiusc+F4)
+
+<Insert a Comment statement\nComment
+>Inserisci un commento\nCommento
+
+<Insert a jump statment\nJump
+>Inserisci istruzione di salto\nSalto
+
+<Insert a new block on network\nNew block
+>Inserisci nuovo blocco nella rete\nNuovo blocco
+
+<Insert a new FBD block\nNew block
+>Inserisci un nuovo blocco FBD\nNuovo blocco
+
+<Insert a new record\nInsert record
+>Inserisci un nuovo record\nInserisci record
+
+<Insert a new Structure
+>Inserisci una nuova struttura
+
+<Insert a new variable record\nInsert var
+>Inserisci una nuova variabile\nInserisci variabile
+
+<Insert a Return statement\nReturn
+>Inserisci istruzione di ritorno\nRitorno
+
+<Insert all data before transfer the license
+>Inserisci tutti i dati prima di trasferire la licenza
+
+<Parallel insert LD object at the selected object\nInsert parallel (Shift+F11)
+>Inserisci un oggetto LD in parallelo all'oggetto selezionato\nInserisci parallelo (Maiusc+F11)
+
+<Series insert an LD object at the selected object\nInsert series (Shift+F12)
+>Inserisci un oggetto LD in serie all'oggetto selezionato\nInserisci serie (Maiusc+F11)
+
+<Insert Clipboard contents\nPaste
+>Inserisci contenuto memoria\nIncolla
+
+<Insert close contact\nClose contact(Shift+F3)
+>Inserisci contatto chiuso\nContatto chiuso (Maiusc+F3)
+
+<Insert negatet contact\nNeg Contact
+>Inserimento contatto negato\nContatto negato
+
+<Insert negated coil\nNegated coil
+>Inserimento bobina negata\nBobina negata
+
+<Insert negated coil\nNegated coil(Shift+F5)
+>Inserimento bobina negata\nBobina negata (Maiusc+F5)
+
+<Insert negative transition-sensing coil\nNegative coil
+>Inserimento bobina fronte di discesa\nBobina fronte di discesa
+
+<Insert network after selection\nInsert after
+>Inserimento rete dopo la selezione\nInserisci dopo
+
+<Insert network at bottom\nInsert bottom
+>Inserisci rete sotto\nInserisci sotto
+
+<Insert network at top\nInsert top
+>Inserisci rete sopra\nInsersci sopra
+
+<Insert network before selection\nInsert before
+>Inserimento rete prima della selezione\nInserisci prima
+
+<Insert new constant\nConstant
+>Inserimento nuova costante\nCostante
+
+<Insert new function block\nFunction block
+>Inserimento nuovo blocco funzionale\nBlocco funzionale
+
+<Insert new function\nFunction
+>Inserimento nuova funzione\nFunzione
+
+<Insert new operator\nOperator
+>Inserimento nuovo operatore\nOperatore
+
+<Insert new Typedef
+>Inserimento nuova Typedef
+
+<Insert new variable\nVariable
+>Inserimento nuova variabile\nVariabile
+
+<Insert only a variables
+>Inserisci solo una variabile
+
+<Insert open contact\nContact(Shift+F2)
+>Inserimento contatto aperto\nContatto (Maiusc+F2)
+
+<Insert positive contact\nPos contact
+>Inserimento contatto positivo\nContatto positivo
+
+<Insert positive transition-sensing coil\nPositive coil
+>Inserisci bobina fronte di salita\nBobina fronte di salita
+
+<Insert project directory
+>Inserisci cartella progetto
+
+<Insert project name
+>Inserisci nome progetto
+
+<Insert reset coil\nReset coil(Shift+F7)
+>Inserimento bobina reset\nBobina reset (Maiusc+F7)
+
+<Insert s&paces
+>Inserimento s&pazi
+
+<Insert set coil\nSet coil(Shift+F6)
+>Inserimento bobina set\nBobina set (Maiusc+F6)
+
+<Insert source template
+>Inserimento modello sorgente
+
+<Insert/Move mode
+>Modalità inserisci/muovi
+
+<Insert:
+>Inserimento:
+
+<Inserts a new item from a dialog box into the watch window\nInsert new item
+>Inserisce un nuovo elemento dalla finestra di dialogo nella finestra di watch\nInserisci nuovo elemento
+
+<Inserts a new item into one of the debug windows\nInsert new item into debug windows
+>Inserisce un nuovo elemento in una finestra di debug\nInserisci nuovo elemento nelle finestre di debug
+
+<Instance n&ame
+>N&ome istanza
+
+<Instance name
+>Nome istanza
+
+<Instance name not defined
+>Nome istanza non definito
+
+<Instances
+>Istanze
+
+<Instances of : %s
+>Istanze di: %s
+
+<Integer not valid.
+>Intero non valido
+
+<Internal Error
+>Errore interno
+
+<Interval (min)
+>Intervallo (min)
+
+<Invalid activation key format
+>Codice attivazione non valido
+
+<Invalid address value
+>Valore indirizzo non valido
+
+<Invalid character
+>Carattere nono valido
+
+<Invalid constant value
+>Valore costante non valido
+
+<Invalid data block
+>Blocco dati non valido
+
+<Invalid data block subindex
+>Sottoindice blocco dati non valido
+
+<Invalid data type
+>Tipo dato non valido
+
+<Invalid file.\n
+>Fine non valido.\n
+
+<Invalid index for the array
+>Indice non valido per l'array
+
+<Invalid index string (specify %d indexes)
+>Indici non corretti (specificare %d indici)
+
+<Invalid instance name
+>Nome istanza non corretto
+
+<Invalid IPA.
+>IPA non valido
+
+<Invalid macro name.
+>Nome macro non valido
+
+<Invalid name
+>Nome non valido
+
+<Invalid name.
+>Nome non valido.
+
+<Invalid number of subscipts
+>Numero indici non corretto
+
+<Invalid object name
+>Nome oggetto non valido
+
+<Invalid parameter name.
+>Nome parametro non valido
+
+<Invalid password for %s
+>Password non corretta per %s
+
+<Invalid pin number
+>Numero connettori non valido
+
+<invalid PLC project file\n
+>file progetto PLC non valido\n
+
+<Invalid project file.\n
+>File progetto non valido.\n
+
+<Invalid subrange data type.
+>Tipo subrange non valido.
+
+<Invalid type name
+>Tipo di dato non valido
+
+<Invalid Typedef name
+>Typedef non valida
+
+<Invalid value
+>Valore non valido
+
+<Invalid value for subrange limit
+>Valore non valido come limite di subrange
+
+<Invalid variable name.
+>Nome di variabile non valido
+
+<IPA
+>
+
+<IPA already exist.
+>IPA già esistente
+
+<IPA not compatible with TypeTarget.
+>IPA non compatibile con TypeTarget.
+
+<IPA reserved for system parameters.
+>IPA riservato per parametri di sistema.
+
+<IPA value not compatible with parameters range.
+>IPA non compatibile con l'intervallo parametri.
+
+<is avalable on AXEL's WEB site
+>è disponibile sul sito AXEL.
+
+<Italic
+>Corsivo
+
+<jj
+>
+
+<JUMP
+>SALTO
+
+<K&ey assignments:
+>A&ssegnamento tasti:
+
+<Key
+>Tasto
+
+<L&andscape
+>Orizzontale
+
+<L&D bar
+>Barra comandi L&D
+
+<L&D bar\tCtrl+A
+>Barra comandi L&D\tContr+A
+
+<La&bel:
+>Eti&chetta:
+
+<Label
+>Etichetta
+
+<Label list
+>Lista etichette
+
+<Label:
+>Etichetta:
+
+<Language
+>Lingua
+
+<Language file error
+>Errore file lingua
+
+<Language library not found.\nSwitching to default language
+>Libreria linguaggio non trovata.\nPassaggio a linguaggio predefinito
+
+<Languages
+>Linguaggi
+
+<Lar&ge Icons
+>Icone &grandi
+
+<Last
+>Ultimo
+
+<Last program execution is abnormally terminated\nRestore the backup files ?
+>L'ultima esecuzione del programma è terminata in modo non corretto.\nRipristinare i file salvati ?
+
+<Lavender
+>
+
+<LD
+>
+
+<LD object
+>Oggetto LD
+
+<LD Object
+>Oggetto LD
+
+<LD object properties
+>Proprietà oggetto LD
+
+<LD object type
+>Tipo di oggetto LD
+
+<LDCOIL
+>
+
+<LDCONT
+>
+
+<Level
+>Livello
+
+<Li&ve debug mode
+>Modalità debug &interattiva
+
+<Library
+>Libreria
+
+<LIBRARY
+>LIBRERIA
+
+<Library '%s' not exist in next path :\n
+>La libreria '%s' non esiste nella posizione:\n
+
+<Library file :\n%s\nalready exist
+>Il file libreria:\n%s\nesiste già.
+
+<Library file :\n%s\nalready exist. Overwrite?
+>Il file libreria:\n%s\nesiste già. Sovrascriverla?
+
+<Library path
+>Percorso libreria
+
+<LIBRARY1
+>
+
+<Light Blue
+>Blu chiaro
+
+<Light Green
+>verde chiaro
+
+<Light Orange
+>Arancio chiaro
+
+<Light Turquoise
+>Turchese chiaro
+
+<Light Yellow
+>Giallo chiaro
+
+<Lime
+>
+
+<Line
+>Linea
+
+<Line &Number
+>&Numero di linea
+
+<Link
+>Collegamento
+
+<List1
+>
+
+<List2
+>
+
+<LLManual.pdf
+>
+
+<Load external library\nLoad library
+>Caricamento libreria esterna.\nCaricamento libreria
+
+<Load parameters value from a file\nLoad par values
+>Caricamento parametri da file\nCaricamento valore parametri
+
+<Load parameters value from parameters file\nLoad par values
+>Caricamento valore parametri da file\nCaricamento valore parametri
+
+<Load/Unload library to project\nLibrary manager
+>Carica/scarica libreria dal progetto\nGestore librerie
+
+<Loading image file %s ..
+>Caricamento file immagine %s ..
+
+<Loading memory image from target ..
+>Caricamento immagine memoria dal target ..
+
+<Loading project ...
+>Caricamento progetto ...
+
+<Loads the watch list with the items in the list\nLoad watch list
+>Carica la lista di watch con gli elementi della lista\nCarica lista watch
+
+<Local variables
+>Variabili locali
+
+<Location
+>Posizione
+
+<Location:
+>Posizione:
+
+<LogicLab
+>
+
+<LogicLab is correctly registered and activated.
+>LogicLab è correttamente registrato ed attivato.
+
+<LogicLab is not correctly registered
+>LogicLab non è correttamente registrato
+
+<LogicLab update
+>Aggiornamento LogicLab
+
+<LogicLab3
+>
+
+<LogicLabFW\n\nLogicLabFW\nLogicLabFW Files (*.PCN)\n.PCN\nLogicLabFW.Document\nLogicLabFW.Document
+>LogicLabFW\n\nLogicLabFW\nFile LogicLabFW (*.PCN)\n.PCN\nLogicLabFW.Document\nLogicLabFW.Document
+
+<Macro
+>Macro
+
+<Macros
+>Macro
+
+<MACROS
+>
+
+<Main toolbar
+>Barra comandi principale
+
+<Major n°
+>Numero principale
+
+<Manage the breakpoint list\nBreakpoint list
+>Gestione lista punti di interruzione\nLista punti interruzione
+
+<Manage the triggers list (Ctrl+I)\nTriggers list (Ctrl+I)
+>Gestione lista dei trigger (Contr+I)\nLista trigger (Contr+I)
+
+<Mapped variable declaration
+>Dichiarazione variabili mappate
+
+<Mapped variables
+>Variabili mappate
+
+<Margins
+>Margini
+
+<Margins (inches)
+>Margini (pollici)
+
+<Margins (millimeters)
+>Margini (millimetri)
+
+<Maroon
+>Marrone
+
+<Match &case
+>&Maiuscole/minuscole
+
+<Match &whole word only
+>Parola &intera
+
+<Match case
+>Maiuscole/minuscole
+
+<Match whole word only
+>Solo parole intere
+
+<Max
+>
+
+<Max number of debug windows
+>Massimo numero di finestre di debug
+
+<Max. Value
+>Valore massimo
+
+<Max. Value\t: %s\r\n
+>Valore massimo\t: %s\r\n
+
+<Maximize
+>Massimizza
+
+<Memory full\nCannot open the graphic trigger window
+>Memoria piena\nImpossibile aprire finestra trigger grafico
+
+<Menu
+>Menù
+
+<Menu already exist.
+>Il menù esiste già
+
+<Menu is linked to parameter or variable.
+>Il menù è collegato ad un parametro o variabile
+
+<Menu string
+>Menù stringhe
+
+<Menus
+>Menù
+
+<Mi&nimize the Ribbon
+>
+
+<min
+>
+
+<Min
+>
+
+<Min. Value
+>Valore minimo
+
+<Min. Value\t: %s\r\n
+>Valore minimo\t: %s\r\n
+
+<Minimi&ze
+>Minimi&zza
+
+<Minor n°
+>Numero secondario
+
+<minute(s)
+>minuto/i
+
+<Modified
+>Modificato
+
+<Modify
+>Modifica
+
+<Modify the instance name of the selected block\nBlock name
+>Modifica il nome dell'istanza del blocco selezionato\nNome del blocco
+
+<Modify the label of the selected network\nLabel
+>Modifica etichetta della rete selezionata\nEtichetta
+
+<Modify the variables group list\nGroup list
+>Modifica la lista dei gruppi di variabili\nLista gruppi
+
+<Module
+>Modulo
+
+<module
+>Modulo
+
+<Monday
+>Lunedì
+
+<Month
+>Mese
+
+<month(s)
+>mese/i
+
+<More Colors...
+>Altri colori...
+
+<Move
+>Muovi
+
+<Move &down
+>Muovi in &basso
+
+<Move &up
+>Muovi in &alto
+
+<Move down
+>Muovi in basso
+
+<Move Down
+>Muovi in alto
+
+<Move up
+>Muovi in alto
+
+<Move Up
+>Muovi in alto
+
+<ms
+>
+
+<ms/div
+>
+
+<ms/div : %.02f
+>
+
+<Multiple operations
+>Operazioni multiple
+
+<Must Attend
+>
+
+<N&ew project
+>&Nuovo progetto
+
+<N&o end date
+>
+
+<Name
+>Nome
+
+<Name already exist.
+>Il nome esiste già.
+
+<Navigation Pane
+>Pannello navigazione
+
+<Navy
+>
+
+<Needs Preparation
+>
+
+<Neg
+>
+
+<Negate
+>Negazione
+
+<Negated coil\tShift+F5
+>Bobina negata\Maiusc+F5
+
+<Negative
+>Negativo
+
+<Negative contact
+>Contatto negativo
+
+<Network
+>Rete
+
+<Network grid color
+>Colore griglia rete
+
+<Network label
+>Etichetta rete
+
+<New
+>Nuovo
+
+<New &action
+>Nuova &azione
+
+<New &Action
+>Nuova &azione
+
+<New &automatic variable
+>Nuova variabile &automatica
+
+<New &constant
+>Nuova &costante
+
+<New &function
+>Nuova &funzione
+
+<New &Mapped variable
+>Nuova variabile &mappata
+
+<New &program
+>Nuovo &programma
+
+<New &retain variable
+>Nuova variabile &ritentiva
+
+<New &Transition
+>Nuova &transizione
+
+<New &transition code
+>Nuovo codice &transizione
+
+<New &variable
+>Nuova &variabile
+
+<New Enumeration
+>Nuovo enumerativo
+
+<New function
+>Nuova funzione
+
+<New function &block
+>Nuovo &blocco funzionale
+
+<New function block
+>Nuovo blocco funzionale
+
+<New instance name is already in use.\n\nPlease enter another name.
+>Il nuovo nome di istanza esiste già.\Indicare un altro nome.
+
+<New macro
+>Nuova macro
+
+<New Menu
+>Nuovo menù
+
+<New network label
+>Nuova etichetta di rete
+
+<New object name
+>Nuovo nome oggetto
+
+<New POU
+>Nuova POU
+
+<New program
+>Nuovo programma
+
+<New project
+>Nuovo progetto
+
+<New project object
+>Nuovo oggetto di progetto
+
+<New Structure
+>Nuova struttura
+
+<New Subrange
+>Nuovo subrange
+
+<New Toolbar
+>Nuova barra di comando
+
+<New Typedef
+>Nuova Typedef
+
+<New TypeDef
+>Nuova Typedef
+
+<New variable
+>Nuova variabile
+
+<Next Appointment
+>Prossimo appuntamento
+
+<Next\tF2
+>Successivo\tF2
+
+<No array selected. \nPlease select one.
+>Array non selezionato.\nSelezionare un array
+
+<NO CODE
+>NO CODICE
+
+<No command defined
+>Comando non definito
+
+<No connection available for uploading sources.
+>Connessione on disponibile per scaricare i sorgenti.
+
+<No Fill\nNo Fill
+>Nessun riempimento\nNessun riempimento
+
+<No menu string defined
+>Stringa menù non definita
+
+<No name
+>Nessun nome
+
+<No PLC application running on the target.\nProceed anyway ?
+>Nessuna applicazione in esecuzione sul target.\nProcedere comunque?
+
+<No symbols available for the project running on the target.\n\nProject must be compiled and/or downloaded.
+>Simboli non disponibili per il progetto in esecuzione sul target.\n\nIl progetto deve essere compilato e/o scaricato.
+
+<No target definition file for simulator (TGSX) found.\nUnable to run simulator
+>File di definizione del simulatore (TGSX) non trovato.\nImpossibile avviare il simulatore
+
+<No targets defined.
+>Target non definito.
+
+<None
+>Nessuno
+
+<Normal
+>Normale
+
+<Normal &Text:
+>&Testo normale:
+
+<Not a variable - could not insert into debug window
+>Non variabile, impossibile aggiungere alla finestra di debug
+
+<NOT CONNECTED
+>NON CONNESSO
+
+<not found.\n
+>non trovato.\n
+
+<NOT RUNNING
+>NO ESECUZIONE
+
+<Note
+>
+
+<Note : %s
+>
+
+<Note:
+>
+
+<Nothing selected, can not insert in parallel
+>Nessuna selezione, impossibile inserire in parallelo
+
+<NUM
+>
+
+<Number just used. Select another one.
+>Numero già usato. Selezionarne un altro
+
+<Number of decimal
+>Numero decimali
+
+<Number of displayed array elements\nwithout alert message
+>Numero di elementi array visualizzato\nsenza messaggio di avviso
+
+<O&bject properties
+>Proprietà o&ggetto
+
+<Object &Browser
+>&Sfoglia oggetti
+
+<Object &properties
+>Proprietà oggetto
+
+<Object &properties\tAlt+Enter
+>Proprietà oggetto\tAlt+Invio
+
+<Object browser
+>Sfoglia oggetti
+
+<Object color
+>Colore oggetto
+
+<Object must be compiled before export in encrypted format
+>L'oggetto deve essere compilato prima dell'esportazione in formato criptato
+
+<Object name
+>Nome oggetto
+
+<Object name already exist
+>Il nome di oggetto esiste già
+
+<object not found
+>oggetto non trovato
+
+<Object properties
+>Proprietà oggetto
+
+<Object type
+>Tipo oggetto
+
+<Objects
+>Oggetti
+
+<Objects filter
+>Filtro oggetti
+
+<Objects instances
+>Istanze oggetti
+
+<occurrences
+>ricorrenze
+
+<Octal
+>Ottale
+
+<of
+>di
+
+<of every
+>di ogni
+
+<of project
+>di progetto
+
+<Offs
+>
+
+<Offset
+>
+
+<OK
+>
+
+<Old version of symbols table.\n\nRicompile the project to insert the trigger
+>Formato obsoleto tabella simboli.\n\nRicompilare progetto per inserire il trigger
+
+<OLE initialization failed.  Make sure that the OLE libraries are the correct version.
+>inizializzazione OLE fallita. Verificare versione libreria OLE
+
+<Olive
+>
+
+<Olive Green
+>
+
+<On line registration
+>Registrazione in linea
+
+<One Page
+>Una pagina
+
+<Op&tions...
+>Op&zioni...
+
+<Open &project
+>Apri &progetto
+
+<Open an existing document\nOpen
+>Apri un documento esistente\nApri
+
+<Open another window for the active document\nNew Window
+>Apri un'altra finestra per il documento\nNuova finestra
+
+<Open macro source\nOpen source
+>Apri sorgente macro\nApri sorgente
+
+<Open Recurring item\nOpen this &occurrence.\nOpen the &series.\n"%s" is a recurring appointment. Do you want to open only this occurrence or the series?
+>
+
+<Open Schema File
+>Apri file schema
+
+<Open this document
+>Apri questo documento
+
+<Opens an existing PLC project in read only mode\nView project
+>Apri progetto PLC in modalità sola lettura\nVista progetto
+
+<Opens an existing PLC project\nOpen project
+>Apri un progetto esistente\nApri progetto
+
+<Operation terminated with success
+>Operazione conclusa positivamente
+
+<Operator and standard blocks
+>Operatori e blocchi base
+
+<Operators
+>Operatori
+
+<Options
+>Opzioni
+
+<Orange
+>Arancione
+
+<Orientation
+>Orientamento
+
+<Oscilloscope
+>Oscilloscopio
+
+<Oscilloscope settings
+>Impostazione oscilloscopio
+
+<Oscilloscope XML files (*.OSCX)|*.OSCX|Oscilloscope files (*.OSC)|*.OSC|All files (*.*)|*.*||
+>File XML oscilloscopio (*.OSCX)|*.OSCX|File oscilloscopio (*.OSC)|*.OSC|Tutti i file (*.*)|*.*||
+
+<Other
+>Altro
+
+<Other filters
+>Altri filtri
+
+<Other...
+>Altro...
+
+<Out of Office
+>
+
+<Output
+>Output
+
+<OUTPUT
+>OUTPUT
+
+<Output variables
+>Variabili di uscita
+
+<Output vars num\t: %d\r\n
+>Num var uscita\t: %d\r\n
+
+<Output window
+>Finestra di output
+
+<OUTPUTBAR
+>
+
+<overdue
+>
+
+<Overwrite Caret
+>
+
+<Overwrite existing object
+>Sovrascrivi oggetto esistente
+
+<OVR
+>SOVR
+
+<P&aste object
+>In&colla oggetto
+
+<P&ortrait
+>Ver&ticale
+
+<Page %i
+>Pagina %i
+
+<Page %i of %i
+>pagina %i di %i
+
+<Page %u\nPages %u-%u
+>Pagina %u\nPagine %u-%u
+
+<Page setup
+>Impostazione pagina
+
+<Page Setup
+>Impostazione pagina
+
+<Page Width
+>Larghezza pagina
+
+<Page:%d of %d
+>Pagina: %d di %d
+
+<Pale Blue
+>
+
+<Paper
+>Carta
+
+<Par name
+>Nome parametro
+
+<Parameter
+>Parametro
+
+<Parameter file imported.
+>File parametri importato
+
+<Parameters
+>Parametri
+
+<Parameters file set to: %s\n
+>File parametri impostato a: %s\n
+
+<Parameters value updated.
+>valore parametri aggiornato.
+
+<Params
+>Parametri
+
+<Params\t\t: %d\r\n
+>Parametri\t\t: %d\r\n
+
+<Parent
+>Padre
+
+<Parsing error: cannot add a new variable
+>Errore elaborazione: impossibile aggiungere variabile
+
+<Parsing error: cannot apply changes to debug window
+>Errore elaborazione: impossibile applicare modifiche alla finestra di debug
+
+<Parsing error: cannot update array of interrupts
+>Errore elaborazione: impossibile aggiornare array delle interruzioni
+
+<Password
+>
+
+<Password is linked to a menu.
+>Password collegata ad un menu.
+
+<Password:
+>
+
+<Paste
+>Incolla
+
+<Paste the object in memory\nPaste object
+>Incolla l'oggetto in memoria\nIncolla oggetto
+
+<Pauses the current acquisition\nPause acquisition
+>Sospende l'acquisizione corrente\nSospendi acquisizione
+
+<Period
+>Periodo
+
+<period [ms]
+>periodo [ms]
+
+<Period\t: %i [ms]\r\n
+>Periodo\t: %i [ms]\r\n
+
+<Personal
+>Personale
+
+<Personalized Menus and Toolbars
+>Barre comandi e menù personalizzati
+
+<Phone : +39 0332 949600
+>Tel.  : +39 0332 949600
+
+<Phone Call
+>Chiamata telefonica
+
+<Phone registration
+>Registrazione telefonica
+
+<Picture
+>Immagine
+
+<Pin
+>Connettore
+
+<Pin number already assigned
+>Numero connettore già assegnato
+
+<Pink
+>Rosa
+
+<PLC &run-time status
+>Stato esecuzione PLC
+
+<PLC application on the target is currently halted.\nProceed anyway ?
+>Applicazione del target PLC arrestata.\nProcedere comunque?
+
+<PLC application on the target is currently halted.\nProject could be different from the PLC application on the target device.\nProceed anyway ?
+>Applicazione del target PLC arrestata.\nIl progetto può essere diverso dall'applicazione PLC sul target.\nProcedere comunque?
+
+<PLC flash address is not available.
+>Indirizzo flash PLC non disponibile.
+
+<PLC Library files (*%s)|*%s|All Files (*.*)|*.*||
+>File libreria PLC (*%s)|*%s|Tutti i file (*.*)|*.*||
+
+<PLC Library files (*%s)|*%s|PLC Source files (*%s)|*%s|PLC Single Project files (*%s)|*%s|All Files (*.*)|*.*||
+>File libreria PLC (*%s)|*%s|Sorgenti PLC (*%s)|*%s|File progetto (*%s)|*%s|Tutti i file (*.*)|*.*||
+
+<PLC Library files (*.pll)|*.pll|All Files (*.*)|*.*||
+>File libreria PLC (*.pll)|*.pll|Tutti i file (*.*)|*.*||
+
+<PLC multiple project files (*%s)|*%s|
+>Progetti PLC multipli (*%s)|*%s|
+
+<PLC Object '%s' already exists.\n\nHow do you want to proceed?
+>Oggetto PLC '%s' esiste già.\n\nCome si vuole procedere?
+
+<PLC Object '%s' already exists.\nOverwrite ?
+>Oggetto PLC '%s' esiste già.\n\nSovrascriverlo?
+
+<PLC Object &properties
+>Proprietà oggetto PLC
+
+<PLC Object &properties\tAlt+Enter
+>Proprietà oggetto PLC\tAlt+Invio
+
+<PLC old project files (*%s)|*%s|
+>File progetto PLC obsoleti (*%s)|*%s|
+
+<PLC project files (*%s)|*%s|
+>File progetto PLC (*%s)|*%s|
+
+<PLC project files (*%s;*%s)|*%s;*%s|
+>File progetto PLC (*%s;*%s)|*%s;*%s|
+
+<PLC Redistributable source module files (*%s;*%s)|*%s;*%s|
+>Modulo sorgente PLC redistribuibile (*%s;*%s)|*%s;*%s|
+
+<PLC run-time status
+>Stato esecuzione PLC
+
+<PLC single project files (*%s)|*%s|
+>File progetto PLC (*%s)|*%s|
+
+<PLC will be reset on the system, continue ?
+>Il PLC sul sistema sarà riavviato, continuare?
+
+<Please enter a value between %s and %s.
+>Inserire un valore tra %s e %s.
+
+<Please enter the PLC flash address.
+>Indicare l'indirizzo della flash PLC.
+
+<Please fill correctly the input data fields.
+>Completare correttamente tutti i campi dato.
+
+<Please switch OFF and ON the target
+>Spegnere e riaccendere il target
+
+<Plum
+>
+
+<Polling period between more variables (ms)
+>Periodo aggiornamento tra più variabili (ms)
+
+<Polling period for debug functions (ms)
+>Periodo di aggiornamento per le funzioni di debug (ms)
+
+<Pos.
+>
+
+<Position already occupied by another trigger
+>Posizione già occupata da un altro trigger
+
+<Position of Structure variables
+>Posizione di variabili struttura
+
+<Positive
+>Positivo
+
+<Positive contact
+>Contatto positivo
+
+<Post-build commands:
+>Comandi post-compilazione:
+
+<Post-download commands:
+>Comandi post-scaricamento:
+
+<POU
+>
+
+<POU name is undefined
+>Nome POU non definito
+
+<Pr&int Project
+>Stam&pa progetto
+
+<Pre&v Page
+>Pagina pr&ec
+
+<Preparing for download ..
+>Preparazione per lo scaricamento .. 
+
+<Preparing for source code download ..
+>Preparazione codice sorgente per lo scaricamento .. 
+
+<Preprocessing %s
+>Elaborazione %s 
+
+<Preprocessing file %s ..
+>Elaborazione file %s ..
+
+<Preprocessing user defined data ..
+>Elaborazione dati utente .. 
+
+<Press &new shortcut key:
+>Premi nuova scorciatoia tastiera:
+
+<Press to start the graphic trace\nStart graphic trace
+>Premere per avviare per acquisizione grafica\nAvvio acquisizione grafica
+
+<Preview
+>Anteprima
+
+<Previous Appointment
+>
+
+<Print date header
+>Stampa intestazione data
+
+<Print debug informations
+>Stampa informazioni di debug
+
+<Print from:
+>Stampa da:
+
+<Print in black and white
+>Stampa bianco e nero
+
+<Print option
+>Opzioni stampa
+
+<Print preview
+>Anteprima di stampa
+
+<Print range
+>Intervallo di stampa
+
+<Print setup
+>Impostazioni di stampa
+
+<Print the active document\nPrint
+>Stampa il documento attivo\nStampa
+
+<Print the current view of the graph with tracks info\nPrint graph
+>Stampa la vista corrente del grafico con informazioni delle tracce\nStampa grafico
+
+<Print the previewed item\nPrint
+>Stampa l'elemento in anteprima\nStampa
+
+<Print to:
+>Stampa da:
+
+<Printer S&etup
+>Impostazione &stampante:
+
+<Printing POU
+>Stampa POU
+
+<Priority
+>Priorità
+
+<Priority\t: %i\r\n
+>Priorità\t: %i\r\n
+
+<PRJ_ACTION
+>
+
+<PRJ_AUXOBJECT
+>
+
+<PRJ_FB
+>
+
+<PRJ_FB_FOLD
+>
+
+<PRJ_FBSFC
+>
+
+<PRJ_FUN
+>
+
+<PRJ_FUN_FOLD
+>
+
+<PRJ_POUVAR
+>
+
+<PRJ_POUVAR_FOLD
+>
+
+<PRJ_PROG
+>
+
+<PRJ_PROG_FOLD
+>
+
+<PRJ_PROGSFC
+>
+
+<PRJ_SFC_ACT
+>
+
+<PRJ_SFC_ACTSFC
+>
+
+<PRJ_SFC_TRS
+>
+
+<PRJ_TASK_ADDPROG
+>
+
+<PRJ_TASK_EDITPROG
+>
+
+<PRJ_TASKS
+>
+
+<PRJ_TRANS
+>
+
+<PRJ_VAR
+>
+
+<PRJ_VAR_AUTO
+>
+
+<PRJ_VAR_CONST
+>
+
+<PRJ_VAR_FOLD
+>
+
+<PRJ_VAR_IO
+>
+
+<PRJ_VAR_RETAIN
+>
+
+<PRJTREE
+>
+
+<Pro&ject bar
+>Barra comandi pro&getto
+
+<Pro&ject bar\tCtrl+J
+>Barra comandi pro&getto\tContr+J
+
+<Procedure completed\nPLC program erased
+>Procedura completata\nprogramma PLC cancellato
+
+<Processing source code in the target ..
+>Elaborazione codice sorgente nel target ..
+
+<Processor setting error: current project '%s', target device '%s'.\n
+>Errore impostazione processore: progetto corrente '%s', device target '%s'.\n
+
+<Program
+>Programma
+
+<Program &properties
+>&Proprietà programma
+
+<Program activation key
+>Chiave di attivazione programma
+
+<Program name
+>Nome programma
+
+<Program options
+>Opzioni programma
+
+<Program properties
+>Proprietà programma
+
+<Program tool not found.
+>Programma non trovato.
+
+<Programs
+>Programmi
+
+<Progress1
+>
+
+<Project
+>Progetto
+
+<Project : %s
+>Progetto : %s
+
+<Project file %s not found.\n
+>File progetto %s non trovato.\n
+
+<Project ID is different from Target ID.\n Proceed anyway ?
+>ID progetto diverso dall'ID del Target\nProcedere comunque ?
+
+<Project info
+>Info progetto
+
+<Project is different from the PLC application currently executing on the target device.\nProceed anyway ?
+>Il progetto è diverso dall'applicazione in esecuzione sul target device.\nProcedere comunque ?
+
+<Project is not compiled\nDo you want to compile ?
+>Il progetto non è compilato.\nVuoi compilare ora ?
+
+<Project library list
+>Lista librerie del progetto
+
+<Project must be compiled in order to perform this operation
+>Il progetto deve essere compilato per eseguire questa operazione
+
+<Project options
+>Opzioni progetto
+
+<Project will be opened in READ ONLY mode because some of its source files are read-only
+>Il progetto sarà aperto in modo SOLA LETTURA poiché alcuni dei suoi sorgenti sono in sola lettura
+
+<Project:
+>Progetto:
+
+<Properties
+>Proprietà
+
+<Protect with password
+>Proteggi con password
+
+<Purple
+>Viola
+
+<Quick Access
+>Accesso rapido
+
+<Quit the application; prompts to save documents\nExit
+>Chiude il programma; richiede di salvare i documenti\nUscita
+
+<R&emove all
+>R&imuovi tutto
+
+<R&emove pin from convergent transition
+>R&imuovi connettore da transizione convergente
+
+<R&eset...
+>Ri&avvio...
+
+<R/W Events
+>Eventi lettura/scrittura
+
+<R__NOT CONNECTED__R
+>
+
+<R_READ ONLY_R
+>
+
+<Random
+>Casuale
+
+<Range of recurrence
+>Insieme delle ricorrenze
+
+<RClickHeader
+>
+
+<RClickHexEdit
+>
+
+<RClickOutlookBar
+>
+
+<Re-start the current acquisition\nRe-start acquisition
+>Riavvia acquisizione corrente\nRiavvia acquisizione
+
+<Re&cur every
+>Ric&orri ogni
+
+<Re&move pin from simultaneous divergent transition
+>Rim&uovi connettore dalla transizione divergente simultanea
+
+<Re&place with:
+>Sos&tituisci con:
+
+<Re&set
+>Ri&avvio
+
+<Re&set All
+>Ri&avvia tutti
+
+<Re&set Button Image
+>Immagine bottone riavvio
+
+<READ ONLY
+>SOLA LETTURA
+
+<Read only parameters
+>Parametri sola lettura
+
+<Reading symbol file %s ..
+>Lettura file simboli %s ..
+
+<Reading target symbol file %s ..
+>Lettura file simboli sistema %s ..
+
+<Reading trace data
+>Lettura dati acquisizione
+
+<ready
+>pronto
+
+<Ready
+>Pronto
+
+<Real rate
+>Periodo reale
+
+<REC
+>
+
+<Rec&urrence...
+>Rico&rrenza...
+
+<Recent File
+>File recenti
+
+<Recompile the entire project\nRecompile all
+>Ricompila l'intero progetto\nRicompila tutto
+
+<Records generated:   % 5d\n
+>Record generati:     % 5d\n
+
+<Recurrence pattern
+>Modello ricorrenze
+
+<Red
+>Rosso
+
+<Redo the previously undone action\nRedo
+>Ripeti precedente azione\nRipeti
+
+<Reduce the window to an icon
+>Riduzione finestra a icona
+
+<Refresh current target
+>Aggiorna sistema corrente
+
+<Register
+>Registra
+
+<Register LogicLab license
+>Registra licenza LogicLab
+
+<Register the application
+>Registra l'applicazione
+
+<Regular
+>Normale
+
+<Release : %s
+>Versione: %s
+
+<ReLink
+>
+
+<Rem&ove pin from simultaneous convergent transition
+>Rim&uovi connettore dalla transizione convergente simultanea
+
+<Reminders
+>Promemoria
+
+<Remo&ve space before rightmost pin
+>Rimu&ovi spazio prima del connettore più a destra
+
+<Remove &all
+>Rimuovi &tutto
+
+<Remove all bookmarks in the current editor\nRemove all bookmarks
+>Rimuovi tutti i segnalibri dal documento corrente\nRimuovi segnalibri
+
+<Remove all breakpoints
+>Rimuovi tutti i punti di interruzione
+
+<Remove all triggers in the project (Ctrl+Shift+F9)\nRemove all triggers (Ctrl+Shift+F9)
+>Rimuovi tutti i trigger nel progetto (Contr+Maiusc+F9)\nRimuovi tutti i trigger (Contr+Maiusc+F9)
+
+<Remove from Outlook Bar
+>
+
+<Remove Group
+>Rimuovi gruppo
+
+<Remove the selected object ?
+>Rimuovi l'oggetto selezionato
+
+<Removes all breakpoints\nRemoves all breakpoints
+>Rimuovi tutti i punti di interruzione\nRimuovi tutti i punti di interruzione
+
+<Rename Group
+>Rinomina gruppo
+
+<Rename object as
+>Rinomina oggetto come
+
+<Rename selected PLC object\nRename object
+>Rinomina l'oggetto PLC selezionato\nRinomina oggetto
+
+<Rename Shortcut
+>Rinomina collegamento
+
+<Rename Toolbar
+>Rinomina barra di comando
+
+<Repeat the last action\nRepeat
+>Ripeti ultima azione\nRipeti
+
+<Replace
+>Sostituisci
+
+<Replace &All
+>Sostituisci &tutto
+
+<Replace all
+>Sostituisci tutto
+
+<Replace in
+>Sostituisci in
+
+<Replace specific text with different text\nReplace
+>Sostituisci testo specifico con uno differente\nSostituisci
+
+<Replace With
+>Sostituisci con
+
+<Replace with :
+>Sostituisci con:
+
+<Reserved name
+>Nome riservato
+
+<Reset
+>Riavvia
+
+<Reset coil\tShift+F7
+>Bobina reset\tMaiusc+F7
+
+<Reset PLC program
+>Riavvia programma PLC
+
+<Resources
+>Risorse
+
+<Restore
+>Ripristina
+
+<Restore the window to normal size
+>Ripristina dimensione finestra
+
+<Result
+>Risultato
+
+<Result type\t: %s\r\n
+>Tipo del risultato\t: %s\r\n
+
+<Retain
+>Ritentiva
+
+<Retain variables
+>Variabili ritentive
+
+<Rose
+>Rosa
+
+<Run
+>Esegui
+
+<Run from current position\nRun
+>Esegui dalla posizione corrente\nEsegui
+
+<Run the current trigger\nRun trigger
+>Esegui il trigger corrente\nEsegui trigger
+
+<running
+>esecuzione
+
+<Running post-build commands...
+>Esecuzione comandi post-compilazione...
+
+<Running post-download commands...
+>Esecuzione comandi post-scaricamento
+
+<S&how Quick Access Toolbar below the Ribbon
+>Mo&stra barra acceso rapido
+
+<S&mall Icons
+>Icone &piccole
+
+<S&tart:
+>A&vvio:
+
+<S&tatus Bar
+>Barra di s&tato
+
+<Sa&ve project
+>Sal&va progetto
+
+<Sa&ve watch list
+>Sal&va lista di watch
+
+<Sample Normal / Selected:
+>Campiona normale/selezionato:
+
+<Sample polling rate
+>Periodo di campionamento
+
+<samples
+>campioni
+
+<Samples diff: %d
+>Diff. campioni: %d
+
+<samples/div
+>campioni/div
+
+<samples/div : %.02f
+>campioni/div: %.02f
+
+<Saturday
+>Sabato
+
+<Save as error
+>Errore di salva come
+
+<Save changes of parameters file ?
+>Salvataggio modifiche file parametri?
+
+<Save changes to '%s' ?
+>Salva modifiche a '%s'?
+
+<Save changes to global variables ?
+>Salva modifiche alle variabili globali?
+
+<Save changes to subranges?
+>Salva modifiche ai subranges?
+
+<Save changes to typedefs ?
+>Salva modifiche alle typedefs?
+
+<Save current project ?
+>Salva progetto corrente?
+
+<Save options
+>Opzioni salvataggio
+
+<Save Options
+>Opzioni salvataggio
+
+<Save p&roject As ...
+>Salva p&rogetto come ...
+
+<Save the active document with a new name\nSave As
+>Salva il documento attivo con un nuovo nome\nSalva come
+
+<Save the active object document\nSave object
+>Salva l'oggetto corrente\nSalva oggetto
+
+<Saves the current project with a different name\nSave project as ..
+>Salva il progetto corrente con un nome diverso\nSalva progetto come ..
+
+<Saves the current project\nSave project
+>Salva il progetto corrente\nSalva progetto
+
+<Saves the list of the item in the watch window\nSave watch list
+>Salva la lista degli elementi nella finestra di watch\nSalva la lista di watch
+
+<Saves tracks samples values into text file\nSaves tracks data into file
+>Salva i campioni delle tracce in un file di testo\nSalva i dati delle tracce in un file
+
+<Sc&ript:
+>
+
+<Scalar
+>Scalare
+
+<Scale
+>Scala
+
+<Schedule ID:
+>ID programmazione:
+
+<SCRL
+>
+
+<Scroll Down
+>Scorri in basso
+
+<Scroll Left
+>Scorri a sinistra
+
+<Scroll Right
+>Scorri a destra
+
+<Scroll Up
+>Scorri in alto
+
+<Sea Green
+>
+
+<Search Down
+>Cerca in basso
+
+<Search Up
+>Cerca in alto
+
+<Searching for '%s'\n\n
+>Ricerca di '%s'\n\n
+
+<Second
+>Secondo
+
+<See all the info about this object
+>Vista delle informazioni dell'oggetto
+
+<See the properties
+>Vista delle proprietà
+
+<Select &All
+>Seleziona t&utto
+
+<Select &context menu:
+>Menù di contesto s&elezione:
+
+<Select &Window:
+>Selezione &finestra:
+
+<Select a new target\nTarget
+>Seleziona un nuovo sistema\nSistema
+
+<Select all
+>Seleziona tutto
+
+<Select all object in the selected network\nSelect all
+>Seleziona tutti gli oggetti della rete corrente\nSeleziona tutto
+
+<Select array index(es)
+>Selezione indici array
+
+<Select connection color
+>Selezione colore connessione
+
+<Select Directory:
+>Seleziona cartella:
+
+<Select new project directory
+>Seleziona cartella progetto
+
+<Select none
+>Deseleziona tutto
+
+<Select only a boolean variable
+>Seleziona solo variabili BOOL
+
+<Select project file
+>Seleziona file progetto
+
+<Select target
+>Seleziona sistema
+
+<Select target device:
+>Seleziona sistema:
+
+<Select target file
+>Seleziona file sistema
+
+<Select the entire document\nSelect All
+>Seleziona intero documento\nSeleziona tutto
+
+<Select the program language\n\nYou need to restart the program for the change to take effect
+>Seleziona lingua programma\n\nÈ necessario riavviare il programma 
+
+<Select the target for a new project
+>Sistema per il nuovo progetto
+
+<Select variable instance
+>Selezione istanza variabile
+
+<Select watch list file
+>Seleziona file lista di watch
+
+<Selected columns
+>Colonne selezionate
+
+<Selected Te&xt:
+>T&esto selezionato:
+
+<Selected text color
+>Colore testo selezionato
+
+<Selection &margin
+>Selezione &margine
+
+<Selection color
+>Colore selezione
+
+<Serial number
+>Numero di serie
+
+<Set
+>
+
+<Set coil\tShift+F6
+>Bobina set\tMaiusc+F6
+
+<Set connection mode\nConnection
+>Imposta modalità connessione\nConnessione
+
+<Set Move/Insert mode\nMove/Insert
+>Imposta modalità muovi/inserisci\nMuovi/inserisci
+
+<Set parameters file on Project Settings
+>Imposta file parametri in impostazioni progetto
+
+<Set task period
+>Imposta periodo task
+
+<Set the graphic trace (Shift+F9)\nGraphic trace (Shift+F9)
+>Imposta trigger grafico (Maiusc+F9)\nTrigger grafico (Maiusc+F9)
+
+<Set the trigger for one read\nSet step Trigger
+>Imposta trigger per una lettura\nImposta trigger a passo
+
+<Set Watch mode\nWatch
+>Imposta modalità watch\nWatch
+
+<Set/Remove a breakpoint (F12)\nSet/Remove a breakpoint (F12)
+>Imposta/rimuovi punto di interruzione (F12)\nImposta/rimuovi punto di interruzione (F12)
+
+<Set/Remove trigger (F9)\nSet/Remove trigger(F9)
+>Imposta/rimuovi trigger (F9)\nImposta/rimuovi trigger (F9)
+
+<Settings the program options\nProg options
+>Impostazione opzioni progetto\nImpostazioni progetto
+
+<SFC
+>
+
+<SFC Action Properties
+>Proprietà azioni SFC
+
+<SFC code type
+>Tipo codice SFC
+
+<SFC Jump properties
+>Proprietà salto SFC
+
+<SFC Transition Properties
+>Proprietà transizione SFC
+
+<Sho&w time as:
+>Most&ra tempo come:
+
+<Short Description
+>Descrizione breve
+
+<Show &Details
+>Mostra dettagli
+
+<Show &Fewer Buttons
+>Mostra meno bottoni
+
+<Show &More Buttons
+>Mostra più bottoni
+
+<Show columns
+>Mostra colonne
+
+<Show full menus after a short &delay
+>Mostra menù completo dopo un istante
+
+<Show full week
+>Mostra settimana completa
+
+<Show grid
+>Mostra griglia
+
+<Show large icons\nLarge Icons
+>Mostra icone grandi\nIcone grandi
+
+<Show or hide a Find tools bar\nFind
+>Mostra/nascondi barra strumenti Ricerca\nCerca
+
+<Show or hide the Async graph bar\nAsync (Ctrl+K)
+>Mostra/nasconde barra comandi oscilloscopio\nOscilloscopio (Contr+K)
+
+<Show or hide the Connection bar\nConnection
+>Mostra/nascondi barra dei comandi di connessione\nConnessioni
+
+<Show or hide the FBD bar\nFBD
+>Mostra/nascondi barra dei comandi FBD\nBarra FBD
+
+<Show or hide the Force I/O bar\nForce I/O bar
+>Mostra/nascondi barra dei comandi forzatura I/O\nBarra forzatura I/O
+
+<Show or hide the LD bar\nLD
+>Mostra/nascondi barra dei comandi LD\nBarra LD
+
+<Show or hide the Library bar\nLibrary (Ctrl+L)
+>Mostra/nascondi finestra librerie\nFinestra librerie
+
+<Show or hide the Output bar\nOutput (Ctrl+R)
+>Mostra/nascondi finestra di Output\nOutput
+
+<Show or hide the Parameter bar\nParameters
+>Mostra/nascondi barra dei parametri\nBarra parametri
+
+<Show or hide the PLC run-time status bar\nPLC run-time status bar
+>Mostra/nascondi barra di stato esecuzione PLC\nBarra di stato esecuzione
+
+<Show or hide the Project bar\nProject
+>Mostra/nascondi barra dei comandi progetto\nBarra progetto
+
+<Show or hide the SFC bar\nSFC
+>Mostra/nascondi barra dei comandi SFC\nBarra SFC
+
+<Show or hide the status bar\nToggle StatusBar
+>Mostra/nascondi barra di stato\nBarra di stato
+
+<Show or hide the toolbar\nToggle ToolBar
+>Mostra/nascondi barra dei comandi principale\nBarra principale
+
+<Show or hide the Watch bar\nWatch (Ctrl+T)
+>Mostra/nascondi finestra di watch\nFinestra di watch
+
+<Show or hide the Workspace bar\nWorkspace (Ctrl+W)
+>Mostra/nascondi finestra dello spazio di lavoro\nFinestra spazio lavoro
+
+<Show s&hortcut keys in ScreenTips
+>Mostra scorciatoie nei suggerimenti
+
+<Show Screen&Tips on toolbars
+>Mostra suggerimenti su barre di comando
+
+<Show small icons\nSmall Icons
+>Mostra icone piccole\nIcone piccole
+
+<Show time bar
+>Mostra barra tempi
+
+<Show tracks list
+>Mostra lista tracce
+
+<Show work week
+>
+
+<Shows the measure bars\nShow measure bars
+>Mostra barre di misura\nBarre di misura
+
+<Shows the samples on the tracks\nShow samples
+>Mostra i campioni sulle tracce\nMostra campioni
+
+<Si&ze:
+>Dimensioni:
+
+<Signed
+>Con segno
+
+<Silver
+>Argento
+
+<SIM. NOT READY
+>SIM NON PRONTO
+
+<Simulation mode
+>Modo simulazione
+
+<Simulation mode\nSimulation mode
+>Modo simulazione\nModo simulazione
+
+<Single selection
+>Selezione singola
+
+<Size
+>Dimensione
+
+<Size of variable
+>Dimensione variabile
+
+<Size of Variable
+>Dimensione variabile
+
+<Sky Blue
+>Azzurro cielo
+
+<Slide
+>Sportello
+
+<Sorry you have reached your limit.
+>
+
+<Sort Ascending
+>Ordina ascendente
+
+<Sort Ascending\nSort Ascending
+>Ordina ascendente\nOrdina ascendente
+
+<Sort by:
+>Ordina per:
+
+<Sort Descending
+>Ordina discendente
+
+<Sort Descending\nSort Descending
+>Ordina discendente\nOrdina discendente
+
+<Source code cannot be shown for all the selected PLC Objects because of their type or location.
+>Il codice sorgente non può essere mostrato per gli oggetti selezionati per via del loro tipo o posizione
+
+<Source code download
+>Scaricamento codice sorgente
+
+<Source code not up-to-date
+>Codice sorgente non aggiornato
+
+<SOURCE OK
+>SORGENTE OK
+
+<Specify index(es) %s
+>Specificare indice/i %s
+
+<Spin1
+>
+
+<Spin2
+>
+
+<Spin3
+>
+
+<Split the active window into panes\nSplit
+>Dividi finestra in due pannelli\nDividi finestra
+
+<Splits the vertical axis with tracks\nVertical split
+>Dividi l'asse verticale con le tracce\nDivisione verticale
+
+<ST
+>
+
+<Standard
+>
+
+<Standard Colors
+>Colori standard
+
+<Standard functions
+>Funzioni standard
+
+<Start the PLC run-time monitor\nStart the PLC run-time monitor
+>Avvia il monitor dell'esecuzione PLC\nAvvia monitor esecuzione PLC
+
+<Start the PLC run-time\nStart the PLC run-time
+>Avvia l'esecuzione del PLC\nAvvia il PLC
+
+<Start time
+>Tempo avvio
+
+<Start time:
+>tempo avvio
+
+<Start/Stop reading the value insert in a watch window\nStart/Stop Watch
+>Avvia/arresta la lettura dei valori della finestra di watch\nAvvia/arresta watch
+
+<Start/Stop the trigger\nStart/Stop
+>Avvia/arresta il trigger\nAvvia/arresta trigger
+
+<Start/Stop watch value
+>Avvia/arresta watch
+
+<Starts compilation of PLC project\nCompile
+>Avvia la compilazione del progetto PLC\nCompilazione
+
+<Static
+>Statico
+
+<Step%d
+>Passo%d
+
+<Stop the current trigger\nStop trigger
+>Arresta il trigger selezionato\nArresta trigger
+
+<Stop the PLC run-time monitor\nStop the PLC run-time monitor
+>Arresta monitor esecuzione PLC\nArresta monitor esecuzione PLC
+
+<Stop the PLC run-time\nStop the PLC run-time
+>Arresta esecuzione PLC\nArresta PLC
+
+<Stops the current acquisition\nStop acquisition
+>Arresta acquisizione corrente\nArresta acquisizione
+
+<String
+>Stringa
+
+<Struct variables
+>Variabili struttura
+
+<Structure %s elements:\r\n
+>Elementi struttura %s:\r\n
+
+<Structures
+>Strutture
+
+<Subindex
+>Subindex
+
+<Subject
+>Soggetto
+
+<Subject:
+>Soggetto:
+
+<Subrange definitions
+>Definizione Subranges
+
+<SubRanges
+>SubRanges
+
+<Sunday
+>Domenica
+
+<Switch back to the previous window pane\nPrevious Pane
+>Torna a finestra precedente\nFinestra precedente
+
+<Switch to the next document window
+>Vai a finestra successiva
+
+<Switch to the next window pane\nNext Pane
+>Vai a finestra successiva\nProssima finestra
+
+<Switch to the previous document window
+>Torna a finestra precedente
+
+<Symbol
+>Simbolo
+
+<Symbol already inserted.\nInsert anyway ?
+>Simbolo già inserito.\nInserisci comunque?
+
+<Symbol name
+>Nome del simbolo
+
+<Symbol to add:
+>Simbolo da aggiungere:
+
+<Synchronous graph property
+>Proprietà grafico sincrono
+
+<Syncronization error
+>Errore di sincronizzazione
+
+<Syncronous oscilloscope settings
+>Impostazioni oscilloscopio sincrono
+
+<Synta&x Colorization
+>Colorazione sintassi
+
+<Syntax Color
+>Colore sintassi
+
+<System element deletion not allowed.
+>Cancellazione di elemento di sistema non permessa.
+
+<System error %d running shell command
+>Errore di sistema %d eseguendo il comando
+
+<System parameters
+>Parametri di sistema
+
+<System read only parameters
+>Parametri di sistema sola lettura
+
+<System stand-by required
+>Richiesto sistema in attesa
+
+<System variables
+>Variabili di sistema
+
+<Tab1
+>
+
+<Tabify
+>
+
+<Tabs
+>
+
+<Tan
+>
+
+<Target
+>Sistema
+
+<Target blocks
+>Blocchi sistema
+
+<Target comm: %s\n
+>Comm: %s\n
+
+<Target device ID indicated for the project is different from the value read from the target.\n\nProceed anyway ?
+>L'ID di sistema indicato nel progetto è diverso dal valore letto dal sistema.\n\nProcedere comunque?
+
+<Target disconnected
+>Sistema disconnesso
+
+<Target disconnected: cannot add a new variable
+>Sistema non connesso: impossibile aggiungere nuova variabile
+
+<Target extension for %s not found\n
+>Estensione sistema per %s non trovata\n
+
+<Target file (*.tar)|*.tar||
+>File sistema (*.tar)|*.tar||
+
+<Target id: %s\n
+>ID sistema: %s\n
+
+<Target not connected: cannot reset index and flag
+>Sistema non connesso: impossibile azzerare indice
+
+<Target not connected: cannot start data acquisition
+>Sistema non connesso: impossibile avviare acquisizione dati
+
+<Target processor: %s\n
+>Processore sistema: %s\n
+
+<Target runtime version: %s\n
+>Runtime sistema: %s\n
+
+<Target selection
+>Selezione sistema
+
+<Target variables
+>Variabili sistema
+
+<task
+>
+
+<Task
+>
+
+<Task &configuration
+>&Configurazione task
+
+<Task &properties
+>Proprietà task
+
+<Task configuration
+>Configurazione task
+
+<Task name
+>Nome del task
+
+<Task not assigned
+>Task non assegnato
+
+<Task period [ms]:
+>Periodo task [ms]:
+
+<Tasks
+>
+
+<Teal
+>
+
+<Tentative
+>Tentativo
+
+<TEXT
+>TESTO
+
+<Text color
+>Colore testo
+
+<Text Editors
+>Editor testo
+
+<Th&e
+>Il
+
+<Th&in
+>Sotti&le
+
+<Thank you for evaluating LogicLab !
+>Grazie per aver valutato LogicLab
+
+<The .exe file is invalid (non-Win32® .exe or error in .exe image).
+>Il file .exe non è valido
+
+<The application code is already in the target system,\ncontinue anyway ?
+>Il codice applicativo è già presente nel sistema,\nprocedere comunque?
+
+<The application currently executing on the target device and the source code file downloaded to the target device do not match\nDisconnect anyway?
+>L'applicazione in esecuzione sul sistema e il codice scaricato non corrispondono\nDisconnettersi comunque?
+
+<The array %s has a lot of elements (%i).\nDo you want to watch all of them?\n\n( YES: Watch all, NO: Watch only one )
+>L'array %s ha parecchi elementi (%i).\nVuoi visualizzarli tutti?\n\n(SI: mostra tutti, NO: mostrane solo uno)
+
+<The COMPANY field isn't correct\n(contains spaces or it has less than 4 digits).
+>Il campo COMPANY non è corretto\n(contiene spazi o è meno di 4 caratteri).
+
+<The connection with the target is available.
+>Connessione con il sistema disponibile.
+
+<The DDE transaction could not be completed because other DDE transactions were being processed.
+>Transizione DDE fallita perché altra DDE in coda.
+
+<The DDE transaction could not be completed because the request timed out.
+>Transizione DDE fallita per tempo scaduto.
+
+<The DDE transaction failed.
+>Transizione DDE fallita.
+
+<The document is open.\nClose before change the name
+>Il documento è aperto.\nChiuderlo prima di cambiare nome.
+
+<The file name association is incomplete or invalid.
+>L'associazione del file non è completa o è invalida.
+
+<The ID field isn't correct
+>Il campo ID non è corretto
+
+<The license is not transferred
+>Licenza non trasferita
+
+<The license is transferred.\nThe program will be disabled.
+>Licenza trasferita.\nIl programma sarà disabilitato.
+
+<The name contain an invalid character
+>Il nome contiene un carattere non valido
+
+<The name is duplicated
+>Il nome è duplicato
+
+<The number must be between 1 and 1638.
+>Il numero deve essere compreso tra 1 e 1638.
+
+<The operating system denied access to the specified file.
+>Il sistema operativo ha negato l'accesso al file indicato.
+
+<The operating system is out of memory or resources.
+>Il sistema operativo ha esaurito la memoria.
+
+<The project is in the %s format.\nProject will be saved in the %s format
+>Il progetto è nel formato %s.\nIl progetto sarà salvato nel formato %s.
+
+<The project will be saved and reloaded to apply changes.\nDo you want to continue?
+>Il progetto sarà salvato e ricaricato per applicare le modifiche.\nContinuare?
+
+<The Redistributable Source Module must be unpacked.\nPlease select the destination folder for the unpacked project
+>Il codice redistribuibile deve essere scompattato.\nSelezionare la cartella destinazione per scompattare il progetto.
+
+<The registration has been refused\n\nServer error code: %d
+>La registrazione è stata rifiutata\n\nErrore server: %d
+
+<The resources of the new target are not compatible with the resources of the old one.\nIf you continue, old resources will be lost and overwritten with the new ones.\nAre you sure?
+>Le risorse del nuovo sistema non sono compatibili con le risorse di quello vecchio.\nSe vuoi continuare, le vecchie risorse saranno perse e sovrascritte con quelle nuove.\nSicuro di procedere?
+
+<The selected PLC Objects cannot be deleted because of their type or location.
+>L'oggetto PLC non può essere cancellato per il suo tipo o la sua posizione.
+
+<The SERIAL NUMBER isn't correct.\n(it must be 6 digit, see the CD label)
+>Il numero di serie non è corretto.\n(deve essere 6 caratteri, vedere l'etichetta sul CD)
+
+<The source password is enabled and the password is empty.\nSee Project->Options to change the password.\n
+>La password del sorgente è abilitata ma è vuota.\nVedere opzioni progetto per cambiare la password.\n
+
+<The specified dynamic-link library was not found.
+>La libreria dinamica non è stata trovata.
+
+<The specified file does not exist.
+>Il file indicato non esiste.
+
+<The specified file was not found.
+>Il file indicato non è stato trovato.
+
+<The specified path was not found.
+>Il percorso indicato non è stato trovato.
+
+<The target cannot accept new PLC code
+>Il sistema non può ricevere il nuovo codice PLC.
+
+<The toolbar name cannot be blank. Type a name.
+>Il nome della barra comandi non può essere vuoto. Indicare un nome.
+
+<The USER field isn't correct\n(contains spaces or it has less than 4 digits).
+>Il campo USER non è corretto\n(contiene spazi o è meno di 4 caratteri).
+
+<There are no items to show.
+>Nessun elemento da mostrare.
+
+<There are no reminders to show.
+>Nessun promemoria da mostrare.
+
+<There are variables without name. Correct these and retry.
+>C'è una variabile senza nome.\nCorreggere e riprovare.
+
+<There is a graphic block or a code block with a duplicate name\nChange the name and try again.
+>C'è un blocco di codice con un nome duplicato.\nCambiare nome e provare ancora
+
+<There is no application associated with the given file name extension.
+>Non c'è un programma associato all'estensione indicata.
+
+<There was not enough memory to complete the operation.
+>Non c'è memoria sufficiente per completare l'operazione.
+
+<Thi&ck
+>Spess&o
+
+<Third
+>Terzo
+
+<This command will start the PLC run-time. Proceed?
+>Questo comando avvia l'esecuzione del PLC. Procedere?
+
+<This command will stop the PLC run-time. Proceed?
+>Questo comando arresta l'esecuzione del PLC. Procedere?
+
+<This is not a valid number.
+>Numero non valido.
+
+<This operation requires to save the project.\nContinue the operation ?
+>Questa operazione richiede il salvataggio del progetto.\nContinuare?
+
+<This operation will erase\nthe PLC program on the target.\n\nDo you want to continue ?
+>Questa operazione cancella\nil programma PLC sul sistema.\n\nVuoi continuare?
+
+<This operation will replace all parameter records\n\nDo you want to continue ?
+>Questa operazione sostituirà tutti i record parametri\n\nVuoi continuare?
+
+<This shortcut is currently assigned.\nDo you want to re-assign this shortcut?
+>La scorciatoia è già assegnata.\Vuoi riassegnare la scorciatoia?
+
+<This target has no application file defined.\n
+>Questo sistema non ha un file applicativo definito.\n
+
+<This will delete the record of the commands you've used in this application and restore the default set of visible commands to the menus and toolbars.  It will not undo any explicit customizations.   Are you sure you want to do this?
+>
+
+<This will disable the program.\nAre you sure to continue ?
+>Questa azione disabilita il programma.\nVuoi procedere?
+
+<Thursday
+>Giovedì
+
+<Tile &Horizontally
+>Affianca &orizzontalmente
+
+<Tile &Vertically
+>Affianca &verticalmente
+
+<time [ms]
+>tempo [ms]
+
+<Time diff: %.02f ms
+>Diff. tempo: %.02f ms
+
+<Time Zone
+>Zona orario
+
+<Time zone:
+>Zona orario:
+
+<Tip of the Day
+>Suggerimento del giorno
+
+<Tip text
+>Testo suggerimento
+
+<To
+>Da
+
+<To add a command to a toolbar: select a category and drag the command out of this dialog box to a toolbar.
+>Per aggiungere un comando alla barra: selezionre la categoria e trascinare il comando da questa finestra alla barra comandi.
+
+<To proceed with the on-line registration, the PC should be connected to the Interntet.\n\nIf the connection isn't active, press cancel and repeat the procedure when ready.
+>Per procedere alla registrazione on-line il PC deve essere connesso a internet.\n\nSe la connessione non è attiva premere abbandona e ripetere la procedura quando pronto.
+
+<Today
+>Oggi
+
+<Too many initializers
+>Troppi inizializzatori
+
+<Tool windows
+>Finestre strumenti
+
+<Tool&bars
+>Barre di c&omando
+
+<Toolb&ars:
+>Barre di c&omando
+
+<Tools
+>Strumenti
+
+<Tracks list
+>Lista tracce
+
+<Transfert
+>Trasferimento
+
+<Transfert license
+>Trasferimento licenza
+
+<Transfert the activation key
+>Trasferimento chiave di attivazione
+
+<Transition result
+>Risultato transizione
+
+<Transitions
+>Transizioni
+
+<Transparent
+>Trasparente
+
+<Travel Required
+>
+
+<Trigger
+>
+
+<Trigger &list\tCtrl+I
+>Lista dei trigger\tContr+I
+
+<Trigger code generation error\n(see output window for details).
+>Errore generazione codice di trigger\n(vedere finestra di Output per i dettagli)
+
+<Trigger color
+>Colore trigger
+
+<Trigger compile error
+>Errore di compilazione trigger
+
+<Trigger condition
+>Condizione di trigger
+
+<Trigger list
+>Lista trigger
+
+<Trigger n° %d at %s
+>Trigger n° %d in %s
+
+<Trigger on target is invalid.\nReinstall ?
+>I trigger non sono validi.\nReinstallarli?
+
+<Triggers have been removed.
+>I trigger sono stati rimossi
+
+<True
+>Vero
+
+<TRUE
+>
+
+<True\nFalse
+>Vero/Falso
+
+<Tuesday
+>
+
+<Turquoise
+>
+
+<Two Page
+>Due pagine
+
+<Type
+>Tipo
+
+<Type Definitions
+>Definizioni di tipo
+
+<Type Par
+>Tipo parametro
+
+<Type Targ
+>Tipo sistema
+
+<Type\t\t: %s\r\n
+>Tipo\t\t: %s\r\n
+
+<Typedef name is undefined
+>Typedef non presente
+
+<TypeDefs
+>TypeDefs
+
+<Types
+>Tipi
+
+<TypeTarget not compatible with IPA.
+>Tipo sistema non compatibile con IPA
+
+<Typing
+>Scrittura
+
+<Unable to 'save as' in the same folder (%s)
+>Impossibile salvare il progetto con altro nome nella stessa cartella '%s'
+
+<Unable to 'save as' the project
+>Impossibile salvare il progetto con altro nome
+
+<Unable to add a new variable
+>Impossibile aggiungere una nuova variabile
+
+<Unable to add new subrange
+>Impossibile aggiungere un nuovo subrange
+
+<Unable to add new typedef
+>Impossibile aggiungere una nuova typedef
+
+<Unable to add new variable
+>Impossibile aggiungere una nuova variabile
+
+<Unable to add variable for debug
+>Impossibile aggiungere la variabile per il debug
+
+<Unable to copy the file '%s'\nError : %s
+>Impossibile copiare il file '%s'\nErrore: %s
+
+<Unable to copy the folder '%s'\n
+>Impossibile copiare nella cartella '%s'\n
+
+<Unable to create FBDManager
+>Impossibile creare FBDManager
+
+<Unable to create the macro.
+>Impossibile creare la macro
+
+<Unable to delete current connection
+>Impossibile cancellare la connessione corrente
+
+<Unable to delete PLC Object
+>Impossibile cancellare l'oggetto PLC
+
+<Unable to delete the function result variable
+>Impossibile cancellare il risultato di una funzione
+
+<Unable to delete the selected objects.\nThe associated code is opened or modified
+>Impossibile cancellare gli oggetti selezionati.\nIl codice associato è in fase di editing
+
+<Unable to delete the selected variable
+>Impossibile cancellare la variabile selezionata
+
+<Unable to export PLC object
+>Impossibile esportare l'oggetto PLC
+
+<Unable to insert a new typedef in read-only mode
+>Impossibile inserire una typedef in modalità sola lettura
+
+<Unable to insert a new variable in read-only mode
+>Impossibile inserire una nuova variabile in modalità sola lettura
+
+<Unable to insert a new variable\nin a read-only module
+>Impossibile inserire una variabile\nin modalità sola lettura
+
+<Unable to insert a Subrange object in read-only mode
+>Impossibile inserire un Subrange in modalità sola lettura
+
+<Unable to insert new record
+>Impossibile inserire un nuovo record
+
+<Unable to insert the macro.
+>Impossibile inserire la macro.
+
+<Unable to insert this object in the SFC scheme
+>Impossibile inserire questo oggetto nello schema SFC
+
+<Unable to remove var
+>Impossibile rimuovere la variabile
+
+<Unable to run simulation
+>Impossibile avviare la simulazione
+
+<Unable to start comunication
+>Impossibile attivare la comunicazione
+
+<Unable to start the communication\nChoose 'Settings' to configure
+>Impossibile attivare la comunicazione\nUtilizzare le impostazioni per configurare
+
+<Unable to start the program tool
+>Impossibile avviare il programma
+
+<Unable to start this tool
+>Impossibile avviare il programma
+
+<Unauthorized CNC license or CNC communication not active.
+>Licenza sistema non autorizzata o comunicazione non attiva.
+
+<Unbalanced comments in source code
+>Commenti non bilanciati nel sorgente
+
+<Undefined
+>Non definito
+
+<Undefined command
+>Comando non definito
+
+<Undo the last action\nUndo
+>Annulla ultima azione\nAnnulla
+
+<Unfold
+>
+
+<Unit
+>Unità
+
+<Unknown
+>Sconosciuto
+
+<UnLink
+>
+
+<Unload selected library\nUnload library
+>Rimuovi libreria selezionata\nRimuovi libreria
+
+<Unsigned
+>Senza segno
+
+<Untabify
+>Elimina tabulazioni
+
+<Unused
+>Inutilizzato
+
+<Updated linked library %s.\n
+>Aggiornamenti libreria collegata %s.\n
+
+<Upload in progress
+>Aggiornamenti in corso
+
+<Upload Sources
+>Prelievo sorgenti
+
+<Uploading sources from the target...
+>Prelievo sorgenti dal sistema...
+
+<Uploads the memory image information from the target\nUpload IMG informations
+>Aggiorna immagine di memoria dal sistema\nAggiorna immagine di memoria
+
+<Use &last port
+>Usa &ultima porta
+
+<User
+>Utente
+
+<User ID
+>ID utente
+
+<User types
+>Tipi utente
+
+<User Types
+>Tipi utente
+
+<User version
+>Versione utente
+
+<User Version
+>Versione utente
+
+<V&ariables
+>V&ariabili
+
+<Vacation
+>
+
+<Val type\t\t: %s\r\n
+>Tipo valore\t\t: %s\r\n
+
+<Value
+>Valore
+
+<Value error
+>Errore nel valore
+
+<Value format
+>Formato valore
+
+<Value/div
+>Valore/div
+
+<Var type
+>Tipo variabile
+
+<Variable
+>Variabile
+
+<Variable address
+>Indirizzo variabile
+
+<Variable name is undefined
+>Nome variabile non definito
+
+<Variable properties
+>Proprietà variabile
+
+<Variable property
+>Proprietà variabile
+
+<Variable type
+>Tipo variabile
+
+<Variable type is undefined
+>Tipo variabile non definito
+
+<Variable will overlap with '%s' at address %s.\n\nChange the address to the first free location at %s ?\n('No' to keep current address)
+>La variabile si sovrapporrà con '%s' all'indirizzo %s.\n\nCambiare indirizzo alla prima locazione libera a %s?\n('No' per mantenere indirizzo corrente)
+
+<Variable will overlap with '%s' at address %s.\n\nDatablock is full, continue anyway?
+>La variabile si sovrapporrà con '%s' all'indirizzo %s.\n\nBlocco dati completo, procedere comunque?
+
+<Variables
+>Variabili
+
+<Variables editor
+>Editor variabili
+
+<Variables group already exist
+>Il gruppo di variabili esiste già
+
+<Variables groups
+>Gruppi di variabili
+
+<vars
+>
+
+<Vars type
+>Tipo variabili
+
+<Ver :%s
+>
+
+<Verify Connection
+>Verifica connessione
+
+<Version
+>Versione
+
+<Version:
+>Versione:
+
+<View &details
+>Vista &dettagli
+
+<View &folder
+>Vista &cartelle
+
+<View &list
+>Vista elenco
+
+<View network grid\nView grid
+>Mostra la griglia\nGriglia on/off
+
+<View the document bar\nDocument bar
+>Mostra la barra dei documenti\nBarra Documenti
+
+<View the FBD object browser dialog\nObject browser
+>Mostra la finestra degli oggetti FBD\nSfoglia oggetti
+
+<View the Knowledgebase Home page\nKnowledgebase
+>Mostra la pagina principale della Base di conoscenza\nBase di conoscenza
+
+<View the macro properties\nMacro properties
+>Mostra le proprietà della macro\nProprietà macro
+
+<View the network bar\nNetwork bar
+>Mostra la barra della rete\nBarra rete
+
+<View the Object browser dialog\nObject browser
+>Mostra la finestra Sfoglia oggetti\nSfoglia oggetti
+
+<View the object source\nView source
+>Mostra la sorgente degli oggetti\nMostra sorgente
+
+<View the properties of current selected object\nObject properties
+>Mostra le proprietà dell'oggetto corrente selezionato\nProprietà oggetto
+
+<View the properties of selected FBD object\nFBD Properties
+>Mostra le proprietà dell'oggetto FBD selezionato\nProprietà FBD
+
+<View the properties of selected LD object\nLD Properties
+>Mostra le proprietà dell'oggetto LD selezionato\nProprietà LD
+
+<View the properties of the selected record\nProperties
+>Mostra le proprietà del record selezionato\nProprietà
+
+<View the trigger property\nTrigger property
+>Proprietà del trigger\nProprietà trigger
+
+<Violet
+>Violetto
+
+<Virtual &space
+>&Spazio virtuale
+
+<Visible
+>Visibile
+
+<VM5KpoInT733PXsKGNAU075hQhtE6FXqSmqCV0/F9wV4chicFDcpVf==
+>
+
+<w
+>
+
+<W&atch bar
+>Barra della w&atch
+
+<W&atch window\tCtrl+T
+>F&inestra di watch\tContr+T
+
+<Warning
+>
+
+<Watch
+>
+
+<WATCH
+>
+
+<Watch list file (*.wls)|*.wls||
+>File lista di watch (*.wls)|*.wls||
+
+<Watch view
+>Finestra di watch
+
+<Wednesday
+>Mercoledì
+
+<Week
+>Settimana
+
+<week(s)
+>settimane
+
+<week(s) on:
+>settimane su:
+
+<Welcome
+>Benvenuti
+
+<Wh&ole file
+>Inter&o file
+
+<White
+>Bianco
+
+<Whole Page
+>Pagina intera
+
+<Window Settings
+>Impostazione finestre
+
+<WorkDays
+>Giorni lavorativi
+
+<Wrong value!
+>Valore errato
+
+<www.axelsw.it
+>
+
+<XxYyZz
+>
+
+<Yellow
+>Giallo
+
+<YXhlbA==
+>
+
+<Zoom &In
+>Zoom &dentro
+
+<Zoom &Out
+>Zoom &fuori
+
+<'Recompile all' command will generate a 'Cold restart',\nand ALL retain data areas will be reinitialized.\n\nAre you sure you want to continue?
+>Il comando 'Ricompila tutto' genererà un 'Cold restart',\e TUTTE le aree dati conservate saranno reinizializzate.\n\nSei sicuro di voler continuare?
+
+<----- Compiling : '%s' -----\n
+>----- Compilazione : '%s' -----\n
+
+<----- Decode RSM file -----\n
+>----- Decodifica file RSM -----\n
+
+<----- Downloading : '%s' -----\n
+>
+
+<----- Generate C headers : '%s' -----\n
+>----- Genera intestazione C : '%s' -----\n
+
+<----- Generate RSM file -----\n
+>----- Genera file RSM -----\n
+
+<----- Generate TGSX file -----\n
+>----- Genera file TGSX -----\n
+
+<----- Generate track file: '%s' -----\n
+>----- Generate file binario: '%s' -----\n
+
+<----- Opening : '%s' -----\n
+>----- Apertura : '%s' -----\n
+
+<-- No workspace --
+>-- Nessun workspace --
+
+<- Aux source %s has not been saved\n
+>- Il sorgente ausiliario %s non è stato salvato\n
+
+<- Custom workspace configuration has been lost\n
+>- La personalizzazione dell'area di lavoro è stata persa\n
+
+<- Library %s has not been saved\n
+>- La libreria %s non è stata salvata\n
+
+<- New LD POUs have been lost\n
+>- La nuova POUs LD è stata persa\n
+
+<- Target section has not been saved\n
+>- La sezione target non è stata salvata\n
+
+<- Use system font -
+>- Usa i font di sistema -
+
+<%s - PLC Compiler v%s - Copyright © 2000-2015 %s\n
+>%s - Compilatore PLC v%s - Copyright © 2000-2015 %s\n
+
+<&Constant\tShift+K
+>&Costante\tShift+K
+
+<&Duplicate
+>&Duplica
+
+<&Duplicate macro
+>&Duplica macro
+
+<&Duplicate variable
+>&Duplica variabile
+
+<&Edit properties
+>&Modifica proprietà
+
+<&Enable EN/ENO pins\tE
+>&Abilita pin EN/ENO\tE
+
+<&Functions
+>&Funzioni
+
+<&Hot restart
+>
+
+<&Insert\tCtrl+Shift+Ins
+>&Inserisci\tCtrl+Shift+Ins
+
+<&Jump\tShift+J
+>&Salto\tShift+J
+
+<&Local variables
+>&Variabili locali
+
+<&Mapped variable\tCtrl+Shift+M
+>&Variabili mappate\tCtrl+Shift+M
+
+<&On-line
+>
+
+<&Open file\tCtrl+O
+>&Apri file\tCtrl+O
+
+<&Programs
+>&Programma
+
+<&Recompile all\tCtrl+Alt+F7
+>&Ricompila tutto\tCtrl+Alt+F7
+
+<&Refresh all libraries
+>&Aggiorna tutte le librerie
+
+<&Return\tShift+R
+>&Ritorno\tShift+R
+
+<&Set up communication...
+>&Imposta comunicazione...
+
+<&Standard functions
+>&Funzioni standard
+
+<&User types
+>&Tipi utente
+
+<&Variable\tShift+V
+>&Variabile\tShift+V
+
+<&Variables
+>&Variabili
+
+<&View properties
+>&Mostra proprietà
+
+<&View Properties
+>&Mostra Proprietà
+
+<&View variable properties
+>&Mostra le proprietà della variabile
+
+<&Warm restart
+>
+
+<..\..\Catalog
+>
+
+<..\Common\Dict
+>
+
+<..\SimuLab\SimuLab.exe
+>
+
+<.plclib
+>
+
+<.plcprj
+>
+
+<.pll
+>
+
+</A
+>
+
+</A\t\t- Rebuild and download the project\n
+>/A\t\t- Ricrea e scarica il progetto\n
+
+</b
+>
+
+</b[:path[,name]] - Generate target binaries (bin, tsc, tds) files.\n\t\t  Optional absolute or relative path and name can be specified (Default: relative folder "Download", name: project name)\n
+>/b[:path[,name]] - Genera file binari di destinazione (bin, tsc, tds).\n\t\t  Può essere specificato il percorso assoluto o relativo ed un nome opzionale (Default: cartella relativa "Download", nome: nome progetto)\n
+
+</c
+>
+
+</C
+>
+
+</C\t\t- Compile the project (trying to connect)\n
+>/C\t\t- Compila il progetto (tentativo di connessione)\n
+
+</c\t\t- Compile the project without connecting\n
+>/c\t\t- Compila il progetto senza connettersi\n
+
+</cfg
+>
+
+</cfg:<file>\t- Use additional configuration file\n
+>/cfg:<file>\t- Utilizza il file di configurazione supplementare\n
+
+</D
+>
+
+</D\t\t- Download compiled project\n\t\t  (if not already compiled will compile it)\n
+>/D\t\t- Scarica il progetto compilato\n\t\t  (se non ancora compilato sarà compilato)\n
+
+</DR
+>
+
+</DR\t\t- Perform download acknowledge request \n
+>/DR\t\t- Effettua la richiesta di conferma di download \n
+
+</F
+>
+
+</F:<comm>\t- Force the communication properties\n
+>/F:<comm>\t- Forza le proprietà di comunicazione\n
+
+</FU
+>
+
+</FU\t\t- Perform download without checking for updated source status\n
+>/FU\t\t- Esegue il download senza controllare lo stato dell'aggiornamento del sorgente\n
+
+</GC
+>
+
+</GC[:<file>]\t- Generate C headers in the destination file.\n\t\t  (default 'Default.h')\n
+>/GC[:<file>]\t- Genera l'intestazione C nel file di destinazione.\n\t\t  (default 'Default.h')\n
+
+</GG
+>
+
+</GG[:<file>]\t- Generate the global variable track file.\n\t\t  (default 'Default.osc')\n
+>
+
+</GT
+>
+
+</GT[:<file>]\t- Generate the target variable track file.\n\t\t  (default 'Default.osc')\n
+>/GT[:<file>]\t- Genera il file delle tracce per le variabili target.\n\t\t  (default 'Default.osc')\n
+
+</ID
+>
+
+</ID:<targetID>\t- Force target ID for identification\n
+>
+
+</M
+>
+
+</M[:file[,pwd]]\t- Generate redistributable source file.\n
+>/M[:file[,pwd]]\t- Genera il file sorgente redistribuibile.\n
+
+</NC
+>
+
+</NORELOADPLC
+>
+
+</NORELOADPLC\t- Do not reload PLC after download\n
+>/NORELOADPLC\t- Non ricaricare il PLC dopo il download\n
+
+</PERC
+>
+
+</PERC\t\t- Print progress percentage while downloading.\n
+>/PERC\t\t- Stampa la percentuale di avanzamento durante il download.\n
+
+</Q
+>
+
+</Q\t\t- Append the output to the destination file.\n\t\t  (valid only with /GT e /GG flags)\n
+>/Q\t\t- Aggiunge le uscite al file di destinazione.\n\t\t  (valido solo con i flag /GT e /GG)\n
+
+</r
+>
+
+</R
+>
+
+</R\t\t- Rebuild the project (trying to connect)\n
+>/R\t\t- Ricrea il progetto (tentativo di connessione)\n
+
+</r\t\t- Rebuild the project without connecting\n
+>/r\t\t- Ricrea il progetto senza connettersi\n
+
+</SAVEAS
+>/SALVACOME
+
+</SAVEAS:<file>\t- Save project with different folder and name, changing project format if necessary\n
+>/SALVACOME:<file>\t- Salva il progetto con cartella e nome diverso, se necessario cambia il formato del progetto\n
+
+</SIMUL
+>
+
+</T
+>
+
+</T:<target>\t- Force the target board type\n\t\t  (used to download code without opening the project)\n
+>/T:<target>\t- Forza il tipo di scheda del target\n\t\t  (utilizzato per scaricare il codice senza aprire il progetto)\n
+
+</tgsx
+>
+
+</tgsx:<file>\t- Generate TGSX target definition file for simulator\n
+>/tgsx:<file>\t- Genera il file di definizione target TGSX per il simulatore\n
+
+</U
+>
+
+</U[:file[,pwd]]\t- Decode RSM file and save as indicated in file parameter\n
+>/U[:file[,pwd]]\t- Decodifica il file RSM e salva come indicato nel file parametri\n
+
+</uP
+>
+
+</uP:<procname>\t- Force target processor\n\t\t  (used in combination with /WRU and /T to verify target identity without opening the project)\n
+>/uP:<procname>\t- Forza il processore del target\n\t\t  (usato in combinazione con /WRU e /T per verificare l'identità del target senza aprire il progetto)\n
+
+</WRU
+>
+
+</WRU\t\t- Verify target identity\n
+>/WRU\t\t- Verifica l'identità del target\n
+
+</x
+>
+
+</x\t\t- If specified llc does not upload image file for target or get download address from target\n
+>/x\t\t- Se specificato llc non fa l'upload del file immagine o leggere l'indirizzo di download del target\n
+
+<?
+>
+
+<\n%d warnings, %d errors.\n\n
+>\n%d warnings, %d errori.\n\n
+
+<\nBit data space:          % 7Xh   (% 5d KByte)\nFree bit data space:     % 7Xh   (% 5d KByte)
+>\nSpazio dati Bit:         % 7Xh   (% 5d KByte)\nSpazio dati bit disponibile:% 7Xh   (% 5d KByte)
+
+<\nCode size:               % 7Xh   (% 5d KByte)\nFree code space:         % 7Xh   (% 5d KByte)\n
+>\nDimensione codice:           % 7Xh   (% 5d KByte)\nSpazio codice disponibile:   % 7Xh   (% 5d KByte)\n
+
+<\nCode size:               % 7Xh   (% 5d KByte)\nFree code space:        unlimited\n
+>\nDimensione codice:           % 7Xh   (% 5d KByte)\nSpazio codice disponibile:   illimitato\n
+
+<\nCommand line:\n%s\n\n
+>\nlinea di comando:\n%s\n\n
+
+<\nData size:               % 7Xh   (% 5d KByte)\nFree data space:        unlimited
+>\nDimensione dati:         % 7Xh   (% 5d KByte)\nSpazio dati disponibile:     illimitato
+
+<\nData space:              % 7Xh   (% 5d KByte)\nFree data space:         % 7Xh   (% 5d KByte)
+>\nSpazio dati:                 % 7Xh   (% 5d KByte)\nSpazio dati disponibile:     % 7Xh   (% 5d KByte)
+
+<\nExt/aux data space:      % 7Xh   (% 5d KByte)\nFree ext/aux data space: % 7Xh   (% 5d KByte)
+>\nSpazio dati Est/aus:     % 7Xh   (% 5d KByte)\nSpazio dati Est/aus disponibile:% 7Xh   (% 5d KByte)
+
+<\nNote: the flags are case-sensitive\n\n
+>\nNote: le opzioni sono case-sensitive\n\n
+
+<\nRetain data space:       % 7Xh   (% 5d KByte)\nFree retain data space:  % 7Xh   (% 5d KByte)
+>\nSpazio dati ritentivo:       % 7Xh   (% 5d KByte)\nSpazio dati ritentivo libero:% 7Xh   (% 5d KByte)
+
+<\nTransferring is 0%
+>\nTrasferimento 0%
+
+<\rTransferring is %d%%
+>\rTrasferimento è %d%%
+
+<\rTransferring is 100%
+>\rTrasferimento 100%
+
+<<temporary file>
+><file temporaneo>
+
+<1st input
+>1° ingresso
+
+<2nd input
+>2° ingresso
+
+<2st input
+>2° ingresso
+
+<Absolute value\nComputes the absolute value of input #0\n\nExamples:\n\tOUT := ABS( -5 );\t(* OUT = 5 *)\n\tOUT := ABS( -1.618 );\t(* OUT = 1.618 *)\n\tOUT := ABS( 3.141592 );\t(* OUT = 3.141592 *)
+>Valore assoluto\nCalcola il valore assoluto dell'ingresso #0\n\nEsempi:\n\tOUT := ABS( -5 );\t(* OUT = 5 *)\n\tOUT := ABS( -1.618 );\t(* OUT = 1.618 *)\n\tOUT := ABS( 3.141592 );\t(* OUT = 3.141592 *)
+
+<Access
+>Accesso
+
+<Add
+>Aggiungi
+
+<Add EN/ENO pins to the new block?
+>Aggiungere pin EN/ENO al nuovo blocco?
+
+<Address of
+>Indirizzo di
+
+<Address:
+>Indirizzo:
+
+<AlCatalogManager4.CatalogInterface
+>
+
+<All libraries successfully refreshed
+>Tutte le librerie sono state aggiornate con successo
+
+<All PLC library files (*.plclib;*.pll)|*.plclib;*.pll|Full XML library files (*.plclib)|*.plclib|PLC library files (*.pll)|*.pll||
+>Tutti i file di libreria PLC (*.plclib;*.pll)|*.plclib;*.pll|File di libreria XML completa(*.plclib)|*.plclib|File di libreria PLC (*.pll)|*.pll||
+
+<All PLC project files (*%s;*%s;*%s)|*%s;*%s;*%s|
+>Tutti i file progetto PLC (*%s;*%s;*%s)|*%s;*%s;*%s|
+
+<All your workspace customizations will be lost.\nDo you want to continue?
+>Tutte le personalizzazioni delle aree di lavoro saranno perse.\nVuoi procedere?
+
+<Another SFC element has the same name
+>Un altro elemento SFC ha lo stesso nome
+
+<Arc cosine\nComputes the principal arc cosine of input #0; result is expressed in radians\n\nExamples:\n\tOUT := ACOS( 1.0 );\t(* OUT = 0.0 *)\n\tOUT := ACOS( -1.0 );\t(* OUT = PI *)
+>Arcocoseno\nCalcola l'arcocoseno principale di ingresso #0; il risultato è espresso in radianti\n\nEsempi:\n\tOUT := ACOS( 1.0 );\t(* OUT = 0.0 *)\n\tOUT := ACOS( -1.0 );\t(* OUT = PI *)
+
+<Arc sine\nComputes the principal arc sine of input #0; result is expressed in radians\n\nExamples:\n\tOUT := ASIN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := ASIN( 1.0 );\t(* OUT = PI / 2 *)
+>Arcoseno\nCalcola l'arcoseno principale di ingresso #0; il risultato è espresso in radianti\n\nEsempi:\n\tOUT := ASIN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := ASIN( 1.0 );\t(* OUT = PI / 2 *)
+
+<Arc tangent (with 2 parameters)\nComputes the principal arc tangent of Y/X; result is expressed in radians\n\nExamples:\n\tOUT := ATAN2( 0.0, 1.0 );\t(* OUT = 0.0 *)\n\tOUT := ATAN2( 1.0, 1.0 );\t(* OUT = PI / 4 *)\n\tOUT := ATAN2( -1.0, -1.0 );\t(* OUT = ( -3/4 ) * PI *)\n\tOUT := ATAN2( 1.0, 0.0 );\t(* OUT = PI / 2 *)
+>Arcotangente (con 2 parametri)\nCalcola il principale arcotangente di Y/X;il risultato è espresso in radianti\n\nEsempi:\n\tOUT := ATAN2( 0.0, 1.0 );\t(* OUT = 0.0 *)\n\tOUT := ATAN2( 1.0, 1.0 );\t(* OUT = PI / 4 *)\n\tOUT := ATAN2( -1.0, -1.0 );\t(* OUT = ( -3/4 ) * PI *)\n\tOUT := ATAN2( 1.0, 0.0 );\t(* OUT = PI / 2 *)
+
+<Arc tangent\nComputes the principal arc tangent of input #0; result is expressed in radians\n\nExamples:\n\tOUT := ATAN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := ATAN( 1.0 );\t(* OUT = PI / 4 *)
+>Arcotangente\nCalcola l'arcotangente principale di ingresso #0; il risultato è espresso in radianti\n\nEsempi:\n\tOUT := ATAN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := ATAN( 1.0 );\t(* OUT = PI / 4 *)
+
+<Are you sure you want to reset the layout of the dock bars?\n\nYou will have to restart the IDE to take effect.
+>Sei sicuro di voler ripristinare il layout delle dockbar?\n\nPer rendere effettive le modifiche è necessario riavviare l'IDE.
+
+<Are you sure you wanto to delete\n%s ?
+>Sei sicuro di voler eliminare\n%s ?
+
+<Arithmetic
+>Aritmetica
+
+<Arithmetic addition
+>Addizione aritmetica
+
+<Arithmetic division
+>Divisione aritmetica
+
+<Arithmetic multiplication
+>Moltiplicazione aritmetica
+
+<Arithmetic subtraction
+>Sottrazione aritmetica
+
+<Ask for action
+>Chiedi cosa fare
+
+<Attach to existing simulator instance
+>Allegare all'istanza di simulatore esistente
+
+<Automatic query of the selected symbol
+>Interrogazione automatica del simbolo selezionato
+
+<Automatic realloc
+>Riallocazione automatica
+
+<Automatic rename
+>Rinomina automaticamente
+
+<Autosave watch list
+>Salvataggio automatico della lista di watch
+
+<Aux Variables
+>Variabili ausiliarie
+
+<Bad array index
+>Indice errore errato
+
+<Base
+>
+
+<Base directory
+>Cartella base
+
+<Basic &types
+>
+
+<Before disconnection
+>Prima della disconnessione
+
+<Binary selection\nOUT := IN0 if G = FALSE, OUT := IN1 if G = TRUE\n\nExamples:\n\tOUT := SEL( G := FALSE, IN0 := X, IN1 := 5 );\t(* OUT = X *)
+>Selezione binaria\nOUT := IN0 if G = FALSE, OUT := IN1 if G = TRUE\n\nEsempi:\n\tOUT := SEL( G := FALSE, IN0 := X, IN1 := 5 );\t(* OUT = X *)
+
+<Bistable
+>
+
+<Bit shift
+>
+
+<Bitwise negation
+>Negazione bitwise
+
+<Block color
+>Colore del blocco
+
+<Block I/O element colors
+>Colore elemento I/O del blocco
+
+<Block name already used
+>Nome del blocco già utilizzato
+
+<Block\tShift+B
+>Blocco\tShift+B
+
+<Boolean reset
+>Reset booleano
+
+<Boolean set
+>Insieme booleano
+
+<Booting PLC application .. \n
+>Applicazione PLC avvio  .. \n
+
+<Branch
+>Ramo
+
+<Breakpoint hit in %s
+>Breakpoint raggiunto in %s
+
+<Breakpoint hit in %s at line %d
+>Breakpoint raggiunto in %s alla linea %d
+
+<Build output
+>Output di compilazione
+
+<C&oil\tShift+O
+>
+
+<Can not delete folder\nPlease save project first
+>Impossibile eliminare la cartella\nSalvare prima il progetto
+
+<Can not delete group\nPlease save project first
+>Impossibile eliminare il gruppo\nSalvare prima il progetto
+
+<Can not load xsl file: %s
+>Impossibile caricare il file: %s
+
+<Can not move item\nPlease save project first
+>Impossibile spostare l'oggetto\nSalvare prima il progetto
+
+<Cannot connect to target.\nProject info and target device info mismatch.
+>Impossibile connettersi al target.\nLe informazioni di progetto e le informazioni del target device non coincidono.
+
+<Cannot download file %s
+>Impossibile scaricare il file %s
+
+<Cannot open project:\n\n'%s'\n\nThis project is already opened in another instance of the IDE.\n
+>Impossibile aprire il progetto:\n\n'%s'\n\nQuesto progetto è già aperto in un'altra istanza dell'IDE.\n
+
+<Cannot transfer the REBOOT command to the target device
+>Impossibile trasferire il comando REBOOT al dispositivo del target
+
+<Change current instance
+>Cambia istanza corrente
+
+<Change download settings\nDownload options
+>Cambia le impostazioni di download\nOpzioni download
+
+<Change project settings\nProject options
+>Cambia le impostazioni del progetto\nOpzioni progetto
+
+<Changing this attribute will reset data block mapping.\n\nProceed anyway?
+>La modifica di questo attributo resetterà la mappatura dei data block.\n\nProseguire comunque?
+
+<Character string concatenation\n\nExamples:\n\tOUT := CONCAT( 'AB', 'CD' );\t(* OUT = 'ABCD' *)
+>Concatenazione di stringhe di caratteri\n\nEsempi:\n\tOUT := CONCAT( 'AB', 'CD' );\t(* OUT = 'ABCD' *)
+
+<Character string to be found in IN1
+>Stringa di caratteri da trovare in N1
+
+<Character string to be modified with IN2
+>Stringa di caratteri da modificare con IN2
+
+<Character string to insert in IN1
+>Stringa di caratteri da inserire in IN1
+
+<Character string to look up for IN2 occurrence
+>Stringa di caratteri in cui cercare la presenza di IN2
+
+<Check &all
+>Seleziona &tutto
+
+<Check &none
+>Deseleziona &tutto
+
+<Check address
+>Seleziona indirizzo
+
+<Check functions and function blocks external variables
+>Seleziona le funzioni e le variabili esterne dei blocchi funzionali
+
+<Checking if PLC application has been loaded
+>Controllo se l'applicazione PLC è stata caricata
+
+<Choose other...
+>Seleziona altro...
+
+<Choose workspace
+>Selezionare spazio di lavoro
+
+<Co&mment\tShift+M
+>Co&mmenti\tShift+M
+
+<Cold &restart
+>
+
+<cold restart required.\n
+>richiesto cold restart.\n
+
+<Cold restart required: both retain and non-retain variables will be reset. Continue?
+>Richiesto Cold restart: entrambe le variabili ritentive e non-ritentive saranno resettate. Continuare?
+
+<Common logarithm\nComputes the logarithm with base 10 of input #0\n\nExamples:\n\tOUT := LOG( 100.0 );\t(* OUT = 2.0 *)
+>Logaritmo comune\nCalcola il logaritmo di ingresso con base 10 #0\n\nExamples:\n\tOUT := LOG( 100.0 );\t(* OUT = 2.0 *)
+
+<Comparison
+>Comparazione
+
+<Compatibility options
+>Opzioni di compatibilità
+
+<completed.\nFile %s updated.\n\n
+>completato.\nFile %s aggiornato.\n\n
+
+<Connect to simulator
+>Connessione al simulatore
+
+<Connected to target on %s.\n
+>Connesso al target su %s.\n
+
+<Constant\tShift+K
+>Costante\tShift+K
+
+<Context:
+>Contesto:
+
+<Conversion
+>Conversione
+
+<Conversion to BOOL
+>Conversione a BOOL
+
+<Conversion to BYTE
+>Conversione a BYTE
+
+<Conversion to DINT
+>Conversione a DINT
+
+<Conversion to DWORD
+>Conversione a DWORD
+
+<Conversion to INT
+>Conversione a INT
+
+<Conversion to LREAL
+>Conversione a LREAL
+
+<Conversion to REAL
+>Conversione a REAL
+
+<Conversion to SINT
+>Conversione a SINT
+
+<Conversion to STRING
+>Conversione a STRING
+
+<Conversion to STRING, with format specifier\n\nExamples:\n\tstr := TO_STRINGFORMAT(i, '%04d');
+>Conversione a STRING, con identificatore di formato\n\nExamples:\n\tstr := TO_STRINGFORMAT(i, '%04d');
+
+<Conversion to UDINT
+>Conversione in UDINT
+
+<Conversion to UINT
+>Conversione in UINT
+
+<Conversion to USINT
+>Conversione in USINT
+
+<Conversion to WORD
+>Conversione in WORD
+
+<Copy\Paste mapped variable
+>Copia\Incolla variabile mappata
+
+<Copy\tCtrl+C
+>Copia\tCtrl+C
+
+<Cosine\nComputes the cosine function of input #0 expressed in radians\n\nExamples:\n\tOUT := COS( 0.0 );\t(* OUT = 1.0 *)\n\tOUT := COS( -3.141592 );\t(* OUT ~ -1.0 *)
+>Coseno\nCalcola la funzione coseno di input #0 espressa in radianti\n\nEsempi::\n\tOUT := COS( 0.0 );\t(* OUT = 1.0 *)\n\tOUT := COS( -3.141592 );\t(* OUT ~ -1.0 *)
+
+<Could not create the destination file %s\n
+>Impossibile creare il file di destinazione %s\n
+
+<Counter
+>Contatore
+
+<Create downloadable target files
+>Creare file target scaricabile
+
+<Create multiple variables
+>Creare variabili multiple
+
+<Create multiple variables\nCreate multiple variables
+>Creare variabili multiple\nCrea variabili multiple
+
+<Create multiple...
+>Crea più...
+
+<Create new simulator instance
+>Creare nuova istanza del simulatore
+
+<Create new workspace
+>Creare nuova area di lavoro
+
+<Creates a new branch\nNew branch
+>Crea un nuova ramo\nNuovo ramo
+
+<Cross Reference
+>
+
+<CUS_PRJ_FOLDER
+>
+
+<CUS_PRJ_GLOBALFOLDER
+>
+
+<CUS_PRJTREE
+>
+
+<Cut\tCtrl+X
+>Taglia\tCtrl+X
+
+<Data copy size warning threshold (bytes, 0=disable)
+>Soglia della dimensione per la warning sulla copia di dati (bytes, 0=disable)
+
+<Data loss on project conversion
+>Perdita dati nella conversione del progetto
+
+<Datablock patch failed
+>
+
+<DB
+>
+
+<Debug symbols
+>Simbolo debug
+
+<Debug symbols:
+>Simbolo debug:
+
+<Debugger error
+>Errore di debug
+
+<Debugging information is not valid (listing file does not match the application currently executing on the target device).\nPlease, build the project before entering debug mode.
+>Le informazioni di debug non sono valide (il listato del file non corrisponde con l'applicazione attualmente in esecuzione sul target device).\nCompilare il progetto prima di entrare in modalità di debug.
+
+<Decode of rsm file %s completed\n
+>Decodifica del file %s completato\n
+
+<Decode of rsm file %s failed\n
+>Decodifica del file rsm %s fallita\n
+
+<Decrease pins number of the selected object\nDecrease pins (Ctrl+-)
+>Diminuisce il numero dei connettori dell'oggetto selezionato\nDiminuisce connettori (Ctrl+-)
+
+<Decrement pins\tCtrl+-
+>Diminuisce connettori\tCtrl+-
+
+<Default
+>Predefinito
+
+<Default.h
+>Predefinito.h
+
+<Default.osc
+>Predefinito.osc
+
+<Delete &invalid connection\tCtrl+M
+>Elimina la connessione &invalida\tCtrl+M
+
+<Delete also the associated code?
+>Eliminare anche il codice associato?
+
+<Delete L characters of IN, beginning at the P-th character position\n\nExamples:\n\tOUT := DELETE( IN := 'ABXYC', L := 2, P := 3 );\t(* OUT = 'ABC' *)
+>Cancella L caratteri di IN, a partire dal carattere in P-esima posizione\n\nEsempio:\n\tOUT := DELETE( IN := 'ABXYC', L := 2, P := 3 );\t(* OUT = 'ABC' *)
+
+<Delete\tDel
+>Elimina\tDel
+
+<Device not connected or not responding\n
+>Il device non è connesso o non risponde\n
+
+<Different memory ID
+>ID di memoria differente
+
+<Different target ID
+>ID del target differente
+
+<Directory:
+>Cartella:
+
+<Division by 0
+>Divisione per 0:
+
+<Do nothing
+>Non fare nulla
+
+<Do you want to delete all child elements?
+>Vuoi eliminare tutti gli elementi figlio?
+
+<Document bar
+>Barra dei documenti
+
+<Download
+>
+
+<Download &options...
+>&Opzioni di download...
+
+<download locked.\n
+>Download bloccato.\n
+
+<Download operation refused by the target system:\ntarget can not accept downloads now
+>Operazione di download rifiutata dal sistema del target:\il target non può accettare il download
+
+<Download request missing
+>Richiesta di download mancante
+
+<Download time
+>Durata del download
+
+<Downloadable target files
+>File target scaricabile
+
+<Downloading file %s ..
+>Scaricamento del file %s ..
+
+<Edit Function block &properties
+>Modifica le &proprietà del blocco funzionale
+
+<Edit Function block properties
+>Modifica la proprietà del blocco funzionale
+
+<Edit Function properties
+>Modifica le proprietà della Funzione
+
+<Edit Program &properties
+>Modifica le &proprietà del Programma
+
+<Edit Program properties
+>Modifica le proprietà del Programma
+
+<Edit properties
+>Modifica proprietà
+
+<Edit the properties of current selected object
+>Modifica le proprietà dell'oggetto corrente selezionato
+
+<Edit the properties of current selected object\nObject properties
+>Modifica le proprietà dell'oggetto corrente selezionato\nProprietà oggetto
+
+<Embedded datablocks relocation failed
+>Fallita riallocazione dei datablocks embedded
+
+<Embedded functions patch failed
+>Fallita patch delle funzioni embedded
+
+<Embedded functions relocation failed
+>Fallita riallocazione delle funzioni embedded
+
+<Enable memory dump  (%MW<address> syntax)
+>Abilita immagine di memoria  (%MW<indirizzo> sintassi)
+
+<Enable Merge
+>Abilita Merge
+
+<Enable merge method
+>Abilita metodo merge
+
+<Enable SFC control flags (extension to standard)
+>Abilita le opzioni del controllo SFC (estensione allo standard)
+
+<Enable tooltip on editors
+>Abilita i tooltip sull'editor
+
+<Enable WAITING statement (extension to standard)
+>Abilita l'istruzione WAITING (estensione allo standard)
+
+<Environment variables
+>Variabili d'ambiente
+
+<Equal
+>Uguale
+
+<error
+>errore
+
+<Error - unknown processor\n
+>Errore . processore sconosciuto\n
+
+<Error creating a copy with name '%s'
+>Errore durante la creazione di una copia con nome '%s'
+
+<Error deleting file\n%s
+>Errore durante l'eliminazione del file\n%s
+
+<Error loading configuration file: %s\n
+>Errore durante il caricamento del file di configurazione: %s\n
+
+<Error opening project\n\nPlease refer to the output window for more details.
+>Errore durante l'apertura del progetto\n\nPer maggiore informazione fare riferimento alla finestra di Output. 
+
+<ERROR saving project as %s\n
+>
+
+<Error setting breakpoint handler address
+>
+
+<Error while encrypting POU %s: data is too short.\n
+>
+
+<Error while generating C function headers\n
+>Errore durante la generazione dell'intestazione della funzione C\n
+
+<Error while generating the track file\n
+>Errore durante la generazione del file binario\n
+
+<Error while importing library.\nPlease refer to the output window for more details.
+>Errore durante l'importazione della libreria.\nPer maggiori dettagli fare riferimento alla finestra di output.
+
+<Error: can't load file
+>Errore: impossibile caricare il file
+
+<ERROR: new full project path must be specified\n
+>ERRORE: il nuovo percorso completo del progetto deve essere specificato\n
+
+<Error: specified path already exists
+>Errore: il percorso specificato esiste già
+
+<Example:
+>Esempio:
+
+<EXP
+>
+
+<Exponent
+>Esponente
+
+<Exponentiation\nRaises Base to the power Expo\n\nExamples:\n\tOUT := POW( 2.0, 3.0 );\t(* OUT = 8.0 *)\n\tOUT := POW( -1.0, 5.0 );\t(* OUT = -1.0 *)
+>Potenza\nElevamento di base alla potenza Expo\n\nEsempi:\n\tOUT := POW( 2.0, 3.0 );\t(* OUT = 8.0 *)\n\tOUT := POW( -1.0, 5.0 );\t(* OUT = -1.0 *)
+
+<Export all children to library
+>Esporta tutti i figli nella libreria
+
+<Expression
+>Espressione
+
+<Expression\tShift+E
+>Espressione\tShift+E
+
+<failed
+>fallito
+
+<Failed OLE initialization
+>Inizializzazione OLE fallita
+
+<Fatal Error: MFC initialization failed\n
+>Errore irreversibile: inizializzazione MFC fallita\n
+
+<Fatal Error: OLE initialization failed\n
+>Errore irreversibile: inizializzazione OLE fallita\n
+
+<Fault
+>Guasto
+
+<File format
+>Formato file
+
+<find
+>trova
+
+<Find the character position of the beginning of the first occurrence of IN2 in IN1. If no occurrence of IN2 is found, then OUT := 0.\n\nExamples:\n\tOUT := FIND( IN1 := 'ABCBC', IN2 := 'BC' );\t(* OUT = 2 *)
+>Indica la posizione del carattere iniziale della prima occorrenza di IN2 in IN1. Se IN2 non viene trovata, ritorna OUT := 0.\n\nEsempi:\n\tOUT := FIND( IN1 := 'ABCBC', IN2 := 'BC' );\t(* OUT = 2 *)
+
+<First ATAN2 parameter
+>Primo parametro ATAN2
+
+<First character string
+>Primo carattere stringa
+
+<Force complete upload of memory image information from the target device\nForce target image upload
+>Forza il caricamento delle informazioni dell'immagine di memoria dal target device\nForza il caricamento dell'immagine del target
+
+<Force complete upload of on-board debug symbols from the target device\nForce debug symbols upload
+>Forza il caricamento dei simboli di debug a bordo del target device\nForza il caricamento dei simboli di debug
+
+<Force debug s&ymbols upload
+>Forza il caricamento dei s&imboli di debug
+
+<Force target &image upload
+>Forza il caricamento dell'&immagine del target
+
+<Format specifier, in printf style
+>Identificatore di formato, in stile printf
+
+<From:
+>Da:
+
+<Full pathname
+>Percorso completo
+
+<Full XML PLC project files (*%s)|*%s|
+>File progetto PLC XML completo (*%s)|*%s|
+
+<Function &Blocks
+>&Blocchi Funzione
+
+<Function input
+>Input della funzione
+
+<Generate cross-reference
+>Generazione cross-reference
+
+<Generate EXP file
+>Generazione file EXP
+
+<Generating downloadable file %s ..
+>Generazione file %s .. scaricabile
+
+<Generating output file %s ..
+>Generazione file %s .. di uscita
+
+<Generation of C function headers completed\n
+>Generazione di intestazione funzioni C completata\n 
+
+<Generation of rsm file %s completed\n
+>Generazione del file rsm %s completata\n
+
+<Generation of rsm file %s failed\n
+>Generazione del file rsm %s fallita\n
+
+<Generation of tgsx file %s completed\n
+>Generazione del file tgsx %s completata\n
+
+<Generation of tgsx file %s failed\n
+>Generazione del file tgsx %s fallita\n
+
+<Generation of track file %s completed\n
+>Generazione del file binario %s completata\n
+
+<Global
+>Globali
+
+<Graphic object colors
+>Colori degli oggetti grafici
+
+<Greater or equal
+>Maggiore o uguale
+
+<Greater than
+>Maggiore di
+
+<Group %s already exists.\nDo you want to merge the variables with those already belonging to the group?
+>Il gruppo %s esiste già.\nVuoi unire le variabili a quelle che già appartengono al gruppo?
+
+<H&alt
+>A&rresto
+
+<Halt PLC execution\nHalt
+>Arresto dell'esecuzione PLC\nArresto
+
+<Hexadecimal
+>Esadecimale
+
+<Hyperbolic cosine\nComputes the hyperbolic cosine function of input #0\n\nExamples:\n\tOUT := COSH( 0.0 );\t(* OUT = 1.0 *)
+>Coseno iperbolico\nCalcola la funzione del coseno iperbolico dell’input #0\n\nEsempio:\n\tOUT := COSH( 0.0 );\t(* OUT = 1.0 *)
+
+<Hyperbolic sine\nComputes the hyperbolic sine function of input #0\n\nExamples:\n\tOUT := SINH( 0.0 );\t(* OUT = 0.0 *)
+>Seno iperbolico\nCalcola la funzione del seno iperbolico dell’input #0\n\nEsempio:\n\tOUT := SINH( 0.0 );\t(* OUT = 0.0 *)
+
+<Hyperbolic tangent\nComputes the hyperbolic tangent function of input #0\n\nExamples:\n\tOUT := TANH( 0.0 );\t(* OUT = 0.0 *)
+>Tangente iperbolica\nCalcola la funzione della tangente iperbolica dell’input #0\n\nEsempio:\n\tOUT := TANH( 0.0 );\t(* OUT = 0.0 *)
+
+<Identical name
+>Nome identico
+
+<If /T:<target> is used also /F:<comm> must be indicated
+>Se è usato /T:<target> deve essere indicato /F:<comm> 
+
+<If /WRU is used, either 1) both /T:<target> and /uP:<procname> should also be used or 2) none of them should be used
+>Se si usa /WRU, 1) devono essere usati entrambi /T:<target> e /uP:<procname> o 2) nessuno di essi deve essere usato 
+
+<Import performed on %d objects. See %s for details.
+>Importazione eseguita su %d oggetti. Visualizza %s per i dettagli.
+
+<Improper answer from target, download aborted
+>Risposta non corretta dal target, download interrotto
+
+<Include source code
+>Include codice sorgente
+
+<Increase pins number of the selected object\nIncrease pins (Ctrl++)
+>Aumenta il numero dei connettori dell'oggetto selezionato\nAumenta connettori (Ctrl++)
+
+<Increment pins\tCtrl++
+>Aumenta connettori\tCtrl++
+
+<Init values for: %s (%s)
+>Valori iniziali per: %s (%s)
+
+<Initial array values\t: %s\r\n
+>Valori iniziali array\t: %s\r\n
+
+<Input character string
+>Stringa di caratteri di ingresso
+
+<Insert a coil\nCoil (Shift+O)
+>Inserisce una bobina\nBobina (Shift+O)
+
+<Insert an Expression\nExpression
+>Inserisce una Espressione\nEspressione
+
+<Insert IN2 into IN1 after the P-th character position\n\nExamples:\n\tOUT := INSERT( IN1 := 'ABC', IN2 := 'XY', P := 2 );\t(* OUT = 'ABXYC' *)
+>Inserisce IN2 in IN1 dopo il carattere in posizione P\n\nEsempio:\n\tOUT := INSERT( IN1 := 'ABC', IN2 := 'XY', P := 2 );\t(* OUT = 'ABXYC' *)
+
+<Insert\tCtrl+Shift+Ins
+>Inserisci\tCtrl+Shift+Ins
+
+<Insertion position
+>Posizione di inserimento
+
+<Invalid code
+>Codice invalido
+
+<Invalid counters entered
+>Inseriti contatori non validi
+
+<Invalid data requirements
+>Dati richiesti non validi
+
+<Invalid expression value
+>Valore espressione non valida
+
+<Invalid init string
+>Stringa iniziale non valida
+
+<Invalid init value definition.\n\nRetry to edit and correct it or abandon modifications?
+>Definizione di valore iniziale non valido.\n\nRiprovare a modificarlo e correggerlo o annullare le modifiche?
+
+<Invalid path specified
+>Percorso specificato non valido
+
+<Invalid period for task '%s': must be < than '%s' (%.4g %s)
+>Periodo invalido per il task '%s': deve essere < di '%s' (%.4g %s)
+
+<Invalid period for task '%s': must be <= %.4g %s
+>Periodo invalido per il task '%s': deve essere <= %.4g %s
+
+<Invalid period for task '%s': must be > than '%s' (%.4g %s)
+>Periodo invalido per il task '%s': deve essere > di '%s' (%.4g %s)
+
+<Invalid period for task '%s': must be >= %.4g %s
+>Periodo invalido per il task '%s': deve essere >= %.4g %s
+
+<Invalid period for task '%s': must be in the valid values list
+>Periodo invalido per il task '%s': deve essere nella lista di valori validi
+
+<Invalid period for task '%s': must be multiple of task '%s' (%.4g %s)
+>Periodo invalido per il task '%s': deve essere multiplo del task '%s' (%.4g %s)
+
+<Invalid PLC checksum
+>Checksum PLC non valido
+
+<Invalid PLC version information
+>Informazioni di versione PLC non valide
+
+<Invalid task configuration
+>Configurazione task non valide
+
+<Invalid task header
+>Intestazione task non valide
+
+<Invalid task ID
+>ID task non valido
+
+<Jump (conditioned/negated)
+>Salto (condizionale/negato)
+
+<Jump\tShift+J
+>Salto\tShift+J
+
+<L characters of IN, beginning at the P-th\n\nExamples:\n\tOUT := MID( IN := 'ASTR', L := 2, P := 2 );\t(* OUT = 'ST' *)
+>Restituisce gli L caratteri di IN, a partire dalla posizione indicata da P\n\nEsempi:\n\tOUT := MID( IN := 'ASTR', L := 2, P := 2 );\t(* OUT = 'ST' *)
+
+<LD2BLOCKS
+>
+
+<Left rotate\nOUT := IN left-rotated by N bits, circular\n\nExamples:\n\tOUT := ROL( IN := 16#1000CAFE, 4 );\t(* OUT = 16#000CAFE1 *)
+>Ruota a sinistra\nOUT := IN ruotato a sinistra di N bits, circolarmente\n\nExamples:\n\tOUT := ROL( IN := 16#1000CAFE, 4 );\t(* OUT = 16#000CAFE1 *)
+
+<Left shift\nOUT := IN left-shifted by N bits, zero-filled on right\n\nExamples:\n\tOUT := SHL( IN := 16#1000CAFE, 16 );\t(* OUT = 16#CAFE0000 *)
+>Shift a sinistra\nOUT := IN shiftato a sinistra di N bits, riempito di zeri a destra\n\nEsempi:\n\tOUT := SHL( IN := 16#1000CAFE, 16 );\t(* OUT = 16#CAFE0000 *)
+
+<Leftmost L characters of IN\n\nExamples:\n\tOUT := LEFT( IN := 'ASTR', L := 3 );\t(* OUT = 'AST' *)
+>Restituisce gli L caratteri a partire da sinistra della stringa IN\n\nEsempi:\n\tOUT := LEFT( IN := 'ASTR', L := 3 );\t(* OUT = 'AST' *)
+
+<Legacy PLC project files (*%s)|*%s|
+>File di progetto PLC obsoleti (*%s)|*%s|
+
+<Less or equal
+>Minore o uguale
+
+<Less than
+>Minore di
+
+<Library variable
+>Variabile libreria
+
+<Limiter\nOUT := MIN( MAX( IN, MN ), MX )\n\nExamples:\n\tOUT := LIMIT( IN := 4, MN := 0, MX := 5 );\t(* OUT = 4 *)\n\tOUT := LIMIT( IN := 88, MN := 0, MX := 5 );\t(* OUT = 5 *)\n\tOUT := LIMIT( IN := -1, MN := 0, MX := 5 );\t(* OUT = 0 *)
+>Limitatore\nOUT := MIN( MAX( IN, MN ), MX )\n\nEsempi:\n\tOUT := LIMIT( IN := 4, MN := 0, MX := 5 );\t(* OUT = 4 *)\n\tOUT := LIMIT( IN := 88, MN := 0, MX := 5 );\t(* OUT = 5 *)\n\tOUT := LIMIT( IN := -1, MN := 0, MX := 5 );\t(* OUT = 0 *)
+
+<Listing
+>Listato
+
+<LLC
+>
+
+<Loading target image ..
+>Caricamento immagine del target ..
+
+<Loads (no appends) the watch list with the items in the list\nLoad (no appends) watch list
+>Carica (senza accodamento) la watch list con gli elementi nella lista \nCarica (senza accodamento) la watch list
+
+<Logic
+>Logico
+
+<Logical/bitwise AND
+>Logico/bitwise AND
+
+<Logical/bitwise OR
+>Logico/bitwise OR
+
+<Logical/bitwise XOR
+>Logico/bitwise XOR
+
+<LogicLab4
+>
+
+<Lower limit
+>Limite inferiore
+
+<Main
+>Principale
+
+<Max previous versions to keep:
+>Numero massimo di versioni precedenti da mantenere:
+
+<Maximum value selection\nOUT := MAX( IN1, IN2, ..., INn )\n\nExamples:\n\tOUT := MAX( -8, 120, -1000 );\t(* OUT = 120 *)
+>Selezione del valore massimo\nOUT := MAX( IN1, IN2, ..., INn )\n\nEsempi:\n\tOUT := MAX( -8, 120, -1000 );\t(* OUT = 120 *)
+
+<Memory access patch failed
+>Patch di accesso alla memoria fallita
+
+<Merge
+>Unione
+
+<Minimum value selection\nOUT := MIN( IN1, IN2, ..., INn )\n\nExamples:\n\tOUT := MIN( -8, 120, -1000 );\t(* OUT = -1000 *)
+>Selezione del valore minimo\nOUT := MIN( IN1, IN2, ..., INn )\n\nEsempi:\n\tOUT := MIN( -8, 120, -1000 );\t(* OUT = -1000 *)
+
+<Modulo operator
+>Operatore modulo
+
+<Multi-file PLC project files (*%s)|*%s|
+>File progetto PLC multi-file (*%s)|*%s|
+
+<Multiplexer\nSelect one of N inputs depending on input K\n\nExamples:\n\tOUT := MUX( 0, A, B, C );\t(* OUT = A *)
+>Multiplexer\nSeleziona uno degli N input in base al valore dell’input K\n\nEsempi:\n\tOUT := MUX( 0, A, B, C );\t(* OUT = A *)
+
+<Name:
+>Nome:
+
+<Name: %s\n\nAction P: %s\nAction N: %s
+>Nome: %s\n\nAzione P: %s\nAzione N: %s
+
+<Name: %s\n\nAction P: %s\nAction N: %s\n\nDescription: %s
+>Nome: %s\n\nAzione P: %s\nAzione N: %s\n\nDescrizione: %s
+
+<Name: %s\nAddress: %s\nType: %s\nSize: %d\nDescription: %s
+>Nome: %s\nIndirizzo: %s\nTipo: %s\nDimensione: %d\nDescrizione: %s
+
+<Natural exponential\nComputes the exponential function of input #0\n\nExamples:\n\tOUT := EXP( 1.0 );\t(* OUT ~ 2.718281 *)
+>Esponente naturale\nCalcola la funzione esponenziale di input #0\n\nEsempio:\n\tOUT := EXP( 1.0 );\t(* OUT ~ 2.718281 *)
+
+<Natural logarithm\nComputes the logarithm with base e of input #0\n\nExamples:\n\tOUT := LN( 2.718281 );\t(* OUT = 1.0 *)
+>Logaritmo naturale\nCalcola il logaritmo con base e di input #0\n\nEsempi:\n\tOUT := LN( 2.718281 );\t(* OUT = 1.0 *)
+
+<Negated object\tC
+>Oggetto negato\tC
+
+<Negative object\tN
+>Oggetto negativo\tN
+
+<Never
+>Mai
+
+<New &folder
+>Nuova &cartella
+
+<New &Mapped variable\tCtrl+Shift+M
+>Nuova variabile &Mappata\tCtrl+Shift+M
+
+<New address
+>Nuovo indirizzo
+
+<New Block
+>Nuovo Blocco
+
+<New Branch
+>Nuovo Ramo
+
+<New Contact
+>Nuovo Contatto
+
+<New Contact after
+>Nuovo Contatto dopo
+
+<New Contact before
+>Nuovo Contatto prima
+
+<New global variables group
+>Nuovo gruppo variabili globali
+
+<New group name
+>Nuovo nome gruppo
+
+<New Parallel contact
+>Nuovo contatto in parallelo
+
+<New Parallel contact before
+>Nuovo contatto in parallelo prima
+
+<New var group
+>Nuovo gruppo variabili
+
+<No
+>
+
+<No symbol selected
+>Nessun simbolo selezionato
+
+<Not equal
+>Non uguale
+
+<Number of characters
+>Numero di caratteri
+
+<Number of IN1 characters to replace
+>Numero di IN1 caratteri da sostituire
+
+<Numeric value to convert
+>Valore numerico da convertire
+
+<O&scilloscope
+>O&scilloscopio
+
+<O&scilloscope\tCtrl+K
+>O&scilloscopio\tCtrl+K
+
+<Object with same type (not variables)
+>Oggetto dello stesso tipo (no variabili)
+
+<Objects with different types
+>Oggetti con tipi diversi
+
+<ok
+>
+
+<ok.\n
+>
+
+<On PLC application download
+>Nel download dell'applicazione PLC
+
+<Ope&rators
+>Ope&ratori
+
+<Open &Contact
+>Apri &Contatto
+
+<Open existing workspace
+>Apri area di lavoro esistente
+
+<Open object\tO
+>Oggetto aperto\tO
+
+<Operation failed: can't save library in %s format\n
+>Operazione fallita: non è possibile salvare la libreria con il formato %s\n
+
+<Options:
+>Opzioni:
+
+<Original data
+>Dati originali
+
+<Overlapped
+>Sovrapposte
+
+<Overtime
+>
+
+<Parallel contact after\tShift+P
+>Contatto in parallelo dopo\tShift+P
+
+<Parallel contact before
+>Contatto in parallelo prima
+
+<Parallel contact\tShift+P
+>Contatto in parallelo\tShift+P
+
+<Parallel insert contact after\nParallel contact after (Shift+P)
+>Inserimento contatto in parallelo dopo\nContatto in parallelo dopo (Shift+P)
+
+<Parallel insert contact before\nParallel contact before
+>Inserimento contatto in parallelo prima\nContatto in parallelo prima
+
+<Paste\tCtrl+V
+>Incolla\tCtrl+V
+
+<Perform a PLC cold restart: both retain and non-retain variables will be reset\nCold restart
+>Esegue un cold restart del PLC: entrambe le variabili ritentive e non-ritentive saranno ripristinate\nCold restart
+
+<Perform a PLC hot restart\nHot restart
+>Esegue un hot restart del PLC\nHot restart
+
+<Perform a PLC warm restart: non-retain variables will be reset\nWarm restart
+>Esegue un warm restart del PLC: le variabili non-ritentive saranno ripristinate\nWarm restart
+
+<Period (ms)
+>Periodo (ms)
+
+<Period\t: %g [ms]\r\n
+>Periodo\t: %g [ms]\r\n
+
+<PLC application currently executing on the target device and on-board debug symbols file do not match.\nAn updated debug symbols file is available.\n\nDownload that file now?
+>L'applicazione PLC attualmente in esecuzione e il file dei simboli di debug sul device target non coincidono.\nE' disponibile un aggiornamento del file dei simboli di debug.\n\nScaricare il file?
+
+<PLC application currently executing on the target device and on-board source code file do not match.\nAn updated source code file is available.\n\nDownload that file now?
+>L'applicazione PLC attualmente in esecuzione sul target device e il file del codice sorgente non coincidono.\nE' disponibile un aggiornamento del file del codice sorgente.\n\nScaricare il file?
+
+<PLC application NOT loaded
+>Applicazione PLC NON caricata
+
+<PLC application not loaded, due to a link-time error: rebuild required
+>Applicazione PLC non caricata, a causa di un errore durante la fase di link: richiesto rebuild
+
+<PLC application:
+>Applicazione PLC:
+
+<PLC EXECUTION ERROR: Bad array index (%i) in module %s, task %s
+>ERRORE ESECUZIONE PLC: Indice (%i) errato dell'array nel modulo %s, task %s
+
+<PLC EXECUTION ERROR: Division by zero in module %s, task %s
+>ERRORE ESECUZIONE PLC: Divisione per zero nel modulo %s, task %s
+
+<PLC EXECUTION ERROR: Fault in task %s, exception 0x%X at 0x%X
+>ERRORE ESECUZIONE PLC: Errore nel task %s, eccezione 0x%X at 0x%X
+
+<PLC EXECUTION ERROR: Invalid pointer (%08X) in module %s, task %s
+>ERRORE ESECUZIONE PLC: Puntatore (%08X) invalido nel modulo %s, task %s
+
+<PLC EXECUTION ERROR: Overtime in task %s (%i usec)
+>ERRORE ESECUZIONE PLC: Overtime nel task %s (%i usec)
+
+<PLC EXECUTION ERROR: Unknown error !
+>ERRORE ESECUZIONE PLC: Errose sconosciuto !
+
+<PLC Library files (*%s)|*%s||
+>File Libretia PLC (*%s)|*%s||
+
+<PLC library files (*%s)|*%s|Full XML library files (*%s)|*%s|PLC source files (*%s)|*%s|Full XML PLC project files (*%s)|*%s|Single-file PLC project files (*%s)|*%s|All files (*.*)|*.*||
+>Files libretia PLC (*%s)|*%s|Files libreria XML completi (*%s)|*%s|Files sorgenti PLC (*%s)|*%s|Files progetto PLC XML completi (*%s)|*%s|Files progetto PLC single-file (*%s)|*%s|Tutti i files (*.*)|*.*||
+
+<PLC library files (*%s)|*%s|PLC source files (*%s)|*%s|Single-file PLC project files (*%s)|*%s|All files (*.*)|*.*||
+>Files libreria PLC (*%s)|*%s|Files sorgente PLC(*%s)|*%s|Files progetto PLC single-file (*%s)|*%s|Tutti i files (*.*)|*.*||
+
+<PLC Library files (*%s;*%s)|*%s;*%s||
+>Files libreria PLC (*%s;*%s)|*%s;*%s||
+
+<PLC Library files (*.pll)|*.pll||
+>Files libreria PLC (*.pll)|*.pll||
+
+<PLC will be reset.\n
+>Il PLC sarà ripristinato.\n
+
+<Position
+>Posizione
+
+<Positive object\tP
+>Oggetto positivo\tP
+
+<Possible loss of data
+>Possibile perdita di dati
+
+<Pou
+>
+
+<Prefix:
+>Prefisso:
+
+<Preparing for debug symbols download ..
+>Preparazione per il download dei simboli di debug
+
+<Preparing for PLC application download ..
+>Preparazione per il download dell'applicazione PLC ..
+
+<Processing on-board debug symbols ..
+>Elaborazione dei simboli di debug sul traget ..
+
+<Processing on-board source code ..
+>Elaborazione del codice sorgente sul target ..
+
+<Project name
+>Nome progetto
+
+<Project variable
+>Variabile progetto
+
+<Projet correctly saved as %s\n
+>Progetto correttamente salvato come %s\n
+
+<Re&boot target
+>Target re&boot
+
+<Read all logs again
+>Legge nuovamente tutti i registri
+
+<Real absolute value
+>Valore assoluto reale
+
+<rebuild required.\n
+>Richiesto rebuild.\n
+
+<Redistributable source modules (*%s;*%s)|*%s;*%s|
+>Modulo sorgente ridistribuibile (*%s;*%s)|*%s;*%s|
+
+<Reference
+>
+
+<Refresh all libraries\nRefresh all libraries
+>Aggiorna tutte le librerie\nAggiorna tutte le librerie
+
+<Remove all items from the watch list\nRemove all items from the watch list
+>Rimuove tutti gli oggetti dalla watch list\nRimuove tutti gli oggetti dalla watch list
+
+<Remove selected object?
+>rimuovere l'oggetto selezionato?
+
+<Rename
+>Rinomina
+
+<Rename group
+>Rinomina gruppo
+
+<Replace L characters of IN1 by IN2, starting at the P-th character position\n\nExamples:\n\tOUT := REPLACE( IN1 := 'ABCDE', IN2 := 'X', L := 2, P := 3 );\t(* OUT = 'ABXE' *)
+>Sostituisce gli L caratteri di IN1 che iniziano alla posizione P-esima con IN2\n\nEsempi:\n\tOUT := REPLACE( IN1 := 'ABCDE', IN2 := 'X', L := 2, P := 3 );\t(* OUT = 'ABXE' *)
+
+<Request for download acknowledge ...
+>
+
+<Reset bars positions
+>Resetta la posizione delle barre
+
+<Reset coil\tR
+>Resetta bobina\tR
+
+<Retain variables can't have initial value and/or data block mapping.\nThese attribute(s)  will be reset.\n\nProceed anyway?
+>Le variabili ritentive non possono avere valore iniziale e/o la mappatura del blocco dati.\nQuesti attributi saranno ripristinati.\n\nProcedere comunque?
+
+<Return (conditioned/negated)
+>Ritorno (condizionale/negto)
+
+<Return\tShift+R
+>Ritorno\tShift+R
+
+<Right rotate\nOUT := IN right-rotated by N bits, circular\n\nExamples:\n\tOUT := ROR( IN := 16#1000CAFE, 16 );\t(* OUT = 16#CAFE1000 *)
+>
+
+<Right shift\nOUT := IN right-shifted by N bits, zero-filled on left\n\nExamples:\n\tOUT := SHR( IN := 16#1000CAFE, 24 );\t(* OUT = 16#00000010 *)
+>
+
+<Rightmost L characters of IN\n\nExamples:\n\tOUT := RIGHT( IN := 'ASTR', L := 3 );\t(* OUT = 'STR' *)
+>Restituisce gli L caratteri a partire da destra della stringa IN\n\nEsempi:\n\tOUT := RIGHT( IN := 'ASTR', L := 3 );\t(* OUT = 'STR' *)
+
+<Rounding down to integer\nReturns the largest integer that is less than or equal to input #0\n\nExamples:\n\tOUT := FLOOR( 1.95 );\t(* OUT = 1.0 *)\n\tOUT := FLOOR( -1.27 );\t(* OUT = -2.0 *)
+>Arrotondamento all’intero inferiore\nRestituisce l’intero più grande che è minore o uguale all’input #0n\nEsempi:\n\tOUT := FLOOR( 1.95 );\t(* OUT = 1.0 *)\n\tOUT := FLOOR( -1.27 );\t(* OUT = -2.0 *)
+
+<Rounding up to integer\nReturns the smallest integer that is greater than or equal to input #0\n\nExamples:\n\tOUT := CEIL( 1.95 );\t(* OUT = 2.0 *)\n\tOUT := CEIL( -1.27 );\t(* OUT = -1.0 *)
+>Arrotondamento all’intero superiore\nRestituisce il più piccolo intero che è maggiore o uguale all’input #0\n\nEsempi:\n\tOUT := CEIL( 1.95 );\t(* OUT = 2.0 *)\n\tOUT := CEIL( -1.27 );\t(* OUT = -1.0 *)
+
+<Row: %s
+>Riga: %s
+
+<Run-time check of array bounds
+>Controllo run-time dei limiti dell'array
+
+<Run-time check of division by zero
+>Controllo run-time della divisione per zero
+
+<Run-time check of pointers
+>Controllo run-time dei puntatori
+
+<Save project as..
+>Salva il progetto come..
+
+<Second ATAN2 parameter
+>
+
+<Second character string
+>
+
+<Select address
+>Seleziona indirizzo
+
+<Select an option
+>Seleziona un opzione
+
+<Selection
+>Selezione
+
+<Selection variable
+>
+
+<Serie contact after\tShift+C
+>Contatto in serie dopo\tShift+C
+
+<Serie contact before
+>Contatto in serie prima
+
+<Serie contact\tShift+C
+>Contatto in serie\tShift+C
+
+<Serie insert contact after\nSerie contact after (Shift+C)
+>Inserisce contatto in serie dopo\nContatto in serie dopo (Shift+C)
+
+<Serie insert contact before\nSerie contact before
+>Inserisce contatto in serie prima\nContatto in serie prima
+
+<Set coil\tS
+>Imposta bobina\tS
+
+<Set current object as negated\nNegated object (C)
+>Imposta l'oggetto corrente come negato\nOggetto negato (C)
+
+<Set current object as negative\nNegative object (N)
+>Imposta l'oggetto corrente come negativo\nOggetto negativo (N)
+
+<Set current object as open\nOpen object (O)
+>Imposta l'oggetto corrente come aperto\nOggetto aperto (O)
+
+<Set current object as positive\nPositive object (P)
+>Imposta l'oggetto corrente come positivo\nOggetto positivo (P)
+
+<Set current object as reset\nReset object (R)
+>Imposta l'oggetto corrente come reset\nOggetto reset (R)
+
+<Set current object as set\nSet object (S)
+>Imposta l'oggetto corrente come set\nOggetto set (S)
+
+<Set on multiple rows
+>Impostato su righe multiple
+
+<Set output line
+>Imposta linea di uscita
+
+<Set output line\nSet output line
+>Imposta linea di uscita\nImposta linea di uscita
+
+<Set period
+>Imposta periodo
+
+<SFC action block
+>Blocco azione SFC
+
+<SFC selected transition
+>Transizione selezionata SFC
+
+<SFC transition block
+>Blocco transizione SFC
+
+<Shift amount
+>
+
+<Show &comments for objects
+>Mostra &commenti per gli oggetti
+
+<Show only used symbols
+>Visualizza solo gli oggetti usati
+
+<Show or hide the Cross Reference window\nCross Reference window
+>Visualizza o nasconde la finestra Cross Reference\nFinestra Cross Reference
+
+<Show or hide the Oscilloscope bar\nOscilloscope (Ctrl+K)
+>Visualizza o nasconde la barra dell'Oscilloscopio\nOscilloscopio (Ctrl+K)
+
+<Sine\nComputes the sine function of input #0 expressed in radians\n\nExamples:\n\tOUT := SIN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := SIN( 2.5 * 3.141592 );\t(* OUT ~ 1.0 *)
+>Seno\nCalcola il seno di input #0 espresso in radianti\n\nEsempi:\n\tOUT := SIN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := SIN( 2.5 * 3.141592 );\t(* OUT ~ 1.0 *)
+
+<Single-file PLC project files (*%s)|*%s|
+>File progetto PLC single-file (*%s)|*%s|
+
+<Size of
+>Dimensione di
+
+<Size:
+>Dimensione:
+
+<Source code
+>Codice sorgente
+
+<Source code:
+>Codice sorgente
+
+<Square root\nComputes the square root of input #0\n\nExamples:\n\tOUT := SQRT( 4.0 );\t(* OUT = 2.0 *)
+>Radice quadrata\nCalcola la radice quadrata dell’input #0\n\nEsempi:\n\tOUT := SQRT( 4.0 );\t(* OUT = 2.0 *)
+
+<stand-by required.\n
+>Richiesto stand-by.\n
+
+<Start/Stop watch &value
+>Start/Stop &valore di watch
+
+<Starting position
+>Posizione di partenza
+
+<Step:
+>Passo:
+
+<String length function\n\nExamples:\n\tOUT := LEN( 'ASTRING' );\t(* OUT = 7 *)
+>Lunghezza della stringa\n\nEsempi:\n\tOUT := LEN( 'ASTRING' );\t(* OUT = 7 *)
+
+<Successfully updated %d variables
+>Variabili  %d aggiornate con successo
+
+<Suffix:
+>Suffisso:
+
+<System alarm will be activated, continue ?
+>Sarà attivato l'allarme di sistema, continuare?
+
+<Take from library
+>Prende dalla libreria
+
+<Take the variable from library
+>Prende le variabili dalla libreria
+
+<Tangent\nComputes the tangent function of input #0 expressed in radians\n\nExamples:\n\tOUT := TAN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := TAN( 3.141592 / 4.0 );\t(* OUT ~ 1.0 *)
+>Tangente\nCalcola la funzione tangente di input #0 espressa in radianti\n\nEsempi:\n\tOUT := TAN( 0.0 );\t(* OUT = 0.0 *)\n\tOUT := TAN( 3.141592 / 4.0 );\t(* OUT ~ 1.0 *)
+
+<Target description is empty, please edit the generated file and add a value!\nPlease check the following task type:\n%s\n
+>La descrizione del target è vuota, modificare il file generato e aggiungere un valore!\nControllare il seguente tipo di task:\n%s\n
+
+<Target device will be rebooted\nReboot target
+>Il device target verrà riavviato\nRiavvia target
+
+<Target ID verification failed! Disconnecting ..
+>Verifica dell'ID del target fallita! Disconnessione ..
+
+<targetdef
+>
+
+<Tasks configuration
+>Configurazione task
+
+<The block name is already used
+>Il nome del blocco è già in uso
+
+<The document is opened\nClose the editor before changing the name
+>Apertura documento\nChiudere l'editor prima di cambiare il nome
+
+<The inserted address is overlapping\nthe variable %s mapped on %s
+>
+
+<The name contain invalid characters
+>Il nome contiene caratteri invalidi
+
+<The XML library format (%s) is required to export LD schemes
+>Per esportare gli schemi LD è richiesto il formato (%s) della libreria XML
+
+<There are no libraries in the project
+>Nel progetto non ci sono librerie
+
+<This command will reboot the target device. Proceed?
+>Questo comando riavvierà il device target. Procedere?
+
+<This project has been created with a newer version of the IDE!\n\nPlease install the latest version to open it.
+>Questo progetto è stato creato con una versione più recente dell'IDE!\n\nInstallare l'ultima versione per aprirlo.
+
+<This project has been created with a newer version of the IDE!\nYou may expect some problems or lose data if you open it with this version.\n\nProceed and open the project anyway?
+>Questo progetto è stato creato con una versione più recente dell'IDE!\nPotrebbero esserci dei problemi o perdita di dati se lo si apre con questa versione.\n\nProcedere e aprire il progetto comunque?
+
+<This will delete all child elements. Continue?
+>Questo eliminerà tutti gli elementi figlio. Continuare?
+
+<Title
+>Titolo
+
+<To:
+>A:
+
+<Tooltip
+>
+
+<Total Found:%d, Read:%d, Write:%d, Declaration:%d
+>Totale trovato:%d, Letto:%d, Scritto:%d, Dichiarazioni:%d
+
+<Trace Enums
+>Enumerativi trace
+
+<Trace Frunctions
+>Funzioni trace
+
+<Trace Function Blocks
+>Blocchi Funzione trace
+
+<Trace Global Vars
+>Variabili Globali trace
+
+<Trace in Functions
+>Trace nelle Funzioni
+
+<Trace in Functions Blocks
+>Trace nei Blocchi Funzione
+
+<Trace in Programs
+>Trace nel Programma
+
+<Trace Local Vars
+>Variabili Locali trace
+
+<Trace Macros
+>Macro trace
+
+<Trace Programs
+>Programmi trace
+
+<Trace Structs
+>Strutture trace
+
+<Trace Subrs
+>Subrs trace
+
+<Trace Tasks
+>Task trace
+
+<Trace TypeDefs
+>TypeDefs trace
+
+<Type:
+>Tipo:
+
+<Unable to start compiler
+>Impossibile avviare il compilatore
+
+<Unable to start the communication\nChoose 'On-line / Set up communication' to configure it
+>Impossibile avviare la comunicazione\nScegliere 'On-line / avvia la comunicazione' per configurarla
+
+<Ungrouped Global Vars
+>Variabili Globali non raggruppate
+
+<unknown answer received!\n
+>Ricevuta una risposta sconosciuta!\n
+
+<Updatable object color
+>Colore oggetto aggiornabile
+
+<Update on-board debug symbols
+>Aggiornamento simboli di debug a bordo
+
+<Update on-board source code
+>Aggiornamento codice sorgente a bordo
+
+<Updating target image ..
+>Aggiornamento immagine del target ..
+
+<Uploading debug symbols from the target ..
+>Caricamento simboli di debug dal target ..
+
+<Upper limit
+>Limite superiore
+
+<Usage : %s <prj> <flag> [{<flag>}] [/Q]\n\n\tprj:\t Project file (%s)\n\tflags:\t compiler options\n\nCompiler options:\n\n
+>Utilizzo : %s <prj> <flag> [{<flag>}] [/Q]\n\n\tprj:\t File progetto (%s)\n\tOpzioni:\t opzioni di compilazione\n\Opzioni di compilazione:\n\n
+
+<Use customizable workspace
+>Usa lo spazio di lavoro personalizzabile
+
+<Use new LD editor
+>Usa il nuovo editor LD
+
+<Value to be limited
+>Valore da limitare
+
+<Value to get the absolute value for
+>Valore per ottenere il valore assoluto per
+
+<Var
+>
+
+<Variable\tShift+V
+>Variabile\tShift+V
+
+<VARIABLES
+>VARIABILI
+
+<Vars group
+>Gruppo variabili
+
+<View all global vars
+>Visualizza tutte le variabili globali
+
+<View all POUs
+>Visualizza tutte le POUs
+
+<View Function block &properties
+>Visualizza le &proprietà dei blocchi funzione
+
+<View Function block properties
+>Visualizza le proprietà dei blocchi funzione
+
+<View Function properties
+>Visualizza le proprietà delle funzioni
+
+<View object properties
+>Visualizza le proprietà dell'oggetto
+
+<View PLC Object &properties
+>Visualizza le &proprietà degli Oggetti PLC
+
+<View PLC Object &properties\tAlt+Enter
+>Visualizza le &proprietà degli Oggetti PLC\tAlt+Invio
+
+<View Program &properties
+>Visualizza le &proprietà del Programma
+
+<View program properties
+>Visualizza le &proprietà del programma
+
+<View properties
+>Visualizza proprietà
+
+<View Variable properties
+>Visualizza le proprietà delle variabili
+
+<W&atch
+>
+
+<W&atch\tCtrl+T
+>
+
+<warm restart required.\n
+>richiesto warm restart.\n
+
+<Warm restart required: non-retain variables will be reset. Continue?
+>Richiesto warm restart: le variabili non-ritentive verranno ripristinate. Continuare?
+
+<warning
+>
+
+<WARNING: Address is overlapping
+>ATTENZIONE: Indirizzo sovrapposto
+
+<Watch list extended file(*.wlsx)|*.wlsx|Watch list file (*.wls)|*.wls||
+>Estensione file watch list(*.wlsx)|*.wlsx|File watch list (*.wls)|*.wls||
+
+<Workspace
+>Spazio di lavoro
+
+<Workspace %s\nalready exists!
+>Lo spazio di lavoro %s\n esiste già!
+
+<Workspace %s\nnot found, will be removed from the list
+>Lo spazio di lavoro %s\n non è stato trovato, verrà rimosso dalla lista
+
+<Workspaces (*.WKSX)|*.WKSX|All files (*.*)|*.*||
+>Spazio di lavoro (*.WKSX)|*.WKSX|Tutti i file (*.*)|*.*||
+
+<Wrong data alignment
+>Allineamento dati errato
+
+<Wrong tasks number
+>Numero tasks errato
+
+<You have chosen to save %s project as %s.\n\nThis may cause loss of informations because of the old project format chosen.\n\nAt the end of the saving you will be noticed about project parts that cannot be saved in the old project format.\n
+>Hai scelto di salvare il progetto %s come %s.\n\nCiò può causare la perdita di informazioni a causa del vecchio formato di progetto scelto. \n\nAlla fine del salvataggio verrà annotata la parte del progetto che non può essere salvata nel vecchio formato. n\
+
+<You need to save current project, continue?
+>E' necessario salvare il progetto corrente, continuare?
+
+<&Developer
+>&Sviluppatore
+
+<.$$FBD$$
+>
+
+<.$$IL$$
+>
+
+<.$$LD$$
+>
+
+<.$$LD2$$
+>
+
+<.$$MACIL$$
+>
+
+<.$$MACST$$
+>
+
+<.$$SFC$$
+>
+
+<.$$ST$$
+>
+
+<\nENUMval\nENUMval\n\n.$$ENUM$$\nENUMval.Document\nENUM Code Document
+>
+
+<\nFBDCode\nFBDCode\n\n.$$FBD$$\nFBDCode.Document\nFBD Code Document
+>
+
+<\nILCode\nILCode\n\n.$$IL$$\nILCode.Document\nIL Code Document
+>
+
+<\nLD2Code\nLD2Code\n\n.$$LD2$$\nLD2Code.Document\nLD2 Code Document
+>
+
+<\nLDCode\nLDCode\n\n.$$LD$$\nLDCode.Document\nLD Code Document
+>
+
+<\nMacroILCode\nMacroILCode\n\n.$$MACIL$$\nMacroILCode.Document\nMacro IL Code Document
+>
+
+<\nMacroSTCode\nMacroSTCode\n\n.$$MACST$$\nMacroSTCode.Document\nMacro ST Code Document
+>
+
+<\nSFCCode\nSFCCode\n\n.$$SFC$$\nSFCCode.Document\nSFC Code Document
+>
+
+<\nSTCode\nSTCode\n\n.$$ST$$\nSTCode.Document\nST Code Document
+>
+
+<\nSTRUCTval\nSTRUCTval\n\n.$$STRUCT$$\nSTRUCTval.Document\nSTRUCT Code Document
+>
+
+<\nSUBRANGEval\nSUBRANGEval\n\n.$$SUBRANGE$$\nSUBRANGEval.Document\nSUBRANGE Code Document
+>
+
+<\nTYPEDEFval\nTYPEDEFval\n\n.$$TYPEDEF$$\nTYPEDEFval.Document\nTYPEDEF Code Document
+>
+
+<\nVARSval\nVARSval\n\n.$$VARS$$\nVARSval.Document\nVARS val Document
+>
+
+<Add a new node in the tree
+>Aggiungi un nuovo nodo nell'albero
+
+<Added a new '%1' to project
+>Aggiungi un nuovo '%1' al progetto
+
+<AlNGraph
+>
+
+<Are you sure you want to delete\n%1 ?
+>Sei sicuro di voler cancellare\n%1 ?
+
+<Automatically renamed '%1' to '%2'
+>'%1' rinominato automaticamente a '%2'
+
+<Blue cursor
+>Cursore blu
+
+<Can not open project after an automatic update of some libraries.\n\nDo you want to try to open it again with automatic update disabled?
+>Impossibile aprire il progetto dopo un aggiornamento automatico di alcune librie.\n\Vuoi provare a riaprirlo con l'aggiornamento automatico disabilitato?
+
+<Cannot connect to target.\n
+>Impossibile connettersi al target.\n
+
+<Catalog
+>Catalogo
+
+<Configuration
+>Configurazione
+
+<Could not delete\n
+>Impossibile eliminare\n
+
+<Cur value
+>Valore corr
+
+<Delete from catalog
+>Elimina dal catalogo
+
+<Display program registration information
+>Mostra informazioni di registrazione del programma
+
+<Edit device
+>Modifica dispositivo
+
+<Empty page
+>Pagina vuota
+
+<ERROR while copying %1 : %2
+>ERRORE durante la copia di %1 : %2
+
+<Example projects
+>Progetti esempio
+
+<Filter:
+>Filtra:
+
+<Global variables have been already modified but not saved.\nPlease save before continuing
+>Le variabili globali sono già state modificate ma non salvate.\nSalvare prima di continuare o chiudere l'editor variabili aperto
+
+<Hide column
+>Nascondi colonne
+
+<Horz cursor
+>Cursore oriz
+
+<Import EDS
+>Importa EDS
+
+<List
+>Lista
+
+<Main page
+>Pagina principale
+
+<Max value
+>Valore max
+
+<Min value
+>Valore min
+
+<New PLC variable
+>Nuova variabile PLC
+
+<New project ...
+>Nuovo progetto ...
+
+<Open an existing project ...
+>Apri un progetto esistente ...
+
+<Open project ...
+>Apri progetto ...
+
+<Open with &SoftScope
+>Apri con &SoftScope
+
+<Project info and target device info mismatch.\n
+>Le informazioni del progetto e del device target non coincidono.\n
+
+<R_SOURCE OK_R
+>
+
+<Recent documents
+>Documenti recenti
+
+<Red cursor
+>Cursore rosso
+
+<Registration
+>Registrazione
+
+<Remove
+>Rimuovi
+
+<Removes a node from the tree
+>Rimuovi un nodo dall'albero
+
+<Run CAN custom Editor
+>Lancia Editor personalizzato CAN
+
+<Run Modbus custom Editor
+>Lancia Editor personalizzato Modbus
+
+<Show all (including already mapped)
+>Visualizza tutto (compresi i già mappati)
+
+<Show columns...
+>Visualizza colonne...
+
+<The name contains invalid characters
+>Il nome contiene caratteri invalidi
+
+<Time
+>Tempo
+
+<Track
+>Traccia
+
+<Um
+>
+
+<User object '%1 %2' already exists in catalog,\nbut it is different from the one saved in the project.\n\nDo you want to import it into catalog and overwrite the existing one?
+>L'oggetto utente '%1 %2' esiste già nel catalogo,\nma è diverso da quello salvato nel progetto.\n\nVuoi importarlo nel catalogo e sovrascrivere quello esistente?
+
+<User object '%1 %2' copied into project from %3
+>L'oggetto utente '%1 %2' copiato nel progetto da %3
+
+<User object '%1 %2' imported into catalog at %3
+>L'oggetto utente '%1 %2' importato nel catalogo a %3
+
+<v/div
+>
+
+<Variables List
+>Lista variabili
+
+<View Catalog
+>Visualizza Catlogo
+
+<WARNING: User object '%1 %2' already exists in catalog at %3, should be at %4
+>WARNING: l'oggetto utente '%1 %2' esiste già nel catalogo a %3, dovrebbe essere a %4
+
+<Welcome page
+>Pagina di Benvenuto
+
+<Device catalog
+>Catalogo dispositivo
+
+<Device name
+>Nome dispositivo
+
+<Gefran device catalog
+>Catalogo dispositivo Gefran
+
+<Loading Catalog ...
+>Caricamento Catalogo ...
+
+<Max version
+>Versione max
+
+<PLC ID
+>
+
+<Show all versions
+>Mostra tutte le versioni
+
+<Search
+>Cerca
+
+<Search text
+>Cerca testo
+
+<Search in
+>Cerca in
+
+<No license
+>Nessuna licenza
+
+<You must be connected to the target
+>Devi essere connesso al target
+
+<Error reading the HW Key
+>Errore nella lettura della chiave HW
+
+<Invalid License key
+>Chiave di licenza non valida
+
+<Error writing license
+>Errore di scrittura della licenza

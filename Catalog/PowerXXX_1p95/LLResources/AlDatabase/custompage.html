@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Application Custom page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var app = window.external
+	var paramsROPath
+	var m_deviceNode
+	var m_devConfigNode
+	
+	function InitPage()
+	{
+		
+		var path = _DATAPATH
+		pageTitle.innerText = "'" + app.DataGet(path + "@caption", 0) + "' " + app.Translate("Custom page")
+		
+		SearchError(path)
+	}
+
+	function CompareNoCase(s1, s2)
+	{
+		return s1.toLowerCase() == s2.toLowerCase();
+	}
+	
+	function ImportHtml()
+	{
+		var m_fso = app.CallFunction( "common.CreateObject", "Scripting.FileSystemObject" )
+		var path = m_fso.GetParentFolderName(app.CallFunction("logiclab.get_ProjectPath")) + "\\html"
+		var pathFile = app.CallFunction("extfunct.ShowOpenFileDlgEx", "Page files (*.html)|*.html|All files (*.*)|*.*|",".html", path)
+		if (!pathFile) return
+		
+		// la pagina deve essere nella cartella html del progetto
+		if ( !CompareNoCase(m_fso.GetParentFolderName(pathFile), path) )
+		{
+			alert(app.Translate("HTML files must be in %1 folder").replace("%1", path))
+			return
+		}
+		
+		namePage.focus()	
+		namePage.value = m_fso.GetFileName(pathFile);
+		namePage.blur()
+	}
+
+	function ImportIcon()
+	{
+		var m_fso = app.CallFunction( "common.CreateObject", "Scripting.FileSystemObject" )
+		var path = m_fso.GetParentFolderName(app.CallFunction("logiclab.get_ProjectPath")) + "\\img"
+		var pathFile = app.CallFunction("extfunct.ShowOpenFileDlgEx", "Icon files (*.ico)|*.ico|All files (*.*)|*.*|",".html", path)
+		if (!pathFile) return
+
+		// le icone deve essere nella cartella html del progetto
+		if ( !CompareNoCase(m_fso.GetParentFolderName(pathFile), path) )
+		{
+			alert(app.Translate("Ico files must be in %1 folder").replace("%1", path))
+			return
+		}
+		
+		nameIcon.focus()
+		nameIcon.value = m_fso.GetFileName(pathFile);
+		nameIcon.blur()
+	}
+	
+	</script>
+	
+</head>
+
+<body>
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%;" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle">Template Page</td>
+	</tr>
+	<tr>
+		<td valign="top">
+			<br>
+			<table border="0" class="Sfondo">
+				<tr>
+					<td nowrap> <label for="refresh"><t:t>HTML Page</t:t>:</label> </td>
+					<td> <input id="namePage" type="text" name=".D(@link)" size="50"/></td> 
+					<td><button class="ll-button" onClick="ImportHtml()" style="width: 50px"> ... </button></td> 
+				</tr>
+				<tr>
+					<td nowrap> <label for="title"><t:t>Icon</t:t>:</label> </td>
+					<td><input id="nameIcon" type="text" name=".D(@icon)" size="50"/></td>
+					<td><button class="ll-button" onClick="ImportIcon()" style="width: 50px"> ... </button></td> 
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+</table>
+
+<script>
+	// la funzione verra' eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

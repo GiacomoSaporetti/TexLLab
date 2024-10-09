@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<title>Variables List</title>
+	<script type="text/javascript">
+		/* ---------------- FINESTRA DI SELEZIONE VARIABILI CON INDIRIZZO --------------------------
+
+		INPUT varsList_Pars : [ { name: string, description: string, address: int, deviceCaption: string } ]
+		INPUT varsList_multipleSel : boolean
+		OUTPUT VarsList_result : [ int ]
+
+		*/
+
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		// deprecato: ora lo stile di varslist e' incluso nel CSS generico
+		// document.write("<LINK href='" + csspath + "varslist.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		var m_curFilter
+		var m_multiple
+
+		function Init()
+		{
+			// reset var risultato
+			app.TempVar("VarsList_result") = undefined
+
+			m_multiple = window.external.TempVar("GenericList_multipleSel");
+			if (m_multiple)
+				list.multiple = true;
+			else
+				// workaround per mostrare la lista di option e non la select "singola"
+				list.size = 2;
+
+			FillList()
+		}
+
+
+		function FillList()
+		{
+			if (filter.value.toLowerCase() == m_curFilter)
+				// tasto che non ha modificato il filtro (es frecce)
+				return
+			
+			m_curFilter = filter.value.toLowerCase()
+			
+			// svuotamento lista
+			list.options.length = 0;
+			
+			var inputList = window.external.TempVar("VarsList_input")
+
+			// riempie la lista solo con elementi non presenti
+			for (var i = 0; i < inputList.length; i++)
+			{
+				var item = inputList[i]
+				
+				var s = ""
+				if (item.address !== undefined)
+					s += item.address + "   "
+				s += item.name
+				if (item.type)
+					s += "   (" + item.type + ")"
+				if (item.typeIEC)
+					s += "   (" + item.typeIEC + ")"
+				if (item.description)
+					s += " - " + item.description
+					
+				if (m_curFilter == "" || s.toLowerCase().indexOf(m_curFilter) != -1)
+				{
+					// aggiunge se nessun filtro o filtro ok
+					var option = document.createElement("option");
+					option.text = s;
+					option.value = i;
+					list.add(option);
+				}
+			}
+		}
+
+
+		function CloseOK()
+		{
+			var result = []
+			
+			// crea array con elenco risultati
+			if (m_multiple)
+			{
+				var tot = list.options.length;
+				for (var i = 0; i < tot; i++)
+				{
+					var option = list.options[i];
+					if (option.selected)
+					{
+						var value = option.value;
+						result.push(value)
+					}
+				}
+			}
+			else if (list.selectedIndex != -1)
+			{
+				var option = list.options[list.selectedIndex];
+				var value = option.value;
+				result.push(value)
+			}
+
+			window.external.TempVar("VarsList_result") = result
+			CloseDlg()
+		}
+
+		function OnListDblClick()
+		{
+			if (list.selectedIndex != -1)
+				// doppio click sulla lista seleziona e conferma
+				CloseOK();
+		}
+	</script>
+</head>
+
+<body class="varslist" onload="Init()">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+
+	<div class="container">
+		<div>
+			<label for="filter"><t:t>Filter</t:t>: </label><input style="width: 330px" type="text" id="filter" onkeyup="FillList()">
+		</div>
+
+		<div class="list-container mt-xs">
+			<select id="list" ondblclick="OnListDblClick()"></select>
+		</div>
+
+		<div class="btn-container">
+			<button class="FlatButton" onclick="CloseOK()"><t:t>OK</t:t></button>
+			<button class="FlatButton" onclick="CloseDlg()"><t:t>Cancel</t:t></button>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Dependency Viewer</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	
+	var app = window.external;
+	var m_fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject")
+
+	var m_prjPath;
+	var m_prjName;
+
+	const TAB_RESOURCES = 3;
+
+    // TODO sara' da cambiare
+	const DEP_FILE_SUFFIX = ".unu.xml";
+	</script>
+
+	<script src="external/d3.v5.min.js"></script>
+    <script src="src.js"></script>
+	<script src="treeIE.js"></script>
+
+	<style>
+		body {
+			padding: 0;
+			margin: 0
+		}
+
+		.node circle {
+			fill: #fff;
+			stroke: steelblue;
+			stroke-width: 3px;
+		}
+
+		.node text {
+			font: 12px sans-serif;
+		}
+
+		.link {
+			fill: none;
+			stroke: #ccc;
+			stroke-width: 2px;
+		}
+
+		.node {
+			cursor: pointer;
+		}
+
+		@media print {
+			.TitlePag {
+				display: none;
+			}
+		}
+
+		.tableHeader {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			padding-right: 10px;
+		}
+	</style>
+</head>
+<body style="display: flex; flex-direction: column;" class="html5">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Dependencies Report</t:t></span>
+	</div>
+
+	<div class="tableHeader hideOnPrint">
+		<span>
+			<label><t:t>Object name</t:t>:</label>
+			<select id="POUSelect" onchange="DrawGraph()"></select>
+
+			<span style="margin-left: 20px;">
+				<label><t:t>Mode</t:t>:</label>
+				<input type="radio" name="depType" value="dependency" id="choice-dependency" checked onclick="DrawGraph()">
+				<label for="choice-dependency">Dependency</label>
+				<input type="radio" name="depType" value="depending" id="choice-depending" onclick="DrawGraph()">
+				<label for="choice-depending">Depending</label>
+			</span>
+
+			<button class="ll-button" id="backBtn" style="margin-left: 30px;" onclick="GoBack()" disabled>
+				<img id="imgBack"/>
+				<span class="label"><t:t>Back</t:t></span>
+			</button>
+		</span>
+
+		<span>
+			<!-- TODO la funzione di print taglia quasi sempre il grafico, e' da sistemare -->
+			<!-- <button class="ll-button" id="btnPrint" onclick="window.print()">
+				<img id="imgPrint"/>
+				<span class="label"><t:t>Print</t:t></span>
+			</button> -->
+
+			<!-- <button class="ll-button" id="btnReload" onclick="ReloadCurrentWindow()">
+				<img id="imgReload"/>
+				<span class="label"><t:t>Reload</t:t></span>
+			</button> -->
+
+			<button class="ll-button" id="helpBtn" onclick="ShowHelp()">
+				<img id="imgHelp"/>
+				<span class="label"><t:t>Help</t:t></span>
+			</button>
+		</span>
+	</div>
+
+	<div id="treeView" style="flex: 1; overflow: auto;"></div>
+
+	<script>InitPage()</script>
+</body>
+</html>

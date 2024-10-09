@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Main Configuration</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		try
+		{
+			if (window.external.IsDarkTheme())
+			{
+				document.write("<LINK href='" + csspath + "style_dark.css' rel='stylesheet' type='text/css'>");
+			}
+		}
+		catch (err)
+		{
+		}
+
+		function InitPage()
+		{
+			app.TempVar("$$LLSCAN_IPADDRESS_RESULT$$") = "";
+			currIp.value = app.TempVar("$$LLSCAN_IPADDRESS$$");
+		}
+
+		function ValidateIPaddress(ipaddress) 
+		{
+			if (ipaddress.toLowerCase() == "localhost")
+				return true;
+
+			if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))
+				return (true)
+			return (false)
+		}
+
+		function onOK()
+		{
+			if (newIp.value)
+			{
+				if (!ValidateIPaddress(newIp.value))
+				{
+					invalidIPMsg.style.visibility = "visible";
+					return;
+				}
+				else
+					invalidIPMsg.style.visibility = "hidden";
+
+				var newAdr = newIp.value;
+				if(newAdr.toLowerCase() == "localhost")
+					newAdr = "127.0.0.1";
+
+				app.TempVar("$$LLSCAN_IPADDRESS_RESULT$$") = newAdr;
+			}
+
+			CloseDlg();
+		}
+	</script>
+
+	<style>
+		html, body {
+			margin: auto;
+			height: auto;
+		}
+
+		.Sfondo {
+			padding: 20px;
+		}
+
+		label {
+			width: 120px;
+			display: inline-block;
+		}
+
+		.btn-container {
+			display: flex;
+			justify-content: space-around;
+		}
+
+		/* bottoni finestra */
+		.btn-container > button {
+			margin-top: 20px;
+			width: 120px;
+		}
+
+		#invalidIPMsg {
+			margin-left: 115px;
+			margin-top: 3px;
+			width: 175px;
+		}
+	</style>
+</head>
+
+<body class="Sfondo">
+	<div>
+		<div>
+			<label for="usr"><t:t>Current IP address:</t:t></label>
+			<input type="text" class="form-control" id="currIp" disabled>
+		</div>
+
+		<div class="mt-xs">
+			<label for="usr"><t:t>New IP address:</t:t></label>
+			<input type="text" class="form-control" id="newIp">
+			<label id="invalidIPMsg" style="color:red;visibility:hidden"><t:t>Please enter a valid IP address</t:t></label>
+		</div>
+	</div>
+
+	<div class="btn-container">
+		<button onclick="onOK()" class="FlatButton"><b><t:t>OK</t:t></b></button>
+		<button onclick="CloseDlg()" class="FlatButton"><b><t:t>Cancel</t:t></b></button>
+	</div>
+</body>
+
+<script>
+	InitPage()
+</script>
+</html>

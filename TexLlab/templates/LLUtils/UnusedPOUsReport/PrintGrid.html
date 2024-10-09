@@ -1,0 +1,12 @@
+<html>
+<head>
+	<script>
+	var app = window.external
+	// redirige semplicemente la pagina sul file di stampa temporaneo
+	// attualmente non è infatti possibile eseguire una app.OpenWindow() passando il path del file html ma viene usato sempre solo quello definito nel PCT
+	window.location.href = app.TempVar("PrintGrid_FileName")
+	</script>
+</head>
+<body>
+</body>
+</html>

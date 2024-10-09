@@ -1,0 +1,444 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+
+<xs:complexType name="Tany" mixed="true">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:any processContents="skip"/>
+	</xs:sequence>
+	<xs:anyAttribute processContents="skip"/>
+</xs:complexType>
+
+
+<!-- __________________________ elementi del PCT master GF_Net __________________________ -->
+<xs:element name="template">
+	<xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="TFrameworkSection">
+				<xs:attribute name="title" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="Tconfig_master">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="alternativeroot" type="xs:string"/>
+			<xs:element name="validation" type="xs:boolean"/>
+			<xs:element name="templatesdir" type="xs:string"/>
+			<xs:element name="htmlAcceptTextImmediate" type="xs:boolean"/>
+			<xs:element name="loadExternalTemplate" type="xs:string"/>
+			<xs:element name="autoSchemaUpgrade" type="xs:boolean"/>
+			<xs:element name="barStateSection" type="xs:string"/>
+		</xs:choice>
+	</xs:sequence>
+</xs:complexType>
+
+
+
+<!-- __________________________ sezione GF_Net __________________________ -->
+<xs:complexType name="TFrameworkSection">
+	<xs:all>
+		<xs:element name="config" type="Tconfig_master" minOccurs="0"/>
+		<xs:element name="hmi" type="Thmi" minOccurs="0"/>
+		<xs:element name="extensions" type="Textensions" minOccurs="0"/>
+		<xs:element name="templatedata" type="Tany" minOccurs="0"/>
+		<xs:element name="datadef" type="Tdatadef" minOccurs="0"/>
+	</xs:all>
+</xs:complexType>
+
+
+<!-- elemento hmi con tutti gli elementi di interfaccia -->
+<xs:complexType name="Thmi">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="menu" type="Tmenu"/>
+			<xs:element name="window" type="Twindow"/>
+			<xs:element name="form" type="Tform"/>
+			<xs:element name="tree" type="Ttree"/>
+			<xs:element name="toolbar" type="Ttoolbar"/>
+			<xs:element name="key" type="Tkey"/>
+			<xs:element name="dockbar" type="Tdockbar"/>
+			<xs:element name="statusbar" type="Tstatusbar"/>
+			<xs:element name="containerWnd" type="TcontainerWnd"/>
+		</xs:choice>
+	</xs:sequence>
+	<xs:attribute name="defaultpopup" type="xs:string"/>
+</xs:complexType>
+
+<!-- finestre: window e form -->
+<xs:simpleType name="enumWindowType">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="com"/>
+		<xs:enumeration value="dll"/>
+		<xs:enumeration value="html"/> 
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="Twindow">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="type" type="enumWindowType" use="required"/>
+			<xs:attribute name="link" type="xs:string" use="required"/>
+			<xs:attribute name="title" type="xs:string"/>
+			<xs:attribute name="colorsFunc" type="xs:string"/>
+			<xs:attribute name="parseFunc" type="xs:string"/>
+			<xs:attribute name="onopen" type="xs:string"/>
+			<xs:attribute name="onclose" type="xs:string"/>
+			<xs:attribute name="onprint" type="xs:string"/>
+			<xs:attribute name="comboFillFunc" type="xs:string"/>
+			<xs:attribute name="setValueFunc" type="xs:string"/>
+			<xs:attribute name="persistent" type="xs:boolean"/>
+			<xs:attribute name="deletewnd" type="xs:boolean"/>
+			<xs:attribute name="sinktype" type="xs:string"/>
+			<xs:attribute name="sinkpath" type="xs:string"/>
+			<xs:attribute name="ctrlID" type="xs:integer"/>
+			<xs:attribute name="helpContext" type="xs:string"/>
+			<xs:attribute name="version" type="xs:integer"/>
+			<xs:attribute name="getValueFunc" type="xs:string"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="Tform">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="type" type="enumWindowType" use="required"/>
+			<xs:attribute name="link" type="xs:string" use="required"/>
+			<xs:attribute name="title" type="xs:string"/>
+			<xs:attribute name="xsize" type="xs:integer"/>
+			<xs:attribute name="ysize" type="xs:integer"/>
+			<xs:attribute name="modal" type="xs:boolean"/>
+			<xs:attribute name="resizable" type="xs:boolean"/>
+			<xs:attribute name="multiInstance" type="xs:boolean"/>
+			<xs:attribute name="noClose" type="xs:boolean"/>
+			<xs:attribute name="toolWindow" type="xs:boolean"/>
+			<xs:attribute name="onopen" type="xs:string"/>
+			<xs:attribute name="onclose" type="xs:string"/>
+			<xs:attribute name="colorsFunc" type="xs:string"/>
+			<xs:attribute name="parseFunc" type="xs:string"/>
+			<xs:attribute name="comboFillFunc" type="xs:string"/>
+			<xs:attribute name="setValueFunc" type="xs:string"/>
+			<xs:attribute name="deletewnd" type="xs:boolean"/>
+			<xs:attribute name="sinktype" type="xs:string"/>
+			<xs:attribute name="sinkpath" type="xs:string"/>
+			<xs:attribute name="helpContext" type="xs:string"/>
+			<xs:attribute name="minButton" type="xs:boolean"/>
+			<xs:attribute name="maxButton" type="xs:boolean"/>
+			<xs:attribute name="taskbarIcon" type="xs:boolean"/>
+			<xs:attribute name="mainWindow" type="xs:boolean"/>
+			<xs:attribute name="icon" type="xs:string"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<!-- alberi e nodi -->
+<xs:complexType name="Toverlayimg">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="index" type="xs:integer"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="Ttree">
+	<xs:sequence>
+		<xs:element name="overlayimg" minOccurs="0" maxOccurs="unbounded" type="Toverlayimg"/>
+		<xs:element name="node" minOccurs="0" maxOccurs="unbounded" type="Tnode"/>
+	</xs:sequence>
+	<xs:attribute name="name" type="xs:string"/>
+	<xs:attribute name="iconsizex" type="xs:integer"/>
+	<xs:attribute name="iconsizey" type="xs:integer"/>
+	<xs:attribute name="uniquecaptions" type="xs:boolean"/>
+	<xs:attribute name="onclick" type="xs:string"/>
+	<xs:attribute name="onrclick" type="xs:string"/>
+	<xs:attribute name="ondblclick" type="xs:string"/>
+	<xs:attribute name="ondrop" type="xs:string"/>
+	<xs:attribute name="onkeydown" type="xs:string"/>
+	<xs:attribute name="linesAtRoot" type="xs:boolean"/>
+	<xs:attribute name="bordertype">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="none"/>
+				<xs:enumeration value="single"/> 
+				<xs:enumeration value="sunken"/> 
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="ctrlID" type="xs:integer"/>
+	<xs:attribute name="onbegindrag" type="xs:string"/>
+	<xs:attribute name="dragClipFmt" type="xs:string"/>
+	<xs:attribute name="ontooltip" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Tnode">
+	<xs:sequence>
+		<xs:element name="node" minOccurs="0" maxOccurs="unbounded" type="Tnode"/>
+	</xs:sequence>
+	<xs:attribute name="name" type="xs:string" use="required"/>
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="icon" type="xs:string"/>
+	<xs:attribute name="iconselect" type="xs:string"/>
+	<xs:attribute name="data" type="xs:string"/>
+	<xs:attribute name="default" type="xs:boolean"/>
+	<xs:attribute name="menu" type="xs:string"/>
+	<xs:attribute name="window" type="xs:string"/>
+	<xs:attribute name="onclick" type="xs:string"/>
+	<xs:attribute name="ondblclick" type="xs:string"/>
+	<xs:attribute name="onrclick" type="xs:string"/>
+	<xs:attribute name="captionedit" type="xs:string"/>
+	<xs:attribute name="datalink" type="xs:string"/>
+	<xs:attribute name="ondrop" type="xs:string"/>
+	<xs:attribute name="onendcaptionedit" type="xs:string"/>
+	<xs:attribute name="expand" type="xs:boolean"/>
+	<xs:attribute name="level" type="xs:integer"/>
+	<xs:attribute name="onbegindrag" type="xs:string"/>
+	<xs:attribute name="tooltip" type="xs:string"/>
+	<xs:attribute name="ontooltip" type="xs:string"/>
+</xs:complexType>
+
+<!-- comandi, separatori, menu a tendina -->
+<xs:complexType name="Tcommand">
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="handler" type="xs:string"/>
+	<xs:attribute name="updatehandler" type="xs:string"/>
+	<xs:attribute name="statusmsg" type="xs:string"/>
+	<xs:attribute name="cmd" type="xs:integer"/>
+</xs:complexType>
+
+<xs:complexType name="Tseparator">
+</xs:complexType>
+
+<xs:simpleType name="enumMenuApplyTo">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="all"/>
+		<xs:enumeration value="mainframe"/>
+		<xs:enumeration value="frameworkdoc"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="Tmenu">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="command" type="Tcommand"/>
+			<xs:element name="separator" type="Tseparator"/>
+			<xs:element name="menu" type="Tmenu"/>
+		</xs:choice>
+	</xs:sequence>
+	<xs:attribute name="name" type="xs:string"/>
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="position" type="xs:integer"/>
+	<xs:attribute name="applyto" type="enumMenuApplyTo"/>
+</xs:complexType>
+
+<!-- toolbar e bottoni -->
+<xs:simpleType name="enumButtonStyle">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="button"/>
+		<xs:enumeration value="check"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="Tbutton">
+	<xs:attribute name="handler" type="xs:string"/>
+	<xs:attribute name="updatehandler" type="xs:string"/>
+	<xs:attribute name="statusmsg" type="xs:string"/>
+	<xs:attribute name="tooltip" type="xs:string"/>
+	<xs:attribute name="cmd" type="xs:integer"/>
+	<xs:attribute name="icon" type="xs:string"/>
+	<xs:attribute name="style" type="enumButtonStyle"/>
+</xs:complexType>
+
+<xs:complexType name="Ttoolbar">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="button" type="Tbutton"/>
+			<xs:element name="separator" type="Tseparator"/>
+		</xs:choice>
+	</xs:sequence>
+	<xs:attribute name="name" type="xs:string"/>
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="addtomenu" type="xs:string"/>
+</xs:complexType>
+
+<!-- tasti rapidi -->
+<xs:complexType name="Tkey">
+	<xs:attribute name="value" type="xs:string" use="required"/>
+	<xs:attribute name="handler" type="xs:string"/>
+	<xs:attribute name="ctrl" type="xs:boolean"/>
+	<xs:attribute name="alt" type="xs:boolean"/>
+	<xs:attribute name="shift" type="xs:boolean"/>
+	<xs:attribute name="cmd" type="xs:integer"/>
+</xs:complexType>
+
+<!-- finestre dockabili e dockbar -->
+<xs:complexType name="Toutput">
+	<xs:attribute name="name" type="xs:string"/>
+	<xs:attribute name="ondblclick" type="xs:string"/>
+	<xs:attribute name="bordertype">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="none"/>
+				<xs:enumeration value="single"/> 
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="ctrlID" type="xs:integer"/>
+</xs:complexType>
+
+<xs:complexType name="Tdockedwindow">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="autodelete" type="xs:boolean"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:simpleType name="enumDockbarPosition">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="left"/>
+		<xs:enumeration value="right"/>
+		<xs:enumeration value="top"/> 
+		<xs:enumeration value="bottom"/> 
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- tipi di controllo gestiti da CFrameworkDoc::CreateControl -->
+<xs:group name="Tcontrols">
+	<xs:choice>
+		<xs:element name="tree" type="Ttree"/>
+		<xs:element name="output" type="Toutput"/>
+		<xs:element name="dockedwindow" type="Tdockedwindow"/>
+		<xs:element name="tabview" type="Ttabview"/>
+	</xs:choice>
+</xs:group>
+
+<xs:complexType name="Tdockbar">
+	<xs:sequence>
+		<xs:element name="toolbar" type="Ttoolbar" minOccurs="0" maxOccurs="1"/>
+		<xs:group ref="Tcontrols"/>
+	</xs:sequence>
+	<xs:attribute name="name" type="xs:string"/>
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="position" type="enumDockbarPosition"/>
+	<xs:attribute name="size" type="xs:integer"/>
+	<xs:attribute name="addtomenu" type="xs:string"/>
+	<xs:attribute name="relativeto" type="xs:string"/>
+</xs:complexType>
+
+<xs:simpleType name="enumPaneStyles">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="inset"/>
+		<xs:enumeration value="flat"/>
+		<xs:enumeration value="outset"/> 
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="enumPaneTypes">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="text"/>
+		<xs:enumeration value="image"/> 
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="Tstatusbar">
+	<xs:sequence maxOccurs="unbounded">
+		<xs:element name="pane">
+			<xs:complexType>
+				<xs:attribute name="id" type="xs:integer"/>
+				<xs:attribute name="width" type="xs:string"/>
+				<xs:attribute name="style" type="enumPaneStyles" use="required"/>
+				<xs:attribute name="type" type="enumPaneTypes"/>
+				<xs:attribute name="updatehandler" type="xs:string"/>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Ttabview">
+	<xs:sequence maxOccurs="unbounded">
+		<xs:element name="tab">
+			<xs:complexType>
+				<xs:group ref="Tcontrols"/>
+				<xs:attribute name="caption" type="xs:integer"/>
+				<xs:attribute name="icon" type="xs:string"/>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	<xs:attribute name="tabsPosition">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="bottom"/>
+				<xs:enumeration value="top"/> 
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+</xs:complexType>
+
+<xs:complexType name="TcontainerWnd">
+	<xs:group ref="Tcontrols"/>
+	<xs:attribute name="id" type="xs:string"/>
+</xs:complexType>
+
+
+<!-- gestione estensioni -->
+<xs:complexType name="Textensions">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="script" type="Textension"/>
+			<xs:element name="dll" type="Textension"/>
+			<xs:element name="com" type="Textension"/>
+			<xs:element name="java" type="Textension"/>
+			<xs:element name="eventhandler" type="Teventhandler"/>
+		</xs:choice>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Textension">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="alias" type="xs:string"/>
+			<xs:attribute name="persistent" type="xs:boolean"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+<xs:simpleType name="enumEvents">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="OnNew"/>
+		<xs:enumeration value="OnLoad"/>
+		<xs:enumeration value="OnSave"/> 
+		<xs:enumeration value="OnValidate"/> 
+		<xs:enumeration value="OnGenerate"/> 
+		<xs:enumeration value="OnClick"/> 
+		<xs:enumeration value="OnDblClick"/> 
+		<xs:enumeration value="OnRClick"/> 
+		<xs:enumeration value="OnCommand"/> 
+		<xs:enumeration value="OnMessage"/> 
+		<xs:enumeration value="OnTimer"/> 
+		<xs:enumeration value="OnProcessTag"/> 
+		<xs:enumeration value="OnLoadTemplate"/> 
+		<xs:enumeration value="OnClose"/> 
+		<xs:enumeration value="OnBeforeSave"/> 
+		<xs:enumeration value="OnBeforeLoad"/> 
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="Teventhandler">
+	<xs:simpleContent>
+		<xs:extension base="xs:string">
+			<xs:attribute name="event" type="enumEvents"/>
+		</xs:extension>
+	</xs:simpleContent>
+</xs:complexType>
+
+
+<!-- elenco degli schemi XSD -->
+<xs:complexType name="Tdatadef">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:any processContents="skip" namespace="http://www.w3.org/2001/XMLSchema"/>
+	</xs:sequence>
+	<xs:attribute name="version" type="xs:decimal" use="required"/>
+</xs:complexType>
+
+</xs:schema>

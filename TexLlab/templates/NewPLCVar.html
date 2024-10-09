@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>New PLC variable</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<script type="text/javascript">
+
+try
+{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+catch (e)
+{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+var m_fixedArraySize
+var m_isRetainAllowed = false
+
+function Init()
+{
+	var params = app.TempVar("NewPLCVar_params")
+	
+	for (var i = 0; i < params.typesList.length; i++)
+	{
+		var t = params.typesList[i]
+		if (t == "TIME")
+			continue  // salta i tipi non supportati
+			
+		lstType.options.add(new Option(t, t))
+	}
+	
+	txtName.value = params.name
+	lstType.value = params.type
+	
+	m_fixedArraySize = params.fixedArraySize;
+	if (m_fixedArraySize)
+	{
+		txtSize.value = m_fixedArraySize;
+		txtSize.disabled = true;
+	}
+	
+	// reset var risultato e params
+	app.TempVar("NewPLCVar_result") = undefined
+	app.TempVar("NewPLCVar_params") = undefined
+	
+	OnChangeType()
+	
+	// consenti mappatura variabili su datablock retain
+	m_isRetainAllowed = app.TempVar("NewPLCVar_allowRetain")
+	divRetain.style.visibility = m_isRetainAllowed ? "" : "hidden"
+}
+
+
+function CloseOK()
+{
+	var result = {}
+	
+	if (!txtName.value)
+		return
+	
+	if (!app.CallFunction("script.CheckVarName", txtName.value, true))
+	{
+		alert(app.Translate("Invalid variable name"))
+		return
+	}
+	
+	if (lstType.value == "")
+	{
+		alert(app.Translate("Invalid variable type"))
+		return
+	}
+	
+	result.name = txtName.value
+	result.type = lstType.value
+	
+	if (lstType.value == "STRING")
+	{
+		if (!txtSize.value)
+		{
+			alert(app.Translate("Invalid size specified"))
+			return
+		}
+		
+		result.size = parseInt(txtSize.value)
+	}
+	else if (m_fixedArraySize)
+		result.size = m_fixedArraySize;
+		
+	if (m_isRetainAllowed)
+		result.retain = chkRetain.checked
+	else
+		result.retain = false
+		
+	app.TempVar("NewPLCVar_result") = result
+		
+	CloseDlg()
+}
+
+function OnChangeType()
+{
+	divSize.style.visibility = (lstType.value == "STRING" || m_fixedArraySize) ? "" : "hidden"
+}
+
+function OnKeyDown(e)
+{
+	if (window.event) // IE8 and earlier
+		var keynum = window.event.keyCode;
+	else if (e && e.which) // IE9/Firefox/Chrome/Opera/Safari
+		var keynum = e.which;
+	
+	if (keynum == 13)
+		CloseOK()
+		
+	return true
+}
+	</script>
+
+	<style>
+		.FlatButton {
+			width: 100px;
+			height: 30px;
+		}
+	</style>
+</head>
+
+<body scroll="no" onload="Init()" class="Sfondo">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	
+	<table>
+		<tr>
+			<td width="50px"> <label for="txtName" style="width:200px"><t:t>Name</t:t>:</label> </td>
+			<td> <input style="width: 200px" type="text" id="txtName" onkeydown="OnKeyDown()"> </td>
+		</tr>
+		<tr>
+			<td> <label for="lstType" style="width:200px"><t:t>Type</t:t>:</label> </td>
+			<td> <select id="lstType" onchange="OnChangeType()"></select> </td>
+		</tr>
+		<tr id="divSize">
+			<td> <label for="txtSize" style="width:200px"><t:t>Size</t:t>:</label> </td>
+			<td> <input type="text" id="txtSize" value="10" size="5"> </td>
+		</tr>
+		<tr id="divRetain">
+			<td> <label for="chkRetain" style="width:240px"><t:t>Retain</t:t>:</label> </td>
+			<td> <input type="checkbox" id="chkRetain"> </td>
+		</tr>
+	</table>
+	<div style="display: flex; justify-content: space-around;">
+		<button class="FlatButton" onclick="CloseOK()"><t:t>OK</t:t></button>
+		<button class="FlatButton" onclick="CloseDlg()"><t:t>Cancel</t:t></button>
+	</div>
+
+</body>
+</html>

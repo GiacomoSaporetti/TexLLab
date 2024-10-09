@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="TexVariable" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexVariable">
+				<Pou name="Tex_getBit"/>
+				<Pou name="Tex_getDword"/>
+				<Pou name="Tex_getFixed"/>
+				<Pou name="Tex_getInfo"/>
+				<Pou name="Tex_getWord"/>
+				<Pou name="Tex_putBit"/>
+				<Pou name="Tex_putDword"/>
+				<Pou name="Tex_putFixed"/>
+				<Pou name="Tex_putWord"/>
+				<Definition name="TEXVAR_ERRORS"/>
+				<Pou name="Tex_getSinfo"/>
+				<Pou name="Tex_putInfo"/>
+				<Pou name="Tex_putSinfo"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions>
+			<function name="Tex_getBit" version="1.0.0" creationDate="1721815375" lastModifiedDate="1726756842">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Power device Fxxxx bit</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getBit		: WORD		(* get value of Power device volatile bits *)
+
+VAR_INPUT
+	index 				: WORD;		(* internal Power device Fxxxx bit *)
+	objects				: WORD;		(* how many objects (default = 1) *)
+	variable 			: PVOID;	(* pointer to IEC61131-3 variable *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_getDword" version="1.0.0" creationDate="1721815504" lastModifiedDate="1722256194">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex LWxxx index</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getDword	: WORD
+
+VAR_INPUT
+	index 				: WORD;		(* internal Tex LWxxx index *)
+	objects				: WORD;		(* how many objects (default = 1) *)
+	variable 			: PVOID;	(* pointer to IEC61131-3 variable *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_getFixed" version="1.0.0" creationDate="1721815742" lastModifiedDate="1722262105">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Vxxx index</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getFixed	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Vxxx index *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_getInfo" version="1.0.0" creationDate="1721816830" lastModifiedDate="1726756765">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Info index</descr>
+						</var>
+						<var name="axis" type="STRING">
+							<descr>name of the axis whose info is to be read</descr>
+						</var>
+						<var name="task" type="WORD">
+							<descr>task which is controlling the axes</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getInfo	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Info index *)
+	axis 				: STRING;		(* name of the axis whose info is to be read *)
+	task 				: WORD;			(* task which is controlling the axes *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_getWord" version="1.0.0" creationDate="1721816972" lastModifiedDate="1721837012">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Wxxx index</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getWord	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Wxxx index *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putBit" version="1.0.0" creationDate="1721817011" lastModifiedDate="1726757259">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>Internal Tex Fxxxx bit</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putBit		: WORD			(* put value to Power device volatile bit *)
+
+VAR_INPUT
+	index 				: WORD;			(* Internal Tex Fxxxx bit *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putDword" version="1.0.0" creationDate="1721817165" lastModifiedDate="1722265645">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>Internal Tex LWxxxx bit</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putDword	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* Internal Tex LWxxxx bit *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putFixed" version="1.0.0" creationDate="1721817256" lastModifiedDate="1722265645">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>Internal Tex Vxxxx bit</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putFixed	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* Internal Tex Vxxxx bit *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putWord" version="1.0.0" creationDate="1721817329" lastModifiedDate="1722265568">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>Internal Tex Wxxxx bit</descr>
+						</var>
+						<var name="objects" type="WORD">
+							<descr>how many objects (default = 1)</descr>
+						</var>
+						<var name="variable" type="PVOID">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putWord	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* Internal Tex Wxxxx bit *)
+	objects				: WORD;			(* how many objects (default = 1) *)
+	variable 			: PVOID;		(* pointer to IEC61131-3 variable *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_getSinfo" version="1.0.0" creationDate="1721816830" lastModifiedDate="1726739665">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Sinfo index</descr>
+						</var>
+						<var name="variable" type="@STRING">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+						<var name="sizeVariable" type="WORD">
+							<descr>size of variable STRING</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_getSinfo	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Sinfo index *)
+	variable 			: @STRING;		(* pointer to IEC61131-3 variable *)
+	sizeVariable		: WORD;			(* size of variable STRING *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putInfo" version="1.0.0" creationDate="1721817329" lastModifiedDate="1726750379">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Info index</descr>
+						</var>
+						<var name="axis" type="STRING">
+							<descr>name of the axis whose info is to be read</descr>
+						</var>
+						<var name="task" type="WORD">
+							<descr>task which is controlling the axes</descr>
+						</var>
+						<var name="variable" type="WORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putInfo	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Info index *)
+	axis 				: STRING;		(* name of the axis whose info is to be read *)
+	task 				: WORD;			(* task which is controlling the axes *)
+	variable 			: WORD;			(* IEC61131-3 variable *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="Tex_putSinfo" version="1.0.0" creationDate="1721816830" lastModifiedDate="1726739665">
+				<returnValue>WORD</returnValue>
+				<vars>
+					<inputVars>
+						<var name="index" type="WORD">
+							<descr>internal Tex Sinfo index</descr>
+						</var>
+						<var name="variable" type="STRING">
+							<descr>pointer to IEC61131-3 variable</descr>
+						</var>
+						<var name="sizeVariable" type="WORD">
+							<descr>size of variable STRING</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION Tex_putSinfo	: WORD
+
+VAR_INPUT
+	index 				: WORD;			(* internal Tex Sinfo index *)
+	variable 			: STRING;		(* pointer to IEC61131-3 variable *)
+	sizeVariable		: WORD;			(* size of variable STRING *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums>
+			<enum name="TEXVAR_ERRORS" baseType="DINT" version="1.0.0">
+				<elements>
+					<element name="NO_ERROR">
+						<descr>no error occurs</descr>
+						<value>0</value>
+					</element>
+					<element name="ERR_VAR_INDEX">
+						<descr>wrong index</descr>
+						<value>1</value>
+					</element>
+					<element name="ERR_AXIS">
+						<descr>wrong axis name</descr>
+						<value>2</value>
+					</element>
+					<element name="ERR_TASK">
+						<descr>wrong task number</descr>
+						<value>3</value>
+					</element>
+					<element name="ERR_WRONG_VALUE">
+						<descr>incorrect value</descr>
+						<value>4</value>
+					</element>
+					<element name="ERR_VAR_ADDRESS">
+						<descr>wrong array</descr>
+						<value>5</value>
+					</element>
+					<element name="ERR_VAR_SIZE_ERROR">
+						<descr>sting size error</descr>
+						<value>6</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

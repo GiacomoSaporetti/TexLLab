@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<title>List</title>
+	<script type="text/javascript">
+		/* ---------------- FINESTRA DI SELEZIONE GENERICA --------------------------
+
+		INPUT GenericList_input : [ { name: string, value: string } ]
+		INPUT GenericList_multipleSel : boolean
+		OUTPUT GenericList_result : [ { index: integer, name: string, value: string } ]
+
+		*/
+
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		// deprecato: ora lo stile di varslist e' incluso nel CSS generico
+		// document.write("<LINK href='" + csspath + "varslist.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		var m_curFilter
+		var m_multiple
+		var m_existingList;
+
+		function Init()
+		{
+			// reset var risultato
+			window.external.TempVar("GenericList_result") = undefined
+			
+			// estrae nodi già presenti (toglie l'ultimo carattere, "/" finale)
+			var curPath = datapath.value.slice(0,-1);
+			if (curPath)
+			{
+				m_existingList = {};
+				var nodeslist = window.external.SelectNodesXML(curPath)
+				var node
+				while ( node = nodeslist.nextNode() )
+					m_existingList[node.text] = true
+			}
+
+			m_multiple = window.external.TempVar("GenericList_multipleSel");
+			if (m_multiple)
+				list.multiple = true;
+			else
+				// workaround per mostrare la lista di option e non la select "singola"
+				list.size = 2;
+
+			FillList()
+		}
+
+
+		function FillList()
+		{
+			if (filter.value.toLowerCase() == m_curFilter)
+				// tasto che non ha modificato il filtro (es frecce)
+				return
+			
+			m_curFilter = filter.value.toLowerCase()
+			
+			// svuotamento lista
+			list.options.length = 0;
+			
+			var inputList = window.external.TempVar("GenericList_input")
+
+			// riempie la lista solo con elementi non presenti
+			for (var i = 0; i < inputList.length; i++)
+			{
+				var item = inputList[i]
+				
+				// aggiunge se nessun filtro o filtro ok
+				if (m_curFilter == "" || item.name.toLowerCase().indexOf(m_curFilter) != -1)
+				{
+					// aggiunge se non già nella lista
+					if (m_existingList === undefined || !(item.value in m_existingList))
+					{
+						// aggiunge se nessun filtro o filtro ok
+						var option = document.createElement("option");
+						option.text = item.name;
+						option.value = i;
+						list.add(option);
+					}
+				}
+			}
+		}
+
+		function CloseOK()
+		{
+			var result = []
+			var inputList = window.external.TempVar("GenericList_input")
+			
+			// crea array con elenco risultati
+			if (m_multiple)
+			{
+				var tot = list.options.length;
+				for (var i = 0; i < tot; i++)
+				{
+					var option = list.options[i];
+					if (option.selected)
+					{
+						var idx = parseInt(option.value);
+						var item = inputList[idx]
+						result.push( { index: idx, name: item.name, value: item.value } )
+					}
+				}
+			}
+			else if (list.selectedIndex != -1)
+			{
+				var option = list.options[list.selectedIndex];
+				var idx = parseInt(option.value);
+				var item = inputList[idx]
+				result.push( { index: idx, name: item.name, value: item.value } )
+			}
+
+			window.external.TempVar("GenericList_result") = result
+			CloseDlg()
+		}
+
+		function OnListDblClick()
+		{
+			if (list.selectedIndex != -1)
+				// doppio click sulla lista seleziona e conferma
+				CloseOK();
+		}
+	</script>
+</head>
+
+<body class="varslist" onload="Init()">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+
+	<div class="container">
+		<div>
+			<label for="filter"><t:t>Filter</t:t>: </label><input style="width: 85%" type="text" id="filter" onkeyup="FillList()">
+		</div>
+
+		<div class="list-container mt-xs">
+			<select id="list" ondblclick="OnListDblClick()"></select>
+		</div>
+
+		<div class="btn-container">
+			<button class="FlatButton" onclick="CloseOK()"><t:t>OK</t:t></button>
+			<button class="FlatButton" onclick="CloseDlg()"><t:t>Cancel</t:t></button>
+		</div>
+	</div>
+</body>
+</html>

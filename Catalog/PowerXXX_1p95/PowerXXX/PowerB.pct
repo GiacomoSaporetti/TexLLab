@@ -1,0 +1,810 @@
+﻿<?xml version="1.0"?>
+<!-- #DEFINE PREFIX MODELNAME_1p95 -->
+<!-- #DEFINE APPTYPE MODELNAME_1p95_appl -->
+<!-- #DEFINE APPCOMPAT -->
+
+<!-- //// #DEFINE USE_CONFIGURATOR &novalue& -->
+<!-- #DEFINE USE_DATABASE &novalue& -->
+<!-- #DEFINE USE_LOCALIO &novalue& -->
+<!-- #DEFINE USE_MODBUSRTU_MASTER &novalue& -->
+<!-- #DEFINE USE_MODBUSTCP_MASTER &novalue& -->
+<!-- #DEFINE USE_MODBUS_SLAVE &novalue& -->
+<!-- //// #DEFINE USE_CANOPEN_MASTER &novalue& -->
+<!-- //// #DEFINE USE_CANOPEN_SLAVE &novalue& -->
+<!-- //// #DEFINE USE_CANOPEN_SLAVE_OD &novalue& -->
+<!-- //// #DEFINE USE_SOFTSCOPE &novalue& -->
+<!-- //// #DEFINE USE_LLSCAN &novalue& -->
+<!-- //// #DEFINE USE_ETHERCAT_MASTER &novalue& -->
+<!-- //// #DEFINE USE_MQTT &novalue& -->
+<!-- //// #DEFINE USE_MOTION &novalue& -->
+<!-- //// #DEFINE USE_WEBSERVER &novalue& -->
+<!-- #DEFINE USE_MACHINECFG &novalue& -->
+
+<!-- #DEFINE TARGET_NAME_IPA 65160 -->
+<!-- #DEFINE TARGET_HARDWAREID_IPA 65158 -->
+<!-- #DEFINE TARGET_LICSTATUS_IPA 65157 -->
+<!-- #DEFINE TARGET_WRITELIC_IPA 65159 -->
+
+<!-- #DEFINE MODELNAME PowerB -->
+
+<devicetemplate>
+	<deviceinfo caption="MODELNAME" name="MODELNAME" version="1.95" icon="..\img\MODELNAME.ico" image="..\img\MODELNAME.png" deviceid="PREFIX" devicetype="device">
+		<description>MODELNAME</description>
+		<longDescription>MODELNAME</longDescription>
+		<protocols>
+<!-- #IFDEF USE_CONFIGURATOR -->
+			<protocol>Configurator_root</protocol>
+<!-- #ENDIF -->
+		</protocols>
+		<targetdef>
+			<target>PLC\MODELNAME.tgt</target>
+			<targetXML>PLC\MODELNAME.tgtx</targetXML>
+			<image>PLC\MODELNAME.imgx</image>
+			<templateprj>PLC\MODELNAME.plcprj</templateprj>
+			<resources class="MODELNAME">PLC\MODELNAME.pcn</resources>
+			<libraries>
+				<library>%APPPATH%\Libraries\Standard.plclib</library>
+<!-- #IFDEF USE_DATABASE -->
+				<library>..\LLResources\AlDatabase\Libraries\AlDatabase.pll</library>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+				<!-- <library>..\LLResources\AlModbusRTU\Libraries\AlModbusRTU.plclib</library> -->
+				<!-- <library>..\LLResources\AlModbusRTU\Libraries\ModbusRTUMaster_Service_API.plclib</library> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+				<!-- <library>..\LLResources\AlModbusTCPMaster\Libraries\AlModbusTCPMaster.plclib</library> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+				<!--<library>..\LLResources\AlCOPM\Libraries\1 Master\AlCOPM.pll</library> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+				<!-- <library>..\LLResources\AlCOPS\Libraries\AlCOPS.pll</library> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_ETHERCAT_MASTER -->
+				<!-- <library>..\LLResources\AlEthercat\Libraries\EtherCAT.pll</library> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MQTT -->
+				<library>..\LLResources\AlMQTT\Libraries\MqttClientAPI.plclib</library>
+				<library>..\LLResources\AlMQTT\Libraries\MqttEngineAPI.plclib</library>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MOTION -->
+				<library>..\LLResources\AlMotion\Libraries\MC_Common.plclib</library>
+				<library>..\LLResources\AlMotion\Libraries\MC_Driver_DS402.plclib</library>
+<!-- #ENDIF -->
+				<library>Libraries\MODELNAME\TexEtherCAT.plclib</library>
+				<library>Libraries\MODELNAME\TexMotion.plclib</library>
+				<library>Libraries\MODELNAME\TexVariable.plclib</library>
+				<library>Libraries\MODELNAME\TexHMI.plclib</library>
+			</libraries>
+		</targetdef>
+<!--		<HMIdef>
+			<target>HMI\MODELNAME_HMI.tgt</target>
+			<def>HMI\MODELNAME_HMI.def</def>
+			<image>HMI\MODELNAME_HMI.imgx</image>
+			<templateprj>HMI\MODELNAME_HMI.pajx</templateprj>
+			<fonts>
+				<font>HMI\Fonts\DroidSansMono_8x16.plf</font>
+				<font>HMI\Fonts\DroidSansMono_12x24.plf</font>
+				<font>HMI\Fonts\DroidSansMono_16x32.plf</font>
+				<font>HMI\Fonts\DroidSansMono_20x40.plf</font>	
+			</fonts>
+			<bitmaps/>
+			<files>
+				<file>HMI\Documentation.xsl</file>
+				<file>HMI\MODELNAME_HMI_template.ppjx</file>
+			</files>
+		</HMIdef>
+-->
+		<simulation>
+			<simtarget>Simulation\MODELNAME.tgsx</simtarget>
+		</simulation>
+	</deviceinfo> 
+	<plcconfig>
+		<config>
+			<barStateSection>MODELNAME</barStateSection>
+			<!-- caricamento PCT con funzionalità modulari aggiuntive (path relativi a Catalog) -->
+			<loadExternalTemplate>%APPPATH%\templates\Catalog.pct</loadExternalTemplate>
+<!-- #IFDEF USE_DATABASE -->
+			<loadExternalTemplate>%APPPATH%\templates\Parameters2.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+			<loadExternalTemplate>ModbusCustom\ModbusCustom.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+			<loadExternalTemplate>CANcustom\CANcustom.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_ETHERCAT_MASTER -->
+			<loadExternalTemplate>%PCTPATH%\..\LLResources\AlEtherCAT\ECATCfg.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MQTT -->
+			<loadExternalTemplate>%PCTPATH%\..\LLResources\AlMQTT\MQTT.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MOTION -->
+			<loadExternalTemplate>%PCTPATH%\..\LLResources\AlMotion\Motion.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_WEBSERVER -->
+			<loadExternalTemplate>%PCTPATH%\..\LLResources\AlWebServer\WebServer.pct</loadExternalTemplate>
+<!-- #ENDIF -->
+		</config>
+
+		<hmi>
+			<window type="html" link="..\LLResources\main.html">main</window>
+<!-- #IFDEF USE_LOCALIO -->
+			<window type="html" link="..\LLResources\mappingDI.html">mappingDI</window>
+			<window type="html" link="..\LLResources\mappingDO.html">mappingDO</window>
+			<window type="html" link="..\LLResources\mappingAI.html">mappingAI</window>
+			<window type="html" link="..\LLResources\mappingAO.html">mappingAO</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_DATABASE -->
+			<window type="html" link="..\LLResources\AlDatabase\params_cfg.html">params_cfg</window>
+			<window type="html" link="..\LLResources\AlDatabase\params.html">params</window>
+			<window type="html" link="..\LLResources\AlDatabase\paramsRO.html">paramsRO</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CONFIGURATOR -->
+			<window type="html" link="..\LLResources\AlDatabase\menu.html">menu</window>
+			<window type="html" link="..\LLResources\AlDatabase\custompage.html">custompage</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+			<window type="html" link="..\LLResources\AlModbusRTU\ModbusPortCfg.html">ModbusPortCfg</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+			<window type="html" link="..\LLResources\AlModbusTCPMaster\Ethernet.html">Ethernet</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+			<window type="html" link="..\LLResources\AlCOPM\CANopen.html">CANopenMaster</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+			<window type="html" link="..\LLResources\AlCOPS\CANopen.html">CANopenSlave</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE_OD -->
+			<window type="html" link="..\LLResources\AlCOPS\AlCOPSObjDict\ObjectDictionary.html">ObjectDictionary</window>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MACHINECFG -->
+			<window type="html" link="..\LLResources\MachineCFG\MachineParameters.html">MachineParameters</window>
+			<window type="html" link="..\LLResources\MachineCFG\MachineConfiguration.html">MachineConfiguration</window>
+<!-- #ENDIF -->
+			<tree name="tree1">
+				<node name="PREFIX" caption="PREFIX" icon="..\img\MODELNAME.ico" window="main" datalink="PREFIX" captionedit="false">
+<!-- #IFDEF USE_DATABASE -->
+					<node name="PREFIX_PublicObjects" caption="Public objects" icon="..\LLResources\AlDatabase\Img\params.ico" data="config[1]" window="params_cfg">
+						<node name="PREFIX_Params" caption="Parameters" icon="..\LLResources\AlDatabase\Img\params.ico" data="params[1]" window="params"/>
+						<node name="PREFIX_ParamsRO" caption="Status variables" icon="..\LLResources\AlDatabase\Img\paramsRO.ico" data="paramsRO[1]" window="paramsRO"/>
+						<!-- USE_CONFIGURATOR -->
+<!--						<node name="PREFIX_Menus" caption="Menus" icon="..\LLResources\AlDatabase\Img\menupages.ico" data="menus[1]" menu="menu_AddMenu"/> -->
+						<!-- USE_CANOPEN_SLAVE_OD -->
+						<!--<node name="PREFIX_ObjectDictionary" caption="Object Dictionary" icon="..\LLResources\AlCOPS\AlCOPSObjDict\Img\canopen.ico" data="CANopenObjDict[1]" window="ObjectDictionary"/>-->
+					</node>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_LOCALIO -->
+					<node name="PREFIX_localiIO" caption="Local IO Mapping" icon="..\LLResources\img\io.ico" data="..">
+						<node name="PREFIX_mappingDI" caption="Digital Inputs" icon="..\LLResources\img\io.ico" window="mappingDI" data="config[1]/ioMappings_DI[1]"/>
+						<node name="PREFIX_mappingDO" caption="Digital Outputs" icon="..\LLResources\img\io.ico" window="mappingDO" data="config[1]/ioMappings_DO[1]"/>
+						<node name="PREFIX_mappingAI" caption="Analog Inputs" icon="..\LLResources\img\io.ico" window="mappingAI" data="config[1]/ioMappings_AI[1]"/>
+						<node name="PREFIX_mappingAO" caption="Analog Outputs" icon="..\LLResources\img\io.ico" window="mappingAO" data="config[1]/ioMappings_AO[1]"/>
+					</node>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+					<!-- <node name="PREFIX_RS485" caption="Serial COM Port" icon="..\LLResources\AlModbusRTU\Img\modbusRTU.ico" data="RS485[1]" menu="menuAdd" window="ModbusPortCfg"/> -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+					<node name="PREFIX_Ethernet" caption="Ethernet" icon="..\LLResources\AlModbusTCPMaster\img\modbusTCP.ico" data="Ethernet[1]" menu="menuAdd" window="Ethernet"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER && USE_CANOPEN_SLAVE -->
+					<node name="PREFIX_CANopen0" caption="CANopen CAN0" icon="..\LLResources\AlCOPS\Img\canopen.ico" data="CANopen[1]" menu="menuAdd" window="CANopenSlave"/>
+<!-- #ELSE -->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+					<node name="PREFIX_CANopen0" caption="CANopen CAN0" icon="..\LLResources\AlCOPM\Img\canopen.ico" data="CANopen[1]" menu="menuAdd" window="CANopenMaster"/>
+<!-- #ENDIF -->
+<!-- #ENDIF -->
+<!-- #IFDEF USE_ETHERCAT_MASTER -->
+					<node name="PREFIX_EtherCAT" caption="EtherCAT" icon="..\LLResources\AlEthercat\img\EtherCAT.ico" data="EtherCAT" onclick="ECATCfg.OnTreeClick_ECAT" menu="menuECATMaster"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MQTT -->
+					<node name="PREFIX_MQTT" caption="MQTT" icon="..\LLResources\AlMQTT\img\mqtt.ico" data="MQTT[1]" menu="menu_MQTTAddBroker" window="MQTTHome" />
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MOTION -->
+					<node name="PREFIX_Motion" caption="Motion" icon="..\LLResources\AlMotion\Img\motion.ico" data="Motion[1]" menu="menu_llMotionAddAxes"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_WEBSERVER -->
+					<node name="PREFIX_webmenus" caption="Web Site" icon="..\LLResources\AlWebServer\img\website.ico" menu="menu_AddWebMenu" data="webmenus[1]"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MACHINECFG -->
+					<node name="PREFIX_MachineConfig" caption="Machine Configuration" icon="..\LLResources\MachineCFG\img\machineConf.ico" data="machineConfiguration[1]" window="MachineConfiguration"/>
+<!-- #ENDIF -->
+				</node>
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+				<node name="PREFIX_CANopenRX" caption="RPDO" icon="..\LLResources\AlCOPS\Img\canopen_rx.ico" datalink="CANslave_PDOgroup_RX" menu="menuAdd"/>
+				<node name="PREFIX_CANopenTX" caption="TPDO" icon="..\LLResources\AlCOPS\Img\canopen_tx.ico" datalink="CANslave_PDOgroup_TX" menu="menuAdd"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CONFIGURATOR -->
+				<node name="PREFIX_menu" caption="New Menu" icon="..\LLResources\AlDatabase\Img\menu.ico" window="menu" menu="menu_DeleteMenu" captionedit="true" datalink="menu" ondrop="parameters.OnDropAppMenu" onendcaptionedit="parameters.OnEndMenuEdit"/>
+				<node name="PREFIX_custompage" caption="New Custom Page" icon="..\LLResources\AlDatabase\Img\html.ico" window="custompage" menu="menu_DeleteMenu" captionedit="true" datalink="custompage" onendcaptionedit="parameters.OnEndMenuEdit"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MACHINECFG -->
+				<node name="PREFIX_MachineParameters" caption="" icon="..\LLResources\MachineCFG\img\machinePar.ico" datalink="machineParameters" window="MachineParameters" captionedit="false"/>
+<!-- #ENDIF -->
+			</tree>
+			
+			<!-- __________ Menu Tools _________ -->
+			<menu resourceName="&amp;Tools">
+				<separator/>
+			<!--<command caption="Globals variables report" handler="PREFIX.ShowGlobalVarsReport" statusmsg="Open globals variables report"/>				
+				<separator/>-->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+				<command caption="Import EDS" handler="EDS.Open_ImportEDS_Dlg"/>
+				<command caption="Run CAN custom Editor" handler="CANcustom.RunCANcustomEditor"/>
+				<separator/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+				<command caption="Export as CANopen slave" handler="CANcustom.CANcustomExportIntoCatalog" updatehandler="CANcustom.CANcustomExportIntoCatalogAllowed"/>
+				<separator/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+				<command caption="Run Modbus custom Editor" handler="ModbusCustom.RunModbusCustomEditor"/>
+				<separator/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_SLAVE -->
+				<command caption="Export as Modbus slave" handler="ModbusCustom.ModbusCustomExportIntoCatalog" updatehandler="ModbusCustom.ModbusCustomExportIntoCatalogAllowed"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_SOFTSCOPE -->
+				<command caption="Open with &amp;SoftScope" handler="script.OpenSoftScope"/>
+				<separator/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CONFIGURATOR -->
+				<separator/>
+				<command caption="&amp;Export to SoftTune" handler="ConfiguratorIntf.ExportAppToCatalog" statusmsg="Export to SoftTune"/>
+				<command caption="&amp;Open with SoftTune" handler="ConfiguratorIntf.OpenConfigurator" updatehandler="ConfiguratorIntf.OnUpdateOpenConfigurator" statusmsg="Open with SoftTune" />
+<!-- #ENDIF -->
+<!-- #IFDEF USE_LLSCAN -->
+				<separator/>
+				<command caption="Execute network scan" handler="script.ShowLLScanInternal"/>
+<!-- #ENDIF -->
+			</menu>
+		</hmi>
+
+		<extensions>
+			<script alias="PREFIX">..\LLResources\MODELNAME.js</script>
+		</extensions>
+
+		<templatedata>
+<!-- #IFDEF USE_LOCALIO -->
+			<PREFIX_LocalIODef_DI>
+				<io id="0"		name="In00"		db="%IX0.0"		type="BOOL"		description="In00 digital input"/>
+				<io id="1"		name="In01"		db="%IX0.1"		type="BOOL"		description="In01 digital input"/>
+				<io id="2"		name="In02"		db="%IX0.2"		type="BOOL"		description="In02 digital input"/>
+				<io id="3"		name="In03"		db="%IX0.3"		type="BOOL"		description="In03 digital input"/>
+				<io id="4"		name="In04"		db="%IX0.4"		type="BOOL"		description="In04 digital input"/>
+				<io id="5"		name="In07"		db="%IX0.7"		type="BOOL"		description="In07 digital input"/>
+				<io id="6"		name="In22"		db="%IX0.22"	type="BOOL"		description="In22 digital input"/>
+				<io id="7"		name="In33"		db="%IX0.33"	type="BOOL"		description="In33 digital input"/>
+				<io id="8"		name="In34"		db="%IX0.34"	type="BOOL"		description="In34 digital input"/>
+				<io id="9"		name="In37"		db="%IX0.37"	type="BOOL"		description="In37 digital input"/>
+				<io id="10"		name="In38"		db="%IX0.38"	type="BOOL"		description="In38 digital input"/>
+				<io id="11"		name="In40"		db="%IX0.40"	type="BOOL"		description="In40 digital input"/>
+				<io id="12"		name="In41"		db="%IX0.41"	type="BOOL"		description="In41 digital input"/>
+				<io id="13"		name="In42"		db="%IX0.42"	type="BOOL"		description="In42 digital input"/>
+				<io id="14"		name="In43"		db="%IX0.43"	type="BOOL"		description="In43 digital input"/>
+				<io id="15"		name="In44"		db="%IX0.44"	type="BOOL"		description="In44 digital input"/>
+				<io id="16"		name="In45"		db="%IX0.45"	type="BOOL"		description="In45 digital input"/>
+				<io id="17"		name="In46"		db="%IX0.46"	type="BOOL"		description="In46 digital input"/>
+				<io id="18"		name="In47"		db="%IX0.47"	type="BOOL"		description="In47 digital input"/>
+				<io id="19"		name="In56"		db="%IX0.56"	type="BOOL"		description="In56 digital input"/>
+				<io id="20"		name="In57"		db="%IX0.57"	type="BOOL"		description="In57 digital input"/>
+				<io id="21"		name="In59"		db="%IX0.59"	type="BOOL"		description="In59 digital input"/>
+				<io id="22"		name="In95"		db="%IX0.95"	type="BOOL"		description="In95 digital input"/>
+			</PREFIX_LocalIODef_DI>
+			<PREFIX_LocalIODef_DO>
+				<io id="0"		name="Out00"	db="%QX0.0"		type="BOOL"		description="Out00 digital output"/>
+				<io id="1"		name="Out01"	db="%QX0.1"		type="BOOL"		description="Out01 digital output"/>
+				<io id="2"		name="Out02"	db="%QX0.2"		type="BOOL"		description="Out02 digital output"/>
+				<io id="3"		name="Out03"	db="%QX0.3"		type="BOOL"		description="Out03 digital output"/>
+				<io id="4"		name="Out04"	db="%QX0.4"		type="BOOL"		description="Out04 digital output"/>
+				<io id="5"		name="Out05"	db="%QX0.5"		type="BOOL"		description="Out05 digital output"/>
+				<io id="6"		name="Out06"	db="%QX0.6"		type="BOOL"		description="Out06 digital output"/>
+				<io id="7"		name="Out07"	db="%QX0.7"		type="BOOL"		description="Out07 digital output"/>
+				<io id="8"		name="Out08"	db="%QX0.8"		type="BOOL"		description="Out08 digital output"/>
+				<io id="9"		name="Out09"	db="%QX0.9"		type="BOOL"		description="Out09 digital output"/>
+				<io id="10"		name="Out10"	db="%QX0.10"	type="BOOL"		description="Out10 digital output"/>
+				<io id="11"		name="Out11"	db="%QX0.11"	type="BOOL"		description="Out11 digital output"/>
+				<io id="12"		name="Out16"	db="%QX0.16"	type="BOOL"		description="Out16 digital output"/>
+				<io id="13"		name="Out17"	db="%QX0.17"	type="BOOL"		description="Out17 digital output"/>
+				<io id="14"		name="Out18"	db="%QX0.18"	type="BOOL"		description="Out18 digital output"/>
+				<io id="15"		name="Out19"	db="%QX0.19"	type="BOOL"		description="Out19 digital output"/>
+				<io id="16"		name="Out24"	db="%QX0.24"	type="BOOL"		description="Out24 digital output"/>
+				<io id="17"		name="Out25"	db="%QX0.25"	type="BOOL"		description="Out25 digital output"/>
+				<io id="18"		name="Out26"	db="%QX0.26"	type="BOOL"		description="Out26 digital output"/>
+				<io id="19"		name="Out43"	db="%QX0.43"	type="BOOL"		description="Out43 digital output"/>
+				<io id="20"		name="Out27"	db="%QX0.27"	type="BOOL"		description="Out27 digital output"/>
+				<io id="21"		name="Out41"	db="%QX0.41"	type="BOOL"		description="Out41 digital output"/>
+				<io id="22"		name="Out42"	db="%QX0.42"	type="BOOL"		description="Out42 digital output"/>
+			</PREFIX_LocalIODef_DO>
+			<PREFIX_LocalIODef_AI>
+				<io id="0"		name="000"		db="%IW1.0"		type="UINT"		description="000 analog input"/>
+				<io id="1"		name="001"		db="%IW1.1"		type="UINT"		description="001 analog input"/>
+				<io id="2"		name="016"		db="%IW1.16"	type="UINT"		description="016 analog input"/>
+				<io id="3"		name="261"		db="%IW1.261"	type="UINT"		description="261 analog input"/>
+				<io id="4"		name="262"		db="%IW1.262"	type="UINT"		description="262 analog input"/>
+			</PREFIX_LocalIODef_AI>
+			<PREFIX_LocalIODef_AO>
+				<io id="0"		name="005"		db="%QW1.5"		type="UINT"		description="005 analog output"/>
+				<io id="1"		name="006"		db="%QW1.6"		type="UINT"		description="006 analog output"/>
+				<io id="2"		name="007"		db="%QW1.7"		type="UINT"		description="007 analog output"/>
+			</PREFIX_LocalIODef_AO>
+<!-- #ENDIF -->
+
+			<!-- nodo XML template che sarà inserito nel progetto : i nodi XML devono corrispondere allo schema XSD sotto
+			!!!! ATTENZIONE: per qualche motivo non noto, non è possibile inserire qui commenti, altrimenti l'XML non si validarà più! 
+			!!!! se quindi si tolgono delle parti dallo schema, va fatto anche qui sotto a mano! -->
+			<PREFIX>
+				<config databaseDefinitionMode="0">
+					<params/>
+					<paramsRO/>
+					<menus/>
+					<ioMappings_DI>
+						<ioMapping id="0"><label/></ioMapping>
+						<ioMapping id="1"><label/></ioMapping>
+						<ioMapping id="2"><label/></ioMapping>
+						<ioMapping id="3"><label/></ioMapping>
+						<ioMapping id="4"><label/></ioMapping>
+						<ioMapping id="5"><label/></ioMapping>
+						<ioMapping id="6"><label/></ioMapping>
+						<ioMapping id="7"><label/></ioMapping>
+						<ioMapping id="8"><label/></ioMapping>
+						<ioMapping id="9"><label/></ioMapping>
+						<ioMapping id="10"><label/></ioMapping>
+						<ioMapping id="11"><label/></ioMapping>
+						<ioMapping id="12"><label/></ioMapping>
+						<ioMapping id="13"><label/></ioMapping>
+						<ioMapping id="14"><label/></ioMapping>
+						<ioMapping id="15"><label/></ioMapping>
+						<ioMapping id="16"><label/></ioMapping>
+						<ioMapping id="17"><label/></ioMapping>
+						<ioMapping id="18"><label/></ioMapping>
+						<ioMapping id="19"><label/></ioMapping>
+						<ioMapping id="20"><label/></ioMapping>
+						<ioMapping id="21"><label/></ioMapping>
+						<ioMapping id="22"><label/></ioMapping>
+					</ioMappings_DI>
+					<ioMappings_DO>
+						<ioMapping id="0"><label/></ioMapping>
+						<ioMapping id="1"><label/></ioMapping>
+						<ioMapping id="2"><label/></ioMapping>
+						<ioMapping id="3"><label/></ioMapping>
+						<ioMapping id="4"><label/></ioMapping>
+						<ioMapping id="5"><label/></ioMapping>
+						<ioMapping id="6"><label/></ioMapping>
+						<ioMapping id="7"><label/></ioMapping>
+						<ioMapping id="8"><label/></ioMapping>
+						<ioMapping id="9"><label/></ioMapping>
+						<ioMapping id="10"><label/></ioMapping>
+						<ioMapping id="11"><label/></ioMapping>
+						<ioMapping id="12"><label/></ioMapping>
+						<ioMapping id="13"><label/></ioMapping>
+						<ioMapping id="14"><label/></ioMapping>
+						<ioMapping id="15"><label/></ioMapping>
+						<ioMapping id="16"><label/></ioMapping>
+						<ioMapping id="17"><label/></ioMapping>
+						<ioMapping id="18"><label/></ioMapping>
+						<ioMapping id="19"><label/></ioMapping>
+						<ioMapping id="20"><label/></ioMapping>
+						<ioMapping id="21"><label/></ioMapping>
+						<ioMapping id="22"><label/></ioMapping>
+					</ioMappings_DO>
+					<ioMappings_AI>
+						<ioMapping id="0"><label/></ioMapping>
+						<ioMapping id="1"><label/></ioMapping>
+						<ioMapping id="2"><label/></ioMapping>
+						<ioMapping id="3"><label/></ioMapping>
+						<ioMapping id="4"><label/></ioMapping>
+						<ioMapping id="5"><label/></ioMapping>
+						<ioMapping id="6"><label/></ioMapping>
+						<ioMapping id="7"><label/></ioMapping>
+						<ioMapping id="8"><label/></ioMapping>
+					</ioMappings_AI>
+					<ioMappings_AO>
+						<ioMapping id="0"><label/></ioMapping>
+						<ioMapping id="1"><label/></ioMapping>
+						<ioMapping id="2"><label/></ioMapping>
+						<ioMapping id="3"><label/></ioMapping>
+					</ioMappings_AO>
+				</config>
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+				<RS485 protocol="" mode="0" baudRate="38400" serialMode="none,8,1" slaveAddress="1" COMnumber="1" rsmode="1" rsmodeEditable="true" netId="0" maxSlaves="32" serCfg="1" masterNetId="0"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER || USE_CANOPEN_SLAVE -->
+				<CANopen id="0" protocol="" mode="0" nodeID="127" baudRate="250000" hbTime="0" syncCOBID="128" syncCycle="0" networkID="0"
+						 slaveNodeID="1" slaveDeviceType="301" slaveSyncCOBID="128" slaveSyncCycle="0" 
+						 slaveManufacturerDeviceName="" slaveManufacturerHardwareVer="" slaveManufacturerSoftwareVer=""
+						 slaveGuardTime="200" slaveLifeTimeFactor="3" slaveConsumerHeartbeatTime="0" slaveProducerHeartbeatTime="0"
+						 slaveVendorID="0" slaveProductCode="0" slaveRevisionNumber="0" slaveSerialNumber="0"
+						 slaveCfgGranularity="8" slaveCfgCOBIDAutoAssignment="1" slaveCfgMaxTPDONum="8" slaveCfgMaxRPDONum="8"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+				<Ethernet protocol="" enableMaster="0" enableSlave="1" enableSlaveRtuGateway="0" rtuGatewayDefaultTimeout="100" slavePort="502"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_ETHERCAT_MASTER -->
+				<EtherCAT/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MQTT -->
+				<MQTT enabled="1">
+					<MQTTDownloadFiles/>
+				</MQTT>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MOTION -->
+				<Motion/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_WEBSERVER -->
+				<webmenus/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MACHINECFG -->
+				<machineConfiguration name="" version=""/>
+<!-- #ENDIF -->
+			</PREFIX>
+			
+			
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+			<CANslave_PDOgroup_TX direction="TX"/>
+			<CANslave_PDOgroup_RX direction="RX"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE_OD -->
+			<objdict>
+				<ipa>-1</ipa>
+				<index>0</index>
+				<subindex>0</subindex>
+				<pdomapping>1</pdomapping>
+				<readonly>0</readonly>
+			</objdict>
+<!-- #ENDIF -->
+		</templatedata>
+
+		<!-- schema XSD del templatedata definito sopra
+		!!!! ATTENZIONE vedi commento sopra, se si modifica qui togliendo delle parti farlo anche sopra nel templatedata! -->
+		<datadef version="9.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+				<xs:complexType name="TCANslave_PDOgroup">
+					<xs:complexContent>	<xs:extension base="masterDevice">
+						<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+						<xs:attribute name="protocol" type="xs:string" fixed="CANopen_slavePDO"/>
+						<xs:attribute name="caption" type="xs:string"/>
+						<xs:attribute name="maxSlaves" type="xs:integer" default="8"/>
+						<xs:attribute name="direction" type="xs:string"/>
+					</xs:extension>	</xs:complexContent>
+				</xs:complexType>
+				
+				<xs:element name="CANslave_PDOgroup_TX" type="TCANslave_PDOgroup"/>
+				<xs:element name="CANslave_PDOgroup_RX" type="TCANslave_PDOgroup"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE_OD -->
+				<xs:complexType name="TCANopenObjDictItem">
+					<xs:sequence>
+						<xs:element name="ipa" type="xs:integer"/>
+						<xs:element name="index" type="xs:integer"/>
+						<xs:element name="subindex" type="xs:integer"/>
+						<xs:element name="pdomapping" type="xs:integer"/>
+						<xs:element name="readonly" type="xs:integer"/>
+					</xs:sequence>
+					<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+				</xs:complexType>
+
+				<xs:complexType name="TCANopenObjDict">
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="objdict" type="TCANopenObjDictItem"/>
+					</xs:sequence>
+					<xs:attribute name="locationPage" type="xs:string" fixed="ObjectDictionary" />
+				</xs:complexType>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_LOCALIO -->
+				<xs:complexType name="TPREFIX_ioMapping">
+					<xs:sequence>
+						<xs:element name="label" type="xs:string"/>
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:integer"/>
+					<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+				</xs:complexType>
+
+				<xs:complexType name="TPREFIX_ioMappings">
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ioMapping" type="TPREFIX_ioMapping"/>
+					</xs:sequence>
+				</xs:complexType>
+<!-- #ENDIF -->
+				<xs:complexType name="TPREFIX_config">
+					<xs:sequence>
+<!-- #IFDEF USE_DATABASE -->
+						<xs:element name="params" type="Tparams"/>
+						<xs:element name="paramsRO" type="Tparams"/>
+						<!-- USE_CONFIGURATOR -->
+						<xs:element name="menus" type="Tmenus"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE_OD -->
+						<xs:element name="CANopenObjDict" type="TCANopenObjDict"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_LOCALIO -->
+						<xs:element name="ioMappings_DI" type="TPREFIX_ioMappings"/>
+						<xs:element name="ioMappings_DO" type="TPREFIX_ioMappings"/>
+						<xs:element name="ioMappings_AI" type="TPREFIX_ioMappings"/>
+						<xs:element name="ioMappings_AO" type="TPREFIX_ioMappings"/>
+<!-- #ENDIF -->
+					</xs:sequence>
+					<xs:attribute name="databaseDefinitionMode" type="xs:integer" default="0"/>
+				</xs:complexType>
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+				<xs:complexType name="TRS485_ext">
+					<xs:complexContent>
+						<xs:extension base="TRS485Port">
+							<xs:attribute name="maxSlaves" type="xs:integer"/>
+							<xs:attribute name="serCfg" type="xs:integer"/>
+							<xs:attribute name="masterNetId" type="xs:integer"/>
+							<!-- Layout configuration -->
+							<xs:attribute name="showEditSerCfg" type="xs:boolean" fixed="false"/>
+							<xs:attribute name="showPhysicalTargetPortName" type="xs:boolean" fixed="false"/>
+							<xs:attribute name="showEditPortSettings" type="xs:boolean" fixed="true"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+				<xs:complexType name="TEthernetPort_ext">
+					<xs:complexContent>
+						<xs:extension base="TEthernetPort">
+							<xs:attribute name="maxSlaves" type="xs:integer" fixed="16"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+<!-- #ENDIF -->
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+									<xs:element name="config" type="TPREFIX_config"/>
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+									<xs:element name="RS485" type="TRS485_ext"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER || USE_CANOPEN_SLAVE -->
+									<xs:element name="CANopen" type="TCANopenPort"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+									<xs:element name="Ethernet" type="TEthernetPort_ext"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_ETHERCAT_MASTER -->
+									<xs:element name="EtherCAT" type="TEtherCATMaster"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MQTT -->
+									<xs:element name="MQTT" type="TMQTT"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MOTION -->
+									<xs:element name="Motion" type="TMotion"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_WEBSERVER -->
+									<xs:element name="webmenus" type="Twebmenus" />
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MACHINECFG -->
+									<xs:element name="machineConfiguration" type="TMachineConfiguration" />
+<!-- #ENDIF -->
+								</xs:sequence>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="PREFIX"/>
+								<xs:attribute name="IsRootDevice" type="xs:boolean" fixed="true"/>
+								<!-- Generazione delle global shared -->
+								<xs:attribute name="ExportPLCVars" type="xs:boolean" fixed="true"/>
+								<xs:attribute name="ValidateFunc" type="xs:string" fixed="PREFIX.Validate"/>
+								<xs:attribute name="CustomBuildFunc" type="xs:string" fixed="PREFIX.CustomBuild"/>
+<!-- #IFDEF USE_DATABASE -->
+								<!-- Nella predownload viene scritto l'IPA_SETDEFAULTSATSTARTUP per inizializzare il database -->
+								<xs:attribute name="CustomDownloadFunc" type="xs:string" fixed="PREFIX.CustomDownload"/>
+								<xs:attribute name="IpaSetDefaultAtStartup" type="xs:integer" fixed="65108"/>
+								<!-- Se specificato ipa con signature external database la richiesta di inizializzazione valori avviene solo se è diversa -->
+								<xs:attribute name="IpaAppDatabaseSignature" type="xs:integer" fixed="65110"/>
+<!-- #ENDIF -->
+								<xs:attribute name="RefactorFunc" type="xs:string" fixed="PREFIX.Refactor"/>
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="PREFIX.OnCreateNode"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="PREFIX.OnLoadNode"/>
+								<xs:attribute name="ModbusCustomTemplateFile" type="xs:string" fixed="../../ModbusCustom/modbus.templ"/>
+<!-- #IFDEF USE_SOFTSCOPE -->
+								<xs:attribute name="SoftScopeTarget" type="xs:string" fixed="PREFIX"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CONFIGURATOR -->
+								<xs:attribute name="CFNUpdateFunc" type="xs:string" fixed="PREFIX.CFNUpdate"/>
+								<xs:attribute name="CFNuniqueID" type="xs:integer" default="1"/>
+								<xs:attribute name="AppTemplateFile" type="xs:string" fixed="../LLResources/AlDatabase/Target/target_app.templ"/>
+								<xs:attribute name="AppType" type="xs:string" fixed="APPTYPE"/>
+								<xs:attribute name="AppIcon" type="xs:string" fixed="../Img/AlPlc.ico"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSRTU_MASTER -->
+								<!-- Utilizzato nelle pagine ModbusCustom ModbusGeneric per differenziarlo da implementazione di default LLExec -->
+								<xs:attribute name="useAlModbusRTU" type="xs:boolean" fixed="true"/>
+								<xs:attribute name="useModbusRTUSwapWords" type="xs:boolean" fixed="true"/>
+								<xs:attribute name="useAlModbusRTUOneShot" type="xs:boolean" fixed="true"/>
+								<xs:attribute name="useAlModbusRTUWaitBeforeSend" type="xs:boolean" fixed="true"/>
+								<!-- Specify bitmask with dynamic allocation supported modes: 0x01 variable address, 0x02 16bit key, 0x04 32bit key -->
+								<xs:attribute name="ModbusRTUMasterDynamicSlaveAddressConfig" type="xs:integer" fixed="0"/>
+								<xs:attribute name="ModbusRTUInputOutputOnVariation" type="xs:boolean" fixed="1"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_MODBUSTCP_MASTER -->
+								<xs:attribute name="useAlModbusTCPMaster" type="xs:boolean" fixed="true"/>
+								<xs:attribute name="ModbusTCPInputOutputOnVariation" type="xs:boolean" fixed="1"/>
+								<!-- Gateway disabilitato -->
+								<xs:attribute name="ModbusTCPGatewayNetIdMax" type="xs:integer" fixed="0"/>
+								<!-- Specify bitmask with dynamic allocation supported modes: 0x01 variable address, 0x02 16bit key, 0x04 32bit key -->
+								<xs:attribute name="ModbusTCPMasterDynamicSlaveAddressConfig" type="xs:integer" fixed="0"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_MASTER -->
+								<!-- Utilizzato nelle pagine CANCustom CANgeneric per differenziarlo da implementazione di default LLExec -->
+								<xs:attribute name="CANopenMasterAttachOnBootupMessageOnly" type="xs:boolean" fixed="true"/>
+								<!--<xs:attribute name="CANopenMasterAttachByPollingOnly" type="xs:boolean" fixed="true"/>-->
+								<xs:attribute name="CANopenMasterIdentObjectSupportDisabled" type="xs:boolean" fixed="true"/>								
+								<xs:attribute name="CANopenSDOSchedulingSupported" type="xs:integer" fixed="2"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE -->
+								<!-- Utilizzato nelle pagine ModbusCustom ModbusGeneric per differenziarlo da implementazione di default LLExec -->
+								<xs:attribute name="useAlCOPS" type="xs:boolean" fixed="true"/>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_CANOPEN_SLAVE_OD -->
+								<xs:attribute name="useAlCOPSObjDict" type="xs:boolean" fixed="true"/>
+<!-- #ENDIF -->
+								<!-- attributi usati per l'attivazione della licenza -->
+								<xs:attribute name="targetNameIPA" type="xs:integer" fixed="TARGET_NAME_IPA"/>
+								<xs:attribute name="targetHwIdIPA" type="xs:integer" fixed="TARGET_HARDWAREID_IPA"/>
+								<xs:attribute name="targetLicStatusIPA" type="xs:integer" fixed="TARGET_LICSTATUS_IPA"/>
+								<xs:attribute name="writeLicenseIPA" type="xs:integer" fixed="TARGET_WRITELIC_IPA"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+
+<!-- #IFDEF USE_CONFIGURATOR -->
+	<deviceconfig>
+		<!-- Questa parte deve essere allineata al database di sistema se presente -->
+		<parameters>
+			<!-- ________________________________________________________ License _________________________________________________________ -->
+			<par ipa="65157" name="License" descr="License status" defval="0" min="0" max="3" um="num" typepar="enum1" typetarg="unsignedShort" readonly="true">
+				<protocol name="Modbus" commaddr="65157" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65157" commsubindex="0"/>
+				<menu id="01"/>
+			</par>
+			<par ipa="65158" name="Hardware ID" descr="Hardware ID" defval="" min="" max="" um="" typepar="stringex" typetarg="stringex" readonly="true">
+				<protocol name="Modbus" commaddr="65158" commsubindex="16"/>
+				<protocol name="CanOpen" commaddr="65158" commsubindex="0"/>
+				<menu id="01"/>
+			</par>
+			<par ipa="65159" name="License Key" descr="License Key" defval="" min="" max="" um="" typepar="stringex" typetarg="stringex" readonly="true">
+				<protocol name="Modbus" commaddr="65159" commsubindex="32"/>
+				<protocol name="CanOpen" commaddr="65159" commsubindex="0"/>
+				<menu id="01"/>
+			</par>
+			<!-- ________________________________________________________ SOFTTUNE _________________________________________________________ -->
+			<par ipa="65103" hidden="true" name="IPA_SAVEPARAMETERS" descr="IPA_SAVEPARAMETERS" defval="0" um="" typepar="boolean" typetarg="boolean">
+				<protocol name="Modbus" commaddr="65103" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65103" commsubindex="0"/>
+			</par>
+			<par ipa="65104" hidden="true" name="IPA_RESETTARGET" descr="IPA_RESETTARGET" defval="0" um="" typepar="boolean" typetarg="boolean">
+				<protocol name="Modbus" commaddr="65104" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65104" commsubindex="0"/>
+			</par>
+			<par ipa="65105" hidden="true" name="IPA_ALARMSTATUS" descr="IPA_ALARMSTATUS" defval="0" um="" typepar="unsignedInt" typetarg="unsignedInt">
+				<protocol name="Modbus" commaddr="65105" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65105" commsubindex="0"/>
+			</par>
+			<par ipa="65107" hidden="true" name="IPA_RESTOREDEFAULTS" descr="IPA_RESTOREDEFAULTS" defval="0" um="" typepar="boolean" typetarg="boolean">
+				<protocol name="Modbus" commaddr="65107" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65107" commsubindex="0"/>
+			</par>
+			<par ipa="65108" hidden="true" name="IPA_SETDEFAULTSATSTARTUP" descr="IPA_SETDEFAULTSATSTARTUP" defval="0" um="" typepar="boolean" typetarg="boolean">
+				<protocol name="Modbus" commaddr="65108" commsubindex="0"/>
+				<protocol name="CanOpen" commaddr="65108" commsubindex="0"/>
+			</par>
+		</parameters>
+		<enums>
+			<enum id="1">
+				<elem value="0" descr="License NOT OK"/>
+				<elem value="1" descr="License OK"/>
+				<elem value="2" descr="Hardware ID read error"/>
+				<elem value="3" descr="License check error"/>
+			</enum>
+		</enums>
+		<hmi>
+			<window type="html" link="..\STResources\cfg_main.html">PREFIX_main</window>
+			<tree name="tree1">
+				<node name="PREFIX" caption="PREFIX" icon="..\img\AlPlc.ico" menu="menuRemove" datalink="PREFIX" window="PREFIX_main" captionedit="true" expand="true">
+					<node name="PREFIX_menu0" caption="All Parameters" STDGRIDICONS="" data=".." window="maingrid" expand="false">
+						<node name="PREFIX_menu01" caption="License" STDGRIDICONS="" data=".." window="maingrid"/>
+					</node>
+					<node name="PREFIX_app" caption="Application" icon="%APPPATH%\templates\img\application.ico" data="application" menu="menuAdd" expand="true"/>
+					<node name="PREFIX_recipes" caption="Recipes" RECIPES_GRIDICONS="" data="recipes" menu="menuAddRecipe" expand="true"/>
+				</node>
+			</tree>
+		</hmi>
+
+		<templatedata>
+			<PREFIX>
+				<config>
+					<commstring>Modbus:247,1000,M#COM:2,115200,N,8,1,H</commstring>
+					<values/>
+					<commDisabled>0</commDisabled>
+				</config>
+				<application/>
+				<recipes/>
+			</PREFIX>
+		</templatedata>
+
+		<extensions>
+			<script alias="PREFIX">..\STResources\target.js</script>
+			<eventhandler event="OnLoadTemplate">configurator.OnLoadDeviceTemplate</eventhandler>
+		</extensions>
+
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			
+				<xs:complexType name="TmasterPREFIXapplication">
+					<xs:complexContent>
+						<xs:extension base="masterDevice">
+							<xs:attribute name="protocol" type="xs:string" fixed="APPTYPE, APPCOMPAT"/>
+							<xs:attribute name="maxSlaves" type="xs:integer" fixed="1"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			
+				<xs:element name="PREFIX">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+									<xs:element name="config" type="TgenericConfig"/>
+									<xs:element name="application" type="TmasterPREFIXapplication"/>
+									<xs:element name="recipes">
+										<xs:complexType>
+											<xs:sequence minOccurs="0" maxOccurs="unbounded">
+												<xs:element name="recipe" type="Trecipe"/>
+											</xs:sequence>
+											<xs:attribute name="AddElementFunc" type="xs:string" fixed="configurator.AddRecipe"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="PREFIX"/>
+								<xs:attribute name="oncreatenode" type="xs:string" fixed="configurator.OnCreateDeviceNode"/>
+								<xs:attribute name="onloadnode" type="xs:string" fixed="configurator.OnLoadDeviceNode"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="configurator.OnDeleteDeviceNode"/>
+								<xs:attribute name="IsRootDevice" type="xs:boolean" fixed="true"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:schema>
+		</datadef>
+
+		<settings>
+			<item name="pollingIpa">65105</item>
+			<item name="saveParamsFunc">PREFIX.SaveParams</item>
+			<item name="restoreDefaultsFunc">PREFIX.RestoreDefaults</item>
+			<item name="resetFunc">PREFIX.Reset</item>
+			<item name="onBeforePLCDownload">PREFIX.OnBeforeDownloadPLC</item>
+			<item name="hasAlarmStatus">true</item>
+			<!--<item name="onConnect">PREFIX.OnConnect</item>-->
+		</settings>
+
+		<parameters/>
+		<enums/>
+	</deviceconfig>
+<!-- #ENDIF -->
+<!-- #IFDEF USE_SOFTSCOPE -->
+	<SoftScopeConfig>
+		<extensions>
+			<script alias="PREFIX">PowerXXX_SoftScope.js</script>
+			<dll alias="PREFIX_comm">Nucleo_SSC.dll</dll>
+		</extensions>
+
+		<templatedata>
+			<PREFIX/>
+		</templatedata>
+
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			</xs:schema>
+		</datadef>
+	</SoftScopeConfig>
+<!-- #ENDIF -->
+</devicetemplate>

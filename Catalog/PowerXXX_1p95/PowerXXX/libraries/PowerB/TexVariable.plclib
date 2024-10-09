@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.11">
+	<lib version="1.0.0" name="TexVariable" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="TexVariable">
+				<Pou name="Tex_putWord"/>
+				<Pou name="Tex_getWord"/>
+				<Pou name="Tex_getBit"/>
+				<Pou name="Tex_putBit"/>
+				<Pou name="Tex_getDword"/>
+				<Pou name="Tex_putDword"/>
+				<Pou name="Tex_getInfo"/>
+				<Pou name="Tex_getFixed"/>
+				<Pou name="Tex_putFixed"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<iecVarsDeclaration/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="Tex_putWord" version="1.0.0" creationDate="1712667091" lastModifiedDate="1715849436">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute putting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="variable" type="WORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="index" type="WORD">
+							<descr>internal Tex Wxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_putWord
+
+VAR_INPUT
+	execute : BOOL;	(* execute putting operation *)
+	continuousUpdate	: BOOL;
+	variable : WORD;	(* IEC61131-3 variable *)
+	index : WORD;	(* internal Tex Wxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_getWord" version="1.0.0" creationDate="1712667126" lastModifiedDate="1715849353">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="index" type="WORD">
+							<descr>internal Tex Fxxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="variable" type="WORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_getWord
+
+VAR_INPUT
+	execute : BOOL;	(* execute getting operation *)
+	continuousUpdate	: BOOL;
+	index : WORD;	(* internal Tex Fxxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	variable : WORD;	(* IEC61131-3 variable *)
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_getBit" version="1.0.0" creationDate="1712676078" lastModifiedDate="1715849321">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="index" type="WORD">
+							<descr>internal Tex Fxxxx bit</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="variable" type="BOOL">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_getBit
+
+VAR_INPUT
+	execute 			: BOOL;	(* execute getting operation *)
+	continuousUpdate	: BOOL;
+	index 				: WORD;	(* internal Tex Fxxxx bit *)
+END_VAR
+
+VAR_OUTPUT
+	variable 			: BOOL;	(* IEC61131-3 variable *)
+	done 				: BOOL;	(* operation was executed *)
+	error 				: BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId 			: WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_putBit" version="1.0.0" creationDate="1712676093" lastModifiedDate="1715849369">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute putting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="variable" type="BOOL">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="index" type="WORD">
+							<descr>iInternal Tex Fxxxx bit</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_putBit
+
+VAR_INPUT
+	execute : BOOL;	(* execute putting operation *)
+	continuousUpdate	: BOOL;
+	variable : BOOL;	(* IEC61131-3 variable *)
+	index : WORD;	(* iInternal Tex Fxxxx bit *)
+END_VAR
+
+VAR_OUTPUT
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_getDword" version="1.0.0" creationDate="1713164061" lastModifiedDate="1715849331">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="index" type="WORD">
+							<descr>internal Tex LWxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="variable" type="DWORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_getDword
+
+VAR_INPUT
+	execute : BOOL;	(* execute getting operation *)
+	continuousUpdate	: BOOL;
+	index : WORD;	(* internal Tex LWxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	variable : DWORD;	(* IEC61131-3 variable *)
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_putDword" version="1.0.0" creationDate="1713164663" lastModifiedDate="1715849405">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute putting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="variable" type="DWORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="index" type="WORD">
+							<descr>internal Tex LWxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_putDword
+
+VAR_INPUT
+	execute : BOOL;	(* execute putting operation *)
+	continuousUpdate	: BOOL;
+	variable : DWORD;	(* IEC61131-3 variable *)
+	index : WORD;	(* internal Tex LWxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_getInfo" version="1.0.0" creationDate="1713172109" lastModifiedDate="1715849347">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="index" type="WORD">
+							<descr>internal Tex Info xxxx index</descr>
+						</var>
+						<var name="axis" type="STRING" length="1">
+							<descr>name of the axis whose info is to be read</descr>
+						</var>
+						<var name="task" type="WORD">
+							<descr>task which is controlling the axes</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="variable" type="WORD">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_getInfo
+
+VAR_INPUT
+	execute : BOOL;	(* execute getting operation *)
+	continuousUpdate	: BOOL;
+	index : WORD;	(* internal Tex Info xxxx index *)
+	axis : STRING[ 1 ];	(* name of the axis whose info is to be read *)
+	task : WORD;	(* task which is controlling the axes *)
+END_VAR
+
+VAR_OUTPUT
+	variable : WORD;	(* IEC61131-3 variable *)
+	done : BOOL;	(* operation was executed *)
+	error : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId : WORD;	(* error identification *)
+END_VAR
+
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_getFixed" version="1.0.0" creationDate="1715843526" lastModifiedDate="1715843537">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute getting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="index" type="WORD">
+							<descr>internal Tex LWxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="variable" type="REAL">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_getFixed
+
+VAR_INPUT
+	execute :  BOOL;			(* execute getting operation *)
+	continuousUpdate	: BOOL;
+	index :    WORD;			(* internal Tex LWxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	variable : REAL;			(* IEC61131-3 variable *)
+	done :     BOOL;			(* operation was executed *)
+	error :    BOOL;			(* signals that an error has occurred within the Function Block *)
+	errorId :  WORD;			(* error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="Tex_putFixed" version="1.0.0" creationDate="1715843557" lastModifiedDate="1715843563">
+				<vars>
+					<inputVars>
+						<var name="execute" type="BOOL">
+							<descr>execute putting operation</descr>
+						</var>
+						<var name="continuousUpdate" type="BOOL"/>
+						<var name="variable" type="REAL">
+							<descr>IEC61131-3 variable</descr>
+						</var>
+						<var name="index" type="WORD">
+							<descr>internal Tex LWxxx index</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="done" type="BOOL">
+							<descr>operation was executed</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>signals that an error has occurred within the Function Block</descr>
+						</var>
+						<var name="errorId" type="WORD">
+							<descr>error identification</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="TRUE" valid="TRUE">
+					<![CDATA[FUNCTION_BLOCK Tex_putFixed
+
+VAR_INPUT
+	execute  : BOOL;			(* execute putting operation *)
+	continuousUpdate	: BOOL;
+	variable : REAL;			(* IEC61131-3 variable *)
+	index    : WORD;			(* internal Tex LWxxx index *)
+END_VAR
+
+VAR_OUTPUT
+	done     : BOOL;	(* operation was executed *)
+	error    : BOOL;	(* signals that an error has occurred within the Function Block *)
+	errorId  : WORD;	(* error identification *)
+END_VAR
+]]>
+				</iecDeclaration>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

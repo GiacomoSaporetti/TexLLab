@@ -1,0 +1,139 @@
+html, body {
+	background-color: #ebebeb;
+	padding: 0px;
+	margin: 0px;
+}
+
+.title {
+	font: bold 30px Arial,sans-serif;
+	text-align: center;
+	color: #71787f;
+	text-transform: uppercase;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+.table {
+	width: 100%;
+	font: normal 14px Arial,sans-serif;
+	margin-bottom: 30px;
+	border-collapse: collapse;
+	border: 1px solid #b4b7bb;
+}
+
+.table th {
+	color: #4c536c;
+	text-align: left;
+}
+
+.table tr {
+	height: 40px;
+}
+
+.table td {
+	border-top: 1px solid #b4b7bb;
+	border-bottom: 1px solid #b4b7bb;
+	background-color: white;
+	padding: 5px;
+}
+
+table td:first-child {
+	min-width: 85px;
+	width: 15%;
+}
+
+.sectiontitle {
+	font: bold 20px Arial,sans-serif;
+	margin-bottom: 15px;
+}
+
+.pagebody {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.flex {
+	display: flex;
+	overflow: auto;
+}
+
+.tab-more-btn {
+	float: right;
+	margin-right: 7px;
+}
+
+.body {
+	display: flex;
+}
+
+button.active, input[type="button"].active {
+	background-color: #0677afa8;
+}
+
+/* Create two equal columns that sits next to each other */
+.column1 {
+	flex: 15%;
+	min-width: 170px;
+}
+
+.column2 {
+	flex: 85%;
+}
+
+.file-list li .menu-on {
+    background-color: rgba(255, 208, 78, 0.550);
+}
+
+/* stile menu */
+#menuIcon, .closebtn {
+    display: none;
+}
+
+@media screen and (max-width: 480px) {
+	.column1 {
+		flex: initial;
+		min-width: initial
+	}
+
+	.column2 {
+		flex: 95%;
+	}
+
+	#menuIcon {
+	  display: block;
+	  margin-top: 4px;
+	  margin-left: 2px;
+	}
+	.menu-container {
+	  height: 100%;
+	  width: 0;
+	  position: fixed;
+	  z-index: 1;
+	  top: 0;
+	  left: 0;
+	  background-color: whitesmoke;
+	  overflow-x: hidden;
+	  transition: 0.4s;
+	  padding-top: 60px;
+	}
+	.menu-container .closebtn {
+	  position: absolute;
+	  top: 0;
+	  right: 10px;
+	  font-size: 36px;
+	  margin-left: 50px;
+	  display: block;
+	}
+
+	.file-list li a {
+	  font-size: 22px;
+	}
+}
+
+.collapsed-menu-open {
+	width: 260px;
+}
+
+#headButtonContainer {
+	display: flex;
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Axis</title>
+
+	<script type="text/javascript">
+	const GUI_DEBUG = false;
+
+	if (!GUI_DEBUG) {
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+	}
+	else {
+		document.write("<LINK href='../../../../Common/CSS/style.css' rel='stylesheet' type='text/css'>")
+	}
+	</script>
+
+	<script type="text/javascript" src="config.js"></script>
+
+	<style>
+		/* fix per HTML5 */
+		.TitlePag {
+			height: 40px;
+			padding-top: 3px;
+		}
+
+		input[type='text'] {
+			width: 220px;
+		}
+
+		input[type='radio'] {
+			vertical-align: middle;
+		}
+
+		button {
+			width: 235px;
+		}
+
+		select {
+			min-width: 85px;
+			max-width: 150px;
+		}
+
+		label{
+			width: 90px;
+			display: inline-block;
+		}
+
+		.long-label{
+			width: 225px;
+			display: inline-block;
+		}
+
+		.box {
+			display: flex;
+			flex-direction: row;
+		}
+
+		fieldset > div:nth-child(n+3):not(.mt-m) {
+			margin-top: 3px;
+		}
+
+		fieldset.reduce-padding {
+			padding-top: 5px;
+		}
+	</style>
+</head>
+<body onload="OnLoad()">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr class="TitlePag">
+			<td id="pageTitle"><t:t>Axis Configuration</t:t></td>
+		</tr>
+		<tr>
+			<td class="Sfondo">
+				<fieldset style="width: 713px;">
+					<legend><t:t>Axis parameters</t:t></legend>
+					<div>
+						<label for="txtName"><t:t>Enable axis</t:t></label>
+						<label class="switch">
+							<input type="checkbox" name=".D(@axisEnabled)" onclick="EnableDisableAxisOnTree(this.checked)">
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div class="mt-m">
+						<label for="txtName"><t:t>Name</t:t>:</label>
+						<input name=".D(@caption)" id="txtName" type="text" onchange="UpdateTreeCaption()">
+					</div>
+					<div>
+						<label for="fieldbusSel"><t:t>Fieldbus</t:t>:</label>
+						<select name=".D(@fieldbus)" id="fieldbusSel" onchange="OnChangeFieldbus()"></select>
+					</div>
+					<div>
+						<label for="driverSel"><t:t>Driver</t:t>:</label>
+						<select name=".D(@driver)" id="driverSel"></select>
+					</div>
+					<div>
+						<label for="txtCycleTime"><t:t>Cycle time</t:t>:</label>
+						<input style="width: 80px;" id="txtCycleTime" type="text" disabled>
+						<label for="txtCycleTime"><t:t>ms</t:t></label>
+					</div>
+
+					<div class="box mt-m">
+						<fieldset class="reduce-padding">
+							<legend><t:t>Type</t:t></legend>
+							<input type="radio" id="constrainedTypeRadioBtn" name=".D(@type)" value="0" onchange="enableDisableModule(this.value)">
+							<label for="constrainedTypeRadioBtn"><t:t>Constrained</t:t></label><br>
+							<input type="radio" id="continuousTypeRadioBtn" name=".D(@type)" value="1" onchange="enableDisableModule(this.value)">
+							<label for="continuousTypeRadioBtn"><t:t>Module</t:t> (<span data-unit="EU"></span>)</label><br>
+							<input style="margin-left: 25px; width: 80px;" id="moduleTxt" type="text" name=".D(@module)">
+						</fieldset>
+						<fieldset class="reduce-padding">
+							<legend><t:t>Length unit</t:t></legend>
+							<input type="radio" id="mLengthUnitRadioBtn" name=".D(@lengthUnit)" value="m" onclick="onChangeLengthUnit(this.value)">
+							<label for="mLengthUnitRadioBtn">m</label><br>
+							<input type="radio" id="mmLengthUnitRadioBtn" name=".D(@lengthUnit)" value="mm" onclick="onChangeLengthUnit(this.value)">
+							<label for="mmLengthUnitRadioBtn">mm</label><br>
+							<input type="radio" id="degreeLengthUnitRadioBtn" name=".D(@lengthUnit)" value="degree" onclick="onChangeLengthUnit(this.value)">
+							<label for="degreeLengthUnitRadioBtn"><t:t>degree</t:t></label><br>
+							<input type="radio" id="customLengthUnitRadioBtn" name=".D(@lengthUnit)" onclick="onChangeLengthUnit(this.value)">
+							<input style="width: 80px;" id="customLengthUnitTxt" type="text" onkeyup="onChangeLengthUnitCustomUM(this.value)">
+						</fieldset>
+						<fieldset class="reduce-padding">
+							<legend><t:t>Time unit</t:t></legend>
+							<input type="radio" id="usecTimeUnitRadioBtn" name=".D(@timeUnit)" value="usec" onclick="updateTimeUnitUM(this.value)">
+							<label for="usecTimeUnitRadioBtn">&micro;s</label><br>
+							<input type="radio" id="msecTimeUnitRadioBtn" name=".D(@timeUnit)" value="msec" onclick="updateTimeUnitUM(this.value)">
+							<label for="msecTimeUnitRadioBtn">ms</label><br>
+							<input type="radio" id="sTimeUnitRadioBtn" name=".D(@timeUnit)" value="s" onclick="updateTimeUnitUM(this.value)">
+							<label for="sTimeUnitRadioBtn">s</label><br>
+							<input type="radio" id="minTimeUnitRadioBtn" name=".D(@timeUnit)" value="min" onclick="updateTimeUnitUM(this.value)">
+							<label for="minTimeUnitRadioBtn">min</label><br>
+							<input type="radio" id="hTimeUnitRadioBtn" name=".D(@timeUnit)" value="h" onclick="updateTimeUnitUM(this.value)">
+							<label for="hTimeUnitRadioBtn">h</label><br>
+						</fieldset>
+					</div>
+					<div class="box">
+						<fieldset class="reduce-padding">
+							<legend><t:t>Coupling</t:t></legend>
+							<div>
+								<label for="txtRoundSteps"><t:t>Encoder pulses</t:t>:</label>
+								<input style="width: 80px;" id="txtRoundSteps" type="text" name=".D(@roundSteps)">
+							</div>
+							<div>
+								<label for="txtRoundUnit"><t:t>Turn</t:t>:</label>
+								<input style="width: 80px; position: relative; top: 14px; text-align: center;" id="txtRoundUnit" type="text" name=".D(@roundUnit)">
+								<label style="width: auto; position: relative; top: 14px;">(<span data-unit="EU"></span>)</label>
+								<label style="width: auto; margin-left: 5px; position: relative; top: 15px;">X</label>
+								<span style="display: inline-table; margin-left: 5px;">
+									<input style="width: 80px; text-align: center;" id="txtRoundUnit" type="text" name=".D(@ratioNum)">
+									<div class="mt-xs" style="border-bottom: 1px solid gray;"></div>
+									<input class="mt-xs" style="width: 80px; text-align: center;" id="txtRoundUnit" type="text" name=".D(@ratioDen)">
+								</span>
+							</div>
+						</fieldset>
+					</div>
+				</fieldset>
+
+				<div class="box">
+					<fieldset>
+						<legend><t:t>Limits</t:t></legend>
+						<div>
+							<label class="long-label" for="minimumPositionTxt"><t:t>Minimum position</t:t> (<span data-unit="EU"></span>):</label>
+							<input style="width: 80px;" id="minimumPositionTxt" type="text" name=".D(@minimumPositionValue)">
+							<label class="switch">
+								<input type="checkbox" name=".D(@minimumPositionEnabled)">
+								<span class="slider round"></span>
+							</label>
+						</div>
+						<div>
+							<label class="long-label" for="maximumPositionTxt"><t:t>Maximum position</t:t> (<span data-unit="EU"></span>):</label>
+							<input style="width: 80px;" id="maximumPositionTxt" type="text" name=".D(@maximumPositionValue)">
+							<label class="switch">
+								<input type="checkbox" name=".D(@maximumPositionEnabled)">
+								<span class="slider round"></span>
+							</label>
+						</div>
+						<div>
+							<label class="long-label" for="maximumVelocityTxt"><t:t>Maximum velocity</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>):</label>
+							<input style="width: 80px;" id="maximumVelocityTxt" type="text" name=".D(@maximumVelocityValue)">
+							<label class="switch">
+								<input type="checkbox" name=".D(@maximumVelocityEnabled)">
+								<span class="slider round"></span>
+							</label>
+						</div>
+						<div>
+							<label class="long-label" for="maximumAccelerationTxt"><t:t>Maximum acceleration</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#178;):</label>
+							<input style="width: 80px;" id="maximumAccelerationTxt" type="text" name=".D(@maximumAccelerationValue)">
+							<label class="switch">
+								<input type="checkbox" name=".D(@maximumAccelerationEnabled)">
+								<span class="slider round"></span>
+							</label>
+						</div>
+						<div>
+							<label class="long-label" for="maximumDecelerationTxt"><t:t>Maximum deceleration</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#178;):</label>
+							<input style="width: 80px;" id="maximumDecelerationTxt" type="text" name=".D(@maximumDecelerationValue)">
+							<label class="switch">
+								<input type="checkbox" name=".D(@maximumDecelerationEnabled)">
+								<span class="slider round"></span>
+							</label>
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend><t:t>Defaults</t:t></legend>
+						<div>
+							<label class="long-label" for="referenceVelocityTxt"><t:t>Reference velocity</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>):</label>
+							<input style="width: 80px;" id="referenceVelocityTxt" type="text" name=".D(@referenceVelocity)">
+						</div>
+						<div>
+							<label class="long-label" for="defaultAccelerationTxt"><t:t>Default acceleration</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#178;):</label>
+							<input style="width: 80px;" id="defaultAccelerationTxt" type="text" name=".D(@defaultAcceleration)">
+						</div>
+						<div>
+							<label class="long-label" for="defaultDecelerationTxt"><t:t>Default deceleration</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#178;):</label>
+							<input style="width: 80px;" id="defaultDecelerationTxt" type="text" name=".D(@defaultDeceleration)">
+						</div>
+						<div>
+							<label class="long-label" for="defaultJerkTxt"><t:t>Default jerk</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#179;):</label>
+							<input style="width: 80px;" id="defaultJerkTxt" type="text" name=".D(@defaultJerk)">
+						</div>
+					</fieldset>
+				</div>
+
+				<div class="box">
+					<fieldset style="width: 352px;">
+						<legend><t:t>Homing</t:t></legend>
+						<div>
+							<label class="long-label" for="homingMethodTxt"><t:t>Method</t:t></label>
+							<input style="width: 80px;" id="homingMethodTxt" type="text" name=".D(@homingMethod)">
+						</div>
+						<div>
+							<label class="long-label" for="searchSwitchVelocityTxt"><t:t>Search switch velocity</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>):</label>
+							<input style="width: 80px;" id="searchSwitchVelocityTxt" type="text" name=".D(@homingSearchSwitchVelocity)">
+						</div>
+						<div>
+							<label class="long-label" for="searchZeroVelocityTxt"><t:t>Search zero velocity</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>):</label>
+							<input style="width: 80px;" id="searchZeroVelocityTxt" type="text" name=".D(@homingSearchZeroVelocity)">
+						</div>
+						<div>
+							<label class="long-label" for="homingAccelerationTxt"><t:t>Acceleration</t:t> (<span data-unit="EU"></span>/<span data-unit="TU"></span>&#178;):</label>
+							<input style="width: 80px;" id="homingAccelerationTxt" type="text" name=".D(@homingAcceleration)">
+						</div>
+					</fieldset>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<script>InitPage();</script>
+</body>
+</html>

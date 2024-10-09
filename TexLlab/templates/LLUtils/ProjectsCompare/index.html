@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Unused Variables report</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/Polyfills.js' type='text/javascript'></" + "SCRIPT>")
+	</script>
+
+	<!-- dipendenze fancytree -->
+	<script src="external/jquery-3.6.3.min.js"></script>
+	<script src="external/jquery.fancytree-all-deps.min.js"></script>
+	<link rel="stylesheet" href="external/skin-win8/ui.fancytree.min.css">
+
+	<script src="src.js"></script>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="html5">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Projects Compare</t:t></span>
+	</div>
+
+	<div class="tableHeader hideOnPrint">
+		<span class="panel">
+			<span><t:t>Comparing with</t:t>:</span>
+			<span id="otherPrjNameTxt"></span>
+		</span>
+
+		<span>
+			<button class="ll-button" onclick="openDiffEditorConfig()">
+				<img id="imgSettings"/>
+				<span class="label"><t:t>Settings</t:t></span>
+			</button>
+
+			<button class="ll-button" id="helpBtn" onclick="ShowHelp()">
+				<img id="imgHelp"/>
+				<span class="label"><t:t>Help</t:t></span>
+			</button>
+
+			<!--------------- DEBUG --------------->
+			<span id="debugSpan" style="display: none;">
+				<button class="ll-button" onclick="ReloadCurrentWindow()">
+					<img id="imgReload"/>
+					<span class="label"><t:t>Reload</t:t></span>
+				</button>
+	
+				<button class="ll-button" onclick="SelectFile()">
+					<img id="imgOpen"/>
+					<span class="label"><t:t>Select file</t:t></span>
+				</button>
+	
+				<input type="text" id="fileNameTxt" style="width: 500px; margin-left: 10px;" readonly>
+			</span>
+		</span>
+	</div>
+
+	<table id="treegrid" style="display: none;">
+		<colgroup>
+			<col width="350px"></col>
+			<col width="350px"></col>
+			<col width="150px"></col>
+			<col width="30px"></col>
+		</colgroup>
+		<thead>
+			<tr>
+				<th><t:t>This</t:t></th>
+				<th><t:t>Other</t:t></th>
+				<th><t:t>Diff. Result</t:t></th>
+				<th></th>
+			</tr>
+		</thead>
+		<!-- Optionally define a row that serves as template, when new nodes are created: -->
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

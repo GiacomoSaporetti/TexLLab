@@ -1,0 +1,870 @@
+(************************************************************************)
+(*                                                                      *)
+(*   TYPES                                                   			*)
+(*                                                                      *)
+(************************************************************************)
+
+TYPE
+	DBTABLE_RECORD : STRUCT
+		{ HIDDEN:ON }
+		ipa : UINT;			{ DE:"Index" }
+		subi : UINT;		{ DE:"Subindex" }
+		typePar : USINT;	{ DE:"Application type" }
+		typeVar : USINT;	{ DE:"Variable type" }
+		unused : UINT;		{ DE:"Spare" }
+		address : DWORD;    { DE:"Address" }
+		el : UDINT;			{ DE:"Number of elements" }
+		attr : UDINT;		{ DE:"Flags" }
+		def : UDINT;		{ DE:"Default" }
+		min : REAL;			{ DE:"Min" }
+		max : REAL;			{ DE:"Max" }
+		scale : REAL;		{ DE:"Scale" }
+		off : REAL;			{ DE:"Offset" }
+	END_STRUCT;
+	
+	ALDATABASE_MENU_PAR_FLAGS_ENUM :  ( 	{ DE:"Menu parameter list flags" }
+		PAR_ADDRESS_NONE := 0,				{ DE:"No parameter specified" }
+		PAR_ADDRESS_DBTABLE_EXT_ID := 1,	{ DE:"ParAddress has the progressive id of the external DB table" }
+		PAR_ADDRESS_DBTABLE_SYS_ID := 2,	{ DE:"ParAddress has the progressive id of the system DB table" }
+		PAR_ADDRESS_DBTABLE_ADDRESS := 4,	{ DE:"ParAddress has the physical address of a DBTABLE record" }
+		PAR_ADDRESS_CUSTOM_ADDRESS := 8		{ DE:"ParAddress point to user custom address" }
+	);
+	
+	ALDATABASE_PARITEM : STRUCT
+		{ HIDDEN:ON }
+		flags : ALDATABASE_MENU_PAR_FLAGS_ENUM;	{ DE:"Flag" }
+		ParAddress : DWORD;			{ DE:"Parameter address (value based on specified flag)" }
+		pParName: @STRING;			{ DE:"Param Name" }
+		pParDescription: @STRING;	{ DE:"Param Description" }
+		pParFormat: @STRING;		{ DE:"Param Format" }
+		pParUm: @STRING;			{ DE:"Param Um" }
+	END_STRUCT;
+	
+	ALDATABASE_MENU : STRUCT
+		{ HIDDEN:ON }
+		id : UINT;						{ DE:"Menu ID" }
+		numPars : UINT;					{ DE:"Number of parameters" }
+		numSubMenus : UINT;				{ DE:"Number of sub menus" }
+		reserved : UINT;				{ DE:"Reserved" }
+		caption: @STRING;				{ DE:"Menu string address" }
+		pSubMenu: @ALDATABASE_MENU;		{ DE:"Sub menu address" }
+		pParList: @ALDATABASE_PARITEM;	{ DE:"Par list address" }
+	END_STRUCT;
+	
+END_TYPE
+
+
+(************************)
+(*                      *)
+(*        ENUMS         *)
+(*                      *)
+(************************)
+
+TYPE
+
+	sysDBaseErrCode: (
+		sysDBaseOk := 0,	{ DE:"OK, operation done" }
+		sysDBaseErrNoIpa := 1,	{ DE:"Parameter not found" }
+		sysDBaseErrSysErr := 2,	{ DE:"DB system error" }
+		sysDBaseErrType := 3,	{ DE:"Wrong parameter type" }
+		sysDBaseErrReadOnly := 4,	{ DE:"Read only parameter cannot be written" }
+		sysDBaseErrNotWriteNow := 5,	{ DE:"Cannot write parameter, database not ready" }
+		sysDBaseErrMinValue := 6,	{ DE:"brief Parameter value exceeds min value" }
+		sysDBaseErrMaxValue := 7,	{ DE:"brief Parameter value exceeds max value" }
+		sysDBaseErrCnfConflict := 8,	{ DE:"Unused" }
+		sysDBaseErrConstantLimits := 9,	{ DE:"Number of elements error" }
+		sysDBaseErrInProgress := 10,	{ DE:"Unused" }
+		sysDBaseErrNotReady := 11,	{ DE:"Unused" }
+		sysDBaseErrNotSpecified := 12,	{ DE:"Unused" }
+		sysDBaseErrWriteOnly := 13	{ DE:"Write only parameter cannot be read" }
+	);
+
+	sysDBaseType: (
+		sysDBaseTypeNull := -1,	{ DE:"Invalid type" }
+		sysDBaseTypeVoid := 0,	{ DE:"Unknown or not specified type" }
+		sysDBaseTypeBool := 1,	{ DE:"Boolean parameter type" }
+		sysDBaseTypeU8 := 2,	{ DE:"Unsigned 8bit parameter type" }
+		sysDBaseTypeS16 := 3,	{ DE:"Signed 16bit parameter type" }
+		sysDBaseTypeU16 := 4,	{ DE:"Unsigned 16bit parameter type" }
+		sysDBaseTypeS32 := 5,	{ DE:"Signed 32bit parameter type" }
+		sysDBaseTypeU32 := 6,	{ DE:"Unsigned 32bit parameter type" }
+		sysDBaseTypeF32 := 7,	{ DE:"Float 32bit parameter type" }
+		sysDBaseTypeString := 8,	{ DE:"String parameter type" }
+		sysDBaseTypeBuff := 9,	{ DE:"Buffer parameter type" }
+		sysDBaseTypeS8 := 10,	{ DE:"Signed 8bit parameter type" }
+		sysDBaseTypeS64 := 11,	{ DE:"Signed 64bit parameter type" }
+		sysDBaseTypeU64 := 12,	{ DE:"Unsigned 64bit parameter type" }
+		sysDBaseTypeF64 := 13	{ DE:"Float 64bit parameter type" }
+	);
+
+END_TYPE
+
+(************************************************************************)
+(*                                                                      *)
+(*   GLOBAL VARIABLES                                                   *)
+(*                                                                      *)
+(************************************************************************)
+
+
+VAR_GLOBAL
+	
+	{G:"System"}
+	sysParameters 	AT %MW200.0 : ARRAY[ 0..399 ] OF WORD;	{ HIDDEN:ON }
+	sysStatusVars 	AT %MW201.0 : ARRAY[ 0..511 ] OF WORD;	{ HIDDEN:ON }
+
+END_VAR
+
+(************************************************************************)    
+(*                                                                      *)    
+(*   EMBEDDED FUNCTIONS                                                 *)    
+(*                                                                      *)    
+(************************************************************************)   
+
+FUNCTION sysDBase_SaveAll : BOOL
+	{ DE:"Save parameters current values into database" }
+	VAR_INPUT
+		dummy   : BOOL;    { DE:"Dummy" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysDBase_SetExtTable : USINT
+	{ HIDDEN:ON }
+	{ DE:"Set extended database table" }
+	VAR_INPUT
+		ptrDB   : DWORD;    { DE:"Database Physical address" }
+		numPars : UDINT;    { DE:"Number of parameters" }
+		idxDatablockE2   : UINT;  { DE:"Index of datablock for E2 parameters" }
+		ptrDatablockE2   : DWORD; { DE:"Address of datablock for E2 parameters" }
+		numelemsDatablockE2  : UDINT; { DE:"Number of elements of datablock for E2 parameters" }
+		datasizeDatablockE2  : USINT; { DE:"Size of an element of datablock for E2 parameters" }
+		idxDatablockRAM  : UINT;  { DE:"Index of datablock for RAM parameters" }
+		ptrDatablockRAM  : DWORD; { DE:"Address of datablock for RAM parameters" }
+		numelemsDatablockRAM : UDINT; { DE:"Number of elements of datablock for RAM parameters" }
+		datasizeDatablockRAM  : USINT; { DE:"Size of an element of datablock for RAM parameters" }
+		extTableSignature : DWORD;	{ DE:"Signature to reset default value if something changed" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysDBase_SetExtMenus : BOOL
+	{ HIDDEN:ON }
+	{ DE:"Set extended database table" }
+	VAR_INPUT
+		ptrMenuIndex : DWORD; { DE:"Menus index physical address" }
+		numMenus : UDINT;     { DE:"Number of parameters" }
+	END_VAR
+	{CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysWriteParBOOL: BOOL
+	{ DE:"Write BOOL to EEPROM. 
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : BOOL;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParUSINT: BOOL
+	{ DE:"Write USINT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : USINT;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParSINT: BOOL
+	{ DE:"Write SINT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : SINT;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParBYTE: BOOL
+	{ DE:"Write BYTE to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : BYTE;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParINT: BOOL
+	{ DE:"Write INT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : INT;    { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParUINT: BOOL
+	{ DE:"Write UINT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : UINT;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParWORD: BOOL
+	{ DE:"Write WORD to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : WORD;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParDINT: BOOL
+	{ DE:"Write DINT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : DINT;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParUDINT: BOOL
+	{ DE:"Write UDINT to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : UDINT;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParDWORD: BOOL
+	{ DE:"Write DWORD to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : DWORD;  { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParREAL: BOOL
+	{ DE:"Write REAL to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParBOOL(ADR(EEPROMPARAMETER),NewValue); 	
+" }
+	VAR_INPUT
+		address : DWORD;  { DE:"Address" }
+		Value   : REAL;   { DE:"Value" }
+	END_VAR
+	{ CODE:EMBEDDED }
+END_FUNCTION
+
+
+FUNCTION sysWriteParSTRING : BOOL
+	{ DE:"Write a STRING to EEPROM.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Writing executed correctly.
+FALSE	=	Writing not executed.
+
+Example: bret:=sysWriteParSTRING(ADR(EEPROMPARAMETER),NewValue,10); 
+" }
+	VAR_INPUT
+		id  : UDINT;  { DE:"Address" }
+		msg : STRING; { DE:"String" }
+		len : USINT;  { DE:"SIZEOF(String to write)" }		
+	END_VAR
+  {CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysParRestoreDefault : BOOL
+	{ DE:"Reset to default value the specified parameter.
+The function return a BOOL which could have the following meanings:
+TRUE	=	Default value written correctly.
+FALSE	=	Default value not written.
+	
+Example: bret:=sysParRestoreDefault(40000);
+" }
+	VAR_INPUT
+		id  : UDINT;  { DE:"Address" }
+	END_VAR
+  {CODE:EMBEDDED}
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_Bool : sysDBaseErrCode
+	{ DE:"Write Bool parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : BOOL;	{ DE:"BOOL value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_Bool := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeBool), ADR(value), 1);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_S32 : sysDBaseErrCode
+	{ DE:"Write Signed 32bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : DINT;	{ DE:"DINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_S32 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeS32), ADR(value), 4);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_S16 : sysDBaseErrCode
+	{ DE:"Write Signed 16bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : INT;	{ DE:"INT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_S16 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeS16), ADR(value), 2);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_S64 : sysDBaseErrCode
+	{ DE:"Write Signed 64bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : LINT;	{ DE:"LINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_S64 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeS64), ADR(value), 8);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_Float64 : sysDBaseErrCode
+	{ DE:"Write Float 64bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : LREAL;	{ DE:"LREAL value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_Float64 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeF64), ADR(value), 8);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_Float32 : sysDBaseErrCode
+	{ DE:"Write Float 32bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : REAL;	{ DE:"REAL value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_Float32 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeF32), ADR(value), 4);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_S8 : sysDBaseErrCode
+	{ DE:"Write Signed 8bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : SINT;	{ DE:"SINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_S8 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeS8), ADR(value), 1);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_U32 : sysDBaseErrCode
+	{ DE:"Write Unsigned 32bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : UDINT;	{ DE:"UDINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_U32 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeU32), ADR(value), 4);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_U16 : sysDBaseErrCode
+	{ DE:"Write Unsigned 16bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : UINT;	{ DE:"UINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_U16 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeU16), ADR(value), 2);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_U64 : sysDBaseErrCode
+	{ DE:"Write Unsigned 64bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : ULINT;	{ DE:"ULINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_U64 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeU64), ADR(value), 8);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_U8 : sysDBaseErrCode
+	{ DE:"Write Unsigned 8bit parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : USINT;	{ DE:"USINT value to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_U8 := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeU8), ADR(value), 1);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue : sysDBaseErrCode
+	{ DE:"Write parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : PVOID;	{ DE:"Pointer to the value to write" }
+		parType : sysDBaseType;	{ DE:"Type of the parameter (sysDBaseTypeVoid if type is unknown)" }
+		valueLen : UDINT;	{ DE:"Size of the buffer with value" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue := sysDBase_SetPar(index, 0, TO_USINT(parType), value, valueLen);
+
+END_FUNCTION
+
+FUNCTION sysDBaseSetValue_String : sysDBaseErrCode
+	{ DE:"Write String parameter into database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		ptrString : @STRING;	{ DE:"String value to write" }
+		numChar : UDINT;	{ DE:"Number of characters to write" }
+	END_VAR
+
+	{ CODE:ST }
+	sysDBaseSetValue_String := sysDBase_SetPar(index, 0, TO_USINT(sysDBaseType#sysDBaseTypeString), ptrString, numChar);
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_Bool : sysDBaseErrCode
+	{ DE:"Read Boolean parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @BOOL;	{ DE:"Value of the parameter (BOOL value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeBool);
+	maxLen := 1;
+	
+	sysDBaseGetValue_Bool := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_S32 : sysDBaseErrCode
+	{ DE:"Read Signed 32bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @DINT;	{ DE:"Value of the parameter (DINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeS32);
+	maxLen := 4;
+	
+	sysDBaseGetValue_S32 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_S16 : sysDBaseErrCode
+	{ DE:"Read Signed 16bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @INT;	{ DE:"Value of the parameter (INT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeS16);
+	maxLen := 2;
+	
+	sysDBaseGetValue_S16 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_S64 : sysDBaseErrCode
+	{ DE:"Read Signed 64bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @LINT;	{ DE:"Value of the parameter (LINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeS64);
+	maxLen := 8;
+	
+	sysDBaseGetValue_S64 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_Float64 : sysDBaseErrCode
+	{ DE:"Read Float 64bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @LREAL;	{ DE:"Value of the parameter (LREAL value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeF64);
+	maxLen := 8;
+	
+	sysDBaseGetValue_Float64 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_Float32 : sysDBaseErrCode
+	{ DE:"Read Float 32bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @REAL;	{ DE:"Value of the parameter (REAL value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeF32);
+	maxLen := 4;
+	
+	sysDBaseGetValue_Float32 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_S8 : sysDBaseErrCode
+	{ DE:"Read Signed 8bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @SINT;	{ DE:"Value of the parameter (SINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeS8);
+	maxLen := 1;
+	
+	sysDBaseGetValue_S8 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_U32 : sysDBaseErrCode
+	{ DE:"Read Unsigned 32bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @UDINT;	{ DE:"Value of the parameter (UDINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeU32);
+	maxLen := 4;
+	
+	sysDBaseGetValue_U32 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_U16 : sysDBaseErrCode
+	{ DE:"Read Unsigned 16bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @UINT;	{ DE:"Value of the parameter (UINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeU16);
+	maxLen := 2;
+	
+	sysDBaseGetValue_U16 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_U64 : sysDBaseErrCode
+	{ DE:"Read Unsigned 64bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @ULINT;	{ DE:"Value of the parameter (ULINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeU64);
+	maxLen := 8;
+	
+	sysDBaseGetValue_U64 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_U8 : sysDBaseErrCode
+	{ DE:"Read Unsigned 8bit parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : @USINT;	{ DE:"Value of the parameter (USINT value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		maxLen : UDINT;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeU8);
+	maxLen := 1;
+	
+	sysDBaseGetValue_U8 := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, ADR(maxLen));
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue : sysDBaseErrCode
+	{ DE:"Read parameter from database" }
+	VAR_INPUT
+		index : UINT;	{ DE:"Index of the parameter" }
+		value : PVOID;	{ DE:"Pointer to the value readed" }
+		maxLen : @UDINT;	{ DE:"[in] Max size of the buffer [out] effective size" }
+		parType : @sysDBaseType;	{ DE:"[in] Type desired (sysDBaseTypeVoid if type is unknown) [out] Type of the parameter" }
+	END_VAR
+
+	VAR
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(@parType);
+	
+	sysDBaseGetValue := sysDBase_GetPar(index, 0, ADR(parTypeInternal), value, maxLen);
+
+END_FUNCTION
+
+FUNCTION sysDBaseGetValue_String : sysDBaseErrCode
+	{ DE:"Read String parameter from database" }
+	VAR_INPUT
+		index : UINT;
+		ptrString : @STRING;	{ DE:"Index of the parameter" }
+		maxChar : UDINT;	{ DE:"Value of the parameter (STRING value)" }
+	END_VAR
+
+	VAR
+		dummy1 : BOOL;
+		dummy2 : BOOL;
+		dummy3 : BOOL;
+		dummy4 : BOOL;
+		parTypeInternal : USINT;
+	END_VAR
+
+	{ CODE:ST }
+	parTypeInternal := TO_USINT(sysDBaseType#sysDBaseTypeString);
+	
+	sysDBaseGetValue_String := sysDBase_GetPar(index, 0, ADR(parTypeInternal), ptrString, ADR(maxChar));
+
+END_FUNCTION
+
+
+FUNCTION sysDBase_SetPar : INT
+	{ HIDDEN:ON }
+	VAR_INPUT
+		index : UINT;
+		subindex : USINT;
+		parType : USINT;
+		buff : PVOID;
+		dim : UDINT;
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+
+FUNCTION sysDBase_GetPar : INT
+	{ HIDDEN:ON }
+	VAR_INPUT
+		index : UINT;
+		subindex : USINT;
+		parType : @USINT;
+		buff : PVOID;
+		dim : @UDINT;
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION
+
+FUNCTION sysDBase_SetDBModbusCompliant : BOOL
+	{ HIDDEN:ON }
+	VAR_INPUT
+		set_DBModbusCompliant : BOOL; { DE:"TRUE for database modbus compliant, FALSE if free indexing database" }
+	END_VAR
+
+	{ CODE:EMBEDDED }
+
+END_FUNCTION

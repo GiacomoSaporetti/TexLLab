@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Home</title>
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<LINK href='" + csspath + "diagnostics.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		var app = window.external;
+	</script>
+
+	<script src="MQTThome.js"></script>
+
+	<style>
+		.enable-label {
+			width: 115px;
+			display: inline-block;
+		}
+
+		#downloadFilesDiv>div:nth-child(n+2) {
+			margin-top: 4px;
+		}
+	</style>
+</head>
+<body>
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr class="TitlePag">
+			<td id="pageTitle"><t:t>Configuration</t:t></td>
+		</tr>
+
+		<tr>
+			<td class="SfondoTab">
+				<div class="menu html5">
+					<div class="menu_on"> <a href="#"><t:t>Configuration</t:t></a> </div>
+					<div class="menu_off"> <a href="mqtt_publish.html"><t:t>Publish</t:t></a> </div>
+					<div class="menu_off"> <a href="mqtt_subscribe.html"><t:t>Subscribe</t:t></a></div>
+					&nbsp;
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="Sfondo">
+				<fieldset>
+					<legend><t:t>Enable</t:t></legend>
+					<label class="enable-label"><t:t>Enable MQTT</t:t></label>
+					<label class="switch">
+						<input type="checkbox" name=".D(@enabled)" onclick="EnableDisableMasterOnTree(this.checked)">
+						<span class="slider round"></span>
+					</label>
+				</fieldset>
+
+				<fieldset class="mt-m">
+					<legend><t:t>Files and certificates</t:t></legend>
+
+					<div>
+						<label><t:t>Additional files and certificates to download (to be used with MQTT_ConnectionOpen2 function)</t:t></label>
+					</div>
+
+					<div class="mt-s">
+						<button class="ll-button" onClick="AddFileToDownload()">
+							<img id="imgPlus" alt="Add">
+							<span class="label"><t:t>Add</t:t></span>
+						</button>
+					</div>
+
+					<div class="mt-xs" id="downloadFilesDiv">
+					</div>
+				</fieldset>
+
+				<fieldset class="mt-m">
+					<legend><t:t>Diagnostics status</t:t></legend>
+					<label class="enable-label"><t:t>Enable diagnostics</t:t></label>
+					<label class="switch">
+						<input type="checkbox" onclick="enableDiagnostics(this.checked)" id="diagnosticsEnabledChk">
+						<span class="slider round"></span>
+					</label>
+				</fieldset>
+
+				<fieldset class="mt-m" id="diagnosticFld">
+					<legend><t:t>Diagnostics</t:t></legend>
+					<div id="diagnosticData" class="hide">
+
+						<!-- tabella master -->
+						<table class="diagno-tbl">
+							<tr>
+								<th></th>
+								<th><label><b><t:t>Description</t:t></b></label></th>
+								<th><label><b><t:t>Value</t:t></b></label></th>
+							</tr>
+							<tr>
+								<td style="width: 130px;"><label><t:t>MQTT configured</t:t>:</label</td>
+								<td style="width: 60px;"><label id="txtConfigured"></label></td>
+								<td style="width: 40px;"><label id="txtConfiguredVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Configured endpoints</t:t>:</label></td>
+								<td><label class="status empty">-</label></td>
+								<td><label id="txtEndpointNumberVal"></label></td>
+							</tr>
+							<tr class="separator">
+								<td><label><t:t>Network status</t:t>:</label</td>
+								<td><label id="txtNetOK"></label></td>
+								<td><label id="txtNetOKVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Active endpoints</t:t>:</label</td>
+								<td><label class="status empty">-</label></td>
+								<td><label id="txtEndpointActNumberVal"></label></td>
+							</tr>
+							<tr>
+								<td><label><t:t>Running endpoints</t:t>:</label</td>
+								<td><label class="status empty">-</label></td>
+								<td><label id="txtEndpointRunNumberVal"></label></td>
+							</tr>
+							<tr id="rowErrors">
+								<td><label><t:t>Master error</t:t>:</label</td>
+								<td><label id="txtError"></label></td>
+								<td><label id="txtErrorVal"></label></td>
+							</tr>
+						</table>
+					</div>
+					<label id="diagnosticsEnableMessage" class="hide"></label>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
+
+	<script>InitPage();</script>
+</body>
+</html>

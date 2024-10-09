@@ -1,0 +1,173 @@
+/************************************************************************************
+*                                                                                   *
+*                   !!!! MODIFICARE IL FILE .less E NON .css !!!!                   *
+*                                                                                   *
+*************************************************************************************/
+
+.tableHeader {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-right: 10px;
+
+	.panel {
+		border: 1px solid transparent;
+		border-radius: 4px;
+		box-shadow: 0px 1px 1px rgba(0,0,0,0.05);
+		border-color: #ddd;
+		padding: 5px 15px 5px 15px;
+		font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+		font-size: 0.85em;
+
+		#otherPrjNameTxt {
+			font-weight: bold;
+		}
+	}
+}
+
+#treegrid {
+	.different {
+		background-color: #edf5fc;
+	}
+
+	.onlyLeftRight {
+		background-color: #f3f3f3;
+	}
+
+	th {
+		height: 24px;
+		font-weight: bold;
+		// stesso colore della AxEditGrid
+		background-color: #F0F0F0;
+		border-bottom: 1px solid #A0A0A0;
+		border-right: 1px solid #A0A0A0;
+	}
+
+	td {
+		.ll-button {
+			width: 30px;
+			height: 25px;
+			padding: 0;
+		}
+	}
+
+	span.fancytree-title {
+		// toglie il puntatore dalla prima colonna
+		cursor: auto;
+	}
+}
+
+
+.darkTheme {
+	span.fancytree-title, &#treegrid {
+		color: whitesmoke;
+	}
+
+	&#treegrid {
+		.different,
+		.onlyLeftRight,
+		.different span.fancytree-title,
+		.onlyLeftRight span.fancytree-title {
+			color: rgb(221, 221, 221);
+		}
+
+		.different {
+			background-color: rgb(44, 89, 126);
+		}
+
+		.onlyLeftRight {
+			background-color: rgb(104, 103, 103);
+		}
+
+		th {
+			// stesso colore della AxEditGrid
+			background-color: #2D2D30;
+		}
+
+		tr:hover {
+			background-color: #6b8da3;
+		}
+	}
+}
+
+// icone custom da mostrare sul tree
+.icon-program {
+	background-image: url(./icons/program.ico);
+}
+
+.icon-functionblock {
+	background-image: url(./icons/funblk.ico);
+}
+
+.icon-interface {
+	background-image: url(./icons/intf.ico);
+}
+
+.icon-struct {
+	background-image: url(./icons/struct.ico);
+}
+
+.icon-macro {
+	background-image: url(./icons/macros.ico);
+}
+
+.icon-subrange {
+	background-image: url(./icons/subranget.ico);
+}
+
+.icon-task {
+	background-image: url(./icons/task.ico);
+}
+
+.icon-tasks {
+	background-image: url(./icons/tasks_wide.ico);
+}
+
+.icon-var {
+	background-image: url(./icons/v.bmp);
+}
+
+.icon-vargroup {
+	background-image: url(./icons/globalclose_wide.ico);
+}
+
+.icon-function {
+	background-image: url(./icons/funct.ico);
+}
+
+.icon-typedef {
+	background-image: url(./icons/typedef.ico);
+}
+
+.icon-enum {
+	background-image: url(./icons/enum.ico);
+}
+
+.icon-method {
+	background-image: url(./icons/method.ico);
+}
+
+.icon-network {
+	// prende la prima immagine della toolbar
+	background-image: url(./icons/network.bmp);
+	background-position: 0 0;
+}
+
+.icon-program,
+.icon-functionblock,
+.icon-interface,
+.icon-struct,
+.icon-macro,
+.icon-subrange,
+.icon-task,
+.icon-tasks,
+.icon-var,
+.icon-vargroup,
+.icon-function,
+.icon-typedef,
+.icon-method,
+.icon-enum {
+	// important per sovrascrivere la regola di base di fancytree
+	width: 22px !important;
+	background-repeat: no-repeat;
+}

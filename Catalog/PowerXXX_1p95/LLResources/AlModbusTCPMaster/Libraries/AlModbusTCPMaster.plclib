@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.4">
+	<lib version="4.0.1" name="Modbus_master_TCP" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="Modbus_master_TCP">
+				<Pou name="sysMbMTcp_InitMemory"/>
+				<Pou name="sysMbMTcp_InitProcessImages"/>
+				<Pou name="sysMbMTcp_CheckMemorySize"/>
+				<Pou name="sysMbMTcp_InitNetConfiguration"/>
+				<Pou name="sysMbMTcp_SetIpAddress"/>
+				<GlobalVars name="Diagnostics"/>
+				<Pou name="sysMbMTcp_ReadReg_RO"/>
+				<Pou name="sysMbMTcp_ReadReg_RW"/>
+				<Pou name="sysMbMTcp_WriteReg_M"/>
+				<Pou name="sysMbMTcp_WriteReg_S"/>
+				<folder name="Enumerations">
+					<Definition name="sysMbMTcpEsi"/>
+					<Definition name="sysMbMTcpTypeD"/>
+					<Definition name="sysMbMTcpTypeImage"/>
+					<Definition name="sysMbMTcpSlaveAddressConfigMode"/>
+				</folder>
+				<folder name="Structures">
+					<Definition name="MbTcpSlaveState"/>
+					<Definition name="MbTcpState"/>
+					<Definition name="sysMbMTcpSlaveParam"/>
+					<Definition name="sysMbMTcpSlaveImage"/>
+					<Definition name="sysMbMTcpSlave"/>
+					<Definition name="sysMbMTcpPlcImage"/>
+				</folder>
+			</folder>
+		</libWorkspace>
+		<globalVars>
+			<group name="Diagnostics">
+				<var name="sysMbTcpSlaveState" type="MbTcpSlaveState" dim0="17">
+					<address type="I" typeVar="B" index="60020" subIndex="0"/>
+				</var>
+				<var name="sysMbTcpMState" type="MbTcpState">
+					<address type="I" typeVar="B" index="60021" subIndex="0"/>
+				</var>
+			</group>
+		</globalVars>
+		<retainVars>
+			<group name="Diagnostics"/>
+		</retainVars>
+		<constantVars>
+			<group name="Diagnostics"/>
+		</constantVars>
+		<iecVarsDeclaration>
+			<group name="Diagnostics">
+				<iecDeclaration active="FALSE"/>
+			</group>
+		</iecVarsDeclaration>
+		<functions>
+			<function name="sysMbMTcp_CheckMemorySize" hidden="true" version="3.0.0" creationDate="1568714837" lastModifiedDate="1568715971">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="mb_param_info_size" type="UINT">
+							<descr>MB_PARAM_INFO size</descr>
+						</var>
+						<var name="mb_image_info_size" type="UINT">
+							<descr>MB_IMAGE_INFO size</descr>
+						</var>
+						<var name="mb_plc_info_size" type="UINT">
+							<descr>MB_PLC_INFO size</descr>
+						</var>
+						<var name="mb_queue_msg_size" type="UINT">
+							<descr>MB_QUEUE_MSG size</descr>
+						</var>
+						<var name="mb_inpout_cmd_size" type="UINT">
+							<descr>MB_INPOUT_CMD_SIZE size</descr>
+						</var>
+						<var name="mbadu_size" type="UINT">
+							<descr>MBADU size</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMTcp_InitMemory" hidden="true" version="3.0.0" creationDate="1568714837" lastModifiedDate="1568715971">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="adrMbQueueMsgMemory" type="PVOID">
+							<descr>address of MbQueueMsg</descr>
+						</var>
+						<var name="numMbQueueMsg" type="UDINT">
+							<descr>max number of messages</descr>
+						</var>
+						<var name="adrMBADUMemory" type="PVOID">
+							<descr>data pool for packets memory</descr>
+						</var>
+						<var name="numMBADU" type="UDINT">
+							<descr>max number of MBADU packets</descr>
+						</var>
+						<var name="adrMbInpOutCmdMemory" type="PVOID">
+							<descr>data pool for inpout msg</descr>
+						</var>
+						<var name="numMbInpOutCmd" type="UDINT">
+							<descr>max number of inpout msg</descr>
+						</var>
+						<var name="adrInfoParamsMemory" type="PVOID">
+							<descr>additional memory for params</descr>
+						</var>
+						<var name="adrInfoImageMemory" type="PVOID">
+							<descr>additional memory for images</descr>
+						</var>
+						<var name="adrInfoProcInpMemory" type="PVOID">
+							<descr>additional memory for process images input</descr>
+						</var>
+						<var name="adrInfoProcOutMemory" type="PVOID">
+							<descr>additional memory for process images output</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMTcp_InitProcessImages" hidden="true" version="3.0.0" creationDate="1568714837" lastModifiedDate="1568715971">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="adrImgDiscInputStatusMemory" type="PVOID">
+							<descr>address of ImgDiscInputStatusMemory</descr>
+						</var>
+						<var name="adrImgCoilStatusMemory" type="PVOID">
+							<descr>address of ImgCoilStatusMemory</descr>
+						</var>
+						<var name="adrImgRegInputStatusMemory" type="PVOID">
+							<descr>address of ImgRegInputStatusMemory</descr>
+						</var>
+						<var name="adrImgHoldRegStatusMemory" type="PVOID">
+							<descr>address of ImgHoldRegStatusMemory</descr>
+						</var>
+						<var name="adrImgCoilStatusAuxInMemory" type="PVOID">
+							<descr>address of ImgCoilStatusAuxInMemory</descr>
+						</var>
+						<var name="adrImgHoldRegStatusAuxInMemory" type="PVOID">
+							<descr>address of ImgHoldRegStatusAuxInMemory</descr>
+						</var>
+						<var name="adrImgCoilStatusAuxOutMemory" type="PVOID">
+							<descr>address of ImgCoilStatusAuxOutMemory</descr>
+						</var>
+						<var name="numImgHoldRegStatusAuxIn" type="DWORD">
+							<descr>number of UINT process images</descr>
+						</var>
+						<var name="numImgDiscInputStatus" type="DWORD">
+							<descr>number of BOOL process images</descr>
+						</var>
+						<var name="numImgCoilStatus" type="DWORD">
+							<descr>number of BOOL process images</descr>
+						</var>
+						<var name="numImgRegInputStatus" type="DWORD">
+							<descr>number of UINT process images</descr>
+						</var>
+						<var name="numImgHoldRegStatus" type="DWORD">
+							<descr>number of UINT process images</descr>
+						</var>
+						<var name="numImgCoilStatusAuxIn" type="DWORD">
+							<descr>number of BOOL process images</descr>
+						</var>
+						<var name="numImgHoldRegStatusAuxIn" type="DWORD">
+							<descr>number of UINT process images</descr>
+						</var>
+						<var name="numImgCoilStatusAuxOut" type="DWORD">
+							<descr>number of BOOL process images</descr>
+						</var>
+						<var name="numImgHoldRegStatusAuxIn" type="DWORD">
+							<descr>number of UINT process images</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMTcp_InitNetConfiguration3" hidden="true" version="3.0.0" creationDate="1568714837" lastModifiedDate="1568715971">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="numTotMasters" type="USINT">
+							<descr>total number of masters</descr>
+						</var>
+						<var name="numTotSlaves" type="USINT">
+							<descr>total number of slaves</descr>
+						</var>
+						<var name="numTotParams" type="UINT">
+							<descr>total number of params</descr>
+						</var>
+						<var name="numTotImages" type="UINT">
+							<descr>total number of images</descr>
+						</var>
+						<var name="numTotProcInput" type="UINT">
+							<descr>total number of input processes</descr>
+						</var>
+						<var name="numTotProcOutput" type="UINT">
+							<descr>total number of output processes</descr>
+						</var>
+						<var name="numTotRegTypesInfo" type="UINT">
+							<descr>total number of reg types info</descr>
+						</var>
+						<var name="adrSlavesDefs" type="PVOID">
+							<descr>address of slaves definition array</descr>
+						</var>
+						<var name="adrParamsDefs" type="PVOID">
+							<descr>address of params definition array</descr>
+						</var>
+						<var name="adrImgsDefs" type="PVOID">
+							<descr>address of images definition array</descr>
+						</var>
+						<var name="adrProcInDefs" type="PVOID">
+							<descr>address of input processes definition array</descr>
+						</var>
+						<var name="adrProcOutDefs" type="PVOID">
+							<descr>address of output processes definition array</descr>
+						</var>
+						<var name="adrRegTypesInfoArray" type="PVOID">
+							<descr>address of reg types info</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMTcp_SetIpAddress" hidden="true" version="3.0.0" creationDate="1568714837" lastModifiedDate="1568715971">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pSlave" type="@sysMbMTcpSlave">
+							<descr>slave to be configured</descr>
+						</var>
+						<var name="slaveAddressConfigMode" type="sysMbMTcpSlaveAddressConfigMode">
+							<descr>Modbus slave address (retrieved by specified key)</descr>
+						</var>
+						<var name="keyValue" type="PVOID">
+							<descr>Key value. Depends on specified key</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="sysMbMTcp_WriteReg_S" version="3.0.0" creationDate="1568985303" lastModifiedDate="1568985417">
+				<descr>Write modbus register using WriteSingleRegister modbus command</descr>
+				<vars>
+					<inputVars>
+						<var name="node" type="UINT">
+							<descr>The index of the node in the network</descr>
+						</var>
+						<var name="reg_addr" type="UINT">
+							<descr>The address of the register to read</descr>
+						</var>
+						<var name="data_type" type="sysMbMTcpTypeD">
+							<descr>The type of the data to read</descr>
+						</var>
+						<var name="data_raw" type="DWORD">
+							<descr>Data to be written</descr>
+						</var>
+						<var name="tmo" type="UDINT">
+							<descr>Timeout in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="esi" type="sysMbMTcpEsi">
+							<descr>Operation result</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMTcp_WriteReg_M" version="3.0.0" creationDate="1568984942" lastModifiedDate="1568985143">
+				<descr>Write modbus register using WriteMultipleRegisters modbus command</descr>
+				<vars>
+					<inputVars>
+						<var name="node" type="UINT">
+							<descr>The index of the node in the network</descr>
+						</var>
+						<var name="reg_addr" type="UINT">
+							<descr>The address of the register to read</descr>
+						</var>
+						<var name="data_type" type="sysMbMTcpTypeD">
+							<descr>The type of the data to read</descr>
+						</var>
+						<var name="data_raw" type="DWORD">
+							<descr>Data to be written</descr>
+						</var>
+						<var name="tmo" type="UDINT">
+							<descr>Timeout in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="esi" type="sysMbMTcpEsi">
+							<descr>Operation result</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMTcp_ReadReg_RW" version="3.0.0" creationDate="1568984370" lastModifiedDate="1568984752">
+				<descr>Read RW modbus register using ReadHoldingRegister modbus command</descr>
+				<vars>
+					<inputVars>
+						<var name="node" type="UINT">
+							<descr>The index of the node in the network</descr>
+						</var>
+						<var name="reg_addr" type="UINT">
+							<descr>The address of the register to read</descr>
+						</var>
+						<var name="data_type" type="sysMbMTcpTypeD">
+							<descr>The type of the data to read</descr>
+						</var>
+						<var name="tmo" type="UDINT">
+							<descr>Timeout in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="esi" type="sysMbMTcpEsi">
+							<descr>Operation result</descr>
+						</var>
+						<var name="res_dword" type="DWORD">
+							<descr>Result is always put in a dword</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMTcp_ReadReg_RO" version="3.0.0" creationDate="1568984177" lastModifiedDate="1568984281">
+				<descr>Read RO modbus register using ReadInputRegister modbus command</descr>
+				<vars>
+					<inputVars>
+						<var name="node" type="UINT">
+							<descr>The index of the node in the network</descr>
+						</var>
+						<var name="reg_addr" type="UINT">
+							<descr>The address of the register to read</descr>
+						</var>
+						<var name="data_type" type="sysMbMTcpTypeD">
+							<descr>The type of the data to read</descr>
+						</var>
+						<var name="tmo" type="UDINT">
+							<descr>Timeout in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="esi" type="sysMbMTcpEsi">
+							<descr>Operation result</descr>
+						</var>
+						<var name="res_dword" type="DWORD">
+							<descr>Result is always put in a dword</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="sysMbMTcpPlcImage" hidden="true" version="3.0.0">
+				<vars>
+					<var name="node" type="USINT">
+						<descr>node address</descr>
+					</var>
+					<var name="block" type="USINT">
+						<descr>Input, Output, Input/Output</descr>
+					</var>
+					<var name="type" type="USINT">
+						<descr>bit/word</descr>
+					</var>
+					<var name="reserved1" type="USINT">
+						<descr>reserved1</descr>
+					</var>
+					<var name="address" type="UINT">
+						<descr>Modbus address</descr>
+					</var>
+					<var name="bitn" type="USINT">
+						<descr>Bit extraction offset</descr>
+					</var>
+					<var name="type_v" type="USINT">
+						<descr>Image variable type</descr>
+					</var>
+					<var name="ptr" type="PVOID">
+						<descr>Ptr to PLC variable</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="sysMbMTcpSlave" hidden="true" version="3.0.0">
+				<vars>
+					<var name="node" type="USINT">
+						<descr>node addres</descr>
+					</var>
+					<var name="address" type="USINT">
+						<descr>Modbus address</descr>
+					</var>
+					<var name="TCPport" type="UINT">
+						<descr>TCPport (default 502)</descr>
+					</var>
+					<var name="Ip" type="STRING" length="15"/>
+					<var name="swapWordsMode" type="USINT">
+						<descr>Swap Mode field</descr>
+					</var>
+					<var name="reserved1" type="USINT">
+						<descr>reserved1</descr>
+					</var>
+					<var name="reserved2" type="USINT">
+						<descr>reserved2</descr>
+					</var>
+					<var name="reserved3" type="USINT">
+						<descr>reserved3</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="sysMbMTcpSlaveImage" hidden="true" version="3.0.0">
+				<vars>
+					<var name="node" type="USINT">
+						<descr>Node address</descr>
+					</var>
+					<var name="funcode" type="USINT">
+						<descr>Modbus Function</descr>
+					</var>
+					<var name="block" type="USINT">
+						<descr>Input, Output, Input/Output</descr>
+					</var>
+					<var name="type" type="USINT">
+						<descr>bit/word</descr>
+					</var>
+					<var name="RdAddress" type="UINT">
+						<descr>Modbus read address</descr>
+					</var>
+					<var name="dimRd" type="UINT">
+						<descr>Read data length</descr>
+					</var>
+					<var name="WrAddress" type="UINT">
+						<descr>Modbus write address</descr>
+					</var>
+					<var name="dimWr" type="UINT">
+						<descr>Write data length</descr>
+					</var>
+					<var name="poll_time" type="UDINT">
+						<descr>Polling time</descr>
+					</var>
+					<var name="tmo" type="UDINT">
+						<descr>request timeout</descr>
+					</var>
+					<var name="waitBeforeSend" type="UDINT">
+						<descr>Wait time before transmission</descr>
+					</var>
+					<var name="db_oneshot" type="UDINT">
+						<descr>Datablock index for oneshot variable</descr>
+					</var>
+					<var name="db_off_oneshot" type="UDINT">
+						<descr>Datablock offset for oneshot variable</descr>
+					</var>
+					<var name="dbByteOffset_oneshot" type="UDINT">
+						<descr>Additional byte offset from physical address calculated with logical address</descr>
+					</var>
+					<var name="hasOneShotVar" type="USINT">
+						<descr>Oneshot function presence flag</descr>
+					</var>
+					<var name="dbType_oneshot" type="USINT">
+						<descr>Datablock type (M/I/Q) of oneshot variable</descr>
+					</var>
+					<var name="writeFirst" type="USINT">
+						<descr>Write or Read as first operation (only with input_outputonchange)</descr>
+					</var>
+					<var name="reserved" type="USINT">
+						<descr>Reserved</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="sysMbMTcpSlaveParam" hidden="true" version="3.0.0">
+				<vars>
+					<var name="node" type="USINT">
+						<descr>node address</descr>
+					</var>
+					<var name="type_d" type="USINT">
+						<descr>data type</descr>
+					</var>
+					<var name="address" type="UINT">
+						<descr>modbus address</descr>
+					</var>
+					<var name="tmo" type="UDINT">
+						<descr>timeout</descr>
+					</var>
+					<var name="data" type="DWORD">
+						<descr>data type union</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="MbTcpState" version="3.0.0">
+				<vars>
+					<var name="netConfigOk" type="BOOL">
+						<descr>Net configuration OK</descr>
+					</var>
+					<var name="clientOK" type="BOOL">
+						<descr>driver client initialized</descr>
+					</var>
+					<var name="clientRun" type="BOOL">
+						<descr>driver client is running</descr>
+					</var>
+					<var name="taskRun" type="BOOL">
+						<descr>communicaton task is running</descr>
+					</var>
+					<var name="sysMemoryError" type="BOOL">
+						<descr>memory configuration error. this field is used for debug</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="MbTcpSlaveState" version="3.0.0">
+				<vars>
+					<var name="cfg" type="BOOL">
+						<descr>configured</descr>
+					</var>
+					<var name="pres" type="BOOL">
+						<descr>present</descr>
+					</var>
+					<var name="active" type="BOOL">
+						<descr>active node</descr>
+					</var>
+					<var name="miss" type="BOOL">
+						<descr>delay cycle</descr>
+					</var>
+					<var name="IP" type="STRING" length="19">
+						<descr>IP address</descr>
+					</var>
+					<var name="address" type="UINT">
+						<descr>Subnet modbus address</descr>
+					</var>
+					<var name="missCnt" type="UINT">
+						<descr>delay cycles counter</descr>
+					</var>
+					<var name="state" type="INT">
+						<descr>last modbus error on slave</descr>
+					</var>
+					<var name="netStat" type="UINT">
+						<descr>slave status</descr>
+					</var>
+				</vars>
+			</struct>
+		</structs>
+		<typedefs/>
+		<enums>
+			<enum name="sysMbMTcpTypeImage" hidden="true" version="3.0.0">
+				<elements>
+					<element name="MB_TCP_IMG_BLOCK_INPUT">
+						<descr>input</descr>
+						<value>0</value>
+					</element>
+					<element name="MB_TCP_IMG_BLOCK_OUTPUT">
+						<descr>output</descr>
+						<value>1</value>
+					</element>
+					<element name="MB_TCP_IMG_BLOCK_INPOUT">
+						<descr>input/output</descr>
+						<value>2</value>
+					</element>
+					<element name="MB_TCP_IMG_BLOCK_INPOUTONCHANGE">
+						<descr>input/output on change</descr>
+						<value>3</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="sysMbMTcpTypeD" version="3.0.0">
+				<elements>
+					<element name="MB_TCP_DATA_T_SINT">
+						<descr>SINT</descr>
+						<value>0</value>
+					</element>
+					<element name="MB_TCP_DATA_T_USINT">
+						<descr>USINT</descr>
+						<value>1</value>
+					</element>
+					<element name="MB_TCP_DATA_T_BYTE">
+						<descr>BYTE</descr>
+						<value>2</value>
+					</element>
+					<element name="MB_TCP_DATA_T_INT">
+						<descr>INT</descr>
+						<value>3</value>
+					</element>
+					<element name="MB_TCP_DATA_T_UINT">
+						<descr>UINT</descr>
+						<value>4</value>
+					</element>
+					<element name="MB_TCP_DATA_T_WORD">
+						<descr>WORD</descr>
+						<value>5</value>
+					</element>
+					<element name="MB_TCP_DATA_T_DINT">
+						<descr>DINT</descr>
+						<value>6</value>
+					</element>
+					<element name="MB_TCP_DATA_T_UDINT">
+						<descr>UDINT</descr>
+						<value>7</value>
+					</element>
+					<element name="MB_TCP_DATA_T_DWORD">
+						<descr>DWORD</descr>
+						<value>8</value>
+					</element>
+					<element name="MB_TCP_DATA_T_REAL">
+						<descr>REAL</descr>
+						<value>9</value>
+					</element>
+					<element name="MB_TCP_DATA_T_BOOL">
+						<descr>BOOL</descr>
+						<value>10</value>
+					</element>
+					<element name="MB_TCP_DATA_T_NULL">
+						<descr>NULL</descr>
+						<value>255</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="sysMbMTcpEsi" version="3.0.0">
+				<descr>Return value from modbus function call</descr>
+				<elements>
+					<element name="MB_TCP_E_NETWORK">
+						<descr>Invalid network id specified</descr>
+						<value>-339</value>
+					</element>
+					<element name="MB_TCP_E_CHECKSUM">
+						<descr>Checksum</descr>
+						<value>-338</value>
+					</element>
+					<element name="MB_TCP_E_NEGATIVEACKNOWLEDGE">
+						<descr>Negative acknowledge</descr>
+						<value>-337</value>
+					</element>
+					<element name="MB_TCP_E_NOTALLOWEDINTIMEDTASK">
+						<descr>Function cannot be called in a timed task</descr>
+						<value>-336</value>
+					</element>
+					<element name="MB_TCP_E_SWITCHEDOFF">
+						<descr>Node is switched off</descr>
+						<value>-335</value>
+					</element>
+					<element name="MB_TCP_E_ILLEGALDATAPROTOCOL">
+						<descr>Illegal data value in protocol</descr>
+						<value>-332</value>
+					</element>
+					<element name="MB_TCP_E_TIMEOUT">
+						<descr>Time out richiesta</descr>
+						<value>-331</value>
+					</element>
+					<element name="MB_TCP_E_GATEWAYDEVICEFAILED">
+						<descr>Gateway target device failed to respond</descr>
+						<value>-330</value>
+					</element>
+					<element name="MB_TCP_E_GATEWAYPATHUNAV">
+						<descr>Gateway path unavailable</descr>
+						<value>-329</value>
+					</element>
+					<element name="MB_TCP_E_MEMORYPARITYERROR">
+						<descr>Memory parity error</descr>
+						<value>-328</value>
+					</element>
+					<element name="MB_TCP_E_SLAVEDEVICEBUSY">
+						<descr>Slave device busy</descr>
+						<value>-327</value>
+					</element>
+					<element name="MB_TCP_E_ACKNOWLEDGE">
+						<descr>Acknowledge</descr>
+						<value>-326</value>
+					</element>
+					<element name="MB_TCP_E_SLAVEDEVICEFAILURE">
+						<descr>Slave device failure</descr>
+						<value>-325</value>
+					</element>
+					<element name="MB_TCP_E_ILLEGALDATAVALUE">
+						<descr>Illegal data value</descr>
+						<value>-324</value>
+					</element>
+					<element name="MB_TCP_E_ILLEGALDATAADDR">
+						<descr>Illegal data address</descr>
+						<value>-323</value>
+					</element>
+					<element name="MB_TCP_E_ILLEGALFUNCTION">
+						<descr>Illegal function</descr>
+						<value>-322</value>
+					</element>
+					<element name="MB_TCP_E_IDE">
+						<descr>Ide doesn't match</descr>
+						<value>-321</value>
+					</element>
+					<element name="MB_TCP_E_PROTOCOL">
+						<descr>Protocol error</descr>
+						<value>-320</value>
+					</element>
+					<element name="MB_TCP_E_DATATYPE">
+						<descr>Data type parameter not valid</descr>
+						<value>-311</value>
+					</element>
+					<element name="MB_TCP_E_NODENOTEXIST">
+						<descr>Not assigned node</descr>
+						<value>-303</value>
+					</element>
+					<element name="MB_TCP_E_NODE">
+						<descr>Not valid node</descr>
+						<value>-301</value>
+					</element>
+					<element name="MB_TCP_E_OK">
+						<descr>Successful command</descr>
+						<value>0</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="sysMbMTcpSlaveAddressConfigMode" baseType="DINT" version="1.0.0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Slave address configuration mode</title>
+				<descr>Slave address configuration mode</descr>
+				<elements>
+					<element name="MB_TCP_CONFIG_MODE_STATIC">
+						<descr>Static</descr>
+						<value>0</value>
+					</element>
+					<element name="MB_TCP_CONFIG_MODE_BY_VAR_ADDRESS">
+						<descr>Address specified by variable address</descr>
+						<value>1</value>
+					</element>
+					<element name="MB_TCP_CONFIG_MODE_BY_16BIT_KEY">
+						<descr>Address specified by 16 bit key value</descr>
+						<value>2</value>
+					</element>
+					<element name="MB_TCP_CONFIG_MODE_BY_32BIT_KEY">
+						<descr>Address specified by 32 bit key value</descr>
+						<value>4</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

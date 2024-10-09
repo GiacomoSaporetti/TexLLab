@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<template title="LogicLab">
+	<config>
+		<alternativeroot>/devicetemplate/plcconfig</alternativeroot>
+		<templatesdir>..\..\Catalog</templatesdir>
+		<htmlAcceptTextImmediate>false</htmlAcceptTextImmediate>
+
+		<!-- nella welcome page nasconde le barre e toolbar -->
+		<perspective name="Welcome" default="true">
+			<bar name="*" show="false"/>
+		</perspective>
+	</config>
+	
+	<hmi>
+		<window type="html" link="welcome.html">welcome</window>
+		<form type="html" link="SetIPAddress.html" xsize="350" ysize="180" modal="true">SetIPAddress</form>
+		<form type="html" link="SetNetworkParams.html" xsize="350" ysize="320" modal="true">SetNetworkParams</form>
+	</hmi>
+
+	<templatedata>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<!-- schema minimale giusto per considerare valido il PCN vuoto iniziale -->
+			<xs:element name="configuration">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="data" type="xs:string" />
+					</xs:sequence>
+					<xs:attribute name="template" type="xs:string"/>
+					<xs:attribute name="version" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</datadef>
+
+	<extensions>
+		<dll alias="extfunct">%APPEXENAME%</dll>
+		<script alias="common">..\..\Common\Extensions\Common.js</script>
+		<script>script.js</script>
+		<com alias="logiclab">AlPlc.AlCommand</com>
+		<dll alias="LLScan">LLScanClientLib.dll</dll>
+		
+		<eventhandler event="OnNew">script.OnNew</eventhandler>
+	</extensions>
+</template>
+

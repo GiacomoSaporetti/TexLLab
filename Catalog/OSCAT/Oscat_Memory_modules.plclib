@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Memory modules" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Memory modules" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="FIFO_32"/>
+				<Pou name="STACK_32"/>
+				<Pou name="FIFO_16"/>
+				<Pou name="STACK_16"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="FIFO_32" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>First-In First-Out Memory with 32 memory locations</title>
+				<descr>&lt;HTML&gt;FIFO_32 is a First-In First-Out Memory with 32 memory locations for DWORD data.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The two outputs EMPTY and FULL indicate when the memory is full or empty.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt; The RST input clears the entire contents of the memory.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt; The FIFO is described by DIN, by put a TRUE to the input WD, and a truepulse on the input E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt; A read command is executed by TRUE to RD and TRUE to E. &lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;Reading and writing can be performed simultaneously in one cycle. &lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The module reads or writes in each cycle as long as the corresponding command (RD, WD) is set to TRUE. &lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="Din" type="DWORD">
+							<descr>Data input</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RD" type="BOOL">
+							<descr>Read command</descr>
+						</var>
+						<var name="WD" type="BOOL">
+							<descr>Write command</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Dout" type="DWORD">
+							<descr>Data output</descr>
+						</var>
+						<var name="EMPTY" type="BOOL">
+							<descr>TRUE if memory is empty</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="FULL" type="BOOL">
+							<descr>TRUE if memory is full</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="fifo" type="DWORD" dim0="32"/>
+						<var name="pr" type="INT"/>
+						<var name="pw" type="INT"/>
+						<var name="n" type="INT">
+							<descr>changing this value will chage the number of
+									stored elements in the fifo</descr>
+							<initValue>32</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.0	24. jul. 2009
+programmer 	hugo
+tested by		oscat
+
+32 Dword FIFO memory
+*)
+
+IF RST THEN
+	pw := pr;
+	FULL := FALSE;
+	EMPTY := TRUE;
+	Dout := 0;
+ELSIF E THEN
+	IF NOT EMPTY AND RD THEN
+		Dout := fifo[pr];
+		pr := INC1(pr,n);
+		EMPTY := pr = pw;
+		FULL := FALSE;
+	END_IF;
+	IF NOT FULL AND WD THEN
+		fifo[pw] := Din;
+		pw := INC1(pw,n);
+		FULL := pw = pr;
+		EMPTY := FALSE;
+	END_IF;
+END_IF;
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	19. feb 2008	rev 1.1
+	performance improvements
+
+hm	17. oct. 2008	rev 1.2
+	improved performance
+
+ks	27. oct. 2008 rev 1.3
+	improved code
+
+hm	14. mar. 2009	rev 1.4
+	removed double assignments
+
+hm 24. jul. 2009	rev 2.0
+	chaged inputs E and WR to E, WD and WR
+	allow read and write in one cycle
+
+*)
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="STACK_32" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>stack with 32 memory locations</title>
+				<descr>STACK_16 is a stack (STACK) with 32 memory locations for DWORD data.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The two outputs EMPTY and FULL indicate when the memory is full or empty.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The RST input clears the entire contents of the memory.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The FIFO is set with DIN, by setting a TRUE to the input WD, and true to the input E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;A read command is executed by TRUE to RD and TRUE to E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;Reading and writing can be performed simultaneously in one cycle.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The module reads or writes in each cycle as long as the corresponding command (RD, WD) is set to TRUE.&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="Din" type="DWORD">
+							<descr>Data input</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RD" type="BOOL">
+							<descr>Read command</descr>
+						</var>
+						<var name="WD" type="BOOL">
+							<descr>Write command</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Dout" type="DWORD">
+							<descr>Data output</descr>
+						</var>
+						<var name="EMPTY" type="BOOL">
+							<descr>TRUE if stack is empty</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="FULL" type="BOOL">
+							<descr>TRUE if stack is full</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="stack" type="DWORD" dim0="32"/>
+						<var name="pt" type="INT"/>
+						<var name="n" type="INT">
+							<descr>changing this value will chage the number of
+									stored elements in the fifo</descr>
+							<initValue>31</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 2.0	25. jul 2009
+programmer 	hugo
+tested by		oscat
+
+32 Dword STACK memory
+*)
+
+IF RST THEN
+	(* asynchronous reset for the fifo *)
+	pt := 0;
+	EMPTY := TRUE;
+	FULL := FALSE;
+	Dout := 0;
+ELSIF E THEN
+	IF NOT EMPTY AND RD THEN
+		(* read one element *)
+		pt := pt - 1;
+		Dout := stack[pt];
+		EMPTY := pt = 0;
+		FULL := FALSE;
+	END_IF;
+	IF NOT FULL AND WD THEN
+		(* write one element *)
+		stack[pt] := Din;
+		pt := pt + 1;
+		FULL := pt > n;
+		EMPTY := FALSE;
+	END_IF;
+END_IF;
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	19. feb 2008	rev 1.1
+	performance improvements
+
+hm	17. oct. 2008	rev 1.2
+	deleted unnecessary init with 0
+
+ks	27. oct. 2008	rev 1.3
+	optimized performance
+
+hm	25. jul 2009	rev 2.0
+	changed inputs to allow simultsaneous read and write
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="FIFO_16" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>First-In First-Out Memory with 16 memory locations</title>
+				<descr>&lt;HTML&gt;FIFO_16 is a First-In First-Out Memory with 16 memory locations for DWORD data.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The two outputs EMPTY and FULL indicate when the memory is full or empty.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The RST input clears the entire contents of the memory.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The FIFO is described by DIN, by put a TRUE to the input WD, and a truepulse on the input E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;A read command is executed by TRUE to RD and TRUE to E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;Reading and writing can be performed simultaneously in one cycle.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The module reads or writes in each cycle as long as the corresponding command (RD, WD) is set to TRUE.&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="Din" type="DWORD">
+							<descr>Data input</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RD" type="BOOL">
+							<descr>Read command</descr>
+						</var>
+						<var name="WD" type="BOOL">
+							<descr>Write command</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Dout" type="DWORD">
+							<descr>Data output</descr>
+						</var>
+						<var name="EMPTY" type="BOOL">
+							<descr>TRUE when memory is empty</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="FULL" type="BOOL">
+							<descr>TRUE when memory is full</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="fifo" type="DWORD" dim0="16"/>
+						<var name="pr" type="INT"/>
+						<var name="pw" type="INT"/>
+						<var name="n" type="INT">
+							<descr>changing this value will chage the number of
+									stored elements in the fifo</descr>
+							<initValue>16</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 2.0	24. jul. 2009
+programmer 	hugo
+tested by		oscat
+
+16 Dword FIFO memory
+*)
+
+IF RST THEN
+	pw := pr;
+	FULL := FALSE;
+	EMPTY := TRUE;
+	Dout := 0;
+ELSIF E THEN
+	IF NOT EMPTY AND RD THEN
+		Dout := fifo[pr];
+		pr := INC1(pr,n);
+		EMPTY := pr = pw;
+		FULL := FALSE;
+	END_IF;
+	IF NOT FULL AND WD THEN
+		fifo[pw] := Din;
+		pw := INC1(pw,n);
+		FULL := pw = pr;
+		EMPTY := FALSE;
+	END_IF;
+END_IF;
+
+
+(* revision history
+
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	19. feb 2008	rev 1.1
+	performance improvements
+
+hm	17. oct. 2008	rev 1.2
+	improved performance
+
+ks	27. oct. 2008	rev 1.3
+	optimized coding
+
+hm	14. mar. 2009	rev 1.4
+	removed double assignments
+
+hm 24. jul. 2009	rev 2.0
+	chaged inputs E and WR to E, WD and WR
+	allow read and write in one cycle
+
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="STACK_16" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>stack with 16 memory location</title>
+				<descr>&lt;HTML&gt;STACK_16 is a stack (STACK) with 16 memory locations for DWORD data.&lt;br&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The two outputs EMPTY and FULL indicate when the memory is full or empty.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The RST input clears the entire contents of the memory.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The FIFO is set with DIN, by setting a TRUE to the input WD, and true to the input E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;A read command is executed by TRUE to RD and TRUE to E.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;Reading and writing can be performed simultaneously in one cycle.&lt;/li&gt;&lt;br&gt;
+						&lt;li&gt;The module reads or writes in each cycle as long as the corresponding command (RD, WD) is set to TRUE.&lt;/li&gt;&lt;br&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="Din" type="DWORD">
+							<descr>Data input</descr>
+						</var>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RD" type="BOOL">
+							<descr>Read command</descr>
+						</var>
+						<var name="WD" type="BOOL">
+							<descr>Write command</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Dout" type="DWORD">
+							<descr>Data output</descr>
+						</var>
+						<var name="EMPTY" type="BOOL">
+							<descr>TRUE if stack is empty</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="FULL" type="BOOL">
+							<descr>TRUE if stack is full</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="stack" type="DWORD" dim0="16"/>
+						<var name="pt" type="INT"/>
+						<var name="n" type="INT">
+							<descr>changing this value will chage the number of
+									stored elements in the fifo</descr>
+							<initValue>15</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 2.0	25. jul 2009
+programmer 	hugo
+tested by		oscat
+
+16 Dword STACK memory
+
+*)
+
+IF RST THEN
+	(* asynchronous reset for the fifo *)
+	pt := 0;
+	EMPTY := TRUE;
+	FULL := FALSE;
+	Dout := 0;
+ELSIF E THEN
+	IF NOT EMPTY AND RD THEN
+		(* read one element *)
+		pt := pt - 1;
+		Dout := stack[pt];
+		EMPTY := pt = 0;
+		FULL := FALSE;
+	END_IF;
+	IF NOT FULL AND WD THEN
+		(* write one element *)
+		stack[pt] := Din;
+		pt := pt + 1;
+		FULL := pt > n;
+		EMPTY := FALSE;
+	END_IF;
+END_IF;
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	19. feb 2008	rev 1.1
+	performance improvements
+
+hm	17. oct. 2008	rev 1.2
+	deleted unnecessary init with 0
+
+hm	27. oct. 2008	rev 1.3
+	optimized performance
+
+hm	25. jul 2009	rev 2.0
+	changed inputs to allow simultsaneous read and write
+*)
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

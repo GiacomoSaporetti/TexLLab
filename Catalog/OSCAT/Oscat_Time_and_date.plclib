@@ -1,0 +1,3262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Time and date" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Time and date" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="CALENDAR_CALC"/>
+				<Pou name="DAY_OF_DATE"/>
+				<Pou name="DAYS_DELTA"/>
+				<Pou name="DAYS_IN_MONTH"/>
+				<Pou name="DAY_OF_YEAR"/>
+				<Pou name="DAYS_IN_YEAR"/>
+				<Pou name="DAY_OF_MONTH"/>
+				<Pou name="DAY_TO_TIME"/>
+				<Pou name="DATE_ADD"/>
+				<Pou name="DT_TO_SDT"/>
+				<Pou name="EASTER"/>
+				<Pou name="EVENTS"/>
+				<Pou name="DCF77"/>
+				<Pou name="HOLIDAY"/>
+				<Pou name="DT2_TO_SDT"/>
+				<Pou name="MINUTE_OF_DT"/>
+				<Pou name="HOUR"/>
+				<Pou name="MINUTE_TO_TIME"/>
+				<Pou name="MONTH_BEGIN"/>
+				<Pou name="SDT_TO_TOD"/>
+				<Pou name="SECOND_TO_TIME"/>
+				<Pou name="HOUR_TO_TOD"/>
+				<Pou name="LEAP_DAY"/>
+				<Pou name="HOUR_OF_DT"/>
+				<Pou name="LTIME_TO_UTC"/>
+				<Pou name="SUN_TIME"/>
+				<Pou name="TIMECHECK"/>
+				<Pou name="YEAR_OF_DATE"/>
+				<Pou name="LEAP_OF_DATE"/>
+				<Pou name="SDT_TO_DATE"/>
+				<Pou name="SECOND"/>
+				<Pou name="SUN_POS"/>
+				<Pou name="YEAR_END"/>
+				<Pou name="MONTH_END"/>
+				<Pou name="MONTH_OF_DATE"/>
+				<Pou name="SET_DATE"/>
+				<Pou name="JD2000"/>
+				<Pou name="PERIOD"/>
+				<Pou name="SET_DT"/>
+				<Pou name="SET_TOD"/>
+				<Pou name="YEAR_BEGIN"/>
+				<Pou name="PERIOD2"/>
+				<Pou name="LEAP_YEAR"/>
+				<Pou name="UTC_TO_LTIME"/>
+				<Pou name="WORK_WEEK"/>
+				<Pou name="RTC_2"/>
+				<Pou name="SECOND_OF_DT"/>
+				<Pou name="MINUTE"/>
+				<Pou name="RTC_MS"/>
+				<Pou name="SDT_TO_DT"/>
+				<Pou name="SUN_MIDDAY"/>
+				<Pou name="HOUR_TO_TIME"/>
+				<Pou name="REFRACTION"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="DAY_OF_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="idate" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.3	7. apr. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+DAY_OF_DATE returns the days since 1.1.1970
+
+*)
+
+DAY_OF_DATE := TO_DINT(DATE_TO_DWORD(idate) / 86400);
+
+
+(* revision history
+hm		16.9.2007		rev 1.0
+	original version
+
+hm		1. okt 2007		rev 1.1
+	added step7 compatibility
+
+hm		22. mar. 2008	rev 1.2
+	changed output from int to Dint because the total date range is 49710 days
+
+hm		7. apr. 2008	rev 1.3
+	deleted unused step7 code
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAYS_DELTA" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="date_1" type="DATE"/>
+						<var name="date_2" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.3		25. jan. 2011
+programmer 		hugo
+tested by		tobias
+
+days_delta calculates the days between two dates. the days are calculated date_2 - date_1.
+
+*)
+
+IF DATE_1 > DATE_2 THEN
+	DAYS_DELTA := - TO_DINT((DATE_TO_DWORD(date_1) - DATE_TO_DWORD(date_2)) / 86400);
+ELSE
+	DAYS_DELTA := TO_DINT((DATE_TO_DWORD(date_2) - DATE_TO_DWORD(date_1)) / 86400);
+END_IF;
+
+(* revision history
+hm	27. dec 2006	rev 1.0
+	original version
+
+hm	16.9.2007		rev 1.1
+	coorected an error in formula and changed algorithm to show positive and negative delta
+
+hm	22. mar. 2008	rev 1.2
+	changed output from int to dint because the total date range is 49710 days
+
+hm	25. jan. 2011	rev 1.3
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAYS_IN_MONTH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	27. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+returs the total days of the current month. e.g. 31 for january.
+the function works for dates from 1970 - 2099
+
+*)
+
+
+DAYS_IN_MONTH := DAY_OF_YEAR(IDATE);
+IF LEAP_OF_DATE(IDATE) THEN
+	CASE DAYS_IN_MONTH OF
+		32..60	:	DAYS_IN_MONTH := 29;
+		92..121 :	DAYS_IN_MONTH := 30;
+		153..182:	DAYS_IN_MONTH := 30;
+		245..274:	DAYS_IN_MONTH := 30;
+		306..335:	DAYS_IN_MONTH := 30;
+	ELSE
+		DAYS_IN_MONTH := 31;
+	END_CASE;
+ELSE
+	CASE DAYS_IN_MONTH OF
+		32..59	:	DAYS_IN_MONTH := 28;
+		91..120 :	DAYS_IN_MONTH := 30;
+		152..181:	DAYS_IN_MONTH := 30;
+		244..273:	DAYS_IN_MONTH := 30;
+		305..334:	DAYS_IN_MONTH := 30;
+	ELSE
+		DAYS_IN_MONTH := 31;
+	END_CASE;
+END_IF;
+
+
+
+(* revision history
+hm	27. mar. 2009		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAY_OF_YEAR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.4		28. jan. 2011
+programmer 	hugo
+tested by		oscat
+
+calculates the day of the year
+
+*)
+
+DAY_OF_YEAR := TO_INT((DATE_TO_UDINT(idate) / UDINT#86400) MOD UDINT#1461);
+IF DAY_OF_YEAR > 729 THEN
+	IF DAY_OF_YEAR > 1095 THEN DAY_OF_YEAR := DAY_OF_YEAR - 1095; ELSE DAY_OF_YEAR := DAY_OF_YEAR - 729; END_IF;
+ELSIF DAY_OF_YEAR > 364 THEN
+	DAY_OF_YEAR := DAY_OF_YEAR - 364;
+ELSE
+	DAY_OF_YEAR := DAY_OF_YEAR + 1;
+END_IF;
+
+
+(*
+DAY_OF_YEAR := TO_INT((DATE_TO_DWORD(idate) - DATE_TO_DWORD(YEAR_BEGIN(YEAR_OF_DATE(idate)))) / 86400) + 1;
+*)
+
+
+(* revivision history
+hm	4. aug. 2007		rev 1.0
+	original version
+
+hm	1. oct. 2007		rev 1.1
+	added compatibility to STEP7
+
+hm	4. jan. 2008		rev 1.2
+	changed code for better performance
+
+hm	7. oct. 2008		rev 1.3
+	changed name of function year to year_of_date
+
+hm	28. jan. 2011	rev 1.4
+	improved code
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAYS_IN_YEAR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	27. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+returs the total days of the year.
+the function retruns 366 for leap years and 365 otherwise.
+the function works for dates from 1970 - 2099
+
+
+*)
+
+
+IF LEAP_OF_DATE(IDATE) THEN
+	DAYS_IN_YEAR := 366;
+ELSE
+	DAYS_IN_YEAR := 365;
+END_IF;
+
+
+(* revision history
+hm	27. mar. 2009		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAY_OF_MONTH" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+					<localVars>
+						<var name="leap" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+returns the day OF month for any DATE
+
+*)
+
+(* calculate the day in the year *)
+DAY_OF_MONTH := DAY_OF_YEAR(idate);
+(* leap will be set to one for a leap year *)
+leap := TO_INT(LEAP_OF_DATE(idate));
+(* if leap year deduct one from the days of the year *)
+DAY_OF_MONTH := DAY_OF_MONTH - leap;
+(* search if we are in month december to march ? *)
+IF DAY_OF_MONTH > setup.MTH_OFS[9] THEN
+	IF DAY_OF_MONTH > setup.MTH_OFS[11] THEN
+		IF DAY_OF_MONTH > setup.mth_ofs[12] THEN
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[12];
+		ELSE
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[11];
+		END_IF;
+	ELSE
+		IF DAY_OF_MONTH > setup.mth_ofs[10] THEN
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[10];
+		ELSE
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[9];
+		END_IF;
+	END_IF;
+ELSIF DAY_OF_MONTH > setup.MTH_OFS[5] THEN
+	IF DAY_OF_MONTH > setup.MTH_OFS[7] THEN
+		IF DAY_OF_MONTH > setup.mth_ofs[8] THEN
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[8];
+		ELSE
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[7];
+		END_IF;
+	ELSE
+		IF DAY_OF_MONTH > setup.mth_ofs[6] THEN
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[6];
+		ELSE
+			DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[5];
+		END_IF;
+	END_IF;
+ELSIF DAY_OF_MONTH > setup.MTH_OFS[3] THEN
+	IF DAY_OF_MONTH > setup.MTH_OFS[4] THEN
+		DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[4];
+	ELSE
+		DAY_OF_MONTH := DAY_OF_MONTH - setup.MTH_OFS[3];
+	END_IF;
+ELSE
+	(* since now we must be in february or january we need to add leap again *)
+	DAY_OF_MONTH := DAY_OF_MONTH + leap;
+	IF DAY_OF_MONTH > setup.MTH_OFS[2] THEN DAY_OF_MONTH := DAY_OF_MONTH - setup.mth_ofs[2]; END_IF;
+	(* since nothing was true before, day_of_month must already be good *)
+END_IF;
+
+
+(*
+Revision history
+
+hm 22.1.2007		rev 1.1
+	deleted unused variable day_in_year and day_in_year_begin
+
+hm	1. okt 2007	rev 1.2
+	changed code to use day_of_year and leap_of_date
+	added compatibility to STEP7
+
+hm	8. oct 2007	rev 1.3
+	deleted unused variable yr
+
+hm	8. jan 2008	rev 1.4
+	improved performance
+
+hm	25. oct. 2008	rev 2.0
+	new code using setup constants
+
+hm	10. mar. 2009	rev 2.1
+	removed nested comments
+
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="DAY_TO_TIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	24. feb. 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of days in real to time 
+*)
+
+DAY_TO_TIME := DWORD_TO_TIME(TO_DWORD(IN * 86400000.0));
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original release
+
+hm	24. feb. 2009	rev 1.1
+	renamed input to IN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DATE_ADD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+						<var name="D" type="INT"/>
+						<var name="W" type="INT"/>
+						<var name="M" type="INT"/>
+						<var name="Y" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="mo" type="INT"/>
+						<var name="yr" type="INT"/>
+						<var name="dm" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.8		22. mar. 2011
+programmer 	hugo
+tested by		oscat
+
+date_add adds days, weeks, month or years to a date.
+negative inputs are allowed for subtraction.
+
+*)
+
+
+DATE_ADD := UDINT_TO_DATE(DATE_TO_UDINT(IDATE) + TO_UDINT(D + W * 7) * UDINT#86400);
+yr := Y + YEAR_OF_DATE(DATE_ADD);
+mo := M + MONTH_OF_DATE(DATE_ADD);
+dm := DAY_OF_MONTH(DATE_ADD);
+WHILE mo > 12 DO
+	mo := mo - 12;
+	yr := yr + 1;
+END_WHILE;
+WHILE mo < 1 DO
+	mo := mo + 12;
+	yr := yr - 1;
+END_WHILE;
+DATE_ADD := SET_DATE(yr, mo, dm);
+
+
+(* revision history
+
+hm 27.12.2006	rev 1.0
+	nrw module
+
+hm 12.4.2007		rev 1.1
+	corrected an error while date would be incorrect when year  = 0
+
+hm	1.11.2007		rev 1.2
+	added int_to_dword stetements to avoid possible overrun with möller ecp4
+
+hm	22. mar. 2008	rev 1.3
+	fixed some bugs when month was negative
+
+hm	7. oct. 2008	rev 1.4
+	changed function year to year_of_date
+	changed function month to month_of_date
+
+hm	29. mar. 2009	rev 1.5
+	improved performance
+
+hm	27. jan. 2011	rev 1.6
+	faster code
+
+hm	2. feb. 2011		rev 1.7
+	fixed an error, weeks not calculated
+
+hm	22. mar. 2011	rev 1.8
+	fixed an error in formula
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DT_TO_SDT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>SDT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DTI" type="DATE_AND_TIME"/>
+					</inputVars>
+					<localVars>
+						<var name="tmp" type="DATE"/>
+						<var name="tdt" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	18. oct 2008
+programmer 	hugo
+tested by	oscat
+
+converts date_time to Structured date time (SDT)
+
+*)
+
+
+tmp := DT_TO_DATE(dti);
+tdt := DT_TO_DWORD(dti) - DATE_TO_DWORD(tmp);
+DT_TO_SDT.YEAR := YEAR_OF_DATE(tmp);
+DT_TO_SDT.MONTH := MONTH_OF_DATE(tmp);
+DT_TO_SDT.DAY := DAY_OF_MONTH(tmp);
+DT_TO_SDT.WEEKDAY := DAY_OF_WEEK(tmp);
+DT_TO_SDT.SECOND := TO_INT(tdt MOD 60);
+DT_TO_SDT.MINUTE := TO_INT((tdt / 60) MOD 60);
+DT_TO_SDT.HOUR := TO_INT(tdt / 3600);
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="EASTER" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="year" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="b" type="INT"/>
+						<var name="c" type="INT"/>
+						<var name="oday" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	7. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+easter calculates the day of easter sunday for a given year.
+most other catholic holidays are calculated in reference to easter sunday.
+
+*)
+
+b := (204 - 11 * (YEAR MOD 19)) MOD 30;
+IF b > 27 THEN b := b - 1; END_IF;
+c := (year + SHR(year,2) + b - 13) MOD 7;
+oday := 28 + b - c;
+IF oday > 33 THEN
+	EASTER := SET_DATE(year, 4, oday - 31);
+ELSE
+	EASTER := SET_DATE(year, 3, oday);
+END_IF;
+
+
+
+
+(* alternativer algorithmus ueber das pasah fest
+execution time roughly 200us
+Der sog. Passah-Vollmond wird berechnet, in dem das Jahr durch 19 ge-
+teilt wird und der Rest mit der folgenden Tabelle verglichen wird:
+ 
+    0: Apr 14       5: Apr 18      10: Mrz 25      15: Mrz 30
+    1: Apr 03       6: Apr 08      11: Apr 13      16: Apr 17
+    2: Mrz 23       7: Mrz 28      12: Apr 02      17: Apr 07
+    3: Apr 11       8: Apr 16      13: Mrz 22      18: Mrz 27
+    4: Mrz 31       9: Apr 05      14: Apr 10
+ 
+Faellt dieses Datum auf einen Sonntag, ist Ostern der naechste Sonntag!
+ 
+Beispiel: 1992 MOD 19 = 16, daraus folgt 17.04., der naechste Sonntag
+          ist dann der 19. April (Ostersonntag)
+*)
+
+
+(* this algorithm is 180 us
+a := year MOD 19;
+b := year / 100;
+c := year MOD 100;
+d := b / 4;
+e := b MOD 4;
+f := (b + 8) / 25;
+g := (b - f + 1) / 3;
+h := (19 * a + b - d -g + 15) MOD 30;
+i := C / 4;
+k := c MOD 4;
+l := (32 + 2*e + 2*i - h - k) MOD 7;
+m := (a + 11 * h + 22 * l) / 451;
+x := h + l - 7 * m + 114;
+n := X / 31;
+o := x MOD 31 + 1;
+
+easter := set_Date(year,n,o);
+*)
+(*
+Im Magazin Nature vom 20. April 1876 veröffentlichte ein anonymer Autor eine Tabelle mit Regeln zur Berechnung des (Gregorianischen) Ostersonntages des Jahres J. In Formeln ausgedrückt erhält man das Folgende:
+a	=	J mod 19
+b	=	int(J / 100)
+c	=	J mod 100
+d	=	int(b / 4)
+e	=	b mod 4
+f	=	int((b + 8) / 25)
+g	=	int((b - f + 1) / 3
+h	=	(19 · a + b - d - g + 15) mod 30
+i	=	int(c / 4)
+k	=	c mod 4
+l	=	(32 + 2 · e + 2 · i - h - k) mod 7
+m	=	int((a + 11 · h + 22 · l) / 451)
+n	=	int((h + l - 7 · m + 114) / 31)
+o	=	(h + l - 7 · m + 114) mod 31
+
+n ist hierbei die Nummer des Monats, o + 1 die Nummer des Tages auf welchen der Ostersonntag im Jahr J fällt. Dieser Algorithmus kommt ohne Hilfszahlen aus.
+
+*)
+
+(* revision history
+hm	27. dec 2006	rev 1.0
+	original version
+
+hm	15. dec 2007	rev 1.1
+	modified code for better performance
+
+hm	3. feb 2008		rev 1.2
+	modified code for better performance
+
+hm	7. apr. 2008	rev 1.3
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DT2_TO_SDT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>SDT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DI" type="DATE"/>
+						<var name="TI" type="TIME_OF_DAY"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	18. oct 2008
+programmer 	hugo
+tested by	oscat
+
+converts date and time of day to Structured date time (SDT)
+
+*)
+
+
+DT2_TO_SDT.YEAR := YEAR_OF_DATE(di);
+DT2_TO_SDT.MONTH := MONTH_OF_DATE(di);
+DT2_TO_SDT.DAY := DAY_OF_MONTH(di);
+DT2_TO_SDT.WEEKDAY := DAY_OF_WEEK(di);
+DT2_TO_SDT.MS := TO_INT(TOD_TO_DWORD(ti) MOD 1000);
+DT2_TO_SDT.SECOND := TO_INT((TOD_TO_DWORD(ti) / 1000) MOD 60);
+DT2_TO_SDT.MINUTE := TO_INT((TOD_TO_DWORD(ti) / 60000) MOD 60);
+DT2_TO_SDT.HOUR := TO_INT(TOD_TO_DWORD(ti) / 3600000);
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MINUTE_OF_DT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="XDT" type="DATE_AND_TIME"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.0	6. jun. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+MINUTE_OF_DT returns the current minute (minute of the hour) of a DT variable
+
+*)
+
+MINUTE_OF_DT := TO_INT(DT_TO_DWORD(XDT) MOD 3600) / 60;
+
+
+(* revision history
+hm		6.9.2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="HOUR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="itod" type="TIME_OF_DAY"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	2 okt 2006
+programmer 	hugo
+tested by	tobias
+
+extracts the hour of a Time_of_day 
+*)
+
+HOUR := TO_INT(TOD_TO_DWORD(itod) / 3600000);
+
+
+(* change history
+hm 4. aug 2006	rev 1.0
+	original version
+
+hm 2.10.2006 	rev 1.1
+	changed name of input to itod
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MINUTE_TO_TIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	24. feb. 2009
+programmer 	hugo
+tested by		oscat
+
+converts an amount of minutes in real to time
+
+*) 
+
+MINUTE_TO_TIME := DWORD_TO_TIME(TO_DWORD(IN * 60000.0));
+
+
+(* revision history
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	14. mar 2008	rev 1.1
+	rounded the input after the last digit
+
+hm	24. feb. 2009	rev 1.2
+	changed input to IN
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MONTH_BEGIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="idate" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	15. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+returns the date for the first day of the current month in the current year.
+
+*)
+
+MONTH_BEGIN := DWORD_TO_DATE(DATE_TO_DWORD(idate) - TO_DWORD(DAY_OF_MONTH(idate) - 1) * 86400);
+
+(* revision history
+hm	15. jun. 2008	rev 1.0
+	original version	
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SDT_TO_TOD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME_OF_DAY</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DTI" type="SDT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	16. nov. 2008
+programmer 	hugo
+tested by	oscat
+
+converts Structured date time (SDT) to Date Time
+
+*)
+
+
+SDT_TO_TOD := DWORD_TO_TOD(TO_DWORD(DTI.HOUR) * 3600000 + TO_DWORD(DTI.MINUTE) * 60000 + TO_DWORD(DTI.SECOND) * 1000 + TO_DWORD(DTI.MS));
+
+
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+hm	16. nov. 2008	rev 1.1
+	added typecasts to avoid warnings
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SECOND_TO_TIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	24. feb. 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of seconds in real to time
+execution TIME on wago 750-841 =  17us 
+
+*)
+
+SECOND_TO_TIME := DWORD_TO_TIME(TO_DWORD(IN * 1000.0));
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	14. mar. 2008	rev 1.1
+	rounded the input after the last digit
+
+hm	24. feb. 2009	rev 1.2
+	changed input to IN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="HOUR_TO_TOD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME_OF_DAY</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	24. feb 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of hours in real to time of day TOD.
+
+*)
+
+HOUR_TO_TOD := DWORD_TO_TOD(TO_DWORD(IN * 3600000));
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	14. mar. 2008	rev 1.1
+	rounded the input after the last digit
+
+hm	24. feb. 2009	rev 1.2
+	changed input to IN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="LEAP_DAY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+
+(*
+version 1.2	24. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+
+leap_day is true if the tested day is a leap day (29. of february).  
+  
+*)
+
+
+LEAP_DAY := DATE_TO_UDINT(IDATE) MOD 126230400 = 68169600;
+
+
+(* change history
+
+hm 	15. jun. 2008	rev 1.0
+	original version
+
+hm	7. oct. 2008	rev 1.1
+	changed function month to month_of_date
+
+hm	24. jan. 2011	rev 1.2
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="HOUR_OF_DT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="XDT" type="DATE_AND_TIME"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.0	6. jun. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+HOUR_OF_DT returns the current hour (hour of the day) of a DT variable
+
+*)
+
+HOUR_OF_DT := TO_INT((DT_TO_DWORD(XDT) MOD 86400) / 3600);
+
+
+(* revision history
+hm		6.9.2008	rev 1.0
+	original version
+
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="LTIME_TO_UTC" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE_AND_TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="LTIME" type="DATE_AND_TIME"/>
+						<var name="DST" type="BOOL"/>
+						<var name="TIME_ZONE_OFFSET" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.7	13. nov. 2009
+programmer 	hugo
+tested by		oscat
+
+LTIME_TO_UTC calculates UTC (World Time) from a local time LTIME. utc is calculated 
+by subtracting Time_Zone_Offset from ltime and if dst it true subtracting an additional hour from ltime.
+
+*)
+
+LTIME_TO_UTC := UDINT_TO_DT(DT_TO_UDINT(LTIME) - TO_UDINT(TIME_ZONE_OFFSET) * 60);
+IF DST THEN LTIME_TO_UTC := LTIME_TO_UTC - T#1h; END_IF;
+
+(* revision history
+hm 5.7.2007		rev 1.0		
+	original version
+
+hm 5.11.2007		rev 1.1
+	replaced literal constant with variable because of error in möller ecp4 compiler
+
+hm	12.nov 2007	rev 1.2
+	changed Type of time_zone_offset from time to int to allow for time zones with negative offset
+
+hm	8. dec 2007	rev 1.3
+	corrected a problem with time_zone_offset
+
+hm	14. oct. 2008	rev 1.4
+	changed time_zone_offset from int to real to allow for half hour offset
+
+hm	20. oct. 2006	rev 1.5
+	changed time_zone_offset from Real to INT, now in Minutes
+
+hm	27. feb. 2009	rev 1.6
+	added type conversions to avoid warnings under codesys 3.0
+
+ks	13. nov. 2009	rev 1.7
+	corrected error in formula
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="TIMECHECK" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="TD" type="TIME_OF_DAY"/>
+						<var name="START" type="TIME_OF_DAY"/>
+						<var name="STOP" type="TIME_OF_DAY"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	19. jul. 2009
+programmer 	oscat
+tested by		oscat
+
+this function retruns true if the daytime TD is between start and stop and returns true if so.
+if you want to generate an event to span over midnight, start timemust be later than the stop time.
+
+*)
+
+IF stop < start THEN
+	TIMECHECK := start <= TD OR TD < stop;
+ELSE
+	TIMECHECK := start <= TD AND TD < stop;
+END_IF;
+
+
+
+(* revision history
+hm 19. jul. 2009	rev 1.0
+	original release
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="YEAR_OF_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.4	7. oct. 2008
+programmer 	hugo
+tested by		oscat
+
+returs the year of a date  
+the function works for dates from 1970 - 2099 
+
+*)
+
+
+YEAR_OF_DATE := TO_INT((DATE_TO_DWORD(idate) + 43200) / 31557600 + 1970);
+
+
+(* revision history
+hm	4. aug 2006		rev 1.0
+	original version
+
+hm	1. okt 2007		rev 1.1
+	corrected error in algorithm
+	adjustment for S7 compatibility
+
+hm	23.12.2007		rev 1.2
+	changed code for better performance
+
+hm	7. apr. 2008	rev 1.3
+	deleted unused step7 code
+
+hm	7. oct. 2008	rev 1.4
+	renamed function (year) to year_of_date
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="LEAP_OF_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="idate" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.3		28. jan. 2011
+programmer 	hugo
+tested by		tobias
+
+leap_of_date is true if current year is a leap year  
+
+*)
+
+
+LEAP_OF_DATE := SHL(((DATE_TO_DWORD(idate) + 43200) / 31557600), 30) = 16#80000000;
+
+
+(* change history
+
+2.10.2006		rev 1.1
+the function now calls leap_year to accomodate further accuracy.
+the function now works for any year from 1970 to 2100
+
+8. jan 2008		rev 1.2
+	improved code for better performance
+
+28. jan. 2011	rev 1.3
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SDT_TO_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DTI" type="SDT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	18. oct 2008
+programmer 	hugo
+tested by	oscat
+
+converts Structured date time (SDT) to Date Time
+
+*)
+
+
+SDT_TO_DATE := SET_DATE(DTI.YEAR, DTI.MONTH, DTI.DAY);
+
+
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SECOND" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="itod" type="TIME_OF_DAY"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	2 oct 2006
+programmer 	hugo
+tested by	oscat
+
+returns the seconds and milliseconds as real of TOD   
+ 
+*)
+
+SECOND := TO_REAL(TOD_TO_DWORD(itod) - TOD_TO_DWORD(itod)/60000 * 60000) / 1000.0;
+
+
+
+(* change history
+
+hm	2. oct. 2006 rev 1.1 
+	changed name of input to itod
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="YEAR_END" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="y" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	24. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+returs the date of december 31st for the given year  
+the function works for dates from 1970 - 2099 
+
+*)
+
+YEAR_END := DWORD_TO_DATE(SHR(TO_DWORD(y) * 1461 - 2876712, 2) * 86400);
+
+
+
+(* revision history
+hm	15. jun. 2008	rev 1.0
+	original version
+
+hm	24. jan 2011	rev 1.1
+	improved performance
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="MONTH_END" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	7. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+returns the date for the last day of the current month in the current year.
+
+*)
+
+MONTH_END := DWORD_TO_DATE(DATE_TO_DWORD(SET_DATE(YEAR_OF_DATE(idate),MONTH_OF_DATE(idate)+1,1)) - 86400);
+
+
+
+(* revision history
+hm	15. jun. 2008	rev 1.0
+	original version	
+
+hm	7. oct. 2008	rev 1.1
+	changed function year to year_of_date
+	changed function month to month_of_date
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MONTH_OF_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IDATE" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.3	27. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+returns the current month of the year.
+
+*)
+
+MONTH_OF_DATE := DAY_OF_YEAR(idate);
+IF MONTH_OF_DATE < 32 THEN
+	MONTH_OF_DATE := 1;
+ELSIF LEAP_OF_DATE(IDATE) THEN
+	MONTH_OF_DATE := (MONTH_OF_DATE * 53 + 1668) / 1623;
+ELSE
+	MONTH_OF_DATE := (MONTH_OF_DATE * 53 + 1700) / 1620;
+END_IF;
+
+
+(* code for rev 1.2
+MONTH_OF_DATE := DAY_OF_YEAR(IDATE);
+IF LEAP_OF_DATE(IDATE) THEN
+	CASE MONTH_OF_DATE OF
+		1..31 	:	MONTH_OF_DATE := 1;
+		32..60	:	MONTH_OF_DATE := 2;
+		61..91	:	MONTH_OF_DATE := 3;
+		92..121 :	MONTH_OF_DATE := 4;
+		122..152:	MONTH_OF_DATE := 5;
+		153..182:	MONTH_OF_DATE := 6;
+		183..213:	MONTH_OF_DATE := 7;
+		214..244:	MONTH_OF_DATE := 8;
+		245..274:	MONTH_OF_DATE := 9;
+		275..305:	MONTH_OF_DATE := 10;
+		306..335:	MONTH_OF_DATE := 11;
+		336..366:	MONTH_OF_DATE := 12;
+	END_CASE;
+ELSE
+	CASE MONTH_OF_DATE OF
+		1..31 	:	MONTH_OF_DATE := 1;
+		32..59	:	MONTH_OF_DATE := 2;
+		60..90	:	MONTH_OF_DATE := 3;
+		91..120 :	MONTH_OF_DATE := 4;
+		121..151:	MONTH_OF_DATE := 5;
+		152..181:	MONTH_OF_DATE := 6;
+		182..212:	MONTH_OF_DATE := 7;
+		213..243:	MONTH_OF_DATE := 8;
+		244..273:	MONTH_OF_DATE := 9;
+		274..304:	MONTH_OF_DATE := 10;
+		305..334:	MONTH_OF_DATE := 11;
+		335..365:	MONTH_OF_DATE := 12;
+	END_CASE;
+END_IF;
+*)
+
+
+(* revision history
+hm	1. aug 2006	rev 1.0
+	original version	
+
+hm	1. okt 2007	rev 1.1
+	replaced old code (string conversion) with mathematics
+	the execution time is now multiple times faster.
+
+hm	7. oct. 2008	rev 1.2
+	changed name of function from month to MONTH_OF_DATE
+
+hm	27. mar. 2009	rev 1.3
+	new improved code
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SET_DATE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="YEAR" type="INT"/>
+						<var name="MONTH" type="INT"/>
+						<var name="DAY" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="count" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.3	29. dec. 2011
+programmer 	hugo
+tested by	tobias
+
+creates a date output from year, month and day of month   
+
+*)
+
+IF month > 2 THEN
+	count := (month - 1) * 30;
+	IF month > 7 THEN count := count + SHR(month - 3,1); ELSE count := count + SHR(month - 4,1); END_IF;
+	(* chech for leap year and add one day if true *)
+	IF SHL(year,14) = 0 THEN count := count + 1; END_IF;
+ELSE
+	count := (month - 1) * 31;
+END_IF;
+
+SET_DATE := DWORD_TO_DATE((TO_DWORD(count + day - 1) + SHR(TO_DWORD(year) * 1461 - 2878169, 2)) * 86400);
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	19 sep. 2007	rev 1.1
+	use function leap_year to calculate leap year, more exceptions are handled
+
+hm	1. okt	2007	rev 1.2
+	added compatibility to step7
+
+hm	16.dec 2007		rev 1.3
+	changed code to improove performance
+
+hm	3. jan. 2008	rev 1.4
+	further improvements in performance
+
+hm	16. mar. 2008	rev 1.5
+	added type conversions to avoid warnings under codesys 3.0
+
+hm	7. apr. 2008	rev 1.6
+	deleted unused step7 code
+
+hm	14. oct. 2008	rev 1.7
+	optimized code for better performance
+
+hm	25. oct. 2008	rev 2.0
+	new code using setup constants
+
+hm	16. nov. 2008	rev 2.1
+	added typecasts to avoid warnings
+
+hm	22. jan. 2011	rev 2.2
+	improved performance
+
+hm	29. dec. 2011	rev 2.3
+	improved performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="JD2000" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DTI" type="DATE_AND_TIME"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	15. jul. 2008
+programmer 	hugo
+tested by	oscat
+
+JULIAN calculates the astronomic julian date from 1.1.2000-12:00.
+
+*)
+
+JD2000 := TO_REAL(DT_TO_DWORD(DTI) - 946728000) / 86400.0;
+
+(* revision histroy
+hm	15. jul. 2008	rev 1.0
+	original release
+
+
+*)	
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="PERIOD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="d1" type="DATE"/>
+						<var name="dx" type="DATE"/>
+						<var name="d2" type="DATE"/>
+					</inputVars>
+					<localVars>
+						<var name="day1" type="INT"/>
+						<var name="day2" type="INT"/>
+						<var name="dayx" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	22. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+PERIOD checks if a given date is between two dates (d1 and d2) d1 is the starting date and d2 the last date for the period.
+the years of the dates are ignored, so the function period cheks for a time period within a year independet of the year.
+
+*)
+
+day1 := DAY_OF_YEAR(d1);
+day2 := DAY_OF_YEAR(d2);
+dayx := DAY_OF_YEAR(dx);
+IF NOT LEAP_OF_DATE(dx) AND dayx > 58 THEN dayx := dayx + 1; END_IF;
+IF NOT LEAP_OF_DATE(d1) AND day1 > 58 THEN day1 := day1 + 1; END_IF;
+IF NOT LEAP_OF_DATE(d2) AND day2 > 58 THEN day2 := day2 + 1; END_IF;
+
+IF day2 < day1 THEN
+	(* the period spans over the new year *)
+	PERIOD := dayx <= day2 OR dayx >= day1;
+ELSE
+	PERIOD := dayx >= day1 AND dayx <= day2;
+END_IF;
+
+(* code before rev 1.2
+yx := year(dx);
+p1 := date_add(d1,0,0,0,yx - year(d1));
+p2 := date_add(d2,0,0,0,yx - year(d2));
+
+IF p2 >= p1 THEN
+	period := dx <= p2  AND dx >= p1;
+ELSE
+	period := dx <= p2 OR dx >= p1;
+END_IF;
+*)
+
+
+(* revision history
+
+hm		19. sep 2007	rev 1.0
+	original version
+
+hm		20. sep 2007	rev 1.1
+	corrected a problem with leap year
+
+hm		4. jan 2008		rev 1.2
+	changed code for better performance
+
+hm		22. mar. 2008	rev 1.3
+	function would deliver wrong results when d1, d2 or dx are a leap_year
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SET_DT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE_AND_TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="year" type="INT"/>
+						<var name="month" type="INT"/>
+						<var name="day" type="INT"/>
+						<var name="hour" type="INT"/>
+						<var name="minute" type="INT"/>
+						<var name="second" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.5	16 mar 2008
+programmer 	hugo
+tested by	tobias
+
+
+creates a date output from year, month and day of month
+year must be in the form of 4 digits ie 2006 or 1977.
+*)
+
+SET_DT := DWORD_TO_DT(DATE_TO_DWORD(SET_DATE(YEAR, MONTH, day)) + TO_DWORD(SECOND) + TO_DWORD(MINUTE) * 60 + TO_DWORD(HOUR) * 3600);
+
+
+(* revision history
+hm	4. aug. 2006		rev 1.0
+	original version
+
+hm		19 sep. 2007	rev 1.1
+	use function leap_year to calculate leap year, more exceptions are handled
+
+hm		1. okt 2007		rev 1.2
+	added step7 compatibility
+	call function set_date
+
+hm		8. oct 2007		rev 1.3
+	deleted unused variables count and leap
+
+hm		1. 11 2007		rev 1.4
+	converted hour type integer to dword in calculation to avoid overrun on möller ecp4
+
+hm		16. mar 2008	rev 1.5
+	added type conversions to avoid warnings under codesys 3.0
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="SET_TOD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME_OF_DAY</returnValue>
+				<vars>
+					<inputVars>
+						<var name="hour" type="INT"/>
+						<var name="minute" type="INT"/>
+						<var name="second" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.5	16. mar 2008
+programmer 	hugo
+tested by	tobias
+
+creates tod from hour minute and second 
+
+*)
+
+SET_TOD := DWORD_TO_TOD(TO_DWORD(SECOND * 1000.0) + TO_DWORD(MINUTE) * 60000 + TO_DWORD(HOUR) * 3600000);
+
+(* revision history
+
+hm		4.aug.2006		rev 1.0
+	original version
+
+hm		11. sep 2007	rev 1.1
+	changed coding to avoid a compiler warning under twincat.
+
+hm		1. nov 2007	rev 1.2
+	changed coding to avoid possible overrun situation on möller ecp4
+
+hm		2. Nov	2007	rev 1.3
+	changed dword to DINT in calcualtion to avoid warnings with some compilers
+
+hm		14. mar 2008	rev 1.4
+	changed code to avoid rounding problem at last digit of millisecond
+
+hm		16. mar. 2008	rev 1.5
+	added type conversions to avoid warning under codesys 3.0
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="YEAR_BEGIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE</returnValue>
+				<vars>
+					<inputVars>
+						<var name="y" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	7. Apr. 2008
+programmer 	hugo
+tested by	tobias
+
+returs the date of january 1st for the given year  
+the function works for dates from 1970 - 2099 
+
+*)
+
+YEAR_BEGIN := DWORD_TO_DATE(SHR(TO_DWORD(y) * 1461 - 2878169,2) * 86400);
+
+
+
+(* revision history
+hm	19. dec 2007	rev 1.0
+	original version
+
+hm	4. jan 2008		rev 1.1
+	formula for step7 was incorrect during leap years
+
+hm	7. apr. 2008	rev 1.2
+	deleted unused step7 code
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="PERIOD2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DP" type="DATE" dim0="4" dim1="2"/>
+						<var name="DX" type="DATE"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	27. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+PERIOD2 checks if DX is within one of 4 periods and sets the output true if so.
+
+*)
+
+PERIOD2 := 	(DX >= DP[0,0] AND DX <= DP[0,1]) OR
+			(DX >= DP[1,0] AND DX <= DP[1,1]) OR
+			(DX >= DP[2,0] AND DX <= DP[2,1]) OR
+			(DX >= DP[3,0] AND DX <= DP[3,1]);
+
+
+(* revision history
+
+hm		27. apr 2008	rev 1.0
+	original version
+
+
+*) 
+]]>
+				</sourceCode>
+			</function>
+			<function name="LEAP_YEAR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="yr" type="INT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	2. oct. 2006
+programmer 	hugo
+tested by	tobias
+
+
+leap_year is true if the tested year is a leap year  
+  
+*)
+
+LEAP_YEAR := SHL(yr,14) = 0;
+
+(* this code was used prior to rev 1.1
+
+IF yr MOD 400 = 0 THEN leap_year := TRUE;
+ELSIF yr MOD 100 = 0 THEN leap_year := FALSE;
+ELSIF yr MOD 4 =0 THEN leap_year := TRUE;
+ELSE leap_year := FALSE;
+END_IF;
+
+*)
+
+(* change history
+
+hm 	2.10.2006		rev 1.1
+	the function now works for any year from 1970 up to 2100
+
+hm	1. oct 2007		rev 1.2
+	chaged code for higher performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="UTC_TO_LTIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE_AND_TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="UTC" type="DATE_AND_TIME"/>
+						<var name="DST_ENABLE" type="BOOL"/>
+						<var name="TIME_ZONE_OFFSET" type="INT"/>
+					</inputVars>
+					<localVars>
+						<var name="tmp" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+
+version 1.9	27. feb. 2009
+programmer 	oscat
+tested by		oscat
+
+ltime is a real time clock that uses the system rtc as utc time and calculates and given time zone.
+the utc time is supplied on the input UTC.
+according to the input variable time_zone_offset when the input dst_enable is true,
+the dst on and off times are calculated by a formula for any given year and the time is advanced and reset by one hour
+at 02:00 and 03:00 for the last sunday of march and last sunday of october.
+the code is high performance and the rtc counts every second.
+if more then one time zone is needed by the systen the clock can be started many times by placing more then one function block.
+
+ 
+*)
+
+
+tmp := TIME_ZONE_OFFSET * 60 + TO_INT(DST_ENABLE AND DST(UTC)) * 3600;
+IF tmp < 0 THEN
+	tmp := ABS(tmp);
+	UTC_TO_LTIME := DWORD_TO_DT(DT_TO_DWORD(UTC) -  TO_DWORD(tmp));
+ELSE
+	UTC_TO_LTIME := DWORD_TO_DT(DT_TO_DWORD(UTC) +  TO_DWORD(tmp));
+END_IF;
+
+
+(* revision history
+
+hm 2.10.2006	rev 1.1
+	corrected an error where dst would be delayed by 0.1second
+
+hm 17.1.2007	rev 1.2
+	added utc input instead of internal sysrtcgettime because this would only work on wago.
+	dst_enable would not be checked before dst would be enabled.
+
+hm 18.3.2007	rev 1.3
+	changed code, dst would not work during first cycle.
+
+hm 24.10.2007	rev 1.4
+	changed code because the execution every 100ms can cause major problems if the supplied time was not correct at start.
+	use of new dst function
+
+hm 12. nov 2007	rev 1.5
+		changed Type of time_zone_offset from time to int to allow for time zones with negative offset
+
+hm	8 dec 2007		rev 1.6
+	corrected a problem with time_zone_offset
+
+hm	14. oct. 2008	rev 1.7
+	renamed module from LTIME to UTC_TO_LTIME
+	changed function weekday to day_of_week
+	optimized code for better performance
+
+hm	20. oct. 2008	rev 1.8
+	changes type of input TIME_ZONE_OFFSET from real to int, now is in +/-minutes
+	deleted outputs DST_ON and WDAY
+	converted to function
+
+hm	27. feb. 2009	rev 1.9
+	added type conversions to avoid warnings under codesys 3.0
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="WORK_WEEK" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="idate" type="DATE"/>
+					</inputVars>
+					<localVars>
+						<var name="d1" type="DATE"/>
+						<var name="w1" type="INT"/>
+						<var name="ds" type="DWORD"/>
+						<var name="yr" type="INT"/>
+						<var name="w31" type="INT"/>
+						<var name="w01" type="INT"/>
+						<var name="wm" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	25. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+calculates the work week for a given date according to iso8601
+
+*)
+
+(* berechne den 1.1 des jahres von idate. *)
+yr := YEAR_OF_DATE(idate);
+d1 := YEAR_BEGIN(yr);
+(* wochentag von d1 *)
+w1 := DAY_OF_WEEK(d1);
+(* offset des montags der eletzten KW des vorjahres *)
+(* wenn der erste tag des jahres größer als donnerstag ist dann beginnt die letzte kw am montag davor *)
+(* wenn der erste tag des jahres ein donnerstag oder kleiner ist beginnt die erste kw 2 montage davor *)
+IF w1 < 5 THEN
+	ds := DATE_TO_DWORD(d1) - TO_DWORD(w1+6) * 86400;
+ELSE
+	ds := DATE_TO_DWORD(d1) - TO_DWORD(w1-1) * 86400;
+END_IF;
+
+(* kalenderwoche des eingangsdatums *)
+WORK_WEEK := TO_INT((DATE_TO_DWORD(idate) - ds) / 604800);
+
+(* korrektur wenn work_week = 0 *)
+IF work_week = 0 THEN
+	(* work_week needs to be 53 when 1.jan of the year before is thursday or dec 31. is thursday. *)
+	(* first and last weekday of a year is equal and one more day for a leap_year. *)
+	IF w1 > 1 THEN w31 := w1 - 1; ELSE W31 := 7; END_IF;
+	IF LEAP_YEAR(yr - 1) AND w31 > 1 THEN w01 := W31 - 1; ELSE w1 := 7; END_IF;
+	(* if first or last day of a year is a thursday, the year has 53 weeks *)
+	WORK_WEEK := 52 + TO_INT(w31 = 4 OR w01 = 4);
+ELSE
+	(* end of year calculation *)
+	(* calculated the first and last weekday *)
+	IF leap_year(yr) THEN
+		IF w1 < 7 THEN w31 := w1 + 1; ELSE w31 := 1; END_IF;
+	ELSE
+		w31 := w1;
+	END_IF;
+	(* if first or last day is thursday then the year has 53 weeks otherwise only 52 *)
+	wm := 52 + TO_INT(w31 = 4 OR w1 = 4);
+	IF WORK_WEEK > wm THEN WORK_WEEK := 1; END_IF;
+END_IF;
+
+
+
+(* revision history
+
+hm 	17.1.2007		rev 1.1
+	deleted unused variable yday
+
+hm	19. dec 2007	rev 1.2
+	changed code for better performance
+	changed code to comply with ISO8601
+
+hm	16. mar 2008	rev 1.3
+	added type conversions to avoid warnings under codesys 3.0
+
+hm	7. oct. 2008	rev 1.4
+	changed function year to year_of_date
+	changed function weekday to day_of_week
+
+hm	25. oct. 2008	rev 1.5
+	optimized code for performance
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SECOND_OF_DT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="XDT" type="DATE_AND_TIME"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+	version 1.0	6. jun. 2008
+	programmer 	oscat
+	tested BY	oscat
+
+SECOND_OF_DT returns the current second (second of minute) of a DT variable
+
+*)
+
+SECOND_OF_DT := TO_INT(DT_TO_DWORD(XDT) MOD 60);
+
+(* revision history
+hm		6.9.2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MINUTE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="itod" type="TIME_OF_DAY"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	2 oct 2006
+programmer 	hugo
+tested by	tobias
+
+extracts the minutes out of TOD truncating the seconds 
+
+*)  
+
+MINUTE := TO_INT(TOD_TO_DWORD(itod) / 60000 - TOD_TO_DWORD(itod) / 3600000 * 60);
+
+
+(* change history
+
+2.10.2006 changes name of input to itod
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SDT_TO_DT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>DATE_AND_TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DTI" type="SDT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.0	18. oct 2008
+programmer 	hugo
+tested by	oscat
+
+converts Structured date time (SDT) to Date Time
+
+*)
+
+
+SDT_TO_DT := SET_DT(DTI.YEAR, DTI.MONTH, DTI.DAY, DTI.HOUR, DTI.MINUTE, DTI.SECOND);
+
+
+
+(* revision history
+
+hm 18. oct. 2008	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="SUN_MIDDAY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME_OF_DAY</returnValue>
+				<vars>
+					<inputVars>
+						<var name="LON" type="REAL"/>
+						<var name="UTC" type="DATE"/>
+					</inputVars>
+					<localVars>
+						<var name="T" type="REAL"/>
+						<var name="OFFSET" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	26. jan. 2011
+programmer 	hugo
+tested by	oscat
+
+this FUNCTION calculates the time when the sun stand exactly south of a given location.
+
+*)
+
+T := TO_REAL(DAY_OF_YEAR(utc));
+OFFSET := -0.1752 * SIN(0.033430 * T + 0.5474) - 0.1340 * SIN(0.018234 * T - 0.1939);
+SUN_MIDDAY := HOUR_TO_TOD(12.0 - OFFSET - lon * 0.0666666666666);
+
+
+(* revision history
+
+hm	26. jan. 2011	rev 1.0
+	initial release
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="HOUR_TO_TIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	24. feb. 2009
+programmer 	hugo
+tested by		tobias
+
+converts an amount of hours in real to time
+
+*)
+
+HOUR_TO_TIME := DWORD_TO_TIME(TO_DWORD(IN * 3600000));
+
+
+(* revision history
+hm		4. aug 2006	rev 1.0
+	original version
+
+hm	14. mar. 2008	rev 1.1
+	rounded the input after the last digit
+
+hm	24. feb. 2009	rev 1.2
+	changed input to IN
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="REFRACTION" version="1.0.0" creationDate="0" lastModifiedDate="1631603909" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="ELEV" type="REAL"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	7. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+REFRACTION calculates the atmospheric refraction in degrees.
+the input angle goes from 0 at the hirizon to 90 at midday.
+
+*)
+
+elev := LIMIT(elev, -1.9, 80.0);
+REFRACTION := 0.0174532925199433 / TAN(0.0174532925199433 * (ELEV + 10.3 / (ELEV + 5.11)));
+
+
+(* revision histroy
+hm	14. jul. 2008	rev 1.0
+	original release
+
+hm	7. mar. 2009	rev 1.1
+	using new formula
+
+*)	
+
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="CALENDAR_CALC" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inoutVars>
+						<var name="XCAL" type="CALENDAR"/>
+						<var name="HOLIDAYS" type="HOLIDAY_DATA" dim0="30"/>
+					</inoutVars>
+					<inputVars>
+						<var name="SPE" type="BOOL"/>
+						<var name="H" type="REAL">
+							<initValue>-0.83333333333</initValue>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="last" type="DATE_AND_TIME"/>
+						<var name="last_day" type="DINT"/>
+						<var name="holy" type="HOLIDAY"/>
+						<var name="sun" type="SUN_TIME"/>
+						<var name="last_hour" type="INT"/>
+						<var name="utod" type="TIME_OF_DAY"/>
+						<var name="pos" type="SUN_POS"/>
+						<var name="plast" type="DATE_AND_TIME"/>
+						<var name="dtemp" type="DINT"/>
+						<var name="tmp" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.6	6. apr. 2011
+programmer 	hugo
+tested by		oscat
+
+calendar_calc liest die weltzeit .UTC aus einer CALENDAR Struktur und berechnet die restlichen Werte der Struktur.
+calendar_calc stellt sicher das die Werte fortlaufend aktualisiert werden und dabei funktionen nur dann aufgerufen werden wenn dies nötig ist.
+calendar_calc will calculate sun position data when SPE = TRUE;
+
+*)
+
+
+
+IF xcal.UTC <> last THEN
+	(* run once per second *)
+	(* update utc last calculated  *)
+	last := XCAL.UTC;
+	utod := DT_TO_TOD(xcal.UTC);
+
+	(* calculate ltc from utc *)
+	XCAL.LDT := UTC_TO_LTIME(XCAL.UTC, XCAL.DST_EN, XCAL.OFFSET);
+	XCAL.LDATE := DT_TO_DATE(XCAL.LDT);
+	XCAL.LTOD := DT_TO_TOD(XCAL.LDT);
+	dtemp := DAY_OF_DATE(XCAL.LDATE);
+	xcal.night := XCAL.LTOD < XCAL.SUN_RISE OR XCAL.LTOD > XCAL.SUN_SET;
+
+	(* run once per hour *)
+	tmp := HOUR(xcal.LTOD);
+	IF  tmp <> last_hour THEN
+		XCAL.DST_ON := DST(XCAL.UTC) AND xcal.DST_EN;
+		last_hour := tmp;
+	END_IF;
+
+	(* run once per day *)
+	IF dtemp <> last_day THEN
+		last_day := dtemp;
+		(* a new day has started, recalculate daily events *)
+		XCAL.YEAR := YEAR_OF_DATE(XCAL.LDATE);
+		XCAL.MONTH := MONTH_OF_DATE(XCAL.LDATE);
+		XCAL.DAY := DAY_OF_MONTH(XCAL.LDATE);
+		XCAL.WEEKDAY := DAY_OF_WEEK(XCAL.LDATE);
+		HOLY(date_in := XCAL.LDATE, LANGU := xcal.LANGUAGE, HOLIDAYS := HOLIDAYS);
+		XCAL.HOLIDAY := HOLY.Y;
+		XCAL.HOLY_NAME := HOLY.NAME;
+		sun(latitude := XCAL.LATITUDE, longitude := xcal.LONGITUDE, utc := DT_TO_DATE(xcal.UTC), H := H);
+		XCAL.SUN_RISE := DINT_TO_TOD(TOD_TO_DINT(sun.sun_rise) + XCAL.OFFSET * 60000 + SEL(XCAL.DST_ON,DINT#0,3600000));
+		XCAL.SUN_SET := DINT_TO_TOD(TOD_TO_DINT(sun.sun_set) + XCAL.OFFSET * 60000 + SEL(XCAL.DST_ON,DINT#0,3600000));
+		XCAL.SUN_MIDDAY := DINT_TO_TOD(TOD_TO_DINT(sun.MIDDAY) + XCAL.OFFSET * 60000 + SEL(XCAL.DST_ON,DINT#0,3600000));
+		XCAL.SUN_HEIGTH := sun.sun_declination;
+		XCAL.WORK_WEEK := WORK_WEEK(XCAL.LDATE);
+	END_IF;
+
+	(* calculate the suns position every 10 seconds when SPE = TRUE *)
+	IF SPE AND xcal.UTC -  plast >= t#25s THEN
+		plast := last;
+		pos(latitude := xcal.LATITUDE, longitude := xcal.LONGITUDE, utc := xcal.UTC);
+		xcal.SUN_HOR := pos.B;
+		xcal.SUN_VER := pos.HR;
+	END_IF;
+END_IF;
+
+
+
+(* revision history
+
+hm 23. oct. 2008	rev 1.0
+	original version
+
+hm	8. feb. 2009	rev 1.1
+	night was calculated wrong
+	added sun position data
+
+hm	10. mar. 2009	rev 1.2
+	added work_week, sun_midday, sun_heigth
+	sun_position will only be calculated evey 25 seconds
+	dst will only become true when dst_en = true
+
+hm	23. jan 2010	rev 1.3
+	sun_rise, sun_set and sun_midday are now calculated in local time
+
+hm	18. jan. 2011	rev 1.4
+	added input holidays to specify local holidays
+	changed call for function sun_time
+
+hm	2. feb. 2011	rev 1.5
+	added input H to specify twilight
+
+hm	6. apr. 2011	rev 1.6
+	night was calculated wrong
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="EVENTS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inoutVars>
+						<var name="ELIST" type="HOLIDAY_DATA" dim0="50"/>
+					</inoutVars>
+					<inputVars>
+						<var name="DATE_IN" type="DATE"/>
+						<var name="ENA" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="BOOL"/>
+						<var name="NAME" type="STRING" length="30"/>
+					</outputVars>
+					<localVars>
+						<var name="i" type="INT"/>
+						<var name="last_active" type="DATE"/>
+						<var name="size" type="INT">
+							<initValue>49</initValue>
+						</var>
+						<var name="day_in" type="DINT"/>
+						<var name="cyr" type="INT"/>
+						<var name="lday" type="DINT"/>
+						<var name="check" type="HOLIDAY_DATA"/>
+						<var name="y_int" type="BOOL"/>
+						<var name="name_int" type="STRING" length="30"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	18. jan. 2010
+programmer 	hugo
+tested by		tobias
+
+event checks an array with a list of events and displays the event if today is one.
+
+*)
+
+(* for performance reasons only activate once a day *)
+IF last_active <> date_in THEN
+	last_active := DATE_IN;
+	Y_int := FALSE;
+	name_int := '';
+	day_in := DAY_OF_DATE(DATE_IN);
+	cyr := YEAR_OF_DATE(DATE_IN);
+
+	(* search list for events *)
+	FOR i := 0 TO size DO
+		check := elist[i];
+		lday := DAY_OF_DATE(SET_DATE(cyr,check.month, check.day));
+		IF day_in >= lday AND day_in <= lday + check.use - 1 THEN
+			y_int := TRUE;
+			name_int := check.name;
+			EXIT;
+		END_IF;
+	END_FOR;
+END_IF;
+
+IF ENA THEN
+	Y := y_int;
+	NAME := name_int;
+ELSE
+	Y := FALSE;
+	NAME := '';
+END_IF;
+
+(* revision history
+hm  18. jan. 2011	rev 1.0
+	new module
+
+*)
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="DCF77" version="1.0.0" creationDate="0" lastModifiedDate="1637665579" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="REC" type="BOOL"/>
+						<var name="SET" type="BOOL"/>
+						<var name="SDT" type="DATE_AND_TIME"/>
+						<var name="DSI" type="BOOL"/>
+						<var name="SYNC_TIMEOUT" type="TIME">
+							<initValue>t#2m</initValue>
+						</var>
+						<var name="TIME_OFFSET" type="INT">
+							<initValue>1</initValue>
+						</var>
+						<var name="DST_EN" type="BOOL">
+							<initValue>TRUE</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="TP" type="BOOL"/>
+						<var name="DS" type="BOOL"/>
+						<var name="WDAY" type="INT"/>
+						<var name="ERROR" type="BOOL">
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="RTC" type="DATE_AND_TIME"/>
+						<var name="RTC1" type="DATE_AND_TIME"/>
+						<var name="MSEC" type="INT"/>
+						<var name="SYNC" type="BOOL"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="mez" type="DATE_AND_TIME"/>
+						<var name="utc" type="DATE_AND_TIME"/>
+						<var name="state" type="INT"/>
+						<var name="edge" type="BOOL"/>
+						<var name="tx" type="TIME"/>
+						<var name="ty" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="bits" type="BOOL" dim0="59"/>
+						<var name="cnt" type="INT"/>
+						<var name="i" type="INT"/>
+						<var name="old_time" type="DATE_AND_TIME"/>
+						<var name="minute" type="INT"/>
+						<var name="hour" type="INT"/>
+						<var name="day" type="INT"/>
+						<var name="month" type="INT"/>
+						<var name="year" type="INT"/>
+						<var name="last_sync" type="TIME"/>
+						<var name="t1" type="TIME"/>
+						<var name="tz" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.10	7. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this is a decoder for a DCF77 signal.
+the decoder decodes the DCF77 signal and checks for a valid Date_Time.
+since the dcf77 signal is only secured with a simple parity the decoder waits for two consecutive valid transmissions before it sets the output signals.
+given a valid reception by the receiver the decoder can take up to 3 minutes to start its clocks the first time.
+after a valid signal is detected the error output goes low and dignals a valid dcf signal from the receiver.
+a tp is only valid for one program cycle to allow for external rtc setting.
+after a valid signal is detected two independent internal clocks are started (RTC and RTC1), the seconds  of these clocks are generated by software since the dcf signal is only valid for minutes.
+rtc is always utc ( world time) and rtc1 can be set to any time zone by setting the time_zone_offset and enabling dst for automatic summertime.
+a sync output signals the the rtc and rtc1 are in sync with the dcf77 signal, if the dcf77 signal is lost for more then the sync time the sync output goes low
+but the rtc and rtc1 outputs keep running based on software timing until a valid dcf77 signal is received again and triggers the clock.
+in addition a millisecond output gives further resolutionof the clocks.
+a dst output shows if daylight saving time is enables and the weekday output shows which day of week currently is ( 1= monday ... 7= sunday).
+
+*)
+
+
+(* if tp was set it should only be active for 1 cycle *)
+TP := FALSE;
+
+(* read system time *)
+t1 := DWORD_TO_TIME(sysTimer);
+tx := t1 - last;
+
+IF rec XOR edge THEN
+	edge := rec;
+	IF NOT rec AND tx > t#1700ms AND tx < t#2000ms THEN
+		(* start condition reached *)
+		state := 0;
+		tp := NOT error;
+	ELSIF NOT rec AND tx > t#700ms AND tx < t#1000ms THEN
+		(* second switch detected *)
+		IF state < 58 THEN state := state +1; ELSE state := 0; END_IF;
+	ELSIF rec AND tx  < t#120ms THEN
+		(* bit 0 detected  *)
+		bits[state] := 0;
+	ELSIF rec AND tx > t#120ms AND tx < t#250ms THEN
+		(* bit 1 detected *)
+		bits[state] := 1;
+	ELSE
+		(* error condition received signal is not valid *)
+		error := TRUE;
+		state := 0;
+	END_IF;
+	last := last + tx;
+	IF rec AND state = 58 THEN
+		error := FALSE;
+
+		(* decode the bits and check for possible errors *)
+		IF bits[0] OR NOT (bits[17] XOR bits[18]) OR NOT bits[20] THEN error := TRUE; END_IF;
+		(* decode minute *)
+		MINUTE := 0;
+		MINUTE.0 := bits[21];
+		MINUTE.1 := bits[22];
+		MINUTE.2 := bits[23];
+		MINUTE.3 := bits[24];
+		IF bits[25] THEN MINUTE := MINUTE + 10; END_IF;
+		IF bits[26] THEN MINUTE := MINUTE + 20; END_IF;
+		IF bits[27] THEN MINUTE := MINUTE + 40; END_IF;
+		IF MINUTE > 59 OR (bits[21] XOR bits[22] XOR bits[23] XOR bits[24] XOR bits[25] XOR bits[26] XOR bits[27] XOR bits[28]) THEN error := TRUE; END_IF;
+
+		(* decode hour *)
+		HOUR := 0;
+		HOUR.0 := bits[29];
+		HOUR.1 := bits[30];
+		HOUR.2 := bits[31];
+		HOUR.3 := bits[32];
+		IF bits[33] THEN HOUR := HOUR + 10; END_IF;
+		IF bits[34] THEN HOUR := HOUR +20; END_IF;
+		IF HOUR > 23 OR (bits[29] XOR bits[30] XOR bits[31] XOR bits[32] XOR bits[33] XOR bits[34] XOR bits[35]) THEN error := TRUE; END_IF;
+
+		(* decode day of month *)
+		day := 0;
+		day.0 := bits[36];
+		day.1 := bits[37];
+		day.2 := bits[38];
+		day.3 := bits[39];
+		IF bits[40] THEN day := day + 10; END_IF;
+		IF bits[41] THEN day := day + 20; END_IF;
+		IF day > 31 THEN error := TRUE; END_IF;
+
+		(* decode day of week *)
+		wday := 0;
+		wday.0 := bits[42];
+		wday.1 := bits[43];
+		wday.2 := bits[44];
+		IF wday > 7 OR wday < 1 THEN error := TRUE; END_IF;
+
+		(* decode month *)
+		MONTH := 0;
+		MONTH.0 := bits[45];
+		MONTH.1 := bits[46];
+		MONTH.2 := bits[47];
+		MONTH.3 := bits[48];
+		IF bits[49] THEN MONTH := MONTH +10; END_IF;
+		IF MONTH > 12 THEN error := TRUE; END_IF;
+
+		(* decode year *)
+		YEAR := 0;
+		YEAR.0 := bits[50];
+		YEAR.1 := bits[51];
+		YEAR.2 := bits[52];
+		YEAR.3 := bits[53];
+		IF bits[54] THEN YEAR := YEAR + 10; END_IF;
+		IF bits[55] THEN YEAR := YEAR + 20; END_IF;
+		IF bits[56] THEN YEAR := YEAR + 40; END_IF;
+		IF bits[57] THEN YEAR := YEAR + 80; END_IF;
+
+		(* check parity for bits 36 to 58 *)
+		cnt := 0;
+		FOR i := 36 TO 58 DO IF bits[i] THEN cnt := cnt + 1; END_IF; END_FOR;
+		IF NOT EVEN(cnt) THEN error := TRUE; END_IF;
+
+		(* time must be valid for two cycles to clear error flag *)
+		IF NOT error THEN
+			(* set outputs *)
+			old_time := mez;
+			IF YEAR >= 70 THEN YEAR := YEAR + 1900; ELSE YEAR := YEAR + 2000; END_IF;
+			mez := SET_DT(YEAR,MONTH,day,HOUR,MINUTE,0);
+			DS := bits[17];
+			IF DS THEN
+				UTC := DWORD_TO_DT(DT_TO_DWORD(mez) - 7200);
+			ELSE
+				UTC := DWORD_TO_DT(DT_TO_DWORD(mez) - 3600);
+			END_IF;
+
+			(* set trigger signal only if the receiver has received 2 successive minutes *)
+			IF mez <> old_time + t#1m THEN error := TRUE ; END_IF;
+		END_IF;
+	END_IF;
+END_IF;
+
+(* this portion implements a free running clock which is triggered by the dcf77 signal *)
+tz := DWORD_TO_TIME(TO_DWORD(ABS(time_offset))* 3600000);
+
+(* input sdt is copied to utc at first power up *)
+IF NOT init OR SET THEN
+	init := TRUE;
+	utc := sdt;
+	tp := TRUE;
+	DS := DSI;
+END_IF;
+
+IF tp THEN
+	rtc := utc;
+	IF DS AND dst_en THEN
+		IF time_offset < 0 THEN	rtc1 := rtc - tz + t#1h; ELSE rtc1 := rtc + tz + t#1h; END_IF;
+	ELSE
+		IF time_offset < 0 THEN rtc1 := rtc - tz; ELSE rtc1 := rtc + tz; END_IF;
+	END_IF;
+	sync := TRUE;
+	last_sync := last;
+	ty := last;
+ELSIF rtc > DWORD_TO_DT(0) AND T1 - ty >= t#1s THEN
+	rtc := rtc + t#1s;
+	rtc1 := rtc1 + t#1s;
+	ty := ty + t#1s;
+	sync := ty - last_sync < sync_timeout AND last_sync > DWORD_TO_TIME(0);
+	wday := DAY_OF_WEEK(DT_TO_DATE(rtc1));
+	DS := dst_en AND DST(utc);
+END_IF;
+msec := TIME_TO_INT(t1 - ty);
+
+
+
+(* decode information
+bits		content
+0			Bitwert immer 0
+1 bis 14	reserviert für Betriebsinformationen (nicht für DCF77-Nutzer bestimmt)
+15			Rufbit für Alarmierung der PTB-Mitarbeiter
+			(bis Mai 2003: Bitwert = 0 falls normale Antenne in Verwendung; 1 = Backupantenne)
+16			Bitwert = 1 falls ein Wechsel von MEZ nach MESZ oder umgekehrt bevorsteht; Dauer der Anzeige: 1 Stunde
+17 + 18	gültige Zeit = MEZ, falls Bit 17=0 und Bit 18=1
+			gültige Zeit = MESZ, falls Bit 17=1 und Bit 18=0
+19			Bitwert = 1 falls innerhalb den nächsten 59 Minuten eine Schaltsekunde angeordnet ist. Beim Einfügen einer Schaltsekunde wird anstelle der 59. die 60. Sekundenmarke weggelassen und in der 58. erfolgt ausnahmsweise ein Trägerabfall.
+20			Startbit für Zeitinformation (immer 1)
+21 - 27		1, 2, 4, 8, 10, 20, 40 Minuten (bitweise Addition)
+28			Prüfbit (gerade Parität) für die Bits 21-27
+29 - 34		1, 2, 4, 8, 10, 20 Stunden (bitweise Addition)
+35			Prüfbit (gerade Parität) für die Bits 29-34
+36 - 41		Tagesnummer im aktuellen Monat: 1, 2, 4, 8, 10, 20 (bitweise Addition)
+42 - 44		Tagesnummer in der aktuellen Woche: 1, 2, 4 (bitweise Addition)
+45 - 49		Monatsnummer: 1, 2, 4, 8, 10 (bitweise Addition)
+50 - 57		Jahr (zweistellig): 1, 2, 4, 8, 10, 20, 40, 80 (bitweise Addition)
+58			Prüfbit (gerade Parität) füR die Bits 36-57
+
+*)
+(* revision history
+
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+
+hm 2.feb 2007		rev 1.1
+	change wday and dst outputs when there is no dcf reception
+
+hm	26.feb 2007		rev 1.2
+	changed statements where t#1h would be substracted from DT.
+	under certain conditions the compiler would crash translating this statement
+
+hm	17. sep 2007	rev 1.3
+	replaced time() with T_PLC_MS() for compatibility reasons
+
+hm	24. oct 2007		rev 1.4
+	changed dst calculation because function dst was upgraded no error in DCF77 only a change in DST
+
+hm	12. nov 2007		rev 1.5
+	changed time_offset from time to integer to allow for negative offset time zones
+
+hm	8. dec 2007		rev 1.6
+	corrected an error in time_zone calculation
+
+hm 23. jan 2008		rev 1.7
+	added sdt input which is used to initialize rtc and rtc1 during first cycle.
+
+hm 16. mar 2008		rev 1.8
+	changed output weekday to wday and dst to ds for compatibility reasons
+
+hm	19. apr. 2008	rev 1.9
+	added input dsi to allow to set daylight savings time when SDT is TRUE.
+	added asynchronous SET input
+
+hm	7. oct. 2008	rev 1.10
+	changed function weekday to day_of_week
+
+*)
+
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="HOLIDAY" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inoutVars>
+						<var name="HOLIDAYS" type="HOLIDAY_DATA" dim0="30"/>
+					</inoutVars>
+					<inputVars>
+						<var name="DATE_IN" type="DATE"/>
+						<var name="LANGU" type="INT"/>
+						<var name="FRIDAY" type="BOOL"/>
+						<var name="SATURDAY" type="BOOL"/>
+						<var name="SUNDAY" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Y" type="BOOL"/>
+						<var name="NAME" type="STRING" length="30"/>
+					</outputVars>
+					<localVars>
+						<var name="SIZE" type="INT">
+							<initValue>29</initValue>
+						</var>
+						<var name="last_active" type="DATE"/>
+						<var name="ostern" type="DATE"/>
+						<var name="i" type="INT"/>
+						<var name="jahr" type="INT"/>
+						<var name="x_date" type="DATE"/>
+						<var name="lx" type="INT"/>
+						<var name="wdx" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.0	18. jans 2011
+programmer 	hugo
+tested by		tobias
+
+holiday calculates if a given day is a holiday and displays the name of the holiday as string as well as a boolean flag to indicate a holiday.
+the holidays are specified in the country setup under global constants.
+a holiday can be of fixed date for example new years day on january 1st.
+a holiday can have a fixed offset from easter sunday as for most church holidays.
+a holiday can be a specific weekday before a fixed date, for example buss und bettag is the last wednesday before nov 23rd.
+with a simple f_use flag any specific holiday can be turned on or off if needed.
+
+please check the manual for examples of holiday definitions
+*)
+
+(* for performance reasons only activate once a day *)
+IF last_active = date_in THEN RETURN; END_IF;
+last_active := DATE_IN;
+
+(* determine language *)
+IF LANGU = 0 THEN
+	lx := language.DEFAULT;
+ELSE
+	lx := MIN(language.LMAX, LANGU);
+END_IF;
+
+(* berechnung von ostern für das aktuelle jahr *)
+jahr := YEAR_OF_DATE(date_in);
+ostern := EASTER(jahr);
+wdx := DAY_OF_WEEK(DATE_IN);
+Y := FALSE;
+
+(* check for holidays *)
+FOR i := 0 TO size DO
+	x_date := SET_DATE(jahr, HOLIDAYS[i].MONTH , HOLIDAYS[i].DAY);
+	IF HOLIDAYS[i].USE = 1 AND HOLIDAYS[i].MONTH > 0 THEN
+		(* check for fixed date holiday *)
+		IF x_date = date_in THEN
+			Y := TRUE;
+			NAME := HOLIDAYS[i].NAME;
+			RETURN;
+		END_IF;
+	ELSIF HOLIDAYS[i].USE = 1 AND HOLIDAYS[i].MONTH = 0 THEN
+		(* check for holiday in reference to easter *)
+		IF DATE_ADD(ostern, HOLIDAYS[i].DAY ,0,0,0) = date_in THEN
+			Y := TRUE;
+			NAME := HOLIDAYS[i].NAME;
+			RETURN;
+		END_IF;
+	ELSIF HOLIDAYS[i].USE < 0 THEN
+		(* check for holiday on a weekday before date *)
+		IF DAY_OF_WEEK(date_in) = ABS(HOLIDAYS[i].USE) AND date_in < x_date AND date_in >= DATE_ADD(x_date,-7,0,0,0) THEN
+			Y := TRUE;
+			NAME := HOLIDAYS[i].NAME;
+			RETURN;
+		END_IF;
+	END_IF;
+END_FOR;
+
+(* check array if today is weekend *)
+IF NOT Y AND (wdx = 5 AND FRIDAY OR wdx = 6 AND SATURDAY OR wdx = 7 AND SUNDAY) THEN
+	Y := TRUE;
+	NAME := LANGUAGE.WEEKDAYS[LOCATION.LANGUAGE[lx],wdx];
+ELSE
+	NAME := '';
+END_IF;
+
+
+(*
+Neujahrstag 	1. Januar 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Heilige Drei Könige 	6. Januar 	• 	• 												• 		
+Karfreitag 	Ostersonntag - 2d 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Ostersonntag 	siehe Osterdatum 				(•) 												
+Ostermontag 	Ostersonntag + 1d 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Tag der Arbeit 	1. Mai 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Christi Himmelfahrt 	Ostersonntag + 39d 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Pfingstsonntag 	Ostersonntag + 49d 				(•) 												
+Pfingstmontag 	Ostersonntag + 50d 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Fronleichnam 	Ostersonntag + 60d 	• 	• 					• 			• 	• 	• 	1) 			2)
+Augsburger Friedensfest 	8. August 		(3) 														
+Mariä Himmelfahrt 	15. August 		(5) 										• 				
+Tag der Deutschen Einheit 	3. Oktober 6) 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+Reformationstag 	31. Oktober 				• 				• 					• 	• 		•
+Allerheiligen 	1. November 	• 	• 								• 	• 	• 				
+Buß- und Bettag 4) 	Mittwoch vor dem 23.11. 			7 										• 			
+1. Weihnachtstag 	25. Dezember 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+2. Weihnachtstag 	26. Dezember 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	• 	•
+*)
+
+
+
+(* revision history
+hm 	27. feb. 2007	rev 1.1
+	deleted unused variable init
+
+hm	31. oct. 2007	rev 1.2
+	changed holiday definition from constant to input constant to allow easier changes by user without recompilation of the lib
+
+hm 	24. nov. 2007	rev 1.3
+	changes F_use of  Buß_und_Bettag to 0 because this is no official holiday
+
+hm	7. apr. 2008	rev 1.4
+	improved performance
+
+hm	7. oct. 2008	rev 1.5
+	changed code to use setup data from global constants
+	changed length of output NAME from 20 to 30
+	holiday will now also be indicated on a weekend
+	changed function year to year_of_date
+	changed function weekday to day_of_week
+
+hm	21. oct. 2008	rev 1.6
+	using location constants
+
+hm	18. jan 2011	rev 2.0
+	using user specified array for holidays
+
+*)
+
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SUN_TIME" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="LATITUDE" type="REAL">
+							<descr>latitude of geographical position</descr>
+						</var>
+						<var name="LONGITUDE" type="REAL">
+							<descr>longitude of geographical position</descr>
+						</var>
+						<var name="UTC" type="DATE">
+							<descr>world time</descr>
+						</var>
+						<var name="H" type="REAL">
+							<descr>heighth above horizon for sunrise</descr>
+							<initValue>-0.83333333333</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="MIDDAY" type="TIME_OF_DAY">
+							<descr>astrological midday in hours when sun stands
+									at south direction</descr>
+						</var>
+						<var name="SUN_RISE" type="TIME_OF_DAY">
+							<descr>sun rise for current day in local time</descr>
+						</var>
+						<var name="SUN_SET" type="TIME_OF_DAY">
+							<descr>sun set for current day in local time</descr>
+						</var>
+						<var name="SUN_DECLINATION" type="REAL">
+							<descr>sun declination above horizon at midday in
+									degrees</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="dk" type="REAL">
+							<descr>sun declination at midday</descr>
+						</var>
+						<var name="delta" type="TIME">
+							<descr>delta from midday for sunrise and sunset</descr>
+						</var>
+						<var name="b" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.7	25. jan. 2011
+programmer 	hugo
+tested by	tobias
+
+this FUNCTION block calculates the sun rise, sun set, sun offset at midday sun declination for a given date 
+for performance reasons the algorithm has been simplified and is accurate within a few minutes only 
+the times are calculated in utc and have to be corrected for the given time zone
+this correction is not done within sun_time because it would be a problem on days where dst is enabled or disabled
+
+*)
+
+B := latitude * 0.0174532925199433;
+MIDDAY := SUN_MIDDAY(longitude, utc);
+DK := 0.40954 * SIN(0.0172 * (TO_REAL(DAY_OF_YEAR(utc)) - 79.35));
+sun_declination := DEG(DK);
+IF sun_declination > 180.0 THEN sun_declination := sun_declination - 360.0; END_IF;
+sun_declination := 90.0 - LATITUDE + sun_declination;
+delta := HOUR_TO_TIME(ACOS((SIN(RAD(H)) - SIN(B) * SIN(DK)) / (COS(B) * COS(DK))) * 3.819718632);
+sun_rise := MIDDAY - delta;
+sun_set := MIDDAY + delta;
+
+(* revision history
+
+rev 1.1	hm	20.1.2007
+	deleted unused variables sun_riseR and sun_setR
+
+rev 1.2 hm 17.4.2007
+	corrected error while sun:midday would not be corrected for longitude.
+
+rev 1.3	hm	6. jan 2008
+	performance improvements
+
+rev	1.4 hm	17. jan 2008
+	calculation is now only performed once a day
+
+hm	10. mar. 2009	rev 1.5
+	improved performance
+	calculation will be performed on every call to allow movong installations
+
+hm	26. jul 2009	rev 1.6
+	fixed a problem with wrong midday calculation
+
+hm	25. jan. 2011	rev 1.7
+	using function sun_midday
+	corrected angle of sun_declination
+	added input H
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SUN_POS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="latitude" type="REAL">
+							<descr>latitude of geographical position</descr>
+						</var>
+						<var name="longitude" type="REAL">
+							<descr>longitude of geographical position</descr>
+						</var>
+						<var name="utc" type="DATE_AND_TIME">
+							<descr>world time</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="B" type="REAL"/>
+						<var name="H" type="REAL"/>
+						<var name="HR" type="REAL"/>
+					</outputVars>
+					<localVars>
+						<var name="g" type="REAL"/>
+						<var name="a" type="REAL"/>
+						<var name="d" type="REAL"/>
+						<var name="t1" type="REAL"/>
+						<var name="n" type="REAL"/>
+						<var name="e" type="REAL"/>
+						<var name="c" type="REAL"/>
+						<var name="tau" type="REAL"/>
+						<var name="sin_d" type="REAL"/>
+						<var name="rlat" type="REAL"/>
+						<var name="sin_lat" type="REAL"/>
+						<var name="cos_lat" type="REAL"/>
+						<var name="cos_tau" type="REAL"/>
+						<var name="cos_d" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 2.1	7. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+this FUNCTION block calculates the sun position for a given date and time.
+the times are calculated in utc and have to be corrected for the given time zone.
+B is the angle from north and HR is the highth in degrees.
+
+*)
+
+
+(* n is the julian date and the number of days since 1.1.2000-12:00 midday *)
+(* be careful for step7 date startes 1.1.1990 instead of 1.1.1970 *)
+(* for step7 this line must change *)
+n := TO_REAL(DT_TO_DWORD(UTC) - 946728000) * 0.000011574074074074;
+g :=MODR(6.240040768 + 0.01720197 * n, math.PI2);
+d := MODR(4.89495042 + 0.017202792 * n, math.PI2) + 0.033423055 * SIN(g) + 0.000349066 * SIN(2.0*g);
+e := 0.409087723 - 0.000000006981317008 * n;
+cos_d := COS(d);
+sin_d := SIN(d);
+a := ATAN(COS(e) * sin_d / cos_d);
+IF cos_d < 0.0 THEN a := a + math.PI; END_IF;
+c := ASIN(SIN(e) * sin_d);
+
+(* also here we must be very careful utc is from 1.1.1970 for step7 the formula must change *)
+tau := RAD(MODR(6.697376 + (n - 0.25) * 0.0657098245037645 + TO_REAL(TOD_TO_DWORD(DT_TO_TOD(utc))) * 0.0000002785383333, 24.0) * 15.0 + longitude) - a;
+rlat := RAD(latitude);
+sin_lat := SIN(rlat);
+cos_lat := COS(rlat);
+cos_tau := COS(tau);
+t1 := cos_tau * sin_lat - TAN(c) * cos_lat;
+B := ATAN(SIN(tau) / t1);
+IF t1< 0.0 THEN B := B + math.PI2; ELSE B := B + math.PI; END_IF;
+B := DEG(MODR(B, math.PI2));
+h := DEG(ASIN(COS(C) * cos_tau * cos_lat +SIN(c) * sin_lat));
+IF h > 180.0 THEN h := h - 360.0; END_IF;
+(* consider refraction *)
+HR := h + REFRACTION(h);
+
+
+(* revision history
+hm	1. feb 2007	rev 1.0
+	original version
+
+hm	6. jan 2008	rev 1.1
+	performance improvements
+
+hm	18. jan 2008	rev 1.2
+	further performance improvements
+	only calculate once every 10 seconds
+
+hm	16. mar. 2008	rev 1.3
+	added type conversion to avoid warnings under codesys 3.0
+
+hm	30. jun. 2008	rev 1.4
+	added type conversions to avoid warnings under codesys 3.0
+
+hm	18. oct. 2008	rev 1.5
+	using math constants
+
+hm	17. dec. 2008	rev 1.6
+	angles below horizon are displayed in negative degrees
+
+hm	27. feb. 2009	rev 2.0
+	new code with better accuracy
+
+hm	7. mar. 2009	rev 2.1
+	refraction is added after angle normalization
+	deleted 10 second lockout
+	added output for astronomical heigth h
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="RTC_2" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL"/>
+						<var name="SDT" type="DATE_AND_TIME"/>
+						<var name="SMS" type="INT"/>
+						<var name="DEN" type="BOOL"/>
+						<var name="OFS" type="INT"/>
+					</inputVars>
+					<outputVars>
+						<var name="UDT" type="DATE_AND_TIME"/>
+						<var name="LDT" type="DATE_AND_TIME"/>
+						<var name="DSO" type="BOOL"/>
+						<var name="XMS" type="INT"/>
+					</outputVars>
+					<localVars>
+						<var name="RT" type="RTC_MS"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.4	27. 	apr. 2011
+programmer 	hugo
+tested by		tobias
+
+RTC_2 is a real time clock module which runs utc and generates local time from utc.
+daylight savings time can be enabled with den and an additional local time is generated with a delay of ofs im minutes.
+
+*)
+
+
+(* call rtc *)
+RT(SET := SET, SDT := SDT, SMS := SMS);
+UDT := rt.xdt;
+XMS := rt.XMS;
+
+(* check for daylight savings time and set dso output *)
+DSO := DST(udt) AND DEN;
+
+(* calculate time offset and set ldt output *)
+LDT := DWORD_TO_DT(DT_TO_DWORD(UDT) + TO_DWORD(ofs + TO_INT(DSO)*60) * 60);
+
+
+(* revision history
+hm		20. jan. 2008	rev 1.0
+	original version
+
+hm		20. feb. 2008	rev 1.1
+	added Millisecond Set input
+
+hm		12. jun. 2008	rev 1.2
+	improved performance
+
+hm		20. jan. 2011	rev 1.3
+	changed offset to be in minutes
+
+hm		27. apr. 2011	rev 1.4
+	fixed error with local time calculation
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="RTC_MS" version="1.0.0" creationDate="0" lastModifiedDate="1637665534" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<vars>
+					<inputVars>
+						<var name="SET" type="BOOL"/>
+						<var name="SDT" type="DATE_AND_TIME"/>
+						<var name="SMS" type="INT"/>
+					</inputVars>
+					<outputVars>
+						<var name="XDT" type="DATE_AND_TIME"/>
+						<var name="XMS" type="INT"/>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="last" type="DWORD"/>
+						<var name="Tx" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	20. feb. 2008
+programmer 	hugo
+tested by	tobias
+
+RTC_MS is a real time clock module which can be set to SDT when set is TRUE and the outputs XDT and XT present the DateTime and TOD with a resolution of milliseconds.
+
+*)
+
+
+tx := sysTimer;
+IF set OR NOT init THEN
+	(* clock needs to be set when set is true or after power up *)
+	init := TRUE;
+	xdt := SDT;
+	XMS := SMS;
+ELSE
+	XMS := XMS + TO_INT(tx - last);
+	(* check if one second has expired *)
+	IF XMS > 999 THEN
+		XDT := XDT + T#1s;
+		XMS := XMS - 1000;
+	END_IF;
+END_IF;
+last := tx;
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm		20. jan. 2008	rev 1.0
+	original version
+
+hm		20. feb. 2008	rev 1.1
+	added Millisecond Set input
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

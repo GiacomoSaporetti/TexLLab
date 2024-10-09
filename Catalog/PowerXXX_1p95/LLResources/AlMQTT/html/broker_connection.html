@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Home</title>
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+		const ASSIGN_FLD = {
+			CLIENTNAME: "clientname",
+			USERNAME: "username",
+			PASSWORD: "password",
+			CLIENTCERT: "clientCert",
+			CLIENTKEY: "clientKey",
+			CACERT: "caCert",
+			CLIENTNAMEPARAMETRIC: "clientnameParametric",
+			USERNAMEPARAMETRIC: "usernameParametric",
+			PASSWORDPARAMETRIC: "passwordParametric"
+		}
+
+		const STATIC_PARAMETRIC_FLD = {
+			USER: "User",
+			PASS: "Pass",
+			CID: "Cid"
+		}
+	</script>
+
+	<script type="text/javascript" src="broker_connection.js"></script>
+
+	<style>
+		/* fix per HTML5 */
+		.TitlePag {
+			height: 40px;
+			padding-top: 3px;
+		}
+
+		input[type="text"] {
+			width: 300px;
+		}
+
+		input[type="text"].small {
+			width: 150px;
+		}
+
+		button {
+			min-width: 75px;
+		}
+
+		select {
+			width: 100px;
+		}
+
+		label {
+			width: 160px;
+			display:inline-block;
+			margin-top:5px;
+		}
+
+		/* fieldset dei dati parametrici */
+		fieldset > fieldset {
+			max-width: 650px;
+			padding-top: 5px; /* riduzione padding */
+		}
+
+		#staticCidContainer, #parametricCidContainer,
+		#parametricPassContainer, #staticPassContainer,
+		#parametricUserContainer, #staticUserContainer {
+			margin-left: 5px;
+		}
+	</style>
+</head>
+<body>
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr class="TitlePag">
+			<td id="pageTitle"><t:t>Broker Configuration</t:t></td>
+		</tr>
+
+		<tr>
+			<td class="SfondoTab">
+				<div class="menu html5">
+					<div class="menu_on"> <a href="#"><t:t>Connection</t:t></a> </div>
+					<div class="menu_off"> <a href="broker_publish.html"><t:t>Publish</t:t></a></div>
+					<div class="menu_off"> <a href="broker_subscribe.html"><t:t>Subscribe</t:t></a></div>
+					<div class="menu_off"> <a href="broker_diagnostics.html"><t:t>Diagnostics</t:t></a></div>
+					&nbsp;
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="Sfondo">
+				<fieldset>
+					<legend><t:t>Configuration</t:t></legend>
+					<div class="mt-s">
+						<label class="title-label" for="txtID"><t:t>ID</t:t>:</label>
+						<input id="txtID" type="text" disabled style="width: 80px;">
+						<label style="width:300px" for="txtID"><t:t>(to be used with sysMQTTEndpointStatus)</t:t></label>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtName"><t:t>Enable broker</t:t></label>
+						<label class="switch">
+							<input type="checkbox" name=".D(@enabled)" onclick="EnableDisableEndpointOnTree(this.checked)">
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtName"><t:t>Automatic connection</t:t></label>
+						<label class="switch">
+							<input type="checkbox" name=".D(@autoConnect)" id="autoConnChk" onchange="onAutoConnectChange(this.checked)">
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtName"><t:t>Caption</t:t>:</label>
+						<input name=".D(@caption)" id="txtName" type="text" onchange="UpdateTreeCaption()">
+					</div>
+
+					<fieldset class="mt-s">
+						<legend><t:t>Client id</t:t></legend>
+
+						<div>
+							<input type="radio" id="staticCidRadio" name=".D(@clientnameParametric)" value="0" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.CID)">
+							<label style="width: 60px;" for="staticCidRadio"><t:t>Static</t:t></label>
+
+							<input type="radio" id="parametricCidRadio" name=".D(@clientnameParametric)" value="1" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.CID)">
+							<label for="parametricCidRadio"><t:t>Parametric</t:t></label>
+						</div>
+
+						<div class="mt-xs" id="staticCidContainer" style="display: none;" >
+							<label style="width: 135px;" class="title-label" for="txtClientName"><t:t>Static client id</t:t>:</label>
+							<input class="small" name=".D(@clientname)" id="txtClientName" type="text">
+						</div>
+
+						<div class="mt-xs" id="parametricCidContainer" style="display: none;">
+							<label style="width: 135px;" class="title-label" for="clientnameParametricVarTxt"><t:t>Parametric client id</t:t>:</label>
+							<input class="small" type="text" name=".D(@clientnameParametricVar)" id="clientnameParametricVarTxt">
+							<img title="Assign STRING variable" class="buttonImg" data-img="in" onclick="Assign(ASSIGN_FLD.CLIENTNAME)">
+							<img title="UnAssign" class="buttonImg" data-img="out" onclick="UnAssign(ASSIGN_FLD.CLIENTNAME)">
+						</div>
+					</fieldset>
+
+					<div class="mt-m">
+						<label class="title-label" for="txtipaddress"><t:t>Broker address</t:t>:</label>
+						<input name=".D(@ipaddress)" id="txtipaddress" type="text">
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtPort"><t:t>Broker port</t:t>:</label>
+						<input name=".D(@port)" id="txtPort" type="text" style="width: 80px;">
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtPort"><t:t>Timeout TCP</t:t> (s):</label>
+						<input name=".D(@timeoutTCP)" id="txtPort" type="text" style="width: 80px;">
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtPort"><t:t>Timeout MQTT</t:t> (s):</label>
+						<input name=".D(@timeoutMQTT)" id="txtPort" type="text" style="width: 80px;">
+					</div>
+
+					<fieldset class="mt-s">
+						<legend><t:t>Username</t:t></legend>
+
+						<div>
+							<input type="radio" id="staticUserRadio" name=".D(@usernameParametric)" value="0" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.USER)">
+							<label style="width: 60px;" for="staticUserRadio"><t:t>Static</t:t></label>
+
+							<input type="radio" id="parametricUserRadio" name=".D(@usernameParametric)" value="1" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.USER)">
+							<label for="parametricUserRadio"><t:t>Parametric</t:t></label>
+						</div>
+
+						<div class="mt-xs" id="staticUserContainer" style="display: none;" >
+							<label style="width: 135px;" class="title-label" for="txtClientName"><t:t>Static username</t:t>:</label>
+							<input class="small" name=".D(@username)" id="txtClientName" type="text">
+						</div>
+
+						<div class="mt-xs" id="parametricUserContainer" style="display: none;">
+							<label style="width: 135px;" class="title-label" for="usernameParametricVarTxt"><t:t>Parametric username</t:t>:</label>
+							<input class="small" type="text" name=".D(@usernameParametricVar)" id="usernameParametricVarTxt">
+							<img title="Assign STRING variable" class="buttonImg" data-img="in" onclick="Assign(ASSIGN_FLD.USERNAME)">
+							<img title="UnAssign" class="buttonImg" data-img="out" onclick="UnAssign(ASSIGN_FLD.USERNAME)">
+						</div>
+					</fieldset>
+
+					<fieldset class="mt-s">
+						<legend><t:t>Password</t:t></legend>
+
+						<div>
+							<input type="radio" id="staticPassRadio" name=".D(@passwordParametric)" value="0" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.PASS)">
+							<label style="width: 60px;" for="staticPassRadio"><t:t>Static</t:t></label>
+
+							<input type="radio" id="parametricPassRadio" name=".D(@passwordParametric)" value="1" onclick="onStaticParametricChange(this.value, STATIC_PARAMETRIC_FLD.PASS)">
+							<label for="parametricPassRadio"><t:t>Parametric</t:t></label>
+						</div>
+
+						<div class="mt-xs" id="staticPassContainer" style="display: none;" >
+							<label style="width: 135px;" class="title-label" for="txtClientName"><t:t>Static password</t:t>:</label>
+							<input class="small" name=".D(@password)" id="txtClientName" type="text">
+						</div>
+
+						<div class="mt-xs" id="parametricPassContainer" style="display: none;">
+							<label style="width: 135px;" class="title-label" for="passwordParametricVarTxt"><t:t>Parametric password</t:t>:</label>
+							<input class="small" type="text" name=".D(@passwordParametricVar)" id="passwordParametricVarTxt">
+							<img title="Assign STRING variable" class="buttonImg" data-img="in" onclick="Assign(ASSIGN_FLD.PASSWORD)">
+							<img title="UnAssign" class="buttonImg" data-img="out" onclick="UnAssign(ASSIGN_FLD.PASSWORD)">
+						</div>
+					</fieldset>
+
+					<div class="mt-s">
+						<label class="title-label" for="txtTLS"><t:t>TLS</t:t></label>
+						<label class="switch">
+							<input type="checkbox" name=".D(@tls)" onchange="OnTLS()">
+							<span class="slider round"></span>
+						</label>
+
+						<button id="advancedTLSButton" class="FlatButton" style="margin-left: 375px; display: none;" onclick="ShowAdvancedTLS()"><t:t>Certificates cfg</t:t> >></button>
+					</div>
+
+					<div class="mt-m" id="advancedTLSDiv" style="display: none;">
+						<div>
+							<label class="title-label" for="txNameServer"><t:t>Common name server</t:t>:</label>
+							<input name=".D(@commonnameserver)" id="txNameServer" type="text">
+							<label style="width: 180px" for="txtID"><t:t>(defaults to 'Broker address')</t:t></label>
+						</div>
+
+						<div class="mt-xs">
+							<label class="title-label"><t:t>Client certificate</t:t>:</label>
+							<input type="text" class="small" name=".D(@clientCert)" id="clientCertTxt" readonly>
+							<button class="FlatButton" onclick="onSelectFile(ASSIGN_FLD.CLIENTCERT)"><t:t>Browse</t:t>...</button>
+							<button class="FlatButton" onclick="onClearFile(ASSIGN_FLD.CLIENTCERT)"><t:t>Clear</t:t></button>
+						</div>
+
+						<div class="mt-xs">
+							<label class="title-label"><t:t>Client private key</t:t>:</label>
+							<input type="text" class="small" name=".D(@clientKey)" id="clientKeyTxt" readonly>
+							<button class="FlatButton" onclick="onSelectFile(ASSIGN_FLD.CLIENTKEY)"><t:t>Browse</t:t>...</button>
+							<button class="FlatButton" onclick="onClearFile(ASSIGN_FLD.CLIENTKEY)"><t:t>Clear</t:t></button>
+						</div>
+
+						<div class="mt-xs">
+							<label class="title-label"><t:t>Broker root CA cert</t:t>:</label>
+							<input type="text" class="small" name=".D(@caCert)" id="caCertTxt" readonly>
+							<button class="FlatButton" onclick="onSelectFile(ASSIGN_FLD.CACERT)"><t:t>Browse</t:t>...</button>
+							<button class="FlatButton" onclick="onClearFile(ASSIGN_FLD.CACERT)"><t:t>Clear</t:t></button>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><t:t>Defaults for new topics</t:t></legend>
+					<div>
+						<label class="title-label" for="txtPrefix"><t:t>Topic prefix</t:t>:</label>
+						<input name=".D(@prefix)" id="txtPrefix" type="text">
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtQos"><t:t>Qos</t:t>:</label>
+						<select class="form-control" id="txtQos" name=".D(@qos)">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+						</select>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtRetain"><t:t>Retain</t:t></label>
+						<label class="switch">
+							<input type="checkbox" name=".D(@retain)">
+							<span class="slider round"></span>
+						</label>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtPayload"><t:t>Payload</t:t>:</label>
+						<select class="form-control" id="txtPayload" name=".D(@payload)">
+							<option value="bin">bin</option>
+							<option value="json">json</option>
+						</select>
+					</div>
+					<div class="mt-s">
+						<label class="title-label" for="txtPolling"><t:t>Send period</t:t> (ms):</label>
+						<input name=".D(@polling)" id="txtPolling" type="text" style="width: 80px;">
+					</div>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
+
+	<script>InitPage();</script>
+</body>
+</html>

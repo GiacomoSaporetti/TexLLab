@@ -1,0 +1,78 @@
+﻿<html xmlns:t>
+	<head>
+		<title>Public objects</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+	
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		
+		var m_path
+		var m_parentDevice
+		var m_extName
+
+		function InitPage()
+		{
+			m_path = app.GetCurrentWindowData()
+			
+			// risale al device padre e ottiene il nome dell'estensione
+			m_parentDevice = app.SelectNodesXML(m_path + ".")[0]
+			m_parentDevice = m_parentDevice.selectSingleNode(XPATH_ROOTDEVICE)
+			m_extName = m_parentDevice.getAttribute("ExtensionName")
+			
+			var mode = parseInt(app.DataGet(m_path + "/@databaseDefinitionMode", 0))
+			mode0.checked = (mode == 0)
+			mode1.checked = (mode == 1)
+			
+			SearchError(m_path)
+		}
+		
+		function Mode_OnClick(mode)
+		{
+			if (mode == 1)
+			{
+				if (!app.CallFunction(m_extName + ".CanSwitchToFreeIndexMode", m_parentDevice))
+				{
+					//	check arrays not defined
+					var msg = app.Translate("Cannot switch to free indexing mode.\n\nArray of parameters not supported.")
+					var caption = app.Translate("Database configuration")
+					app.MessageBox(msg, caption, gentypes.MSGBOX.MB_ICONEXCLAMATION)
+					return
+				}
+			}
+			
+			mode0.checked = (mode == 0)
+			mode1.checked = (mode == 1)
+			app.DataSet(m_path + "/@databaseDefinitionMode", 0, mode)
+		}
+		</script>
+	</head>
+	<body>
+		<input type="hidden" name=".DATAPATH" id="datapath">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr class="TitlePag">
+				<td id="pageTitle"><t:t>Public objects</t:t></td>
+			</tr>
+			<tr>
+				<td class="Sfondo">
+					<fieldset style="width:300px">
+						<legend ><t:t>Database configuration</t:t></legend>
+						<input type="radio" id="mode0" value="0" onclick="Mode_OnClick(this.value)">
+						<label for="mode0"><t:t>Modbus compliant database</t:t></label>
+						<br>
+						<input type="radio" id="mode1" value="1" onclick="Mode_OnClick(this.value)">
+						<label for="mode1"><t:t>Free indexing database</t:t></label>
+					</fieldset>
+				</td>
+			</tr>
+		</table>
+		<script>
+			// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+			InitPage()
+		</script>
+	</body>
+</html>

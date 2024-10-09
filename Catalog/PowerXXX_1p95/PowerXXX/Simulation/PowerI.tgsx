@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tgsx fileVersion="1.0">
+	<target id="AlPlc_x86_2p0" descr="AlPlc_x86_2p0"/>
+	<HMIWindow sizeX="450" sizeY="192" transpColor="FF00FF">AlPlc.htm</HMIWindow>
+	<HMIArea sizeX="128" sizeY="64"/>
+	<HMIProperties>
+		<usejoypad>1</usejoypad>
+		<bordgrey1>6316128</bordgrey1>
+		<bordgrey2>12895428</bordgrey2>
+		<bordblack>0</bordblack>
+		<bordwhite>16777215</bordwhite>
+		<curscycle>10</curscycle>
+		<curscover>0</curscover>
+		<cursheight>1</cursheight>
+		<cursbottom>2</cursbottom>
+		<transparencyactive>1</transparencyactive>
+		<usewaitingactive>0</usewaitingactive>
+	</HMIProperties>
+	<PLCRuntime defaultRetainMemoryService="MemoryBackUpFile">
+		<runtimes>
+			<runtime filename="LLXRtSimulabPlc.dll" area="0">
+				<memory>
+					<data size="0x20000"/>
+					<databit size="0x0"/>
+					<dataret size="0x0"/>
+					<code size="0x80000"/>
+				</memory>
+				<tasks>
+					<task name="Fast" id="0" period="10000" type="io" programmableTaskTime="1"/>
+					<task name="Slow" id="1" period="50000" type="cyclic" programmableTaskTime="1"/>
+					<task name="Background" id="2" period="100000" type="background"/>
+					<task name="Init" id="3" period="0" type="init"/>
+					<task name="MbBoot" id="4" period="0" type="init"/>
+					<task name="MbMPrm" id="5" period="0" type="callback"/>
+					<task name="COPMBoot" id="6" period="0" type="init"/>
+					<task name="COPMEvent" id="7" period="0" type="callback"/>
+					<task name="COPMParam" id="8" period="0" type="callback"/>
+				</tasks>
+			</runtime>
+			<runtime filename="LLXRtSimulabHmi.dll" area="1">
+				<memory>
+					<data size="0x80000"/>
+					<databit size="0x0"/>
+					<dataret size="0x0"/>
+					<code size="0x80000"/>
+				</memory>
+				<tasks>
+					<task name="Draw" id="0" period="20000" type="async"/>
+					<task name="Refresh" id="1" period="20000" type="async"/>
+				</tasks>
+			</runtime>
+		</runtimes>
+		<plugins>
+			<plugin filename="LLXPlugin_MemoryBackUpFile.dll"/>
+			<!--<plugin filename="LLXPlugin_Alarms.dll"/>-->
+			<!--<plugin filename="LLXPlugin_FileSystem.dll"/>-->
+			<!--<plugin filename="LLXPlugin_Recipes.dll"/>-->
+			<!--<plugin filename="LLXPluginSoftScope.dll"/>-->
+		</plugins>
+		<datablocks>
+			<db img="no" type="memo" id="0" elems="4096" datasize="1" access="rw" resetOnRestart="yes"/>
+			<db img="no" type="memo" id="200" elems="512" datasize="2" access="rw"/>
+			<db img="no" type="memo" id="201" elems="512" datasize="2" access="rw"/>
+			<db img="no" type="memo" id="60006" elems="1" datasize="4" access="r"/>
+			<db img="no" type="memo" id="60008" elems="1" datasize="1" access="r"/>
+			<db img="no" type="input" id="60002" elems="1" datasize="48" access="r"/>
+			<db img="no" type="input" id="60004" elems="1" datasize="20" access="r"/>
+			<db img="no" type="input" id="60005" elems="1" datasize="12" access="r"/>
+			<db img="no" type="memo" id="100" elems="2048" datasize="1" access="r" resetOnRestart="yes"/>
+			<db img="no" type="memo" id="101" elems="2048" datasize="1" access="rw" resetOnRestart="yes"/>
+			<db img="no" type="input" id="60010" elems="1" datasize="24" access="r"/>
+			<db img="no" type="input" id="60011" elems="32" datasize="36" access="r" resetOnRestart="yes"/>
+			<db img="no" type="input" id="60012" elems="2" datasize="16" access="r" resetOnRestart="yes"/>
+			<db img="no" type="memo" id="102" elems="4096" datasize="1" access="r" resetOnRestart="yes"/>
+			<db img="no" type="memo" id="103" elems="4096" datasize="1" access="rw" resetOnRestart="yes"/>
+			<db img="no" type="input" id="60020" elems="17" datasize="32" access="r" resetOnRestart="yes"/>
+			<db img="no" type="input" id="60021" elems="1" datasize="8" access="r"/>
+			<db img="no" type="input" id="0" elems="16" datasize="1" access="r" resetOnRestart="yes"/>
+			<db img="no" type="output" id="0" elems="16" datasize="1" access="rw" resetOnRestart="yes"/>
+			<db img="no" type="input" id="1" elems="16" datasize="4" access="r" resetOnRestart="yes"/>
+			<db img="no" type="output" id="1" elems="16" datasize="4" access="rw" resetOnRestart="yes"/>
+			<db img="no" type="memo" id="2" elems="1" datasize="1" access="r" resetOnRestart="yes"/>
+		</datablocks>
+	</PLCRuntime>
+	<PLCTargetFunctions>
+		<func>sampleEmbeddedFunc</func>
+		<func>_plcerror</func>
+		<func>sysLogWriteMsg</func>
+		<func>strncpy</func>
+		<func>_memcopy</func>
+		<func>_ret_max_val_lreal</func>
+		<func>_ret_min_val_lreal</func>
+		<func>_ret_min_limit_lreal</func>
+		<func>_ret_max_limit_lreal</func>
+		<func>_do_lint_div</func>
+		<func>_do_lint_mod</func>
+		<func>_do_ulint_div</func>
+		<func>_do_ulint_mod</func>
+		<func>_do_ulint_mul</func>
+		<func>_lint_to_float</func>
+		<func>sysDBase_SetExtTable</func>
+		<func>sysWriteParDINT</func>
+		<func>sysWriteParDWORD</func>
+		<func>sysWriteParUDINT</func>
+		<func>sysWriteParUINT</func>
+		<func>sysWriteParWORD</func>
+		<func>sysWriteParINT</func>
+		<func>sysWriteParBYTE</func>
+		<func>sysWriteParUSINT</func>
+		<func>sysWriteParSINT</func>
+		<func>sysWriteParBOOL</func>
+		<func>sysWriteParREAL</func>
+		<func>sysWriteParSTRING</func>
+		<func>sysDBase_SaveAll</func>
+		<func>sysMbMRtu_OpenChn</func>
+		<func>sysMbMRtu_SlaveAddToNetList</func>
+		<func>sysMbMRtu_NewSlaveMessage</func>
+		<func>sysMbMRtu_NewBroadcastMessage</func>
+		<func>sysMbMRtu_SlavePrmInteger</func>
+		<func>sysMbMRtu_SlavePrmReal</func>
+		<func>sysMbMRtu_GetSlaveHandle</func>
+		<func>sysMbMRtu_SlaveActivation</func>
+		<func>sysMbMRtu_GetMasterStatus</func>
+		<func>sysMbMRtu_GetSlaveStatus</func>
+		<func>sysMbMRTU_FC01</func>
+		<func>sysMbMRTU_FC02</func>
+		<func>sysMbMRTU_FC03</func>
+		<func>sysMbMRTU_FC04</func>
+		<func>sysMbMRTU_FC05</func>
+		<func>sysMbMRTU_FC06</func>
+		<func>sysMbMRTU_FC15</func>
+		<func>sysMbMRTU_FC16</func>
+		<func>sysMbSRtu_OpenChn</func>
+		<func>sysMbSRtu_CloseChn</func>
+		<func>ULINT_TO_REAL</func>
+		<func>LINT_TO_REAL</func>
+		<func>REAL_TO_ULINT</func>
+		<func>REAL_TO_LINT</func>
+		<func>UDINT_TO_LREAL</func>
+		<func>DINT_TO_LREAL</func>
+		<func>LREAL_TO_UDINT</func>
+		<func>LREAL_TO_DINT</func>
+		<func>ULINT_TO_LREAL</func>
+		<func>LINT_TO_LREAL</func>
+		<func>LREAL_TO_ULINT</func>
+		<func>LREAL_TO_LINT</func>
+		<func>LREAL_TO_REAL</func>
+		<func>REAL_TO_LREAL</func>
+		<func>ADD_LREAL</func>
+		<func>SUB_LREAL</func>
+		<func>MUL_LREAL</func>
+		<func>DIV_LREAL</func>
+		<func>GT_LREAL</func>
+		<func>GE_LREAL</func>
+		<func>EQ_LREAL</func>
+		<func>LT_LREAL</func>
+		<func>LE_LREAL</func>
+		<func>NE_LREAL</func>
+		<func>LREAL_TO_STRING</func>
+		<func>STRING_TO_LREAL</func>
+		<func>INT64_TO_STRING</func>
+		<func>STRING_TO_LINT</func>
+		<func>STRING_TO_ULINT</func>
+		<func>ST_WSTRING_SAFE</func>
+		<func>WLEN</func>
+		<func>WCONCAT</func>
+		<func>WLEFT</func>
+		<func>WRIGHT</func>
+		<func>WMID</func>
+		<func>WINSERT</func>
+		<func>WDELETE</func>
+		<func>WREPLACE</func>
+		<func>WFIND</func>
+		<func>INT_TO_WSTRING</func>
+		<func>WSTRING_TO_INT</func>
+		<func>WSTRING_TO_UINT</func>
+		<func>WSTRING_TO_REAL</func>
+		<func>WSTRING_TO_LREAL</func>
+		<func>REAL_TO_WSTRING</func>
+		<func>LREAL_TO_WSTRING</func>
+		<func>STRING_TO_WSTRING</func>
+		<func>WSTRING_TO_STRING</func>
+		<func>EQ_WSTRING</func>
+		<func>NE_WSTRING</func>
+		<func>LE_WSTRING</func>
+		<func>LT_WSTRING</func>
+		<func>GE_WSTRING</func>
+		<func>GT_WSTRING</func>
+		<func>INT64_TO_WSTRING</func>
+		<func>WSTRING_TO_LINT</func>
+		<func>WSTRING_TO_ULINT</func>
+		<func>ABS_LREAL</func>
+		<func>SQRT_LREAL</func>
+		<func>LN_LREAL</func>
+		<func>LOG_LREAL</func>
+		<func>EXP_LREAL</func>
+		<func>POW_LREAL</func>
+		<func>SIN_LREAL</func>
+		<func>COS_LREAL</func>
+		<func>TAN_LREAL</func>
+		<func>ASIN_LREAL</func>
+		<func>ACOS_LREAL</func>
+		<func>ATAN_LREAL</func>
+		<func>ATAN2_LREAL</func>
+		<func>SINH_LREAL</func>
+		<func>COSH_LREAL</func>
+		<func>TANH_LREAL</func>
+		<func>CEIL_LREAL</func>
+		<func>FLOOR_LREAL</func>
+		<func>sysCopm_MemoryMapping</func>
+		<func>sysCopm_SetConstPDORxCobIDMap</func>
+		<func>sysCopm_SetConstNetIDMap</func>
+		<func>sysCopm_NetAssign</func>
+		<func>sysCopm_MasterAssign</func>
+		<func>sysCopm_SlaveAssign</func>
+		<func>sysCopm_GetSlaveHandle</func>
+		<func>sysCopm_PdoRxInstall</func>
+		<func>sysCopm_PdoTxInstall</func>
+		<func>sysCopm_PdoIecMappingsSet</func>
+		<func>sysCopm_SlavePrmSet</func>
+		<func>sysCopm_SlaveSetObjInteger</func>
+		<func>sysCopm_SlaveSetObjReal</func>
+		<func>sysCopm_SlaveGetObjInteger</func>
+		<func>sysCopm_SlaveGetObjReal</func>
+		<func>sysCopm_SlaveGetObjBuffer</func>
+		<func>sysCopm_SlaveSetObjBuffer</func>
+		<func>sysCopm_Reboot</func>
+		<func>sysMbMRtu_OpenChn</func>
+		<func>sysMbMRtu_SlaveAddToNetList</func>
+		<func>sysMbMRtu_NewSlaveMessage</func>
+		<func>sysMbMRtu_NewBroadcastMessage</func>
+		<func>sysMbMRtu_SlavePrmInteger</func>
+		<func>sysMbMRtu_SlavePrmReal</func>
+		<func>sysMbMRtu_GetSlaveHandle</func>
+		<func>sysMbMRtu_SlaveActivation</func>
+		<func>sysMbMRtu_GetMasterStatus</func>
+		<func>sysMbMRtu_GetSlaveStatus</func>
+		<func>sysMbMRTU_FC01</func>
+		<func>sysMbMRTU_FC02</func>
+		<func>sysMbMRTU_FC03</func>
+		<func>sysMbMRTU_FC04</func>
+		<func>sysMbMRTU_FC05</func>
+		<func>sysMbMRTU_FC06</func>
+		<func>sysMbMRTU_FC15</func>
+		<func>sysMbMRTU_FC16</func>
+		<func>sysMbSRtu_OpenChn</func>
+		<func>sysMbSRtu_CloseChn</func>
+		<func>sysMbMTcp_CheckMemorySize</func>
+		<func>sysMbMTcp_InitMemory</func>
+		<func>sysMbMTcp_InitProcessImages</func>
+		<func>sysMbMTcp_InitNetConfiguration</func>
+		<func>sysMbMTcp_ReadReg_RO</func>
+		<func>sysMbMTcp_ReadReg_RW</func>
+		<func>sysMbMTcp_WriteReg_S</func>
+		<func>sysMbMTcp_WriteReg_M</func>
+		<func>TestFunc</func>
+		<func>sysSetExternalSymbolsTable</func>
+	</PLCTargetFunctions>
+	<defaultWorkspace>
+		<execution active="1"/>
+		<HMIWindow active="1" topmost="1" posX="380" posY="490"/>
+		<IOWindows active="1" topmost="0">
+			<IOWindow name="Digital inputs" posX="130" posY="130" visible="1">
+				<IOSignal name="DI00" readonly="0" selector="0" format="" idx0="0">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI01" readonly="0" selector="0" format="" idx0="1">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI02" readonly="0" selector="0" format="" idx0="2">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI03" readonly="0" selector="0" format="" idx0="3">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI04" readonly="0" selector="0" format="" idx0="4">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI05" readonly="0" selector="0" format="" idx0="5">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI06" readonly="0" selector="0" format="" idx0="6">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI07" readonly="0" selector="0" format="" idx0="7">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI08" readonly="0" selector="0" format="" idx0="8">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI09" readonly="0" selector="0" format="" idx0="9">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI10" readonly="0" selector="0" format="" idx0="10">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI11" readonly="0" selector="0" format="" idx0="11">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI12" readonly="0" selector="0" format="" idx0="12">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI13" readonly="0" selector="0" format="" idx0="13">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI14" readonly="0" selector="0" format="" idx0="14">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DI15" readonly="0" selector="0" format="" idx0="15">
+					<PLCVar name="sysDigitalInputs" type="1" addrType="%IX0.0" dbType="I" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+			</IOWindow>
+			<IOWindow name="Digital outputs" posX="130" posY="520" visible="1">
+				<IOSignal name="DO00" readonly="1" selector="1" format="" idx0="0">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO01" readonly="1" selector="1" format="" idx0="1">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO02" readonly="1" selector="1" format="" idx0="2">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO03" readonly="1" selector="1" format="" idx0="3">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO04" readonly="1" selector="1" format="" idx0="4">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO05" readonly="1" selector="1" format="" idx0="5">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO06" readonly="1" selector="1" format="" idx0="6">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO07" readonly="1" selector="1" format="" idx0="7">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO08" readonly="1" selector="1" format="" idx0="8">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO09" readonly="1" selector="1" format="" idx0="9">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO10" readonly="1" selector="1" format="" idx0="10">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO11" readonly="1" selector="1" format="" idx0="11">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO12" readonly="1" selector="1" format="" idx0="12">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO13" readonly="1" selector="1" format="" idx0="13">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO14" readonly="1" selector="1" format="" idx0="14">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+				<IOSignal name="DO15" readonly="1" selector="1" format="" idx0="15">
+					<PLCVar name="sysDigitalOutputs" type="1" addrType="%QX0.0" dbType="Q" dbIdx="0" dbOffs="0" dim0="16"/>
+				</IOSignal>
+			</IOWindow>
+			<IOWindow name="Analog inputs" posX="380" posY="130" visible="1">
+				<IOSignal name="AI00" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.0" dbType="I" dbIdx="1" dbOffs="0" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI01" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.1" dbType="I" dbIdx="1" dbOffs="1" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI02" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.2" dbType="I" dbIdx="1" dbOffs="2" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI03" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.3" dbType="I" dbIdx="1" dbOffs="3" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI04" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.4" dbType="I" dbIdx="1" dbOffs="4" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI05" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.5" dbType="I" dbIdx="1" dbOffs="5" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI06" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.6" dbType="I" dbIdx="1" dbOffs="6" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI07" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.7" dbType="I" dbIdx="1" dbOffs="7" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI08" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.8" dbType="I" dbIdx="1" dbOffs="8" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI09" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.9" dbType="I" dbIdx="1" dbOffs="9" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI10" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.10" dbType="I" dbIdx="1" dbOffs="10" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI11" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.11" dbType="I" dbIdx="1" dbOffs="11" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI12" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.12" dbType="I" dbIdx="1" dbOffs="12" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI13" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.13" dbType="I" dbIdx="1" dbOffs="13" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI14" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.14" dbType="I" dbIdx="1" dbOffs="14" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AI15" readonly="0" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogInputs" type="9" addrType="%ID1.15" dbType="I" dbIdx="1" dbOffs="15" dim0="1"/>
+				</IOSignal>
+			</IOWindow>
+			<IOWindow name="Analog outputs" posX="380" posY="330" visible="1">
+				<IOSignal name="AO00" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.0" dbType="Q" dbIdx="1" dbOffs="0" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO01" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.1" dbType="Q" dbIdx="1" dbOffs="1" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO02" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.2" dbType="Q" dbIdx="1" dbOffs="2" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO03" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.3" dbType="Q" dbIdx="1" dbOffs="3" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO04" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.4" dbType="Q" dbIdx="1" dbOffs="4" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO05" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.5" dbType="Q" dbIdx="1" dbOffs="5" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO06" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.6" dbType="Q" dbIdx="1" dbOffs="6" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO07" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.7" dbType="Q" dbIdx="1" dbOffs="7" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO08" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.8" dbType="Q" dbIdx="1" dbOffs="8" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO09" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.9" dbType="Q" dbIdx="1" dbOffs="9" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO10" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.10" dbType="Q" dbIdx="1" dbOffs="10" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO11" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.11" dbType="Q" dbIdx="1" dbOffs="11" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO12" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.12" dbType="Q" dbIdx="1" dbOffs="12" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO13" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.13" dbType="Q" dbIdx="1" dbOffs="13" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO14" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.14" dbType="Q" dbIdx="1" dbOffs="14" dim0="1"/>
+				</IOSignal>
+				<IOSignal name="AO15" readonly="1" selector="0" format="" min="-30000000" max="30000000" idx0="0">
+					<PLCVar name="sysAnalogOutputs" type="9" addrType="%QD1.15" dbType="Q" dbIdx="1" dbOffs="15" dim0="1"/>
+				</IOSignal>
+			</IOWindow>
+		</IOWindows>
+	</defaultWorkspace>
+</tgsx>

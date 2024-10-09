@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- #DEFINE PREFIX $PREFIX$ -->
+<devicetemplate>
+	<deviceinfo caption="$NAME$" name="$NAME$" icon="custom.ico" version="$VERSION$" deviceid="$PREFIX$" importedFromEDS="true">
+		<description>Custom CANopen device</description>
+		<protocols>
+			<protocol>CANopen_master</protocol>
+		</protocols>
+	</deviceinfo>
+	<plcconfig>
+		<hmi>
+			<tree name="tree1">
+				<node name="PREFIX" caption="$NAME$" icon="custom.ico" menu="menuRemoveEnableDisable" datalink="PREFIX" window="CANcustom1" captionedit="false"/>
+			</tree>
+		</hmi>
+		
+		<templatedata>
+			<PREFIX enabled="true">
+				<CANcustom_config>
+					<nodeNumber>1</nodeNumber>
+					<nodeGuardPeriod>200</nodeGuardPeriod>
+					<lifeTimeFactor>3</lifeTimeFactor>
+					<SDOsetList/>
+					<PDOTxMappingList/>
+					<PDORxMappingList/>
+					<PDOTxTransmission>-1</PDOTxTransmission>
+					<PDOTxCyclicTime>0</PDOTxCyclicTime>
+					<PDORxTransmission>-1</PDORxTransmission>
+					<BootTime>10000</BootTime>
+					<NodeHbPTime>0</NodeHbPTime>
+					<NodeHbCTime>0</NodeHbCTime>
+					<MasterHbCTime>0</MasterHbCTime>
+					<identityObjectCheck>1</identityObjectCheck>
+					<MandatorySlave>0</MandatorySlave>
+					<PDOAutoMapping>0</PDOAutoMapping>
+				</CANcustom_config>
+			</PREFIX>
+			<!-- altri nodi per feature successive aggiunti via codice da OnLoadNode! -->
+		</templatedata>
+		
+		<datadef version="1.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+				<xs:element name="PREFIX" type="TCANcustom"/>
+			</xs:schema>
+		</datadef>
+	</plcconfig>
+	
+	<deviceconfig>
+		<parameters/>
+	</deviceconfig>
+	
+	<customconfig>
+		<canopen/>
+	</customconfig>
+</devicetemplate>

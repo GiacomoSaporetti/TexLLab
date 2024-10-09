@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<script>
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+
+		var app = window.external;
+
+		function InitPage() {
+			let previewStr = app.TempVar("MQTTJSONPreview_input");
+			app.TempVar("MQTTJSONPreview_input") = undefined;
+
+			txtArea.value = previewStr;
+		}
+	</script>
+</head>
+<body style="display: flex;">
+	<textarea id="txtArea" readonly style="flex: 1;"></textarea>
+</body>
+<script>InitPage()</script>
+</html>

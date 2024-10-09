@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<menu name="menu_AddMenu">
+			<command caption="Add Menu" handler="parameters.AddMenu" />
+			<command caption="Add Custom Page" handler="parameters.AddCustomPage" />
+		</menu>
+		<menu name="menu_DeleteMenu">
+			<command caption="Rename" handler="common.RenameNode" />
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+			<separator/>
+			<command caption="Add Menu" handler="parameters.AddMenu" />
+			<command caption="Delete Object" handler="parameters.DeleteElement" />
+			<command caption="Add Custom Page" handler="parameters.AddCustomPage" />
+		</menu>
+	</hmi>
+	
+	<templatedata>
+		<!-- ___________________   USER PARAMETERS  ___________________ -->
+		<param>
+			<ipa>-1</ipa>
+			<address/> 
+			<name/> 
+			<typepar>0</typepar>
+			<typetarg>INT</typetarg>
+			<value>0</value>
+			<min></min>
+			<max></max>
+			<ipamin></ipamin>
+			<ipamax></ipamax>
+			<scale>1</scale> 
+			<offs>0</offs>
+			<um/> 
+			<description/>
+			<note/>
+			<form/>
+			<accesslevel>3</accesslevel>
+			<readonly>0</readonly>
+			<shortname/>
+			<size>0</size>
+			<dataBlock/>
+			<subindex>0</subindex>
+			<SNMP>0</SNMP>
+			<unitid>0</unitid>
+		</param>
+		
+		<menu caption="New Menu" shortname="">
+			<menuItems/>
+		</menu>
+
+		<custompage caption="New Custom Page" link="" icon=""/>
+
+		<menuItem>
+			<ipa>-1</ipa>
+		</menuItem>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		
+			<!-- ____________________________________ DEFINIZIONE PARAMETRI APPLICATIVI (DEVELOPER) ____________________________________ -->
+			<xs:complexType name="Tparam">
+				<xs:sequence>
+					<xs:element name="ipa" type="xs:integer"/>
+					<xs:element name="address" type="xs:string"/>
+					<xs:element name="name" type="xs:string"/>
+					<xs:element name="typepar" type="xs:integer"/>
+					<xs:element name="typetarg" type="xs:string"/>
+					<xs:element name="value" type="xs:string"/>
+					<xs:element name="min" type="xs:string"/>
+					<xs:element name="max" type="xs:string"/>
+					<xs:element name="ipamin" type="xs:string"/>
+					<xs:element name="ipamax" type="xs:string"/>
+					<xs:element name="scale" type="xs:double"/>
+					<xs:element name="offs" type="xs:double"/>
+					<xs:element name="um" type="xs:string"/>
+					<xs:element name="description" type="xs:string"/>
+					<xs:element name="note" type="xs:string"/>
+					<xs:element name="form" type="xs:string"/>
+					<xs:element name="accesslevel" type="xs:integer"/>
+					<xs:element name="readonly" type="xs:boolean"/>
+					<xs:element name="shortname" type="xs:string"/>
+					<xs:element name="size" type="xs:integer"/>
+					<xs:element name="dataBlock" type="xs:string"/>
+					<xs:element name="subindex" type="xs:integer"/>
+					<xs:element name="SNMP" type="xs:integer"/>
+					<xs:element name="unitid" type="xs:integer"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+
+			<xs:complexType name="Tparams">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="param" type="Tparam"/>
+				</xs:sequence>
+				<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+			</xs:complexType>
+		
+			<xs:complexType name="TmenuItem">
+				<xs:sequence>
+					<xs:element name="ipa" type="xs:integer"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="accesslevel" type="xs:integer"/>
+				<xs:attribute name="order" type="xs:integer"/>
+			</xs:complexType>
+
+			<xs:complexType name="Tcustompage">
+				<xs:sequence>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="custompage" type="Tcustompage"/>
+						<xs:element name="menu" type="Tmenu"/>
+					</xs:choice> 
+				</xs:sequence>
+				<xs:attribute name="id" type="xs:integer"/>
+				<xs:attribute name="link" type="xs:string"/>
+				<xs:attribute name="icon" type="xs:string"/> 
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="DeleteElementFunc" type="xs:string" fixed="CustomLL.DeleteElement"/>
+			</xs:complexType>  
+			  
+			<xs:complexType name="Tmenu">
+				<xs:sequence>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="menuItems">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="menuItem" type="TmenuItem"/>
+								</xs:sequence>
+								<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true" />
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="menu" type="Tmenu"/>
+						<xs:element name="custompage" type="Tcustompage"/>
+					</xs:choice> 
+				</xs:sequence>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="id" type="xs:integer"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="shortname" type="xs:string"/>
+				<xs:attribute name="DeleteElementFunc" type="xs:string" fixed="CustomLL.DeleteElement"/>
+			</xs:complexType>
+
+			<xs:complexType name="Tmenus">
+				<xs:sequence>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="menu" type="Tmenu"/>
+						<xs:element name="custompage" type="Tcustompage"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</datadef>
+	
+	<extensions>
+		<script alias="parameters">parameters.js</script>
+	</extensions>
+</template>

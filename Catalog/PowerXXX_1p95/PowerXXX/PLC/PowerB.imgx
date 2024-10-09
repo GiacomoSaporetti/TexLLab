@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<targetImage fileVersion="1.1" is64bit="false">
+	<compilerSupport deviceFeatures="0x8EFFFDFF" extendedDeviceFeatures="0xFFFFFF"/>
+	<info targetID="0x8F40293B" memoryID="0xF23" fullMemoryID="0xFB01">
+		<features deviceFeatures="0x8F40293B" extendedDeviceFeatures="0xD1381"/>
+		<codeArea address="0x2005DF68" size="0x4E20" addrArea1="0x2005DF68" addrArea2="0x20067BA8"/>
+		<dataArea address="0x20062D88" size="0x4E20"/>
+		<auxDataArea address="0x0" size="0x0"/>
+		<bitDataArea address="0x0" size="0x0"/>
+		<retainDataArea address="0x0" size="0x0"/>
+		<debug address="0x0" size="0x0" traceAreaAddress="0x0" traceAreaSize="0x0"/>
+		<stack limit="0x0"/>
+		<functionTable address="0x0"/>
+		<sourceCode supported="0" address="0x0" size="0x0"/>
+	</info>
+	<tasks controlBitsAddress="0x200210EC">
+		<task index="0" name="Fast" flags="0x178" period="0"/>
+		<task index="1" name="User" flags="0x178" period="0"/>
+		<task index="2" name="Bckg" flags="0x178" period="0"/>
+		<task index="3" name="Init" flags="0x178" period="0"/>
+	</tasks>
+	<dataBlocks address="0xA77668" size="11">
+		<dataBlock index="0" type="memory" address="0x2006C9C8" image="0" size="1024" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="0" type="input" address="0x20021468" image="0" size="10" elementSize="1" access="read" flags="0x00"/>
+		<dataBlock index="0" type="output" address="0x20021472" image="0" size="10" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="1" type="input" address="0x2002147C" image="0" size="3" elementSize="2" access="read" flags="0x00"/>
+		<dataBlock index="1" type="output" address="0x2002147C" image="0" size="2" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="200" type="memory" address="0x2006CDC8" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="201" type="memory" address="0x2006D1C8" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="60000" type="memory" address="0x20021440" image="0" size="1" elementSize="4" access="read" flags="0x00"/>
+		<dataBlock index="60002" type="input" address="0x20021628" image="0" size="1" elementSize="48" access="read" flags="0x00"/>
+		<dataBlock index="60004" type="input" address="0x20021664" image="0" size="1" elementSize="20" access="read" flags="0x00"/>
+		<dataBlock index="60005" type="input" address="0x20021658" image="0" size="1" elementSize="12" access="read" flags="0x00"/>
+	</dataBlocks>
+	<functions address="0xA77870" size="90" userSize="36">
+		<function name="sysCopm_MemoryMapping" address="0xA80B34"/>
+		<function name="sysCopm_MemoryMappingArr" address="0xA80BE8"/>
+		<function name="sysCopm_SetConstPDORxCobIDMap" address="0xA80C60"/>
+		<function name="sysCopm_SetConstNetIDMap" address="0xA80C98"/>
+		<function name="sysCopm_NetAssign" address="0xA80CD0"/>
+		<function name="sysCopm_MasterAssign" address="0xA80D58"/>
+		<function name="sysCopm_SlaveAssign" address="0xA80F28"/>
+		<function name="sysCopm_GetSlaveHandle" address="0xA80A84"/>
+		<function name="sysCopm_PdoRxInstall" address="0xA811E0"/>
+		<function name="sysCopm_PdoTxInstall" address="0xA813E8"/>
+		<function name="sysCopm_PdoIecMappingsSet" address="0xA816FC"/>
+		<function name="sysCopm_SlavePrmSet" address="0xA81870"/>
+		<function name="sysCopm_SlaveSetObjInteger" address="0xA81918"/>
+		<function name="sysCopm_SlaveSetObjReal" address="0xA81ADC"/>
+		<function name="sysCopm_SlaveGetObjInteger" address="0xA81E44"/>
+		<function name="sysCopm_SlaveGetObjReal" address="0xA8205C"/>
+		<function name="sysCopm_SlaveGetObjBuffer" address="0xA82280"/>
+		<function name="sysCopm_SlaveSetObjBuffer" address="0xA81CA0"/>
+		<function name="sysCopm_Reboot" address="0xA80A48"/>
+		<function name="_plcerror" address="0xA7C77C"/>
+		<function name="sysLogWriteMsg" address="0xA75B14"/>
+		<function name="strncpy" address="0xB5DF5C"/>
+		<function name="sysDBase_SetExtTable" address="0xA7AB10"/>
+		<function name="sysWriteParBOOL" address="0xA7AE84"/>
+		<function name="sysWriteParUSINT" address="0xA79B20"/>
+		<function name="sysWriteParSINT" address="0xA79BC8"/>
+		<function name="sysWriteParBYTE" address="0xA7ADDC"/>
+		<function name="sysWriteParUINT" address="0xA799D0"/>
+		<function name="sysWriteParINT" address="0xA79A78"/>
+		<function name="sysWriteParWORD" address="0xA7AD34"/>
+		<function name="sysWriteParUDINT" address="0xA7AC8C"/>
+		<function name="sysWriteParDINT" address="0xA79928"/>
+		<function name="sysWriteParDWORD" address="0xA7ABE4"/>
+		<function name="sysWriteParREAL" address="0xA79C80"/>
+		<function name="sysWriteParSTRING" address="0xA79D5C"/>
+		<function name="FunzioneDiProva" address="0xA7C9D0"/>
+		<function name="UDINT_TO_REAL" address="0xA74494"/>
+		<function name="DINT_TO_REAL" address="0xA7449C"/>
+		<function name="REAL_TO_UDINT" address="0xA744A4"/>
+		<function name="REAL_TO_DINT" address="0xA744AC"/>
+		<function name="ADD_REAL" address="0xA744B4"/>
+		<function name="SUB_REAL" address="0xA744BC"/>
+		<function name="MUL_REAL" address="0xA744C4"/>
+		<function name="DIV_REAL" address="0xA744CC"/>
+		<function name="GT_REAL" address="0xA744D4"/>
+		<function name="GE_REAL" address="0xA744EC"/>
+		<function name="EQ_REAL" address="0xA74500"/>
+		<function name="LT_REAL" address="0xA74518"/>
+		<function name="LE_REAL" address="0xA74530"/>
+		<function name="NE_REAL" address="0xA74544"/>
+		<function name="ST_STRING" address="0xA74558"/>
+		<function name="EQ_STRING" address="0xA74700"/>
+		<function name="NE_STRING" address="0xA74728"/>
+		<function name="LE_STRING" address="0xA74750"/>
+		<function name="LT_STRING" address="0xA74778"/>
+		<function name="GE_STRING" address="0xA747A0"/>
+		<function name="GT_STRING" address="0xA747C8"/>
+		<function name="LEN" address="0xA74604"/>
+		<function name="LEFT" address="0xA748A8"/>
+		<function name="RIGHT" address="0xA749EC"/>
+		<function name="MID" address="0xA74B5C"/>
+		<function name="CONCAT" address="0xA74C54"/>
+		<function name="INSERT" address="0xA74E10"/>
+		<function name="DELETE" address="0xA74F7C"/>
+		<function name="REPLACE" address="0xA750B4"/>
+		<function name="FIND" address="0xA75120"/>
+		<function name="INT_TO_STRING" address="0xA75220"/>
+		<function name="REAL_TO_STRING" address="0xA7531C"/>
+		<function name="STRING_TO_INT" address="0xA753C0"/>
+		<function name="STRING_TO_UINT" address="0xA754C0"/>
+		<function name="STRING_TO_REAL" address="0xA75684"/>
+		<function name="ST_STRING_SAFE" address="0xA745A4"/>
+		<function name="ABS_REAL" address="0xA75754"/>
+		<function name="SQRT" address="0xA7575C"/>
+		<function name="LN" address="0xA7577C"/>
+		<function name="LOG" address="0xA7579C"/>
+		<function name="EXP" address="0xA757BC"/>
+		<function name="POW" address="0xA757DC"/>
+		<function name="SIN" address="0xA757FC"/>
+		<function name="COS" address="0xA7581C"/>
+		<function name="TAN" address="0xA7583C"/>
+		<function name="ASIN" address="0xA7585C"/>
+		<function name="ACOS" address="0xA7587C"/>
+		<function name="ATAN" address="0xA7589C"/>
+		<function name="ATAN2" address="0xA758BC"/>
+		<function name="SINH" address="0xA758DC"/>
+		<function name="COSH" address="0xA758FC"/>
+		<function name="TANH" address="0xA7591C"/>
+		<function name="CEIL" address="0xA7593C"/>
+		<function name="FLOOR" address="0xA7595C"/>
+	</functions>
+</targetImage>

@@ -1,0 +1,1108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Calculations" fullXml="true">
+		<descr>Calculations. Author URL: http://oscat.de/</descr>
+		<libWorkspace>
+			<folder name="Oscat - Calculations" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="ASTRO"/>
+				<Pou name="ENERGY"/>
+				<Pou name="GEO_TO_DEG"/>
+				<Pou name="LENGTH"/>
+				<Pou name="PRESSURE"/>
+				<Pou name="DIR_TO_DEG"/>
+				<Pou name="PT_TO_F"/>
+				<Pou name="F_TO_OM"/>
+				<Pou name="F_TO_PT"/>
+				<Pou name="OM_TO_F"/>
+				<Pou name="BFT_TO_MS"/>
+				<Pou name="KMH_TO_MS"/>
+				<Pou name="MS_TO_BFT"/>
+				<Pou name="MS_TO_KMH"/>
+				<Pou name="SPEED"/>
+				<Pou name="C_TO_F"/>
+				<Pou name="C_TO_K"/>
+				<Pou name="F_TO_C"/>
+				<Pou name="K_TO_C"/>
+				<Pou name="TEMPERATURE"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="GEO_TO_DEG" version="1.0.0" creationDate="0" lastModifiedDate="1631182375" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>GEO_TO_DEG calculates an angle expressed in degrees, minutes, seconds into decimal degrees.</descr>
+				<returnValue>LREAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="D" type="INT">
+							<descr>Angle in degrees</descr>
+						</var>
+						<var name="M" type="INT">
+							<descr>Arc minutes</descr>
+						</var>
+						<var name="SEC" type="LREAL">
+							<descr>Arc seconds</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	22. jan. 2009
+programmer 	hugo
+tested by	oscat
+
+This function converts degrees, minutes and seconds to decimal degrees.
+
+*)
+
+
+GEO_TO_DEG := TO_LREAL(D) + TO_LREAL(M) * LREAL#0.016666666666667 + sec * LREAL#0.00027777777777778;
+
+
+(* revision histroy
+hm	22. jan. 2009	rev 1.0
+	original release
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="DIR_TO_DEG" version="1.0.0" creationDate="0" lastModifiedDate="1631180421" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="DIR" type="STRING" length="3">
+							<descr>Direction in compass readings</descr>
+						</var>
+						<var name="L" type="INT">
+							<descr>Language selection</descr>
+						</var>
+					</inputVars>
+					<localVars>
+						<var name="ly" type="INT"/>
+						<var name="i" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	22. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+This function converts compass directions to degrees.
+It will recognize up to 3 letter directions in english and german writing.
+
+*)
+
+IF L = 0 THEN 
+	ly := LANGUAGE.DEFAULT;
+ELSE 
+	ly := MIN(L, LANGUAGE.LMAX);
+END_IF;
+
+FOR i := 0 TO 15 DO
+	IF language.DIRS[ly, i] = DIR THEN
+		EXIT;
+	END_IF;
+END_FOR;
+DIR_TO_DEG := SHR(i * 45 + 1, 1);
+
+
+
+(* revision histroy
+hm	22. oct. 2008	rev 1.1
+	original release
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="PT_TO_F" version="1.0.0" creationDate="0" lastModifiedDate="1631113787" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>PT_TO_F converts a period of time into frequency in Hz.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Period time</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+This function converts time period to frequency in Hz
+
+*)
+
+
+PT_TO_F := 1000.0 / TO_REAL(TO_DWORD(PT));
+
+
+(*	revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_TO_OM" version="1.0.0" creationDate="0" lastModifiedDate="1637333784" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>F_TO_OM calculates the angular frequency omega of the frequency in Hz.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="F" type="REAL">
+							<descr>Frequency in Hz</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="PI2" type="REAL">
+							<descr>PI*2</descr>
+							<initValue>6.28318530717958647692528676655900576</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this function converts frequency to Omega F
+Omega = 2*PI*F
+*)
+
+F_TO_OM := PI2 * F;
+
+
+(* revision history
+hm	22. jan. 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	unsing math constants
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_TO_PT" version="1.0.0" creationDate="0" lastModifiedDate="1631113698" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>F_TO_PT converts a frequency value in Hz into the corresponding period.</descr>
+				<returnValue>TIME</returnValue>
+				<vars>
+					<inputVars>
+						<var name="F" type="REAL">
+							<descr>Frequency in Hz</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+this function converts frequency (in Hz) to time period
+
+*)
+
+
+F_TO_PT := TO_TIME(TO_DWORD(1.0 / F * 1000.0));
+
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="OM_TO_F" version="1.0.0" creationDate="0" lastModifiedDate="1637334097" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>OM_TO_F calculates the frequency in Hz into the corresponding angular frequency omega.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="OM" type="REAL">
+							<descr>Angular frequency omega</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="PI2" type="REAL">
+							<descr>PI * 2</descr>
+							<initValue>6.28318530717958647692528676655900576</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	18. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+This function converts Omega F to frequency
+F = OM / (2*PI)
+
+*)
+
+
+OM_TO_F := OM / PI2;
+
+
+(* revision history
+hm	22. jan. 2007	rev 1.0
+	original version
+
+hm	18. oct. 2008	rev 1.1
+	using math constants
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="BFT_TO_MS" version="1.0.0" creationDate="0" lastModifiedDate="1631111931" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>BFT_TO_MS converts the wind speed from the Beaufort scale into meters per second.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="BFT" type="INT">
+							<descr>Wind force on the Beaufort scale</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	12. jun 2008
+programmer 	hugo
+tested by	oscdat
+
+This function converts wind speed from beaufort to m/s
+*)
+
+BFT_TO_MS := POW(TO_LREAL(BFT), 1.5) * 0.836;
+
+
+(* revision history
+hm	12. 6. 2008		rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="KMH_TO_MS" version="1.0.0" creationDate="0" lastModifiedDate="1631183010" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>KMH_TO_MS converts Kilomters per Hour into Meters per Second.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="kmh" type="REAL">
+							<descr>Speed in Km/h</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	6 jan 2007
+programmer 	hugo
+tested by	tobias
+
+This function converts velocities from Kilometers / hour to Meters / Second
+
+*)
+
+KMH_TO_MS := kmh * 0.2777777777777;
+
+(* revision history
+hm	4. feb 2007		rev 1.0
+	original version
+
+hm	6. jan 2008		rev 1.1
+	improved performance
+*)
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="MS_TO_BFT" version="1.0.0" creationDate="0" lastModifiedDate="1631114758" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>MS_TO_BFT converts wind speed from meters per second into the Beaufort scale.</descr>
+				<returnValue>INT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="MS" type="REAL">
+							<descr>Wind speed in meters / second</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	12. jun 2008
+programmer 	hugo
+tested by	oscdat
+
+This function converts wind speed from M/s to beaufort
+
+*)
+
+
+MS_TO_BFT := TO_INT(POW(MS * 1.196172, 0.666667));
+
+
+(* revision history
+hm	12. 6. 2008		rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="MS_TO_KMH" version="1.0.0" creationDate="0" lastModifiedDate="1631190346" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>MS_TO_KMH converts a speed value of meters/second to kilometers/hour.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="ms" type="REAL">
+							<descr>Speed in m/s</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	4 Feb 2007
+programmer 	hugo
+tested by	tobias
+
+This function converts velocities from Meters / Second to Kilometers / hour.
+
+*)
+
+MS_TO_KMH := ms * 3.6;
+
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="C_TO_F" version="1.0.0" creationDate="0" lastModifiedDate="1631112226" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>C_TO_F converts a temperature from Celsius degrees to Fahrenheit.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="celsius" type="REAL">
+							<descr>Temperature in Celsius degrees</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+This function converts celsius to fahrenheit 
+
+*)
+
+
+C_TO_F := celsius * 1.8 + 32.0;
+
+
+(* revision history
+
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="C_TO_K" version="1.0.0" creationDate="0" lastModifiedDate="1637333825" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>C_TO_K converts a temperature from Celsius to Kelvin.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="Celsius" type="REAL">
+							<descr>Temperature in Celsius degrees</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="T0" type="REAL">
+							<descr>Absolute zero</descr>
+							<initValue>-273.15</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	19. aug 2009
+programmer 	hugo
+tested by		tobias
+
+This function converts celsius to kelvin
+
+*)
+
+
+C_TO_K := Celsius - T0;
+
+
+(* revision history
+
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	19. aug 2009	rev 1.1
+	fixed calculation error
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="F_TO_C" version="1.0.0" creationDate="0" lastModifiedDate="1631113351" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>F_TO_C converts a temperature from Fahrenheit to Celsius.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="fahrenheit" type="REAL">
+							<descr>Temperature value in Fahrenheit</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+This function converts fahrenheit to celsius
+
+*)
+
+
+F_TO_C := (fahrenheit - 32.0) * 0.5555555555555;
+
+
+(* revision history
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="K_TO_C" version="1.0.0" creationDate="0" lastModifiedDate="1637333873" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>K_TO_C converts a temperature from Kelvin to Celsius.</descr>
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="Kelvin" type="REAL">
+							<descr>Temperature value in Kelvin</descr>
+						</var>
+					</inputVars>
+					<localConsts>
+						<const name="T0" type="REAL">
+							<descr>Absolute zero</descr>
+							<initValue>-273.15</initValue>
+						</const>
+					</localConsts>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	19. aug 2009
+programmer 	hugo
+tested by	tobias
+
+This function converts kelvin to celsius
+
+*)
+
+
+K_TO_C := Kelvin + T0;
+
+
+(* revision history
+
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	19. aug 2009	rev 1.1
+	fixed calculation error
+*)
+
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks>
+			<functionBlock name="ASTRO" version="1.0.0" creationDate="0" lastModifiedDate="1631111203" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module ASTRO converts various distance units commonly used in
+						astronomy. Normally, only the input to be converted is occupied and the
+						remaining inputs remain free. However, if several inputs are loaded with
+						values, all input values are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="m" type="LREAL">
+							<descr>Distance in Meters</descr>
+						</var>
+						<var name="AU" type="LREAL">
+							<descr>Distance in Astronomical Units</descr>
+						</var>
+						<var name="PC" type="LREAL">
+							<descr>Distance in Parsecs</descr>
+						</var>
+						<var name="LY" type="LREAL">
+							<descr>Distance in Light Years</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Ym" type="LREAL">
+							<descr>Distance in Meters</descr>
+						</var>
+						<var name="YAU" type="LREAL">
+							<descr>Distance in Astronomical Units</descr>
+						</var>
+						<var name="YPC" type="LREAL">
+							<descr>Distance in Parsecs</descr>
+						</var>
+						<var name="YLY" type="LREAL">
+							<descr>Distance in Light Years</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by	oscat
+
+This function converts different length units
+Any unused input can simply be left open.
+Different inputs connected at the same time will be added up.
+
+*)
+
+YAU :=	AU
+		+ m * 6.6845871535E-012
+		+ PC * 206265.0
+		+ LY * 63240.0;
+Ym := YAU * 149.597870E9;
+YPC := YAU * 4.8481322570E-006;
+YLY := YAU * 1.5812776724E-005;
+
+(* revision history
+
+hm	27. mar. 2007	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	improved code
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="ENERGY" version="1.0.0" creationDate="0" lastModifiedDate="1631181875" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module converts ENERGY in different units of
+						energy. Normally, only the input to be converted is written and the remaining
+						inputs remain free. However, if several inputs are loaded with values,
+						the values of all inputs are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="J" type="REAL">
+							<descr>Joule</descr>
+						</var>
+						<var name="C" type="REAL">
+							<descr>Calories</descr>
+						</var>
+						<var name="Wh" type="REAL">
+							<descr>Watt hours</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="YJ" type="REAL">
+							<descr>Joule</descr>
+						</var>
+						<var name="YC" type="REAL">
+							<descr>Calories</descr>
+						</var>
+						<var name="YWh" type="REAL">
+							<descr>Watt hours</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.2	16. jan. 2010
+programmer 	hugo
+tested by	oscat
+
+This function converts different energy units
+Any unused input can simply be left open.
+Different inputs connected at the same time will be added up.
+*)
+
+YJ := J + Wh * 3600.0 + C * 4.1868;
+YC := YJ * 0.238845896627496;
+YWh := YJ * 2.7777777778E-004;
+
+(*
+Arbeit, Energie, Joule* J 1 J = 1 N · m = 1 W · s = (1/3,6) E–6 kW · h = 1 kg · m2/s2
+Wärmemenge Kilowattstunde kW · h 1 kW · h = 3,6 MJ = 860 kcal
+Elektronvolt eV 1 eV = 160,218 92 E–21 J
+Erg erg 1 erg = 1E–7 J
+Kalorie calorie 1 calalorie = 4,1868 J = 1,163 E–3 W · h
+Therm therm 1 therm = 105,50 · 106 J
+*)
+
+(* revision history
+hm	27. mar. 2007	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	improved code
+
+hm 16. jan 2010	rev 1.2
+	avoid the string cal in comments for codesys import bug
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="LENGTH" version="1.0.0" creationDate="0" lastModifiedDate="1631190013" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module LENGTH converts different units of
+						length. Normally, only the input to be converted is written and the remaining
+						inputs remain free. However, if several inputs are loaded with values,
+						the values of all inputs are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="m" type="REAL">
+							<descr>Meter</descr>
+						</var>
+						<var name="p" type="REAL">
+							<descr>Typographic point</descr>
+						</var>
+						<var name="in" type="REAL">
+							<descr>Inch</descr>
+						</var>
+						<var name="ft" type="REAL">
+							<descr>Foot</descr>
+						</var>
+						<var name="yd" type="REAL">
+							<descr>Yard</descr>
+						</var>
+						<var name="mile" type="REAL">
+							<descr>Mile</descr>
+						</var>
+						<var name="sm" type="REAL">
+							<descr>International nautical mile</descr>
+						</var>
+						<var name="fm" type="REAL">
+							<descr>Fathom</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Ym" type="REAL">
+							<descr>Meter</descr>
+						</var>
+						<var name="Yp" type="REAL">
+							<descr>Typographic point</descr>
+						</var>
+						<var name="Yin" type="REAL">
+							<descr>Inch</descr>
+						</var>
+						<var name="Yft" type="REAL">
+							<descr>Foot</descr>
+						</var>
+						<var name="Yyd" type="REAL">
+							<descr>Yard</descr>
+						</var>
+						<var name="Ymile" type="REAL">
+							<descr>Mile</descr>
+						</var>
+						<var name="Ysm" type="REAL">
+							<descr>International nautical mile</descr>
+						</var>
+						<var name="Yfm" type="REAL">
+							<descr>Fathom</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+This function converts different length units.
+Any unused input can simply be left open.
+Different inputs connected at the same time will be summed up.
+
+*)
+
+
+Ym :=	m
+		+ p * 0.000376065
+		+ in * 0.0254
+		+ ft * 0.3048
+		+ yd * 0.9144
+		+ mile * 1609.344
+		+ sm * 1852.0
+		+ fm * 1.829;
+Yp := Ym * 2659.11478068951;
+Yin := Ym * 39.37007874016;
+Yft := Ym * 3.28083989501;
+Yyd := Ym * 1.09361329834;
+Ymile := Ym * 0.00062137119;
+Ysm := Ym * 0.00053995680;
+Yfm := Ym * 0.54674685621;
+
+(*
+Länge Meter m SI-Basiseinheit
+Astronomische Einheit* AE 1 AE = 149,597 870 · E9 m
+Parsec pc 1 pc = 206265 AE = 30,857 · E15 m
+Lichtjahr Lj 1 Lj = 9,460 530 · E15 m = 63240 AE = 0,306 59 pc
+Ångström Å 1 Å = E–l0 m
+typograph. Punkt p 1 p = 0,376 065 mm • im Druckereigewerbe
+inch** in 1 in = 2,54 · E–2 m = 25,4 mm***
+foot ft 1 ft = 0,3048 m = 30,48 cm
+yard yd 1 yd = 0,9144 m
+mile mile 1 mile = 1609,344 m
+Internat. Seemeile sm 1 sm = 1852 m
+Fathom fm 1 fm = 1,829 m • in der Seeschifffahrt
+*)
+
+(* revision history
+
+hm	27. mar. 2007	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	improved code
+*)
+
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="PRESSURE" version="1.0.0" creationDate="0" lastModifiedDate="1631190625" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module PRESSURE converts different units for pressure. Usually, only the input to be converted is written and the remaining
+						inputs remain free. However, if several inputs are loaded with values,
+						the values of all inputs are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="mws" type="REAL">
+							<descr>Water column in meters</descr>
+						</var>
+						<var name="torr" type="REAL">
+							<descr>Torr respectively mercury column in mm</descr>
+						</var>
+						<var name="att" type="REAL">
+							<descr>Technical atmosphere</descr>
+						</var>
+						<var name="atm" type="REAL">
+							<descr>Atmospheric physics</descr>
+						</var>
+						<var name="pa" type="REAL">
+							<descr>Pascal</descr>
+						</var>
+						<var name="bar" type="REAL">
+							<descr>Bar</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Ymws" type="REAL">
+							<descr>Water column in meters</descr>
+						</var>
+						<var name="Ytorr" type="REAL">
+							<descr>Torr respectively mercury column in mm</descr>
+						</var>
+						<var name="Yatt" type="REAL">
+							<descr>Technical atmosphere</descr>
+						</var>
+						<var name="Yatm" type="REAL">
+							<descr>Atmospheric physics</descr>
+						</var>
+						<var name="Ypa" type="REAL">
+							<descr>Pascal</descr>
+						</var>
+						<var name="Ybar" type="REAL">
+							<descr>Bar</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+This function converts different pressure units.
+Any unused input can simply be left open.
+Different inputs connected at the same time will be summed up.
+
+*)
+
+Ybar := bar +
+		pa * 1.0E-5 +
+		0.980665 * att +
+		1.01325 * atm +
+		0.001333224 * torr +
+		0.0980665 * mws;
+Ymws := ybar * 10.1971621297793;
+Ytorr := ybar * 750.0615050434140;
+Yatt := ybar * 1.0197162129779;
+yatm := ybar * 0.9869232667160;
+Ypa := ybar * 100000.0;
+
+
+(*
+Druck, Pascal Pa 1 Pa = 1 N/m2 = 1 kg/(s2 E m) . 0,75 E 10.2 mmHg
+mechanische 1 MPa = 1 N/mm2 . fur Festigkeitsangaben
+Spannung Bar bar 1 bar = 105 Pa = 103 mbar = 105 kg/(s2 E m)
+Millimeter- mmHg 1 mmHg = 133,322 Pa = 1,333 22 mbar
+Quecksilbersaule . nur in Heilkunde zulassig
+physik. Atmosphare atm 1 atm = 1,013 25 bar
+techn. Atmosphare at 1 at = 1 kp/cm2 = 0,980665 bar
+Torr Torr 1 Torr = (101325/760) Pa = 1,333224 mbar
+Meter-Wassersaule mWS 1 mWS = 9806,65 Pa = 98,0665 mbar
+psi lbf/in2 1 lbf/in2 = 68,947 57 mbar = 6894,757 Pa
+*)
+
+(* revision history
+
+hm	27. mar. 2007	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	improved code
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SPEED" version="1.0.0" creationDate="0" lastModifiedDate="1631191904" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module SPEED converts various units for speed.
+						Normally, only the input to be converted is written and the remaining inputs remain free. However, if several inputs are loaded with values, the values
+						of all inputs are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="ms" type="REAL">
+							<descr>meters / second</descr>
+						</var>
+						<var name="kmh" type="REAL">
+							<descr>kilometers / hour</descr>
+						</var>
+						<var name="kn" type="REAL">
+							<descr>knots</descr>
+						</var>
+						<var name="mh" type="REAL">
+							<descr>miles / hour</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Yms" type="REAL">
+							<descr>meters / second</descr>
+						</var>
+						<var name="Ykmh" type="REAL">
+							<descr>kilometers / hour</descr>
+						</var>
+						<var name="Ykn" type="REAL">
+							<descr>knots</descr>
+						</var>
+						<var name="Ymh" type="REAL">
+							<descr>miles / hour</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.1	11. mar. 2009
+programmer 	hugo
+tested by		oscat
+
+This function converts different speed units.
+Any unused input can simply be left open.
+Different inputs connected at the same time will be summed up.
+
+*)
+
+
+Yms := ms +
+		kmh * 0.27777777777778 +
+		kn * 0.5144444 +
+		mh * 0.44704;
+Ykmh := Yms * 3.6;
+Ykn := Yms * 1.94384466037535;
+Ymh := Yms * 2.23693629205440;
+
+
+(*
+Geschwindigkeit Meter durch Sekunde m/s 1 m/s = 3,6 km/h
+km durch (pro) Stunde, nicht „Stundenkilometer“ verwenden
+Knoten kn 1 kn = 1 sm/h = 0,5144 m/s
+*)
+
+(* revision history
+hm	27. mar. 2009	rev 1.0
+	original version
+
+hm	11. mar. 2009	rev 1.1
+	improved code
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TEMPERATURE" version="1.0.0" creationDate="0" lastModifiedDate="1631192547" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The module TEMPERATURE converts different units for
+						temperature. Normally, only the input to be converted is written and the
+						remaining inputs remain free. However, if several inputs are loaded with values,
+						the values of all inputs are converted and then summed.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="K" type="REAL">
+							<descr>Kelvin</descr>
+						</var>
+						<var name="C" type="REAL">
+							<descr>Celsius</descr>
+							<initValue>-273.15</initValue>
+						</var>
+						<var name="F" type="REAL">
+							<descr>Fahrenheit</descr>
+							<initValue>-459.67</initValue>
+						</var>
+						<var name="Re" type="REAL">
+							<descr>Reaumur</descr>
+							<initValue>-218.52</initValue>
+						</var>
+						<var name="Ra" type="REAL">
+							<descr>Rankine</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="YK" type="REAL">
+							<descr>Kelvin</descr>
+						</var>
+						<var name="YC" type="REAL">
+							<descr>Celsius</descr>
+						</var>
+						<var name="YF" type="REAL">
+							<descr>Fahrenheit</descr>
+						</var>
+						<var name="YRe" type="REAL">
+							<descr>Reaumur</descr>
+						</var>
+						<var name="YRa" type="REAL">
+							<descr>Rankine</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	21 feb 2008
+programmer 	hugo
+tested by	oscat
+
+This function converts different temperature units.
+Any unused input can simply be left open.
+Different inputs connected at the same time will be summed up.
+
+*)
+
+
+YK := K + (C + 273.15) + (F + 459.67) * 0.555555555555 + (Re * 1.25 + 273.15) + (Ra * 0.555555555555);
+YC := YK -273.15;
+YF := YK * 1.8 - 459.67;
+YRe := (YK - 273.15) * 0.8;
+YRa := YK * 1.8;
+
+
+(* revision history
+hm	21. feb. 2008	rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

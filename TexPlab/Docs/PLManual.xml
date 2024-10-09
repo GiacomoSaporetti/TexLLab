@@ -1,0 +1,52 @@
+<AlHelp>
+	<helpItems>
+		<item id="136244">PLManual.indd:NewProjectDlg</item>
+		<item id="136240">PLManual.indd:NewPageDlg</item>
+		<item id="140387">PLManual.indd:ColorDlg</item>
+		<item id="136255">PLManual.indd:DeclLocalVar</item>
+		<item id="136255">PLManual.indd:DeclGlobalVar</item>
+		<item id="136280">PLManual.indd:ParamInsertDlg</item>
+		<item id="136250">PLManual.indd:VarSelectionDlg</item>
+		<item id="328689">PLManual.indd:DockOutput</item>
+		<item id="328684">PLManual.indd:ProjectTree</item>
+		<item id="136176">PLManual.indd:PageEditor</item>
+		<item id="328691">PLManual.indd:TargetVarsView</item>
+		<item id="328692">PLManual.indd:PlcVarsView</item>
+		<item id="328693">PLManual.indd:ParametersView</item>
+		<item id="136252">PLManual.indd:InsertObjDragDlg</item>
+		<item id="136248">PLManual.indd:NewProcedureDlg</item>
+		<item id="136259">PLManual.indd:PrjPropertiesGeneral</item>
+		<item id="136762">PLManual.indd:PrjPropertiesSystem</item>
+		<item id="136763">PLManual.indd:PrjPropertiesLanguage</item>
+		<item id="136764">PLManual.indd:PrjPropertiesGlobal</item>
+		<item id="136286">PLManual.indd:TemplateAddDlg</item>
+		<item id="328690">PLManual.indd:TemplateView</item>
+		<item id="136284">PLManual.indd:TemplateEditDlg</item>
+		<item id="136175">PLManual.indd:EditScriptWindow</item>
+		<item id="328687">PLManual.indd:DockLocalActions</item>
+		<item id="328688">PLManual.indd:DockGlobalActions</item>
+		<item id="136264">PLManual.indd:BitmapImportDlg</item>
+		<item id="136203">PLManual.indd:ResourcesString</item>
+		<item id="136256">PLManual.indd:ResourcesEnums</item>
+		<item id="136265">PLManual.indd:ResourcesLists</item>
+		<item id="136283">PLManual.indd:ResourcesSets</item>
+		<item id="328682">PLManual.indd:PropManagerDoc</item>
+		<item id="131285">PLManual.indd:DocEndDlg</item>
+		<item str="PropertiesWndStatic">PLManual.indd:PropertiesWndStatic</item>
+		<item str="PropertiesWndEdit">PLManual.indd:PropertiesWndEdit</item>
+		<item str="PropertiesWndTextBox">PLManual.indd:PropertiesWndTextBox</item>
+		<item str="PropertiesWndLine">PLManual.indd:PropertiesWndLine</item>
+		<item str="PropertiesWndRect">PLManual.indd:PropertiesWndRect</item>
+		<item str="PropertiesWndImage">PLManual.indd:PropertiesWndImage</item>
+		<item str="PropertiesWndAnim">PLManual.indd:PropertiesWndAnim</item>
+		<item str="PropertiesWndButton">PLManual.indd:PropertiesWndButton</item>
+		<item str="PropertiesWndProgress">PLManual.indd:PropertiesWndProgress</item>
+		<item str="PropertiesWndCustomCtrl">PLManual.indd:PropertiesWndCustomCtrl</item>
+		<item str="PropertiesWndChart">PLManual.indd:PropertiesWndChart</item>
+		<item str="PropertiesWndTrend">PLManual.indd:PropertiesWndTrend</item>
+		<item str="PropertiesWndFrame">PLManual.indd:PropertiesWndFrame</item>
+		<item str="PropertiesWndFrameSet">PLManual.indd:PropertiesWndFrameSet</item>
+		<item str="PropertiesWndMsg">PLManual.indd:PropertiesWndMsg</item>
+		<item str="PropertiesWndPopUp">PLManual.indd:PropertiesWndPopUp</item>
+	</helpItems>
+</AlHelp>

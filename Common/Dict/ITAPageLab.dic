@@ -1,0 +1,4797 @@
+# ITA Italiano
+
+<"Pag Export files (*.pex)|*.pex|All Files (*.*)|*.*||"
+>
+
+<%d match found and replaced!
+>
+
+<%d Reminders
+>
+
+<%s Category
+>
+
+<&&&&  Ampersand (&&)
+>
+
+<&&b   Left Alignment &&b Center Alignment &&b Right Alignment
+>
+
+<&&D   Long date format
+>
+
+<&&d   Short date format
+>
+
+<&&P   Number of Pages
+>
+
+<&&p   Page Number
+>
+
+<&&t   Time
+>
+
+<&&T   Time (24 hour)
+>
+
+<&&w   Window Title
+>
+
+<&Actions
+>
+
+<&Activate
+>
+
+<&Add
+>
+
+<&Add ...
+>
+
+<&Add >>
+>
+
+<&Add to Quick Access Toolbar
+>
+
+<&Add variable
+>
+
+<&All available on target
+>
+
+<&Always available
+>
+
+<&Apply
+>
+
+<&Arrange Icons
+>
+
+<&Assign
+>
+
+<&Attributes:
+>
+
+<&Auto indentation
+>
+
+<&Available on target
+>
+
+<&Binary
+>
+
+<&Blue:
+>
+
+<&Bold
+>
+
+<&Bottom:
+>
+
+<&Browse
+>
+
+<&Byte (8 bit)
+>
+
+<&Cancel
+>
+
+<&Cascade
+>
+
+<&Choose commands from:
+>
+
+<&Close
+>
+
+<&Close project
+>
+
+<&Close Window
+>
+
+<&Color
+>
+
+<&Colors:
+>
+
+<&Commands
+>
+
+<&Communication settings
+>
+
+<&Copy
+>
+
+<&Copy Button Image
+>
+
+<&Copy Here
+>
+
+<&Copy\tCtrl+C
+>
+
+<&Customize Quick Access Toolbar
+>
+
+<&Customize Quick Access Toolbar...
+>
+
+<&Customize the Ribbon:
+>
+
+<&Cut\tCtrl+X
+>
+
+<&Daily
+>
+
+<&Decimal
+>
+
+<&Delete
+>
+
+<&Dismiss
+>
+
+<&Display frame set
+>
+
+<&Document bar
+>
+
+<&Double word (32 bit)
+>
+
+<&Down
+>
+
+<&Download project
+>
+
+<&Edit
+>
+
+<&Edit Button Image...
+>
+
+<&Exit
+>
+
+<&Export ...
+>
+
+<&FALSE
+>
+
+<&File
+>
+
+<&Find Next
+>
+
+<&Find...\tCtrl+F
+>
+
+<&Font:
+>
+
+<&Footer
+>
+
+<&Generate code\tF7
+>
+
+<&Go To
+>
+
+<&Green:
+>
+
+<&Groups
+>
+
+<&Header
+>
+
+<&Help
+>
+
+<&Hexadecimal
+>
+
+<&Hide
+>
+
+<&Horizontal scrollbar
+>
+
+<&Hue:
+>
+
+<&Ignore
+>
+
+<&Import
+>
+
+<&Import ...
+>
+
+<&Import bitmap
+>
+
+<&Import font
+>
+
+<&Import language from file...
+>
+
+<&Index
+>
+
+<&Input
+>
+
+<&Insert
+>
+
+<&Insert action
+>
+
+<&Insert new message page
+>
+
+<&Insert page
+>
+
+<&Italic
+>
+
+<&Keep Tabs
+>
+
+<&Keyboard
+>
+
+<&Large icons
+>
+
+<&Left:
+>
+
+<&Line number (1 - %d):
+>
+
+<&Line number:
+>
+
+<&Link PLC project...
+>
+
+<&Lum:
+>
+
+<&Main
+>
+
+<&Meeting
+>
+
+<&Memory
+>
+
+<&Menu animations:
+>
+
+<&Menus
+>
+
+<&Message properties
+>
+
+<&Monthly
+>
+
+<&More Commands...
+>
+
+<&Move Here
+>
+
+<&Name:
+>
+
+<&New Group
+>
+
+<&New project\tCtrl+N
+>
+
+<&New...
+>
+
+<&Next Page
+>
+
+<&Next Tip
+>
+
+<&No
+>
+
+<&None available on target
+>
+
+<&Normal Background:
+>
+
+<&Objects
+>
+
+<&Octal
+>
+
+<&Ok
+>
+
+<&OK
+>
+
+<&Open
+>
+
+<&Open Item
+>
+
+<&Open project\tCtrl+O
+>
+
+<&Options
+>
+
+<&Output
+>
+
+<&Page properties
+>
+
+<&Paste
+>
+
+<&Paste Button Image
+>
+
+<&Paste\tCtrl+V
+>
+
+<&Print...
+>
+
+<&Printer...
+>
+
+<&Private
+>
+
+<&Project
+>
+
+<&Quick Access
+>
+
+<&Quick Access Toolbar
+>
+
+<&Records
+>
+
+<&Red:
+>
+
+<&Redo %s\tCtrl+Y
+>
+
+<&Redo\tCtrl+Y
+>
+
+<&Redo\tCtrl+Z
+>
+
+<&Register
+>
+
+<&Remind me later
+>
+
+<&Reminder:
+>
+
+<&Remove
+>
+
+<&Remove action
+>
+
+<&Remove bitmap
+>
+
+<&Remove from Quick Access Toolbar
+>
+
+<&Remove page
+>
+
+<&Remove recurrence
+>
+
+<&Rename
+>
+
+<&Rename...
+>
+
+<&Replace
+>
+
+<&Reset
+>
+
+<&Reset menu and toolbar usage data
+>
+
+<&Resources
+>
+
+<&Retry
+>
+
+<&Right:
+>
+
+<&Sat:
+>
+
+<&Save
+>
+
+<&Save project
+>
+
+<&Select
+>
+
+<&Selected Background:
+>
+
+<&Selection
+>
+
+<&Show Above the Ribbon
+>
+
+<&Show an additional time zone
+>
+
+<&Show Below the Ribbon
+>
+
+<&Show Menu:
+>
+
+<&Show Quick Access Toolbar Above the Ribbon
+>
+
+<&Show Quick Access Toolbar Below the Ribbon
+>
+
+<&Show tips at startup
+>
+
+<&Snooze
+>
+
+<&Source:
+>
+
+<&Start:
+>
+
+<&Statusbar
+>
+
+<&String
+>
+
+<&Tab size:
+>
+
+<&Target vars and parameters
+>
+
+<&Text Only
+>
+
+<&Tile
+>
+
+<&Toolbar name:
+>
+
+<&Top:
+>
+
+<&TRUE
+>
+
+<&Underline
+>
+
+<&Undo
+>
+
+<&Undo %s\tCtrl+Z
+>
+
+<&Undo\tCtrl+Z
+>
+
+<&Unlink PLC project
+>
+
+<&Up
+>
+
+<&Variable
+>
+
+<&Vertical scrollbar
+>
+
+<&View
+>
+
+<&Weekly
+>
+
+<&Window
+>
+
+<&Word (16 bit)
+>
+
+<&Yearly
+>
+
+<&Yes
+>
+
+<(%s) was pressed. Waiting for second key of chord...
+>
+
+<(At least 4 characters)
+>
+
+<(no fields available)
+>
+
+<(On the CD label or sent by Axel)
+>
+
+<(Requested only for manual registration)
+>
+
+<(System default)
+>
+
+<*.*
+>
+
+<.
+>
+
+<...
+>
+
+</Decreasing
+>
+
+</Increasing
+>
+
+<[Commands]
+>
+
+<[ms]
+>
+
+<\n   New Line
+>
+
+<\n%d warnings, %d errors.\n\n
+>
+
+<\n&Add or Remove Buttons
+>
+
+<\n&Reset Toolbar
+>
+
+<\nC&ancel
+>
+
+<\nClear
+>
+
+<\nClose
+>
+
+<\nClose Window
+>
+
+<\nCompiling the PLC code...\n
+>
+
+<\nCopy
+>
+
+<\nCustomize Quick Access Toolbar
+>
+
+<\nEllipse
+>
+
+<\nERROR: Please configure communication settings to download !\n\n
+>
+
+<\nExpand
+>
+
+<\nExporting language %s to %s\n
+>
+
+<\nFill Color
+>
+
+<\nFound a UNICODE font with ASCII project...
+>
+
+<\nFound an ASCII font with UNICODE project...
+>
+
+<\nImport from File
+>
+
+<\nImporting resources from %s\n
+>
+
+<\nLine
+>
+
+<\nMinimize Window
+>
+
+<\nMore controls
+>
+
+<\nMove to Ne&xt Tab Group
+>
+
+<\nMove to P&revious Tab Group
+>
+
+<\nNew &Vertical Tab Group
+>
+
+<\nNew Hori&zontal Tab Group
+>
+
+<\nPaste
+>
+
+<\nPencil
+>
+
+<\nPick Color
+>
+
+<\nRectangle
+>
+
+<\nRedo
+>
+
+<\nRestore Window
+>
+
+<\nToolbar Options
+>
+
+<\nUndo
+>
+
+
+<<< &Remove
+>
+
+<>
+>
+
+<0
+>
+
+<0 minutes
+>
+
+<0 reminders are selected
+>
+
+<0.5 days
+>
+
+<1 day
+>
+
+<1 hour
+>
+
+<1 minute
+>
+
+<1 week
+>
+
+<10 hours
+>
+
+<10 minutes
+>
+
+<11 hours
+>
+
+<123456789 123456789 123456789\n2\n3
+>
+
+<15 minutes
+>
+
+<18 hours
+>
+
+<2 days
+>
+
+<2 hours
+>
+
+<2 weeks
+>
+
+<3 days
+>
+
+<3 hours
+>
+
+<30
+>
+
+<30 minutes
+>
+
+<3D
+>
+
+<4 hours
+>
+
+<5 hours
+>
+
+<5 minutes
+>
+
+<6 hours
+>
+
+<7 hours
+>
+
+<8 hours
+>
+
+<9 hours
+>
+
+<A frame cannot be assigned a negative size\n
+>
+
+<A new version of PageLab (%s)
+>
+
+<A procedure already exists with the same name
+>
+
+<A sharing violation occurred.
+>
+
+<A toolbar named '%s' already exists. Type another name.
+>
+
+<A&utomatically adjust clock for daylight saving changes
+>
+
+<AaBbCc
+>
+
+<Abort
+>
+
+<aborted\n
+>
+
+<aborted\n    (=> .DEF file unsupported old version)\n
+>
+
+<About
+>
+
+<About ...
+>
+
+<About...
+>
+
+<Access
+>
+
+<Action
+>
+
+<Action par
+>
+
+<ACTIONBAR
+>
+
+<Actions
+>
+
+<Activate Task List
+>
+
+<Activate this window
+>
+
+<Active Files
+>
+
+<Active Tool Windows
+>
+
+<Add
+>
+
+<Add a bitmap to the available project resources\nImport bitmap
+>
+
+<Add a font to the available project resources\nImport font
+>
+
+<Add command events
+>
+
+<Add Device
+>
+
+<Address
+>
+
+<Address mode
+>
+
+<AfterUpdate
+>
+
+<AlCatalogManager.CatalogInterface
+>
+
+<Align Center
+>
+
+<Align Left
+>
+
+<Align Right
+>
+
+<Align the selected objects to bottom\nAlign bottom
+>
+
+<Align the selected objects to left\nAlign left
+>
+
+<Align the selected objects to right\nAlign right
+>
+
+<Align the selected objects to top\nAlign top
+>
+
+<Alignment
+>
+
+<Aligns the paragraph at the left margin\nAlign Left
+>
+
+<Aligns the paragraph at the right margin\nAlign Right
+>
+
+<All
+>
+
+<All bitamps available on target\nAll bitamps available on target
+>
+
+<All Commands
+>
+
+<All da&y event
+>
+
+<All Files (*.*)|*.*||
+>
+
+<All image files
+>
+
+<All page import files (*.pagimp;*.exp)|*.pagimp;*.exp|Page import scripts (*.pagimp)|*.pagimp|Exported PLC variables (*.exp)|*.exp|All Files (*.*)|*.*||
+>
+
+<All Picture Files|*.bmp;*.wmf;*.emf;*.ico;*.dib;*.png;*.cur;*.gif;*.jpg|Bitmaps (*.bmp;*.dib;*.png;*.gif;*.jpg)|*.bmp;*.dib;*.png;*.gif;*.jpg|Metafiles (*.wmf;*.emf)|*.wmf;*.emf|Icons (*.ico;*.cur)|*.ico;*.cur|All Files (*.*)|*.*||
+>
+
+<Alphabetical
+>
+
+<Always show full me&nus
+>
+
+<An unknown error number %d occured.
+>
+
+<Animation control
+>
+
+<Anniversary
+>
+
+<Another program instance is already connected to the simulator\nFurther connections aren't allowed.
+>
+
+<Any exceptions associated with this recurring appointment will be lost. If any of the exceptions are meetings, the attendees will not be notified. Is this OK?
+>
+
+<Appearance
+>
+
+<Application Menus
+>
+
+<Appointment and Event Details
+>
+
+<Appointment Recurrence
+>
+
+<Appointment time
+>
+
+<Aqua
+>
+
+<Are you sure you want to delete the '%s' toolbar?
+>
+
+<Are you sure you want to reset the changes made to the '%s' toolbar?
+>
+
+<Are you sure you want to reset the key assignments?  This action will remove all custom key assignments at the text level.
+>
+
+<Are you sure you want to restore the Quick Access Toolbar to its default contents?
+>
+
+<Arrange icons at the bottom of the window\nArrange Icons
+>
+
+<Arrange Windows
+>
+
+<Arrange windows as non-overlapping tiles\nTile Windows
+>
+
+<Arrange windows so they overlap\nCascade Windows
+>
+
+<Array
+>
+
+<Array / Matrix
+>
+
+<Array value
+>
+
+<ArrowDw
+>
+
+<ArrowUp
+>
+
+<Assign a variable before selecting the format.
+>
+
+<Associating programs with CPU tasks...\n
+>
+
+<Attribute
+>
+
+<Auto Hide
+>
+
+<Auto Indent
+>
+
+<Automatic
+>
+
+<Automatic &reload of externally modified files
+>
+
+<Automatic address
+>
+
+<Automatic Color\nAutomatic Color
+>
+
+<Available languages:
+>
+
+<Available Targets
+>
+
+<Axel srl
+>
+
+<B&it
+>
+
+<B:
+>
+
+<Back
+>
+
+<Back color
+>
+
+<Background color
+>
+
+<Background image
+>
+
+<Backspace
+>
+
+<Bar color
+>
+
+<BaseLanguage
+>
+
+<BeforeUpdate
+>
+
+<Begin a &Group
+>
+
+<Birthday
+>
+
+<Bitmap
+>
+
+<Bitmap always available\nBitmap always available
+>
+
+<Bitmap file data error
+>
+
+<Bitmap in selection
+>
+
+<Bitmaps
+>
+
+<Bitmaps on target
+>
+
+<Black
+>
+
+<Blue
+>
+
+<Blue-Gray
+>
+
+<Bmp Name
+>
+
+<BMP_MENU
+>
+
+<BMPROOT_MENU
+>
+
+<Bold
+>
+
+<Bold Italic
+>
+
+<Boo&lean
+>
+
+<Bord. color
+>
+
+<Border color
+>
+
+<Border points
+>
+
+<Border style
+>
+
+<BottomDim
+>
+
+<Bright Green
+>
+
+<Bring to front\nBring to front
+>
+
+<Brown
+>
+
+<BS
+>
+
+<Build/Download Events
+>
+
+<Build:
+>
+
+<Building the page call tree...\n
+>
+
+<Built-in Menus
+>
+
+<Business
+>
+
+<Busy
+>
+
+<Button control
+>
+
+<Button Editor
+>
+
+<Button foreground
+>
+
+<C&ancel
+>
+
+<C&lear
+>
+
+<C&ollapsible Nodes
+>
+
+<C&ut\tCtrl+X
+>
+
+<Calendar Page Setup
+>
+
+<Call
+>
+
+<Can't connect to the registration server
+>
+
+<Can't import compressed bitmaps
+>
+
+<Can't open bitmap file
+>
+
+<Can't set working directory\n
+>
+
+<Cancel
+>
+
+<Cannot find string"%s"
+>
+
+<Cannot open project:\n\n'%s'\n\nThis project is already opened by another PageLab instance.\n
+>
+
+<Cannot remove the active language
+>
+
+<Cannot use the same id for more devices
+>
+
+<Cannot use the same name for more devices
+>
+
+<Caps
+>
+
+<Caption
+>
+
+<Casca&de
+>
+
+<Catalog Manager not correctly installed !\nYou can not create new projects without it.\n\nPlease reinstall the application to solve this problem
+>
+
+<Cate&gories:
+>
+
+<Cate&gory:
+>
+
+<Categories
+>
+
+<Categorized
+>
+
+<Center
+>
+
+<Centers the paragraph between the margins\nCenter
+>
+
+<Change
+>
+
+<Change &Button Image
+>
+
+<Change Language...
+>
+
+<Change selection case
+>
+
+<Change the printer and printing options\nPrint Setup
+>
+
+<Change the printing options\nPage Setup
+>
+
+<Change the window position
+>
+
+<Change the window size
+>
+
+<CharDimX
+>
+
+<CharDimY
+>
+
+<Checkbox control
+>
+
+<Clear data
+>
+
+<Click push pin to keep open
+>
+
+<Click Snooze to be reminded again in:
+>
+
+<Click to add appointment
+>
+
+<Close
+>
+
+<Close Al&l
+>
+
+<Close all open windows\nClose all
+>
+
+<Close all page windows before resizing the frame set
+>
+
+<Close print preview mode\nCancel Preview
+>
+
+<Close the active document\nClose
+>
+
+<Close the active window and prompts to save the documents
+>
+
+<Close the current IEC project\nClose
+>
+
+<Close the current project\nClose Project
+>
+
+<Close the preview\nClose Preview
+>
+
+<Close the project before transfer the license
+>
+
+<Co&mmands:
+>
+
+<Collapse
+>
+
+<Color
+>
+
+<Color bar 1
+>
+
+<Color bar 2
+>
+
+<Color bar 3
+>
+
+<Color Palette loaded from file\n
+>
+
+<Colors
+>
+
+<Combobox control
+>
+
+<Comman&ds:
+>
+
+<Commands
+>
+
+<Common settings
+>
+
+<Communication line settings\nCommunication settings
+>
+
+<Company
+>
+
+<completed.\n
+>
+
+<completed\n
+>
+
+<Computer ID:
+>
+
+<Configure buttons
+>
+
+<Confirm
+>
+
+<Confirm Delete\nDelete this &occurrence.\nDelete the &series.\nDo you want to delete all occurrences of the recurring event "%s", or just this one?
+>
+
+<Confirm password:
+>
+
+<Connect the IEC compiler\nConnect compiler
+>
+
+<Constants
+>
+
+<Conte&xt
+>
+
+<Content
+>
+
+<Context Menus
+>
+
+<Continue
+>
+
+<Control id
+>
+
+<Converted bitmap
+>
+
+<Copies:
+>
+
+<Copy
+>
+
+<Copy page
+>
+
+<Copy the current selection\nCopy(Ctrl+C)
+>
+
+<Copyright (C) 2003
+>
+
+<Could not download the PLC code\n
+>
+
+<Create a new document\nNew
+>
+
+<Create a new group of enumeratives\nCreate group
+>
+
+<Create a new project\nNew project
+>
+
+<Creating the %s file...\n
+>
+
+<Creation of destination text file %s failed
+>
+
+<Cu&t
+>
+
+<Current
+>
+
+<Current language
+>
+
+<Current language:
+>
+
+<Current time zone
+>
+
+<Custom
+>
+
+<Custom %d
+>
+
+<Customizations:
+>
+
+<Customize
+>
+
+<Customize &Ribbon
+>
+
+<Customize application appearance, toolbars, and menus\n&Customize...
+>
+
+<Customize Status Bar
+>
+
+<Customize the Quick Access Toolbar.
+>
+
+<Customize the Ribbon
+>
+
+<Customize...
+>
+
+<Cut
+>
+
+<Cut the current selection\nCut(Ctrl+X)
+>
+
+<d
+>
+
+<D&ay
+>
+
+<D&uration:
+>
+
+<Dark Blue
+>
+
+<Dark Green
+>
+
+<Dark Red
+>
+
+<Dark Teal
+>
+
+<Dark Yellow
+>
+
+<Data block
+>
+
+<Data source
+>
+
+<Data type
+>
+
+<Date header
+>
+
+<Date header font:
+>
+
+<DateTimePicker1
+>
+
+<DateTimePicker2
+>
+
+<Day
+>
+
+<Day view options
+>
+
+<day(s)
+>
+
+<Days remaining
+>
+
+<Decimals (1-7)
+>
+
+<Declaring bitmaps...\n
+>
+
+<Declaring constants...\n
+>
+
+<Declaring fonts...\n
+>
+
+<Declaring global variables...\n
+>
+
+<Decrease Indent
+>
+
+<Decrease magnification of preview page\nZoom Out
+>
+
+<Defa&ult Style
+>
+
+<Default
+>
+
+<Default menu\nDefault application menu
+>
+
+<Del
+>
+
+<Delete
+>
+
+<Delete all Ribbon and Quick Access Toolbar customization for this program?
+>
+
+<Delete an enumeatives group\nDelete group
+>
+
+<Delete page
+>
+
+<Delete Selection
+>
+
+<Delete text block
+>
+
+<Delete:
+>
+
+<Description
+>
+
+<Description:
+>
+
+<Destination folder is not empty
+>
+
+<Dialog
+>
+
+<Did you know...
+>
+
+<Direction
+>
+
+<Directories:
+>
+
+<Directory
+>
+
+<Directory name:
+>
+
+<Dismiss &All
+>
+
+<Display full pages\nPrint Preview
+>
+
+<Display Name:
+>
+
+<Display the frame set node in the project tree\nDisplay frame set
+>
+
+<Do you really want to remove the selected bitmap?
+>
+
+<Do you wish to close the "Options Dialog" and open the schema file "%s%s" in the editor window?
+>
+
+<Doc
+>
+
+<Docking
+>
+
+<Documentation
+>
+
+<Documentation correctly generated.
+>
+
+<Download the compiled IEC project\nDownload
+>
+
+<Downloading PLC code into target...
+>
+
+<Drag a column header here to group by that column.
+>
+
+<Drag And Drop
+>
+
+<Due In
+>
+
+<Due to a software update the toolbar '%s' has changed. Would you like to reset your customized toolbar and load the new one?
+>
+
+<Dynamic
+>
+
+<E&nd:
+>
+
+<E&very
+>
+
+<E&xport language to file...
+>
+
+<Edit
+>
+
+<Edit control
+>
+
+<Edit Options
+>
+
+<Edit value list
+>
+
+<Editor
+>
+
+<Editor Font
+>
+
+<Elements
+>
+
+<Email : sales@axelsw.it
+>
+
+<End &by:
+>
+
+<End a&fter:
+>
+
+<End time:
+>
+
+<End Value
+>
+
+<Enlarge the window to full size
+>
+
+<Enter
+>
+
+<Enter filter text here
+>
+
+<Enumerative
+>
+
+<Enumerative ID
+>
+
+<Enumerative name
+>
+
+<Enumeratives
+>
+
+<Enumeratives list
+>
+
+<Environment Variables
+>
+
+<Erase everything\nErase All
+>
+
+<Erase the selection\nErase
+>
+
+<Error
+>
+
+<Error converting old DEF files
+>
+
+<Error copying file
+>
+
+<ERROR copying file: %s\n
+>
+
+<Error creating user settings folder:\n
+>
+
+<Error importing bitmap (existing symbol name or .PLB file)
+>
+
+<Error inserting record.
+>
+
+<Error loading catalog from\n
+>
+
+<Error loading template project
+>
+
+<Error on add target files
+>
+
+<Error on copy directory
+>
+
+<Error on create a new project\n
+>
+
+<Error on create page file
+>
+
+<Error on create src file
+>
+
+<Error on deleting the selected event
+>
+
+<Error on enable the IEC compiler
+>
+
+<Error on generating .pagres xml\n
+>
+
+<Error on insert a new string
+>
+
+<Error on insert a new variable
+>
+
+<Error on inserting a new enumerative
+>
+
+<Error on inserting a new enumerative group
+>
+
+<Error on inserting a new image list
+>
+
+<Error on inserting a new procedure
+>
+
+<Error on inserting a new record
+>
+
+<Error on load library files
+>
+
+<Error on open the project '%s'\n
+>
+
+<Error on remove the current procedure
+>
+
+<Error on remove the current variable
+>
+
+<Error on remove the selected string
+>
+
+<Error on removing the element.
+>
+
+<Error on removing the selected enumerative
+>
+
+<Error on removing the selected record
+>
+
+<Error on save the project. (Code error: %d)
+>
+
+<Error on select the exported variables file
+>
+
+<Error on typing the name of new procedure. You can't use characters like  \|!\"£%&/=?'^ìèé+*çò°à§ù<>#(){};:.-?@
+>
+
+<Error querying target definitions from catalog!
+>
+
+<Error reading file.
+>
+
+<error while compiling the PLC code\n
+>
+
+<Error while creating new project
+>
+
+<Error while resizing the frame\nSee the output window for details
+>
+
+<Error: current target '%s' not found in catalog!
+>
+
+<Esc
+>
+
+<EST
+>
+
+<Estabilishes communication with the drive\nConnects to the drive
+>
+
+<Evenly space the selected objects horizontally\nSpace across
+>
+
+<Evenly space the selected objects vertically\nSpace down
+>
+
+<Events
+>
+
+<EVENTS_MENU
+>
+
+<Exceed max num value
+>
+
+<Exit from the application\nExit
+>
+
+<Expand
+>
+
+<Export all customizations
+>
+
+<Export language to file...
+>
+
+<Export language to text file\nExport language
+>
+
+<Export page
+>
+
+<Export page as template
+>
+
+<Export the selected page
+>
+
+<Export var/procedures
+>
+
+<F&ilter:
+>
+
+<Fade
+>
+
+<Fail to change target file.
+>
+
+<failed.\n
+>
+
+<failed: language not implemented in this project\n
+>
+
+<False
+>
+
+<FALSE
+>
+
+<FATAL ERROR: Unable to start the compiler\n
+>
+
+<Fi&nd what:
+>
+
+<File '%s' is modified by outside source!\nDo you want to reload?
+>
+
+<File T&ype:
+>
+
+<Files:
+>
+
+<Fill with zeroes
+>
+
+<Filter:
+>
+
+<Filters
+>
+
+<Find
+>
+
+<Find & Replace
+>
+
+<Find &next\tF3
+>
+
+<Find Text
+>
+
+<Find the next selected text\nFind next (F3)
+>
+
+<Find the specified text\nFind (Ctrl+F)
+>
+
+<Find What
+>
+
+<Finished searching!
+>
+
+<First
+>
+
+<Fix script errors
+>
+
+<Fixed sample time
+>
+
+<Flat
+>
+
+<Floating
+>
+
+<Folder already exist.\nOverwrite ?
+>
+
+<Font
+>
+
+<Font already exists in project: cannot import chosen font file\n
+>
+
+<Font dimension
+>
+
+<Font files (*.plf)|*.plf|All Files (*.*)|*.*||
+>
+
+<Font names
+>
+
+<Font St&yle:
+>
+
+<FONTROOT_MENU
+>
+
+<Fonts
+>
+
+<Format
+>
+
+<Format Left
+>
+
+<Format Right
+>
+
+<Format X
+>
+
+<Fourth
+>
+
+<Frame
+>
+
+<Frame error
+>
+
+<Frame set
+>
+
+<Frame set - resize error:\n
+>
+
+<FRAMESET_MENU
+>
+
+<Free
+>
+
+<Friday
+>
+
+<From
+>
+
+<Fuchsia
+>
+
+<G:
+>
+
+<General
+>
+
+<Generate auto documentation.\nGenerate Doc.
+>
+
+<Generate redistributable source module
+>
+
+<Generate redistributable source module\nGenerate RSM
+>
+
+<Generate the project in IEC code\nCompile
+>
+
+<Generating alarm page function blocks...\n
+>
+
+<Generating button management function blocks...\n
+>
+
+<Generating enumerative-displaying functions...\n
+>
+
+<Generating enumerative-editing function blocks...\n
+>
+
+<Generating main programs...\n
+>
+
+<Generating page-drawing function blocks...\n
+>
+
+<Generating page-parameters function blocks...\n
+>
+
+<Generating page-refreshing function blocks...\n
+>
+
+<Get password
+>
+
+<Global actions
+>
+
+<Global OnTimer
+>
+
+<Global OnTimer event for all pages
+>
+
+<Global procedures
+>
+
+<Global variables
+>
+
+<GlobEv
+>
+
+<GlobVar
+>
+
+<Go To Line
+>
+
+<Go to the next page\nNext Page
+>
+
+<Go to the previous page\nPrevious Page
+>
+
+<Gold
+>
+
+<Gray
+>
+
+<Gray-25%
+>
+
+<Gray-40%
+>
+
+<Gray-50%
+>
+
+<Gray-80%
+>
+
+<Green
+>
+
+<Grid
+>
+
+<Grid color
+>
+
+<Grid step
+>
+
+<Group
+>
+
+<Group name
+>
+
+<Groups
+>
+
+<Groups of %s
+>
+
+<h
+>
+
+<H:
+>
+
+<Headers and Footers
+>
+
+<Help
+>
+
+<Hex
+>
+
+<Hexadecimal Lowercase (...00h)
+>
+
+<Hexadecimal Uppercase (...00H)
+>
+
+<HF
+>
+
+<Hide &Details
+>
+
+<Hierachical
+>
+
+<High limit
+>
+
+<Higher limit
+>
+
+<Horizontal
+>
+
+<Horizontal Bars
+>
+
+<hour(s)
+>
+
+<http://www.axelsw.it
+>
+
+<I&nsert procedure
+>
+
+<ID
+>
+
+<If you would like to purchase PageLab please contact Axel :
+>
+
+<Illegal definition of a key or a virtual key\n
+>
+
+<Illegal size of variable!
+>
+
+<Im&port/Export
+>
+
+<Image &and Text
+>
+
+<Image alignment
+>
+
+<Image lists
+>
+
+<Image options
+>
+
+<Import &bitmap...
+>
+
+<Import &font...
+>
+
+<Import and Export
+>
+
+<Import bitmap into project
+>
+
+<Import customization file
+>
+
+<Import language from text file\nImport language
+>
+
+<Import page
+>
+
+<Import page from template
+>
+
+<Import page into project
+>
+
+<Import var/procedures
+>
+
+<Important
+>
+
+<Importing PLC project...\n
+>
+
+<Impossible to add more devices
+>
+
+<Impossible to convert this page in a template
+>
+
+<Impossible to copy page
+>
+
+<Impossible to export page
+>
+
+<Impossible to export template
+>
+
+<Impossible to export var and procedures
+>
+
+<Impossible to generate documentation.
+>
+
+<Impossible to page exported
+>
+
+<Impossible to save
+>
+
+<Impossible to save page exported
+>
+
+<Impossible to save template
+>
+
+<Impossible to save var and procedures
+>
+
+<Including aux plc source from '%s'...\n
+>
+
+<Incomplete or illegal definition of keys for editing mode\n
+>
+
+<Increase magnification of preview page\nZoom In
+>
+
+<Indent
+>
+
+<Indentation
+>
+
+<Index
+>
+
+<Indigo
+>
+
+<Init value
+>
+
+<Initial page selection
+>
+
+<Inizializzazione OLE non riuscita. Assicurarsi che le librerie OLE siano della versione corretta.
+>
+
+<Insert a new action in list\nNew action
+>
+
+<Insert a new animation object\nInsert new animation
+>
+
+<Insert a new button object\nInsert new button
+>
+
+<Insert a new chart object\nInsert new chart
+>
+
+<Insert a new check box\nInsert new check box
+>
+
+<Insert a new combo box\nInsert new combo box
+>
+
+<Insert a new custom control\nNew custom control
+>
+
+<Insert a new edit box\nInsert new edit
+>
+
+<Insert a new event object\nNew event
+>
+
+<Insert a new image object\nInsert new image
+>
+
+<Insert a new line\nInsert line
+>
+
+<Insert a new message object\nNew message
+>
+
+<Insert a new message page\nNew message page
+>
+
+<Insert a new page object\nNew page
+>
+
+<Insert a new procedure\nNew procedure
+>
+
+<Insert a new progress bar\nInsert new progress
+>
+
+<Insert a new record\nNew record
+>
+
+<Insert a new rectangle\nInsert rectangle
+>
+
+<Insert a new string\n Insert str
+>
+
+<Insert a new text box\nInsert new text box
+>
+
+<Insert a new trend object\nInsert new trend
+>
+
+<Insert a new variable\nInsert var
+>
+
+<Insert a static object\nInsert static
+>
+
+<Insert all data before transfer the license
+>
+
+<Insert message page
+>
+
+<Insert object
+>
+
+<Insert project directory
+>
+
+<Insert project name
+>
+
+<Insert s&paces
+>
+
+<Insert the name of the new page
+>
+
+<Insert the name of the new procedure
+>
+
+<Insert the new name of the page
+>
+
+<Insert:
+>
+
+<Integer format
+>
+
+<Integers (1-31)
+>
+
+<Invalid activation key format
+>
+
+<Invalid character in the page name
+>
+
+<Invalid data struct
+>
+
+<Invalid destination file name
+>
+
+<Invalid destination folder
+>
+
+<Invalid empty password
+>
+
+<Invalid enumerative ID
+>
+
+<Invalid enumerative name
+>
+
+<Invalid file name
+>
+
+<Invalid ID entered: must be between 0 and 254
+>
+
+<Invalid image list name
+>
+
+<Invalid import file
+>
+
+<Invalid number
+>
+
+<Invalid number of subscipts!
+>
+
+<Invalid or empty bitmap symbol name
+>
+
+<Invalid Page Name : Invalid Character
+>
+
+<Invalid parameter file %s.
+>
+
+<Invalid parameter filename
+>
+
+<Invalid project name
+>
+
+<Invalid source page template
+>
+
+<Invalid template file %s
+>
+
+<Invalid value
+>
+
+<Invalid variable name.
+>
+
+<Invalide exported variables file name
+>
+
+<is avalable on AXEL's WEB site
+>
+
+<Italic
+>
+
+<K&ey assignments:
+>
+
+<Key
+>
+
+<L&andscape
+>
+
+<La&bel:
+>
+
+<Label
+>
+
+<Label Y Step
+>
+
+<Label:
+>
+
+<Language options
+>
+
+<Language selection
+>
+
+<Lar&ge Icons
+>
+
+<Last
+>
+
+<Lavender
+>
+
+<Left
+>
+
+<LeftDim
+>
+
+<Len data
+>
+
+<Library file :\n%s\nalready exist
+>
+
+<LIBRARY1
+>
+
+<Light Blue
+>
+
+<Light Green
+>
+
+<Light Orange
+>
+
+<Light Turquoise
+>
+
+<Light Yellow
+>
+
+<Lime
+>
+
+<Line &Number
+>
+
+<Link
+>
+
+<List Name
+>
+
+<List1
+>
+
+<Local actions
+>
+
+<Local procedures
+>
+
+<Local variables
+>
+
+<Location
+>
+
+<Location:
+>
+
+<LOCEVENTS_MENU
+>
+
+<Low limit
+>
+
+<Lower limit
+>
+
+<MA
+>
+
+<Main Tabs
+>
+
+<Make objects of the same height\nMake same height
+>
+
+<Make objects of the same width\nMake same width
+>
+
+<Manage variable groups\nGroups
+>
+
+<Margins
+>
+
+<Margins (inches)
+>
+
+<Margins (millimeters)
+>
+
+<Maroon
+>
+
+<Match &case
+>
+
+<Match &whole word only
+>
+
+<Match case
+>
+
+<Match whole word only
+>
+
+<Max
+>
+
+<Maximize
+>
+
+<Menage the page groups\nGroups
+>
+
+<Menu
+>
+
+<Message ID
+>
+
+<Message ID must be greater than zero
+>
+
+<Messages
+>
+
+<MESSAGES_MENU
+>
+
+<Mi&nimize the Ribbon
+>
+
+<min
+>
+
+<Min
+>
+
+<Minimi&ze
+>
+
+<minute(s)
+>
+
+<Modal
+>
+
+<Modified
+>
+
+<Monday
+>
+
+<Month
+>
+
+<Month view options
+>
+
+<month(s)
+>
+
+<More Colors...
+>
+
+<Move
+>
+
+<Move down
+>
+
+<Move Down
+>
+
+<Move up
+>
+
+<Move Up
+>
+
+<Moves the current record one position down\nMove down
+>
+
+<Moves the current record one position up\nMove up
+>
+
+<Msg ID
+>
+
+<Multiple operations
+>
+
+<Must Attend
+>
+
+<N&o end date
+>
+
+<Name
+>
+
+<Navigation Pane
+>
+
+<Navy
+>
+
+<Ne&w Tab
+>
+
+<Needs Preparation
+>
+
+<New
+>
+
+<New &Animation
+>
+
+<New &Button
+>
+
+<New &Custom Ctrl
+>
+
+<New &Edit
+>
+
+<New &Image
+>
+
+<New &Static
+>
+
+<New Chart
+>
+
+<New enumerative
+>
+
+<New Group (Custom)
+>
+
+<New Menu
+>
+
+<New message page
+>
+
+<New page
+>
+
+<New procedure
+>
+
+<New Progress
+>
+
+<New project
+>
+
+<New Tab (Custom)
+>
+
+<New TextBox
+>
+
+<New Toolbar
+>
+
+<New Trend
+>
+
+<Next Appointment
+>
+
+<NextField
+>
+
+<NextGroup
+>
+
+<NextPage
+>
+
+<No
+>
+
+<No Fill\nNo Fill
+>
+
+<No more Message IDs free
+>
+
+<No path link on device %s.\n
+>
+
+<No target definition file for simulator (TGSX) found.\nUnable to run simulator
+>
+
+<No targets defined!
+>
+
+<No templates
+>
+
+<No variable selected
+>
+
+<NoName
+>
+
+<None
+>
+
+<None bitamps available on target\nNone bitamps available on target
+>
+
+<Normal
+>
+
+<Normal &Text:
+>
+
+<NUM
+>
+
+<Number of chars
+>
+
+<Number of elements:
+>
+
+<Number of rows
+>
+
+<O&utput
+>
+
+<Object browser
+>
+
+<occurrences
+>
+
+<of
+>
+
+<of every
+>
+
+<Offset
+>
+
+<OK
+>
+
+<Olive
+>
+
+<Olive Green
+>
+
+<On line registration
+>
+
+<On press
+>
+
+<OnAction
+>
+
+<OnActivate
+>
+
+<OnChange
+>
+
+<OnClick
+>
+
+<OnDeactivate
+>
+
+<OnDraw
+>
+
+<One Page
+>
+
+<OnEnter
+>
+
+<Only 256 colors bitmaps can be imported
+>
+
+<Onpress
+>
+
+<OnRelease
+>
+
+<OnTimer
+>
+
+<OnUnload
+>
+
+<Op&tions...
+>
+
+<Open an existing document\nOpen
+>
+
+<Open an existing project\nOpen project
+>
+
+<Open another window for the active document\nNew Window
+>
+
+<Open compiled project to resolve compile errors
+>
+
+<Open documentation
+>
+
+<Open Recurring item\nOpen this &occurrence.\nOpen the &series.\n"%s" is a recurring appointment. Do you want to open only this occurrence or the series?
+>
+
+<Open Schema File
+>
+
+<Open the editor of current object\nOpen
+>
+
+<Open the generated IEC project\nOpen
+>
+
+<Open the message properties\nMessage properties
+>
+
+<Open the page properties\nPage properties
+>
+
+<Open the project '%s'\n
+>
+
+<Open the variables editor\nVars editor
+>
+
+<Open this document
+>
+
+<OpenPage
+>
+
+<Options
+>
+
+<Orange
+>
+
+<Orientation
+>
+
+<Other
+>
+
+<Other...
+>
+
+<Out of Office
+>
+
+<Output
+>
+
+<OUTPUTBAR
+>
+
+<overdue
+>
+
+<Overwrite Caret
+>
+
+<P&age
+>
+
+<P&ortrait
+>
+
+<P&roperties
+>
+
+<Page
+>
+
+<Page %i
+>
+
+<Page %i of %i
+>
+
+<Page %s already exist in templates file.\nOverwrite ?
+>
+
+<Page %s already exists
+>
+
+<Page %s already exists in project.\nOverwrite ?
+>
+
+<Page %u\nPages %u-%u
+>
+
+<Page border
+>
+
+<Page is modified. Save changes before renaming?
+>
+
+<Page locals
+>
+
+<Page model
+>
+
+<Page projects file (*.pajx)|*.pajx|Old page projects file (*.paj)|*.paj||
+>
+
+<Page Setup
+>
+
+<Page Template files (*.petx)|*.petx|All Files (*.*)|*.*||"
+>
+
+<Page type
+>
+
+<Page Width
+>
+
+<PAGE_MENU
+>
+
+<PageLab
+>
+
+<PageLab update
+>
+
+<Pages
+>
+
+<PAGES_MENU
+>
+
+<PagEv
+>
+
+<PagVar
+>
+
+<Pale Blue
+>
+
+<Paper
+>
+
+<Parameter file %s on device %s not found.\n
+>
+
+<Parameter files (*.parx)|*.parx|All Files (*.*)|*.*||
+>
+
+<Parameters
+>
+
+<Parameters management
+>
+
+<Parameters management\nParameters management
+>
+
+<Password
+>
+
+<Password:
+>
+
+<passwords don't match
+>
+
+<Paste
+>
+
+<Paste page
+>
+
+<Paste the data in the clipboard\nPaste(Ctrl+V)
+>
+
+<Path
+>
+
+<Personal
+>
+
+<Personalized Menus and Toolbars
+>
+
+<Phone : +39 332 949600
+>
+
+<Phone Call
+>
+
+<Phone registration
+>
+
+<Picture
+>
+
+<Pink
+>
+
+<PLC application
+>
+
+<PLC code downloaded\n
+>
+
+<PLC code generation completed\n
+>
+
+<PLC Library files (*.pll)|*.pll|All Files (*.*)|*.*||
+>
+
+<PLC vars
+>
+
+<PLCCompiler\llc
+>
+
+<Please enter a value between %s and %s.
+>
+
+<Please fill correctly the input data fields.
+>
+
+<Please wait, operation in progress
+>
+
+<PLL code generation completed\n
+>
+
+<PLManual.pdf
+>
+
+<Plum
+>
+
+<Pop-up
+>
+
+<Post build:
+>
+
+<Post code generation:
+>
+
+<Post download:
+>
+
+<Pre&v Page
+>
+
+<Preprocessing file %s ..
+>
+
+<Press &new shortcut key:
+>
+
+<Press variable
+>
+
+<PrevField
+>
+
+<PrevGroup
+>
+
+<Preview
+>
+
+<Previous Appointment
+>
+
+<PrevPage
+>
+
+<Print
+>
+
+<Print date header
+>
+
+<Print from:
+>
+
+<Print in black and white
+>
+
+<Print range
+>
+
+<Print the current document\nPrint
+>
+
+<Print the previewed item\nPrint
+>
+
+<Print to:
+>
+
+<PRJBAR
+>
+
+<PRJOBJTREE
+>
+
+<PRJTITLE, PRJPATH, PRJBASENAME, IMGNAME, TARGETDEFNAME, FIRMWAREFILENAME, APPLPATH, PRJRELEASE, PRJVERSION, PRJAUTHOR, PRJFULLNAME, PRJCONN
+>
+
+<Procedure manager
+>
+
+<Procedure selection
+>
+
+<Process target file '%s'...
+>
+
+<PROCMENU
+>
+
+<Program activation key
+>
+
+<Progress control
+>
+
+<Progress variable
+>
+
+<Progress1
+>
+
+<Project
+>
+
+<Project is in the old format. It will be saved in new PAJX format.
+>
+
+<Project is in the old PAJ and PAG format.\nIt will be saved in PAJX, PAGX format\n
+>
+
+<Project is not build. Press Rebuild before.
+>
+
+<Project is not compiled\nDo you want to compile ?
+>
+
+<PROP_MENU
+>
+
+<PROPBAR
+>
+
+<Properties
+>
+
+<Property definition
+>
+
+<Protect with password
+>
+
+<Purple
+>
+
+<Quick Access
+>
+
+<R&emove all
+>
+
+<R&emove procedure
+>
+
+<R&eset...
+>
+
+<R:
+>
+
+<Raised
+>
+
+<Random
+>
+
+<Range of recurrence
+>
+
+<Range of the time axis
+>
+
+<RClickHeader
+>
+
+<RClickHexEdit
+>
+
+<RClickOutlookBar
+>
+
+<Re-Export
+>
+
+<Re&cur every
+>
+
+<Re&fresh PLC project
+>
+
+<Re&place with:
+>
+
+<Re&set
+>
+
+<Re&set All
+>
+
+<Re&set Button Image
+>
+
+<Ready
+>
+
+<Real format
+>
+
+<Rec&urrence...
+>
+
+<Recent Documents
+>
+
+<Recent File List
+>
+
+<Recurrence pattern
+>
+
+<Red
+>
+
+<Redo the prev action\nRedo(Ctrl+Y)
+>
+
+<Reduce the window to an icon
+>
+
+<Refresh
+>
+
+<Refresh current target
+>
+
+<Refresh parameters completed.\n
+>
+
+<Refresh parameters\nRefresh parameters
+>
+
+<Refresh the variables imported from PLC\nRefresh PLC variables
+>
+
+<Refresh trigger
+>
+
+<REG
+>
+
+<Register
+>
+
+<Register PageLab license
+>
+
+<Regular
+>
+
+<Reminders
+>
+
+<Remove
+>
+
+<Remove Device
+>
+
+<Remove enumerative
+>
+
+<Remove from Outlook Bar
+>
+
+<Remove Group
+>
+
+<Remove link to PLC project\nUnlink PLC project
+>
+
+<Remove the current element of set ?
+>
+
+<Remove the current enumerative ?
+>
+
+<Remove the current procedure ?
+>
+
+<Remove the current record?
+>
+
+<Remove the current record\nRemove record
+>
+
+<Remove the current set ?
+>
+
+<Remove the selected action\nRemove action
+>
+
+<Remove the selected event\nRemove event
+>
+
+<Remove the selected page ?
+>
+
+<Remove the selected page\nRemove page
+>
+
+<Remove the selected procedure\nRemove procedure
+>
+
+<Remove the selected string\nRemove str
+>
+
+<Remove the selected variable?
+>
+
+<Remove the selected variable\nRemove var
+>
+
+<Removes a bitmap from the resources\nRemove bitmap
+>
+
+<Rena&me
+>
+
+<Rename
+>
+
+<Rename Group
+>
+
+<Rename page
+>
+
+<Rename Shortcut
+>
+
+<Rename Toolbar
+>
+
+<Repeat the last action\nRepeat
+>
+
+<Replace
+>
+
+<Replace &All
+>
+
+<Replace all
+>
+
+<Replace in
+>
+
+<Replace specific text with different text\nReplace
+>
+
+<Replace With
+>
+
+<Reset
+>
+
+<Reset Transp.
+>
+
+<Resource string
+>
+
+<Resource string selection
+>
+
+<Resources
+>
+
+<Resources [%s]
+>
+
+<Restore
+>
+
+<Restore the window to normal size
+>
+
+<Retains
+>
+
+<Right
+>
+
+<RightDim
+>
+
+<RO
+>
+
+<Rose
+>
+
+<RW
+>
+
+<S&how Quick Access Toolbar below the Ribbon
+>
+
+<S&mall Icons
+>
+
+<S&tart:
+>
+
+<Sample buffer
+>
+
+<Sample Normal / Selected:
+>
+
+<Sample time
+>
+
+<Sampling time
+>
+
+<Saturday
+>
+
+<Save all modified documents ?
+>
+
+<Save as ...
+>
+
+<Save Options
+>
+
+<Save project as ...
+>
+
+<save project in another place
+>
+
+<Save the active document with a new name\nSave As
+>
+
+<Save the current document\nSave
+>
+
+<Save the current project ?
+>
+
+<Save the current project\nSave project
+>
+
+<Save the object '%s' ?
+>
+
+<Save the string table ?
+>
+
+<Sc&ript:
+>
+
+<Scalar
+>
+
+<Scale ( 0 for auto)
+>
+
+<Schedule ID:
+>
+
+<Scroll Down
+>
+
+<Scroll Left
+>
+
+<Scroll Right
+>
+
+<Scroll Up
+>
+
+<Sea Green
+>
+
+<Search bitmap on target\nSearch bitmap on target
+>
+
+<Search Down
+>
+
+<Search Up
+>
+
+<Second
+>
+
+<Sel. background
+>
+
+<Sel. foreground
+>
+
+<Select
+>
+
+<Select &All
+>
+
+<Select &context menu:
+>
+
+<Select &Window:
+>
+
+<Select Directory:
+>
+
+<Select new project directory
+>
+
+<Select target
+>
+
+<Select target...
+>
+
+<Select the associated variable before setting the limits
+>
+
+<Select the entire document\nSelect All
+>
+
+<Select the exported vars file\nLink PLC variables file
+>
+
+<Selectable
+>
+
+<Selected Te&xt:
+>
+
+<Selection &margin
+>
+
+<Selection border
+>
+
+<Selection order
+>
+
+<Selection text/img
+>
+
+<Selection variable
+>
+
+<Send to back\nSend to back
+>
+
+<Serial number
+>
+
+<Set as start page
+>
+
+<Set the program options\nProgram options
+>
+
+<Sets
+>
+
+<Shift
+>
+
+<Sho&w time as:
+>
+
+<Show &Details
+>
+
+<Show &Fewer Buttons
+>
+
+<Show &More Buttons
+>
+
+<Show full menus after a short &delay
+>
+
+<Show full week
+>
+
+<Show large icons\nLarge Icons
+>
+
+<Show line number
+>
+
+<Show or Hide the grid\nGrid
+>
+
+<Show or Hide the program toolbar\nToolbar
+>
+
+<Show or Hide the statusbar\nStatusbar
+>
+
+<Show s&hortcut keys in ScreenTips
+>
+
+<Show Screen&Tips on toolbars
+>
+
+<Show small icons\nSmall Icons
+>
+
+<Show work week
+>
+
+<Si&ze:
+>
+
+<Silver
+>
+
+<Simulation mode\nSimulation mode
+>
+
+<Size
+>
+
+<Size of variable
+>
+
+<Size of Variable
+>
+
+<Sky Blue
+>
+
+<Slide
+>
+
+<Sorry you have reached your limit.
+>
+
+<Sort Ascending
+>
+
+<Sort Ascending\nSort Ascending
+>
+
+<Sort by:
+>
+
+<Sort Descending
+>
+
+<Sort Descending\nSort Descending
+>
+
+<Source bitmap
+>
+
+<Spin1
+>
+
+<Spin2
+>
+
+<Spin3
+>
+
+<Split the active window into panes\nSplit
+>
+
+<SSC
+>
+
+<Standard
+>
+
+<Standard Colors
+>
+
+<Start time
+>
+
+<Start time:
+>
+
+<Static
+>
+
+<Static control
+>
+
+<Steatments
+>
+
+<String
+>
+
+<String format
+>
+
+<String list
+>
+
+<String table
+>
+
+<Strings
+>
+
+<Strings and enums on target
+>
+
+<Subject
+>
+
+<Subject:
+>
+
+<Sunday
+>
+
+<Sunken
+>
+
+<SunkenEsc
+>
+
+<Switch back to the previous window pane\nPrevious Pane
+>
+
+<Switch to the next document window
+>
+
+<Switch to the next window pane\nNext Pane
+>
+
+<Switch to the previous document window
+>
+
+<Synta&x Colorization
+>
+
+<Syntax Color
+>
+
+<sysLangID Value:
+>
+
+<System menu
+>
+
+<System options
+>
+
+<Tab
+>
+
+<Tab1
+>
+
+<Tabify
+>
+
+<Tabs
+>
+
+<Tan
+>
+
+<Target
+>
+
+<Target custom format
+>
+
+<Target metric
+>
+
+<Target selection
+>
+
+<Target vars
+>
+
+<Target vars and parameters
+>
+
+<Teal
+>
+
+<Template %s already exists in project.\nOverwrite ?
+>
+
+<Template list
+>
+
+<Template management
+>
+
+<Templates
+>
+
+<templates\welcome.html
+>
+
+<Tentative
+>
+
+<Text
+>
+
+<TEXT
+>
+
+<Text align
+>
+
+<Text alignment
+>
+
+<Text color
+>
+
+<Text color in selection
+>
+
+<Text Editors
+>
+
+<Text files (*.txt)|*.txt|All Files (*.*)|*.*||
+>
+
+<Text in selection
+>
+
+<text/img
+>
+
+<Textbox control
+>
+
+<Th&e
+>
+
+<Th&in
+>
+
+<Thank you for evaluating PageLab
+>
+
+<The .exe file is invalid (non-Win32® .exe or error in .exe image).
+>
+
+<The COMPANY field isn't correct\n(contains spaces or it has less than 4 digits).
+>
+
+<The DDE transaction could not be completed because other DDE transactions were being processed.
+>
+
+<The DDE transaction could not be completed because the request timed out.
+>
+
+<The DDE transaction failed.
+>
+
+<The file name association is incomplete or invalid.
+>
+
+<The following controls exceed the new size of the frame:\n
+>
+
+<The following pages contain controls exceeding the new client area:\n
+>
+
+<The frame exceeds the size of the video\n
+>
+
+<The frame would overlap with the opposite one\n
+>
+
+<The ID field isn't correct
+>
+
+<The language already exists in the project\nOverwrite the local resources with those imported?
+>
+
+<The license is not transferred
+>
+
+<The license is transferred.\nThe program will be disabled
+>
+
+<The number must be between 1 and 1638.
+>
+
+<The operating system denied access to the specified file.
+>
+
+<The operating system is out of memory or resources.
+>
+
+<The product is not registered
+>
+
+<The project is made with a new version of IDE. Continue ?
+>
+
+<The project will be not compatible with previous version of IDE. Continue ?
+>
+
+<The registration has been refused\n\nServer error code: %d
+>
+
+<The SERIAL NUMBER isn't correct.\n(it must be 6 digit, see the CD label)
+>
+
+<The set is %s, %s variable is not valid.
+>
+
+<The specified dynamic-link library was not found.
+>
+
+<The specified file does not exist.
+>
+
+<The specified file was not found.
+>
+
+<The specified path was not found.
+>
+
+<The targets definitions file is invalid or not exist
+>
+
+<The toolbar name cannot be blank. Type a name.
+>
+
+<The USER field isn't correct\n(contains spaces or it has less than 4 digits).
+>
+
+<There are no items to show.
+>
+
+<There are no reminders to show.
+>
+
+<There is no application associated with the given file name extension.
+>
+
+<There was not enough memory to complete the operation.
+>
+
+<Thi&ck
+>
+
+<Thickness points
+>
+
+<Third
+>
+
+<This is not a valid number.
+>
+
+<This Message ID already exists
+>
+
+<This operation requires to save the project.\nContinue the operation ?
+>
+
+<This operation will disable the program.\nAre you sure to continue ?
+>
+
+<This page name already exists
+>
+
+<This shortcut is currently assigned.\nDo you want to re-assign this shortcut?
+>
+
+<This will delete the language selected. This action cannot be undone\nContinue?
+>
+
+<This will delete the record of the commands you've used in this application and restore the default set of visible commands to the menus and toolbars.  It will not undo any explicit customizations.   Are you sure you want to do this?
+>
+
+<Thursday
+>
+
+<Tile &Horizontally
+>
+
+<Tile &Vertically
+>
+
+<Time range
+>
+
+<Time vector
+>
+
+<Time vector properties
+>
+
+<Time Zone
+>
+
+<Time zone:
+>
+
+<Tip of the Day
+>
+
+<Tip text
+>
+
+<Title bar
+>
+
+<To
+>
+
+<To add a command to a toolbar: select a category and drag the command out of this dialog box to a toolbar.
+>
+
+<To proceed with the on-line registration, the PC should be connected to the Interntet.\n\nIf the connection isn't active, press cancel and repeat the procedure when ready.
+>
+
+<Today
+>
+
+<Toggle
+>
+
+<Toggle/view the graphic page toolbar\nPage toolbar
+>
+
+<Toggle/view the project toolbar\nPrj toolbar
+>
+
+<Tool&bars
+>
+
+<Toolb&ars:
+>
+
+<Toolbars
+>
+
+<Tools
+>
+
+<Track 1
+>
+
+<Track 2
+>
+
+<Track 3
+>
+
+<Track 4
+>
+
+<Track 5
+>
+
+<Track 6
+>
+
+<Track 7
+>
+
+<Track 8
+>
+
+<Track color
+>
+
+<Track Left
+>
+
+<Track properties
+>
+
+<Track RightDim
+>
+
+<Transfert
+>
+
+<Transfert license
+>
+
+<Transparency
+>
+
+<Transparent
+>
+
+<Travel Required
+>
+
+<TREE_MENU
+>
+
+<True
+>
+
+<TRUE
+>
+
+<True\nFalse
+>
+
+<Tuesday
+>
+
+<Turquoise
+>
+
+<Two Page
+>
+
+<Type
+>
+
+<Typing
+>
+
+<Ultimo file usato
+>
+
+<Um
+>
+
+<Unable to add tooltip to the button
+>
+
+<Unable to create the PLC code file '%s'\n
+>
+
+<Unable to create the PLL code file '%s'\n
+>
+
+<Unable to open the project
+>
+
+<Unable to open the project\n
+>
+
+<Unable to open the target file '%s'\n
+>
+
+<Unable to open the text file %s
+>
+
+<Unable to run simulation
+>
+
+<Unable to set the project directory\n
+>
+
+<UNDEF
+>
+
+<Undefined command
+>
+
+<Undo the last action\nUndo(Ctrl+Z)
+>
+
+<Unfold
+>
+
+<Unknown
+>
+
+<Untabify
+>
+
+<Update definition file error
+>
+
+<User
+>
+
+<User ID
+>
+
+<V&ariables
+>
+
+<Vacation
+>
+
+<Value
+>
+
+<Value error
+>
+
+<Value selection
+>
+
+<Variable
+>
+
+<Variable address
+>
+
+<Variable name must be specified
+>
+
+<Variable selection
+>
+
+<Variable type is not indicated
+>
+
+<Variable types
+>
+
+<Variable/Parameter
+>
+
+<Variable/Parameter selection
+>
+
+<Variables
+>
+
+<Variables group already exist
+>
+
+<Variables groups
+>
+
+<VARS_MENU
+>
+
+<Verifing sets structure...\n
+>
+
+<Version :
+>
+
+<Vertical
+>
+
+<Vertical bar 1
+>
+
+<Vertical bar 2
+>
+
+<Vertical bar 3
+>
+
+<View &details
+>
+
+<View &folder
+>
+
+<View &list
+>
+
+<View always sign
+>
+
+<View the document bar\nDocument bar
+>
+
+<View the palettes manager\nPalettes
+>
+
+<View the PLC object properties\nPLC Obj properties
+>
+
+<View the targets manager\nTargets
+>
+
+<View/Toggle the actions bar\nActions bar
+>
+
+<View/Toggle the output bar\nOutput bar
+>
+
+<View/Toggle the page properties bar\nProperties bar
+>
+
+<View/Toggle the procedures bar\nProc bar
+>
+
+<View/Toggle the project bar\nProject bar
+>
+
+<View/Toggle the target/parameters bar\nVar/Par bar
+>
+
+<Viewing the information\nAbout
+>
+
+<Violet
+>
+
+<Virtual &space
+>
+
+<Visibility conditions
+>
+
+<Visible
+>
+
+<VK_F1
+>
+
+<VK_F10
+>
+
+<VK_F2
+>
+
+<VK_F3
+>
+
+<VK_F4
+>
+
+<VK_F5
+>
+
+<VK_F6
+>
+
+<VK_F7
+>
+
+<VK_F8
+>
+
+<VK_F9
+>
+
+<w
+>
+
+<W:
+>
+
+<Wednesday
+>
+
+<Week
+>
+
+<week(s)
+>
+
+<week(s) on:
+>
+
+<Welcome
+>
+
+<Wh&ole file
+>
+
+<White
+>
+
+<Whole Page
+>
+
+<Window Settings
+>
+
+<Window title bar
+>
+
+<WorkDays
+>
+
+<Wrong value!
+>
+
+<www.axelsw.it
+>
+
+<X-axis data
+>
+
+<X-axis properties
+>
+
+<X-axis scale
+>
+
+<X color
+>
+
+<X data
+>
+
+<X div. grid
+>
+
+<X Label
+>
+
+<X offset
+>
+
+<X SCale
+>
+
+<X2Pos
+>
+
+<XDim
+>
+
+<XPos
+>
+
+<XxYyZz
+>
+
+<Y div. grid
+>
+
+<Y Scale and Offset
+>
+
+<Y2Pos
+>
+
+<YDim
+>
+
+<Yellow
+>
+
+<Yes
+>
+
+<YPos
+>
+
+<Zoom &In
+>
+
+<Zoom &Out
+>
+
+<Zoom in the current page\nZoom in
+>
+
+<Zoom out the current page\nZoom out
+>
+

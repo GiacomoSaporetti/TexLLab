@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Generic device</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	// salva il percorso corrente dell'albero, in modo da settare la caption corretta se si cambia pagina cliccando sull'albero
+	var m_treePath = window.external.HMIGetCurElementPath("tree1")
+	var m_helpContext
+	var m_useAlModbusRTU = false
+	var m_protocol
+	var m_path
+	
+	function InitPage()
+	{
+		m_path = app.GetCurrentWindowData()
+		pageTitle.innerText = app.DataGet(m_path + "@name", 0) + " Configuration"
+		
+		var node = app.SelectNodesXML(m_path + ".")[0]
+		var targetDevice  = node.selectSingleNode(XPATH_ROOTDEVICE)
+		if ( targetDevice.getAttribute("useAlModbusRTU") == "true" )
+			m_useAlModbusRTU = true
+
+		// ottiene deviceid (nome del nodo)
+		var deviceid = node.nodeName
+		// ottiene l'indirizzo dell'immagine dal catalog
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@image")
+		if (nodelist && nodelist.length != 0)
+			// attributo image trovato, imposta il path dell'immagine
+			deviceImage.src = nodelist[0].text
+		else
+			// nessuna immagine, nasconde il tag <img>
+			deviceImage.style.display = "none"
+		
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/longDescription")
+		if (nodelist && nodelist.length != 0)
+			// nodo longDescription trovato
+			deviceDescription.innerText = nodelist[0].text
+		else
+			// nessuna longDescription, nasconde il fieldset
+			deviceDescription.style.display = "none"
+		
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@helpContext")
+		if (nodelist && nodelist.length != 0)
+		{
+			// help context per manuale PDF
+			m_helpContext = nodelist[0].text
+			imgPDF.src = csspath + '../img/pdf_icon.png'
+		}
+		else
+			// nessun help context, nasconde il link
+			divHelp.style.display = "none"
+		
+		// ottiene il protocol dal parent del device corrente (la porta)
+		m_protocol = node.parentNode.getAttribute("protocol")
+		var hasWaitBeforeSend;
+		var hasMinPollTime;
+		var hasInOutOnVar;
+		var allowSlaveAddressConfigMode;
+		// mostra indirizzo Ip solo per modbus TCP, wait before send solo per RTU
+		if (m_protocol == "ModbusTCP_master")
+		{
+			divIPAddress.style.display = ""
+			lblAddressRange.innerText = "(255 , or 1..247 for bridge)"
+			hasWaitBeforeSend = false;   // non esiste mai su TCP
+			hasMinPollTime = false;      // non esiste mai su TCP
+			hasInOutOnVar = genfuncs.ParseBoolean(targetDevice.getAttribute("ModbusTCPInputOutputOnVariation"));
+			allowSlaveAddressConfigMode = parseInt(targetDevice.getAttribute("ModbusTCPMasterDynamicSlaveAddressConfig"));
+			if (isNaN(allowSlaveAddressConfigMode)) allowSlaveAddressConfigMode = 0
+		}
+		else
+		{
+			divIPAddress.style.display = "none"
+			lblAddressRange.innerText = "(1 .. 247)"
+			hasWaitBeforeSend = !m_useAlModbusRTU || (targetDevice.getAttribute("useAlModbusRTUWaitBeforeSend") == "true");  // c'è su LLExec o AlModbusRTU solo più nuovi
+			hasMinPollTime = m_useAlModbusRTU;   // non c'è su LLExec
+			hasInOutOnVar = genfuncs.ParseBoolean(targetDevice.getAttribute("ModbusRTUInputOutputOnVariation"));
+			allowSlaveAddressConfigMode = parseInt(targetDevice.getAttribute("ModbusRTUMasterDynamicSlaveAddressConfig"));
+			if (isNaN(allowSlaveAddressConfigMode)) allowSlaveAddressConfigMode = 0
+		}
+
+		divNodeNumber.style.display = !m_useAlModbusRTU ? "" : "none";   // c'è solo su LLExec
+		divMinPollTime.style.display = hasMinPollTime ? "" : "none";
+		divTurnAround.style.display = hasWaitBeforeSend ? "" : "none";
+		tabModbusCustomInputOutput.style.display = hasInOutOnVar ? "" : "none";
+		divAddressConfigMode.style.display = allowSlaveAddressConfigMode ? "" : "none";
+
+		var slaveAddressConfigMode = parseInt(app.DataGet(m_path + "ModbusCustom_config[1]/slaveAddressConfigMode[1]", 0))
+		OnChangeAddressConfigMode(slaveAddressConfigMode)
+		
+		// label custom per modbus address
+		var customAddressRange = node.getAttribute("customAddressRange")
+		if (customAddressRange)
+			lblAddressRange.innerText = customAddressRange
+			
+		SearchError(m_path)
+	}
+	
+	function UpdateTreeCaption()
+	{
+		// aggiorna la nuova caption sull'albero sull'elemento attivo
+		window.external.HMISetCaption("tree1", m_treePath, caption.value)
+	}
+	
+	function OnChangeAddressConfigMode(value)
+	{
+		//	update value
+		app.DataSet(m_path + "ModbusCustom_config[1]/slaveAddressConfigMode[1]", 0, value)
+		
+		var slaveAddressConfigMode = parseInt(app.DataGet(m_path + "ModbusCustom_config[1]/slaveAddressConfigMode[1]", 0))
+
+		if (m_protocol == "ModbusTCP_master")
+		{
+			lblModbusAddress.innerText = app.Translate("IP address:")
+			divIPAddress.style.display = slaveAddressConfigMode == 0 ? "" : "none"
+		}
+		else
+		{
+			divModbusAddress.style.display = slaveAddressConfigMode == 0 ? "" : "none"
+		}
+			
+		divDynamicSlaveAddress.style.display = slaveAddressConfigMode == 0 ? "none" : ""
+	}
+</script>
+
+<style>
+#deviceImage
+{
+	margin-left: 50px;
+	width: 250px;
+	float: left;
+}
+#divHelp
+{
+	cursor: pointer;
+	font: bold 16px Arial;
+}
+
+label {
+	display: inline-block;
+}
+</style>
+</head>
+
+<body class="html5">
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<div class="fill-height-container">
+	<div class="TitlePag">
+		<span id="pageTitle"><t:t>Generic Device Configuration</t:t></span>
+	</div>
+
+	<div class="menu">
+		<div class="menu_on"> <a href="#"><t:t>General</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomParams.html"><t:t>Parametrization</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomInput.html"><t:t>Input</t:t></a> </div>
+		<div class="menu_off"> <a href="ModbusCustomOutput.html"><t:t>Output</t:t></a> </div>
+		<div class="menu_off" id="tabModbusCustomInputOutput"> <a href="ModbusCustomInputOutput.html"><t:t>Input + Output</t:t></a> </div>
+	</div>
+
+	<div class="fill-height">
+		<div class="Sfondo">
+			<fieldset>
+				<legend><t:t>Settings</t:t></legend>
+				<label style="width:160px" for="caption"><t:t>Name:</t:t></label>
+				<input id="caption" type="text" name=".D(@caption)" onchange="UpdateTreeCaption()" ><br>
+				<br>
+				<div id="divAddressConfigMode">
+					<label style="width:160px" for="addressConfigMode"><t:t>Address config mode:</t:t></label> 
+					<select id="addressConfigMode" name=".D(ModbusCustom_config[1]/slaveAddressConfigMode[1])" onchange="OnChangeAddressConfigMode(this.value)">
+						<option value="0">Address configured statically</option>
+						<option value="1">Address specified by variable name</option>
+						<option value="2">Address specified by modbus parameter</option>
+						<option value="4">Address specified by 32bit key value</option>
+					</select>
+				</div>
+				<div id="divIPAddress">
+					<label style="width:160px" for="IPAddress"><t:t>IP address:</t:t></label> 
+					<input type="text" id="IPAddress" name=".D(ModbusCustom_config[1]/ip[1])"> <br>
+				</div>
+				<div id="divDynamicSlaveAddress">
+					<label id="lblModbusAddress" style="width:160px" for="dynModbusAddress"><t:t>Modbus address:</t:t></label> 
+					<input type="text" id="dynModbusAddress" name=".D(ModbusCustom_config[1]/dynamicSlaveAddress[1])"><br>
+				</div>
+				<div id="divModbusAddress">
+					<label style="width:160px" for="modbusAddress"><t:t>Modbus address:</t:t></label> 
+					<input type="text" id="modbusAddress" name=".D(ModbusCustom_config[1]/modbusAddress[1])">
+					<label id="lblAddressRange">(1 .. 247)</label><br>
+				</div>
+				<div id="divNodeNumber">
+					<label style="width:160px" for="nodeNumber" title="To be used in PLC with sysMbMRtuNodeStatus[]"><t:t>Node number:</t:t></label> 
+					<input type="text" id="nodeNumber" name=".D(ModbusCustom_config[1]/nodeNumber[1])" title="To be used in PLC with sysMbMRtuNodeStatus[]"> <label>(1 .. 247)</label><br>
+					<br>
+				</div>
+				<label style="width:160px" for="timeout"><t:t>TimeOut:</t:t></label> 
+				<input type="text" id="timeout" name=".D(ModbusCustom_config[1]/timeout[1])"> 
+				<label><t:t>ms</t:t></label>
+				<div id="divTurnAround">
+					<label style="width:160px" for="turnAround"><t:t>Wait before send:</t:t></label> 
+					<input type="text" id="turnAround" name=".D(ModbusCustom_config[1]/turnAround[1])">
+					<label><t:t>ms</t:t></label>
+				</div>
+				<div id="divMinPollTime">
+					<label style="width:160px" for="minPollTime"><t:t>Minimum polling time:</t:t></label> 
+					<input type="text" id="minPollTime" name=".D(ModbusCustom_config[1]/minPollTime[1])">
+					<label><t:t>ms</t:t></label>
+				</div>
+			</fieldset>
+	<!--			<fieldset>
+				<legend><t:t>Device Info</t:t></legend>
+				<label style="width:160px" for="txtMaxBit"><t:t>Max message size (bit):</t:t></label>
+				<input type="text" id="txtMaxBit" size="5" name=".D(@maxMsgSizeBit)" disabled style="background:white">
+				<br>
+				<label style="width:160px" for="txtMaxReg"><t:t>Max message size (reg.):</t:t></label>
+				<input type="text" id="txtMaxReg" size="5" name=".D(@maxMsgSizeReg)" disabled style="background:white">
+			</fieldset>-->
+		</div>
+
+		<img id="deviceImage" src="">
+
+		<table style="position:absolute; right:20px;">
+			<tr>
+				<td>
+					<fieldset id="deviceDescription" class="Textual"></fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">
+					<div id="divHelp" onclick="app.OpenHelp(m_helpContext)">
+						<img id="imgPDF" src=""><br>
+						Manual
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

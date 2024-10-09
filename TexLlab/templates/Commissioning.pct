@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<config>
+	</config>
+	
+	<hmi>
+		<dockbar caption="Commissioning" name="dockCommissioning" position="attach" size="200" relativeto="59433" icon="img\resources.bmp">
+			<tree name="treeCommissioning" iconsizex="16" iconsizey="16" bordertype="none" uniquecaptions="false" onclick="common.OnTreeClick" ondrop="common.OnTreeDrop" onkeydown="common.OnTreeKeyDown" ctrlID="100">
+				<overlayimg index="1">img\disabled.ico</overlayimg>
+				<node name="ROOT" data="/" default="true" window="mainpage" icon="img\resources.bmp"/>
+			</tree>
+		</dockbar>
+	</hmi>
+	
+<!--	<templatedata>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		</xs:schema>
+	</datadef>-->
+	
+	<extensions>
+	</extensions>
+</template>

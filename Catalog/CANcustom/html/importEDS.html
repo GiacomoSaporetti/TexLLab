@@ -1,0 +1,183 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Import EDS</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<script type="text/javascript">
+try
+{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+catch (e)
+{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+function Init()
+{
+}
+
+var info 
+
+function onOK()
+{
+	// verifica validità input
+	if (!info || shortname.value == "" || name.value == "")
+		return
+	
+	if (shortname.value.indexOf(" ") != -1 || shortname.value.indexOf(":") != -1 || shortname.value.indexOf(".") != -1)
+	{
+		alert(msg_invalidShortName.innerText)
+		shortname.focus()
+		return
+	}
+
+	// verifica non duplicazione nodi
+	var nodes = window.external.CallFunction("catalog.Query", "//device[@name = '" + name.value + "' or @deviceid = 'CANcustom_" + shortname.value + "']")
+	if (nodes && nodes.length != 0)
+		if (!confirm(msg_alreadyExist.innerText))
+			return
+
+	// importazione eds in gft
+	var result = window.external.CallFunction("EDS.ImportEDS", info, newname.value, version.value, shortname.value, dynPDO.checked, undefined, hasBootUpMsg.checked)
+	if (result)
+	{
+		// ricarica subito il catalogo (la cache è stata cancellata da ImportEDS)
+		app.CallFunction("catalog.Load", app.CallFunction("catalog.GetCatalogPath"))
+		
+		window.external.MessageBox(msg_importOk.innerText + "\n" + shortname.value + ".PCT", "Import EDS", 0x40)
+		CloseDlg()
+	}
+	else
+		alert(msg_importError.innerText)
+}
+
+function CloseDlg()
+{
+	window.opener = "x"; window.open("", "_self")
+	window.close()
+}
+
+function ChooseFile()
+{
+	var value = window.external.CallFunction("extfunct.ShowOpenFileDlg", "EDS files|*.EDS|All files|*.*|")
+	if (value)
+	{
+		eds.value = value
+		
+		// lettura eds come file ini
+		info = window.external.CallFunction("EDS.ReadEDS", value)
+		if (!info)
+		{
+			alert(msg_errorParsingEDS.innerText)
+			return
+		}
+		
+		var result = window.external.CallFunction("EDS.GetNameFromEDS", info)
+		
+		vendorname.value = info.VendorName
+		productname.value = info.ProductName
+		desc.value = info.Description
+		comments.value = info.Comments.join("\n")
+		revision.value = result.revision
+		
+		if ( !info.MandatoryObjects )
+			mandatory.value = 0
+		else
+			mandatory.value = info.MandatoryObjects.length
+
+		if ( !info.OptionalObjects )	
+			optional.value = 0
+		else
+			optional.value = info.OptionalObjects.length
+			
+		if ( !info.ManufacturerObjects )	
+			manufacturer.value = 0
+		else
+			manufacturer.value = info.ManufacturerObjects.length
+		
+		newname.value = result.name
+		version.value = result.revision
+		shortname.value = result.shortName
+		
+		newname.focus()
+	}
+}
+</script>
+<style>
+.disabledBG {
+	background: #dddddd;
+}
+</style>
+</head>
+<body scroll="no" onload="Init()" class="Sfondo">
+
+<label for="eds"><t:t>Source EDS:</t:t></label>
+<input class="disabledBG" readonly="yes" type="text" id="eds" size="50">
+<button onclick="ChooseFile()"><t:t>Choose...</t:t></button>
+<br>
+<hr>
+
+<table border="0" cellpadding="0">
+<tr>
+<td width="180px"><label for="newname"><t:t>New Name and Version:</t:t></label></td>
+<td><input type="text" id="newname" size="20"><input type="text" id="version" size="8"></td>
+</tr>
+<tr>
+<td><label for="shortname"><t:t>Short Name:</t:t></label></td>
+<td><input type="text" id="shortname" size="20" title="This short name will be used for the PCT name, XML tags, and device ID" ></td>
+</tr>
+<tr>
+<td><label for="dynPDO"><t:t>Has variable PDO mapping:</t:t></label></td>
+<td><input type="checkbox" id="dynPDO" title="Check this control if this device supports variable PDO mapping configuration" checked></td>
+</tr>
+<tr>
+<td><label for="hasBootUpMsg"><t:t>Sends boot-up message at reset</t:t></label></td>
+<td><input type="checkbox" id="hasBootUpMsg" title="Check this control if this device sends boot-up message after initialization, before enter pre-operational state" checked></td>
+</tr>
+</table>
+<hr>
+
+<table border="0" cellpadding="0">
+<tr>
+<td><label for="vendorname"><t:t>Vendor Name:</t:t></label></td>
+<td colspan="3"><input class="disabledBG" readonly="yes" type="text" id="vendorname" size="20"></td>
+</tr>
+<tr>
+<td><label for="productname"><t:t>Product Name:</t:t></label></td>
+<td><input class="disabledBG" readonly="yes" type="text" id="productname" size="20"></td>
+<td><label for="revision"><t:t>Revision:</t:t></label></td>
+<td><input class="disabledBG" readonly="yes" type="text" id="revision" size="10"></td>
+</tr>
+<tr>
+<td><label for="desc"><t:t>Description:</t:t></label></td>
+<td colspan="3"><input class="disabledBG" readonly="yes" type="text" id="desc" size="50"></td>
+</tr>
+</table>
+
+<br>
+<label for="comments"><t:t>Comments:</t:t></label>
+<br>
+<textarea class="disabledBG" readonly="yes" type="text" id="comments" rows="4" cols="55"></textarea>
+<br>
+<label><b><t:t>Number of Objects</t:t></b></label>
+<br>
+<label><t:t>Mandatory:</t:t></label>
+<input class="disabledBG" readonly="yes" type="text" id="mandatory" size="5">
+<label><t:t>Optional:</t:t></label>
+<input class="disabledBG" readonly="yes" type="text" id="optional" size="5">
+<label><t:t>Manufacturer:</t:t></label>
+<input class="disabledBG" readonly="yes" type="text" id="manufacturer" size="5">
+
+<br><br>
+<div align="center">
+	<button style="width: 120px" onclick="onOK()"><b><t:t>OK</t:t></b></button>&nbsp;&nbsp;&nbsp;
+	<button style="width: 120px" onclick="CloseDlg()"><b><t:t>Cancel</t:t></b></button>
+</div>
+
+<div style="display:none" id="msg_invalidShortName"><t:t>Short name can not contain spaces or special characters</t:t></div>
+<div style="display:none" id="msg_errorParsingEDS"><t:t>Error parsing EDS file</t:t></div>
+<div style="display:none" id="msg_importOk"><t:t>EDS file correctly imported into catalog as</t:t></div>
+<div style="display:none" id="msg_importError"><t:t>Error importing EDS file</t:t></div>
+<div style="display:none" id="msg_alreadyExist"><t:t>A device with this name or short name already exists. Proceed and overwrite it?</t:t></div>
+</body>
+</html>

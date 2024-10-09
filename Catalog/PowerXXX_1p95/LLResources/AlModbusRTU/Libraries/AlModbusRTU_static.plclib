@@ -1,0 +1,3024 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.3">
+	<lib version="1.10" name="AlModbusRTU" fullXml="true">
+		<descr/>
+		<libWorkspace>
+			<folder name="AlModbusRTU">
+				<folder name="Definitions">
+					<folder name="Structures">
+						<Definition name="MbMRtuNetList"/>
+						<Definition name="MbMRtuStatus"/>
+						<Definition name="MbRtuDiagnostics"/>
+					</folder>
+					<folder name="Enumeratives">
+						<Definition name="MbBaudrate"/>
+						<Definition name="MbChn"/>
+						<Definition name="MbError"/>
+						<Definition name="MbException"/>
+						<Definition name="MbFunction"/>
+						<Definition name="MbMode"/>
+						<Definition name="MbParam"/>
+						<Definition name="MbRqErr"/>
+						<Definition name="MbStatus"/>
+						<Definition name="MbRSMode"/>
+						<Definition name="MB_RESULT_VALUE"/>
+						<Definition name="MB_RTU_NETWORK_ID"/>
+						<Definition name="MbSlaveAddressConfigMode"/>
+						<Definition name="MbInpOutCmdMode"/>
+					</folder>
+				</folder>
+				<folder name="Obsolete">
+					<Pou name="sysMbMRtu_SetCurrMsgOneShotVar"/>
+					<Pou name="sysMbMRtu_MsgConfigCompleted"/>
+					<Pou name="sysMbMRtu_NewSlaveMessage"/>
+					<Pou name="sysMbMRtu_NewSlaveMessage2"/>
+					<Pou name="sysMbMRtu_NewSlaveMessage3"/>
+					<Pou name="sysMbMRtu_OpenChn"/>
+					<Pou name="sysMbMRtu_OpenChn2"/>
+					<Pou name="sysMbMRtu_SlaveAddToNetList"/>
+					<Pou name="sysMbMRtu_SlaveAddToNetList2"/>
+					<Pou name="sysMbMRtu_MemoryMapping"/>
+					<Pou name="sysMbMRtu_FC01"/>
+					<Pou name="sysMbMRtu_FC02"/>
+					<Pou name="sysMbMRtu_FC03"/>
+					<Pou name="sysMbMRtu_FC04"/>
+					<Pou name="sysMbMRtu_FC05"/>
+					<Pou name="sysMbMRtu_FC06"/>
+					<Pou name="sysMbMRtu_FC15"/>
+					<Pou name="sysMbMRtu_FC16"/>
+				</folder>
+				<Pou name="sysMbMRtu_GetMasterStatus"/>
+				<Pou name="sysMbMRtu_GetSlaveHandle"/>
+				<Pou name="sysMbMRtu_SlaveActivation"/>
+				<Pou name="sysMbMRtu_SlaveChangeAddress"/>
+				<Pou name="sysMbMRtu_GetSlaveStatus"/>
+				<GlobalVars name="ModbusVars">
+					<folder name="Definitions">
+						<Definition name="MbRtuDiagnostics"/>
+						<Definition name="MbMRtuNetList"/>
+						<Definition name="MbMRtuStatus"/>
+					</folder>
+				</GlobalVars>
+				<Pou name="sysMbMRtu_Boot"/>
+				<Pou name="sysMbMRtu_CloseChn"/>
+				<Pou name="sysMbMRtu_SetCurrMsgOneShotVar2"/>
+				<Pou name="sysMbMRtu_MsgConfigCompleted2"/>
+				<Pou name="sysMbMRtu_NewBroadcastMessage3"/>
+				<Pou name="sysMbMRtu_NewSlaveMessage4"/>
+				<Pou name="sysMbMRtu_OpenChn3"/>
+				<Pou name="sysMbMRtu_SlaveAddToNetList2"/>
+				<Pou name="sysMbMRtu_SlavePrmInteger"/>
+				<Pou name="sysMbMRtu_SlavePrmReal"/>
+				<Pou name="sysMbMRtu_MemoryMapping2"/>
+				<Pou name="sysMbSRtu_Boot"/>
+				<Pou name="sysMbSRtu_CloseChn"/>
+				<Pou name="sysMbSRtu_OpenChn"/>
+				<Pou name="ModbusRTU_WriteMultCoils2"/>
+				<Pou name="ModbusRTU_WriteSingleReg2"/>
+				<Pou name="ModbusRTU_WriteSingleCoil2"/>
+				<Pou name="ModbusRTU_ReadDiscrInputs2"/>
+				<Pou name="ModbusRTU_ReadCoils2"/>
+				<Pou name="ModbusRTU_ReadInputRegs2"/>
+				<Pou name="ModbusRTU_WriteMultRegs2"/>
+				<Pou name="ModbusRTU_ReadHoldingRegs2"/>
+				<Pou name="ModbusRTU_ReadDeviceIdent"/>
+				<Pou name="sysMbMRtu_ChangePortSettings"/>
+				<Pou name="sysMbMRtu_SetMaxRetriesForSlave"/>
+				<Pou name="sysMbMRtu_DisableWriteForSlave"/>
+				<Pou name="sysMbMRtu_SlaveGetDynamicAddr"/>
+				<Pou name="sysMbMRtu_SetCurMsgInpOutMode"/>				
+			</folder>
+		</libWorkspace>
+		<globalVars>
+			<group name="ModbusVars">
+				<var name="sysMbRtuDiagnostics" type="MbRtuDiagnostics" dim0="2">
+					<descr>Modbus RTU standard diagnostics</descr>
+					<address type="I" typeVar="B" index="60012" subIndex="0"/>
+				</var>
+				<var name="sysMbMRtuStatus" type="MbMRtuStatus">
+					<descr>Modbus master RTU status (network 0)</descr>
+					<address type="I" typeVar="B" index="60010" subIndex="0"/>
+				</var>
+				<var name="sysMbMRtuNetList" type="MbMRtuNetList" dim0="32">
+					<descr>Modbus master RTU network list</descr>
+					<address type="I" typeVar="B" index="60011" subIndex="0"/>
+				</var>
+			</group>
+		</globalVars>
+		<retainVars>
+			<group name="ModbusVars"/>
+		</retainVars>
+		<constantVars>
+			<group name="ModbusVars"/>
+		</constantVars>
+		<iecVarsDeclaration>
+			<group name="ModbusVars">
+				<iecDeclaration active="FALSE"/>
+			</group>
+		</iecVarsDeclaration>
+		<functions>
+			<function name="sysMbSRtu_OpenChn" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus slave RTU open channel</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="ser" type="USINT">
+							<descr>Serial Port (logical channel id)</descr>
+						</var>
+						<var name="baud" type="DINT">
+							<descr>Serial Port Baudrate, refer to enumerative MbRtuBaudRate</descr>
+						</var>
+						<var name="mode" type="DINT">
+							<descr>Serial Port Mode, refer to enumerative MbRtuMode</descr>
+						</var>
+						<var name="serCfg" type="USINT">
+							<descr>Serial configuration, if TRUE configure serial port using parameters in database</descr>
+						</var>
+						<var name="phyCfg" type="USINT">
+							<descr>Serial Port configuration (physical port id)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbSRtu_OpenChn2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus slave RTU open channel</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="ser" type="USINT">
+							<descr>Serial Port (logical channel id)</descr>
+						</var>
+						<var name="baud" type="DINT">
+							<descr>Serial Port Baudrate, refer to enumerative MbRtuBaudRate</descr>
+						</var>
+						<var name="mode" type="DINT">
+							<descr>Serial Port Mode, refer to enumerative MbRtuMode</descr>
+						</var>
+						<var name="serCfg" type="USINT">
+							<descr>Serial configuration, if TRUE configure serial port using parameters in database</descr>
+						</var>
+						<var name="phyCfg" type="USINT">
+							<descr>Serial Port configuration (physical port id)</descr>
+						</var>
+						<var name="isModbusASCII" type="BOOL">
+							<descr>TRUE to enable Modbus </descr>
+						</var>
+						<var name="rsMode" type="DINT">
+							<descr>Serial port RS Mode, refer to enumerative MbRtuRSMode</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbSRtu_CloseChn" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus slave RTU close channel</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus slave RTU channel, returned from sysMbSRtu_OpenChn</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbSRtu_Boot" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus slave RTU Boot Configuration</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="boot" type="BOOL">
+							<descr>Modbus slave RTU Boot Configuration command</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlavePrmReal" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU slave parametrization with real value</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="id" type="UINT">
+							<descr>Unique identification number single slave</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="val" type="REAL">
+							<descr>Real Value to be written</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_MemoryMapping" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU memory structures allocation</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pMbMNetList" type="DWORD">
+							<descr>Address of the net list structure</descr>
+						</var>
+						<var name="numNodes" type="UDINT">
+							<descr>Number of slaves in the netlist</descr>
+						</var>
+						<var name="pMbMMsgQueue" type="DWORD">
+							<descr>Address of the message queue that will be filled</descr>
+						</var>
+						<var name="numMsg" type="UDINT">
+							<descr>Number of messages available for the queue</descr>
+						</var>
+						<var name="memoryAllocated" type="UDINT">
+							<descr>Size in bytes of the memory allocated for network and queue</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_MemoryMapping2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU memory structures allocation</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="network" type="USINT">
+							<descr>Modbus master network id (logical id)</descr>
+						</var>
+						<var name="pMbMNetList" type="DWORD">
+							<descr>Address of the net list structure</descr>
+						</var>
+						<var name="numNodes" type="UDINT">
+							<descr>Number of slaves in the netlist</descr>
+						</var>
+						<var name="pMbMMsgQueue" type="DWORD">
+							<descr>Address of the message queue that will be filled</descr>
+						</var>
+						<var name="numMsg" type="UDINT">
+							<descr>Number of messages available for the queue</descr>
+						</var>
+						<var name="memoryAllocated" type="UDINT">
+							<descr>Size in bytes of the memory allocated for network and queue</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlavePrmInteger" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU slave parametrization with integer value</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="id" type="UINT">
+							<descr>Unique identification number single slave</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="val" type="DINT">
+							<descr>Integer Value to be written</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlaveAddToNetList" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU adding slave on network</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="min_poll_time" type="UINT">
+							<descr>Modbus slave minimum polling time (ms)</descr>
+						</var>
+						<var name="prm" type="UINT">
+							<descr>Number of parametrization message that slave will be received</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlaveAddToNetList2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU adding slave on network</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="min_poll_time" type="UINT">
+							<descr>Modbus slave minimum polling time (ms)</descr>
+						</var>
+						<var name="prm" type="UINT">
+							<descr>Number of parametrization message that slave will be received</descr>
+						</var>
+						<var name="swapWords" type="USINT">
+							<descr>Swap words mode</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_OpenChn" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU open channel</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="ser" type="USINT">
+							<descr>Serial Port (logical channel id)</descr>
+						</var>
+						<var name="baud" type="DINT">
+							<descr>Serial Port Baudrate, refer to enumerative MbRtuBaudRate</descr>
+						</var>
+						<var name="mode" type="DINT">
+							<descr>Serial Port Mode, refer to enumerative MbRtuMode</descr>
+						</var>
+						<var name="serCfg" type="USINT">
+							<descr>Serial configuration, if TRUE configure serial port using parameters in database</descr>
+						</var>
+						<var name="phyCfg" type="USINT">
+							<descr>Serial Port configuration (physical port id)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_OpenChn2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU open channel</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="ser" type="USINT">
+							<descr>Serial Port (logical channel id)</descr>
+						</var>
+						<var name="baud" type="DINT">
+							<descr>Serial Port Baudrate, refer to enumerative MbRtuBaudRate</descr>
+						</var>
+						<var name="mode" type="DINT">
+							<descr>Serial Port Mode, refer to enumerative MbRtuMode</descr>
+						</var>
+						<var name="serCfg" type="USINT">
+							<descr>Serial configuration, if TRUE configure serial port using parameters in database</descr>
+						</var>
+						<var name="phyCfg" type="USINT">
+							<descr>Serial Port configuration (physical port id)</descr>
+						</var>
+						<var name="rsMode" type="DINT">
+							<descr>Serial port RS Mode, refer to enumerative MbRtuRSMode</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_OpenChn3" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU open channel</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="network" type="USINT">
+							<descr>Modbus master network id (logical id)</descr>
+						</var>
+						<var name="ser" type="USINT">
+							<descr>Serial channel (logical channel id)</descr>
+						</var>
+						<var name="baud" type="DINT">
+							<descr>Serial Port Baudrate, refer to enumerative MbRtuBaudRate</descr>
+						</var>
+						<var name="mode" type="DINT">
+							<descr>Serial Port Mode, refer to enumerative MbRtuMode</descr>
+						</var>
+						<var name="serCfg" type="USINT">
+							<descr>Serial configuration, if TRUE configure serial port using parameters in database</descr>
+						</var>
+						<var name="phyCfg" type="USINT">
+							<descr>Serial Port configuration (physical port id)</descr>
+						</var>
+						<var name="rsMode" type="DINT">
+							<descr>Serial port RS Mode, refer to enumerative MbRtuRSMode</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_NewSlaveMessage" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU set new message for a slave</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="fnz" type="DINT">
+							<descr>Modbus function, refer to enumerative MbFunction</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="db_n" type="UINT">
+							<descr>Modbus element corresponding datablock</descr>
+						</var>
+						<var name="db_o" type="UINT">
+							<descr>Modbus element corresponding datablock offset</descr>
+						</var>
+						<var name="db_t" type="USINT">
+							<descr>Modbus element corresponding datablock type</descr>
+						</var>
+						<var name="poll_time" type="UINT">
+							<descr>Polling time (ms)</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+						<var name="modbus_pdu_tx_buffer" type="DWORD">
+							<descr>Modbus pdu tx buffer (for on event msg only)</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_NewSlaveMessage2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU set new message for a slave</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="fnz" type="DINT">
+							<descr>Modbus function, refer to enumerative MbFunction</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="db_n" type="UINT">
+							<descr>Modbus element corresponding datablock</descr>
+						</var>
+						<var name="db_o" type="UINT">
+							<descr>Modbus element corresponding datablock offset</descr>
+						</var>
+						<var name="db_t" type="USINT">
+							<descr>Modbus element corresponding datablock type</descr>
+						</var>
+						<var name="poll_time" type="UINT">
+							<descr>Polling time (ms)</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+						<var name="modbus_pdu_tx_buffer" type="DWORD">
+							<descr>Modbus pdu tx buffer (for on event msg only)</descr>
+						</var>
+						<var name="reg_types_info" type="DWORD">
+							<descr>Register types informations</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_NewSlaveMessage3" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU set new message for a slave</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="fnz" type="DINT">
+							<descr>Modbus function, refer to enumerative MbFunction</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="dbElemsArr" type="@UINT">
+							<descr>Array of datablock mappings</descr>
+						</var>
+						<var name="dbAddrArr" type="PVOID">
+							<descr>Array of datablock addresses</descr>
+						</var>
+						<var name="poll_time" type="UINT">
+							<descr>Polling time (ms)</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+						<var name="modbus_pdu_tx_buffer" type="@BYTE">
+							<descr>Modbus pdu tx buffer (for on event msg only)</descr>
+						</var>
+						<var name="reg_types_info" type="@BYTE">
+							<descr>Register types informations</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_NewSlaveMessage4" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU set new message for a slave</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="fnz" type="DINT">
+							<descr>Modbus function, refer to enumerative MbFunction</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="dbElemsArr" type="@UINT">
+							<descr>Array of datablock mappings</descr>
+						</var>
+						<var name="dbAddrArr" type="PVOID">
+							<descr>Array of datablock addresses</descr>
+						</var>
+						<var name="poll_time" type="UINT">
+							<descr>Polling time (ms)</descr>
+						</var>
+						<var name="tmo" type="UINT">
+							<descr>Time out (ms)</descr>
+						</var>
+						<var name="modbus_pdu_tx_buffer" type="@BYTE">
+							<descr>Modbus pdu tx buffer (for on event msg only)</descr>
+						</var>
+						<var name="reg_types_info" type="@BYTE">
+							<descr>Register types informations</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time (ms) to wait from last received message, before a new send</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_NewBroadcastMessage3" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU set new broadcast message</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="fnz" type="DINT">
+							<descr>Modbus function, refer to enumerative MbFunction</descr>
+						</var>
+						<var name="reg" type="UINT">
+							<descr>Modbus element starting address</descr>
+						</var>
+						<var name="dim" type="UINT">
+							<descr>Modbus quantity of element</descr>
+						</var>
+						<var name="dbElemsArr" type="@UINT">
+							<descr>Array of datablock mappings</descr>
+						</var>
+						<var name="dbAddrArr" type="PVOID">
+							<descr>Array of datablock addresses</descr>
+						</var>
+						<var name="turn_time" type="UINT">
+							<descr>Tournaround delay (ms)</descr>
+						</var>
+						<var name="poll_time" type="UINT">
+							<descr>Polling time (ms)</descr>
+						</var>
+						<var name="modbus_pdu_tx_buffer" type="@BYTE">
+							<descr>Modbus pdu tx buffer (for on event msg only)</descr>
+						</var>
+						<var name="reg_types_info" type="@BYTE">
+							<descr>Register types informations</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SetCurrMsgOneShotVar" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU oneshot variable</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="db_n" type="UINT">
+							<descr>Oneshot variable corresponding datablock</descr>
+						</var>
+						<var name="db_o" type="UINT">
+							<descr>Oneshot variable corresponding datablock offset</descr>
+						</var>
+						<var name="db_t" type="USINT">
+							<descr>Oneshot variable corresponding datablock type</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SetCurrMsgOneShotVar2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU oneshot variable</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="db_n" type="UINT">
+							<descr>Oneshot variable corresponding datablock</descr>
+						</var>
+						<var name="db_o" type="UINT">
+							<descr>Oneshot variable corresponding datablock offset</descr>
+						</var>
+						<var name="db_t" type="USINT">
+							<descr>Oneshot variable corresponding datablock type</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_MsgConfigCompleted" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Message configuration completed</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="completed" type="BOOL">
+							<descr>Always TRUE</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_MsgConfigCompleted2" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Message configuration completed</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="completed" type="BOOL">
+							<descr>Always TRUE</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_CloseChn" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU close channel</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_Boot" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0">
+				<descr>Modbus master RTU Boot Configuration</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="boot" type="BOOL">
+							<descr>Modbus master RTU Boot Configuration command</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlaveActivation" version="1.0.0" creationDate="0" lastModifiedDate="1564576166">
+				<title>Activate/Deactivate selected slave communication</title>
+				<descr>Modbus master RTU Activate/Deactivate Slave communication</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="handle" type="USINT">
+							<descr>Modbus slave handle, returned from sysMbMRtu_GetSlaveHandle</descr>
+						</var>
+						<var name="activate" type="BOOL">
+							<descr>If TRUE, Slave is concurrent in communication</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlaveChangeAddress" version="1.0.0" creationDate="0" lastModifiedDate="1564576166">
+				<title>Change selected slave address</title>
+				<descr>Modbus master RTU change slave address. Address can be changed only in init task</descr>
+				<returnValue>MbRqErr</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="handle" type="USINT">
+							<descr>Modbus slave handle, returned from sysMbMRtu_GetSlaveHandle</descr>
+						</var>
+						<var name="new_address" type="USINT">
+							<descr>New slave address</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_GetSlaveHandle" version="1.0.0" creationDate="0" lastModifiedDate="0">
+				<title>Get handle (offset number in Netlist) of selected slave</title>
+				<descr>Modbus master RTU get offset in Netlist of corresponding slave</descr>
+				<returnValue>USINT</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_ChangePortSettings" version="1.0.0" creationDate="1679326966" lastModifiedDate="1679399418" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Change serial configuration</title>
+				<descr>Change serial configuration at runtime (close and reopen channel with new settings)
+
+Returns TRUE if change happens, FALSE else.</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="new_baudrate" type="MbBaudrate">
+							<descr>New value for baudrate</descr>
+						</var>
+						<var name="new_frameMode" type="MbMode">
+							<descr>New value for frame mode</descr>
+						</var>
+						<var name="new_RSMode" type="MbRSMode">
+							<descr>New value for serial mode</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SetMaxRetriesForSlave" version="1.0.0" creationDate="1679326966" lastModifiedDate="1679399418" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Set maximum number of retries for a slave</title>
+				<descr>Set maximum number of retries for a slave: after this value a slave will declared as not active and lost.
+Current value can be found in the corresponding sysMbMRtuNetList[] entry.</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="handle" type="USINT">
+							<descr>Modbus slave handle, returned from sysMbMRtu_GetSlaveHandle</descr>
+						</var>
+						<var name="maxRetries" type="UINT">
+							<descr>Max number of retries; use 16#FFFF for infinite retries</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_DisableWriteForSlave" version="1.0.0" creationDate="1679326966" lastModifiedDate="1679399418" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Enable or disable write commands for a slave</title>
+				<descr>Enable or disable write commands for a slave.
+Current value can be found in the corresponding sysMbMRtuNetList[] entry.</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="handle" type="USINT">
+							<descr>Modbus slave handle, returned from sysMbMRtu_GetSlaveHandle</descr>
+						</var>
+						<var name="disableWrite" type="BOOL">
+							<descr>TRUE if write commands must be disabled</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SlaveGetDynamicAddr" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Get slave modbus address by dynamic key setting</title>
+				<descr>Get slave modbus address by dynamic key setting.</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="adr" type="@USINT">
+							<descr>Modbus slave address (output)</descr>
+						</var>
+						<var name="slaveAddressConfigMode" type="MbSlaveAddressConfigMode">
+							<descr>Modbus slave address (retrieved by specified key)</descr>
+						</var>
+						<var name="keyValue" type="PVOID">
+							<descr>Key value. Depends on specified key</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>
+			<function name="sysMbMRtu_SetCurMsgInpOutMode" version="1.0.0" hidden="true" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Configure input output command</title>
+				<descr>Configure input output command</descr>
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="chn" type="USINT">
+							<descr>Modbus master RTU channel</descr>
+						</var>
+						<var name="cmdStruct" type="@MbInpOutCmdStruct">
+							<descr>Work command struct</descr>
+						</var>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="EMBEDDED"/>
+			</function>			
+		</functions>
+		<functionBlocks>
+			<functionBlock name="sysMbMRtu_GetSlaveStatus" version="1.0.0" creationDate="0" lastModifiedDate="1564576166">
+				<title>Get status of selected modbus RTU slave</title>
+				<descr>Modbus master RTU get status of corresponding slave</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+						<var name="hdl" type="USINT">
+							<descr>Modbus slave handle, returned from sysMbMRtu_GetSlaveHandle</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="adr" type="USINT">
+							<descr>Modbus slave address</descr>
+						</var>
+						<var name="cfg" type="BOOL">
+							<descr>Modbus slave is added to netlist</descr>
+						</var>
+						<var name="pres" type="BOOL">
+							<descr>Modbus slave is present on network</descr>
+						</var>
+						<var name="active" type="BOOL">
+							<descr>Modbus slave is concurrent in communication</descr>
+						</var>
+						<var name="n_prm" type="UINT">
+							<descr>Total number of Parametrization Slave Message</descr>
+						</var>
+						<var name="n_qmsg" type="UINT">
+							<descr>Total number of Configurated Slave Message</descr>
+						</var>
+						<var name="min_poll_time" type="UINT">
+							<descr>Minimum polling time (ms)</descr>
+						</var>
+						<var name="status" type="MbStatus">
+							<descr>Modbus slave state machine, referred to enumerative MbStatus</descr>
+						</var>
+						<var name="error" type="MbError">
+							<descr>Modbus slave last error, referred to enumerative MbError</descr>
+						</var>
+						<var name="exception" type="MbException">
+							<descr>Modbus slave last exception, referred to enumerative MbException</descr>
+						</var>
+						<var name="n_SlaveExceptionCount" type="UINT">
+							<descr>Slave Exception Error Count</descr>
+						</var>
+						<var name="n_SlaveMessageCount" type="UINT">
+							<descr>Slave Message Count</descr>
+						</var>
+						<var name="n_SlaveNoResponsCount" type="UINT">
+							<descr>Slave No Response Count</descr>
+						</var>
+						<var name="n_SlaveNAKCount" type="UINT">
+							<descr>Slave NAK Count</descr>
+						</var>
+						<var name="n_SlaveBusyCount" type="UINT">
+							<descr>Slave Busy Count</descr>
+						</var>
+						<var name="n_SlaveChrOvrCount" type="UINT">
+							<descr>Slave Character Overrun Count</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_GetMasterStatus" version="1.0.0" creationDate="0" lastModifiedDate="1564573500">
+				<title>Get status of modbus master RTU</title>
+				<descr>Modbus master RTU get status of master</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="USINT">
+							<descr>Modbus serial port number, referred to enumerative MB_RTU_NETWORK_ID</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="cfgOk" type="BOOL">
+							<descr>Modbus Master configured</descr>
+						</var>
+						<var name="status" type="MbStatus">
+							<descr>Modbus Master state machine, referred to enumerative MbStatus</descr>
+						</var>
+						<var name="lastError" type="MbError">
+							<descr>Modbus Master last error, referred to enumerative MbError</descr>
+						</var>
+						<var name="nSlaves" type="USINT">
+							<descr>Total number of Configurated Slave in Net list</descr>
+						</var>
+						<var name="nQueuedMsg" type="UINT">
+							<descr>Total number of Configurated Broadcast and Single Slave Message</descr>
+						</var>
+						<var name="nQueuedBroadcastMsg" type="UINT">
+							<descr>Total number of Configurated Broadcast Message</descr>
+						</var>
+						<var name="nBusMsgCount" type="UINT">
+							<descr>Bus Message Count</descr>
+						</var>
+						<var name="nBusCommErrCount" type="UINT">
+							<descr>Bus Communication Error Count</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC16" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Write Multiple Registers - Function 16 (0x10).
+This function block can be used in the Background task only.
+You have to assure that all input variables, except any objectN variable, where N is greater than the value of no input variable, are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation. The values of all input variables ranging from object1 to objectN, where N equals the value of no input variable are the values sent on the communication bus to the slave node.
+After function block execution, if an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first Holding Register to write</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous Holding Registers to write</descr>
+						</var>
+						<var name="object1" type="UINT">
+							<descr>1st Holding Register value</descr>
+						</var>
+						<var name="object2" type="UINT">
+							<descr>2nd Holding Register value</descr>
+						</var>
+						<var name="object3" type="UINT">
+							<descr>3rd Holding Register value</descr>
+						</var>
+						<var name="object4" type="UINT">
+							<descr>4th Holding Register value</descr>
+						</var>
+						<var name="object5" type="UINT">
+							<descr>5th Holding Register value</descr>
+						</var>
+						<var name="object6" type="UINT">
+							<descr>6th Holding Register value</descr>
+						</var>
+						<var name="object7" type="UINT">
+							<descr>7th Holding Register value</descr>
+						</var>
+						<var name="object8" type="UINT">
+							<descr>8th Holding Register value</descr>
+						</var>
+						<var name="object9" type="UINT">
+							<descr>9th Holding Register value</descr>
+						</var>
+						<var name="object10" type="UINT">
+							<descr>10th Holding Register value</descr>
+						</var>
+						<var name="object11" type="UINT">
+							<descr>11th Holding Register value</descr>
+						</var>
+						<var name="object12" type="UINT">
+							<descr>12th Holding Register value</descr>
+						</var>
+						<var name="object13" type="UINT">
+							<descr>13th Holding Register value</descr>
+						</var>
+						<var name="object14" type="UINT">
+							<descr>14th Holding Register value</descr>
+						</var>
+						<var name="object15" type="UINT">
+							<descr>15th Holding Register value</descr>
+						</var>
+						<var name="object16" type="UINT">
+							<descr>16th Holding Register value</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC15" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Write Multiple Coils - Function 15 (0x0F).
+This function block can be used in the Bakcground task only.
+You have to assure that all input variables, except any objectN variable, where N is greater than the value of no input variable, are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation. The values of all input variables ranging from object1 to objectN, where N equals the value of no input variable are the values sent on the communication bus to the slave node.
+After function block execution, if an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first Coils to write</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous Coils to write</descr>
+						</var>
+						<var name="object1" type="BOOL">
+							<descr>1st Coil value</descr>
+						</var>
+						<var name="object2" type="BOOL">
+							<descr>2nd Coil value</descr>
+						</var>
+						<var name="object3" type="BOOL">
+							<descr>3rd Coil value</descr>
+						</var>
+						<var name="object4" type="BOOL">
+							<descr>4th Coil value</descr>
+						</var>
+						<var name="object5" type="BOOL">
+							<descr>5th Coil value</descr>
+						</var>
+						<var name="object6" type="BOOL">
+							<descr>6th Coil value</descr>
+						</var>
+						<var name="object7" type="BOOL">
+							<descr>7th Coil value</descr>
+						</var>
+						<var name="object8" type="BOOL">
+							<descr>8th Coil value</descr>
+						</var>
+						<var name="object9" type="BOOL">
+							<descr>9th Coil value</descr>
+						</var>
+						<var name="object10" type="BOOL">
+							<descr>10th Coil value</descr>
+						</var>
+						<var name="object11" type="BOOL">
+							<descr>11th Coil value</descr>
+						</var>
+						<var name="object12" type="BOOL">
+							<descr>12th Coil value</descr>
+						</var>
+						<var name="object13" type="BOOL">
+							<descr>13th Coil value</descr>
+						</var>
+						<var name="object14" type="BOOL">
+							<descr>14th Coil value</descr>
+						</var>
+						<var name="object15" type="BOOL">
+							<descr>15th Coil value</descr>
+						</var>
+						<var name="object16" type="BOOL">
+							<descr>16th Coil value</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC06" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Write Single Register - Function 06 (0x06).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation. The value of the object input variable is the value sent on the communication bus to the slave node.
+After function block execution, if an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the Register to write</descr>
+						</var>
+						<var name="object" type="UINT">
+							<descr>Register value</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC05" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Write Single Coil - Function 05 (0x05).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation. The value of the object input variable is the value sent on the communication bus to the slave node.
+After function block execution, if an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the Coil to write</descr>
+						</var>
+						<var name="object" type="BOOL">
+							<descr>Coil value</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC04" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Read Input Registers - Function 04 (0x04).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation.
+After function block execution, unless an error occurred, you can use a subset of its output variables (from object1 to objectN, where N equals the value of no input variable) to get the Modbus objects read from the communication bus. If an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first Input Register to be read</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous Input Registers to be read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+						<var name="object1" type="UINT">
+							<descr>1st Input Register</descr>
+						</var>
+						<var name="object2" type="UINT">
+							<descr>2nd Input Register</descr>
+						</var>
+						<var name="object3" type="UINT">
+							<descr>3rd Input Register</descr>
+						</var>
+						<var name="object4" type="UINT">
+							<descr>4th Input Register</descr>
+						</var>
+						<var name="object5" type="UINT">
+							<descr>5th Input Register</descr>
+						</var>
+						<var name="object6" type="UINT">
+							<descr>6th Input Register</descr>
+						</var>
+						<var name="object7" type="UINT">
+							<descr>7th Input Register</descr>
+						</var>
+						<var name="object8" type="UINT">
+							<descr>8th Input Register</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC03" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Read Holding Registers - Function 03 (0x03).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation.
+After function block execution, unless an error occurred, you can use a subset of its output variables (from object1 to objectN, where N equals the value of no input variable) to get the Modbus objects read from the communication bus. If an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first Holding Register to be read</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous Holding Registers to be read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+						<var name="object1" type="UINT">
+							<descr>1st Holding Register</descr>
+						</var>
+						<var name="object2" type="UINT">
+							<descr>2nd Holding Register</descr>
+						</var>
+						<var name="object3" type="UINT">
+							<descr>3rd Holding Register</descr>
+						</var>
+						<var name="object4" type="UINT">
+							<descr>4th Holding Register</descr>
+						</var>
+						<var name="object5" type="UINT">
+							<descr>5th Holding Register</descr>
+						</var>
+						<var name="object6" type="UINT">
+							<descr>6th Holding Register</descr>
+						</var>
+						<var name="object7" type="UINT">
+							<descr>7th Holding Register</descr>
+						</var>
+						<var name="object8" type="UINT">
+							<descr>8th Holding Register</descr>
+						</var>
+						<var name="object9" type="UINT">
+							<descr>9th Holding Register</descr>
+						</var>
+						<var name="object10" type="UINT">
+							<descr>10th Holding Register</descr>
+						</var>
+						<var name="object11" type="UINT">
+							<descr>11th Holding Register</descr>
+						</var>
+						<var name="object12" type="UINT">
+							<descr>12th Holding Register</descr>
+						</var>
+						<var name="object13" type="UINT">
+							<descr>13th Holding Register</descr>
+						</var>
+						<var name="object14" type="UINT">
+							<descr>14th Holding Register</descr>
+						</var>
+						<var name="object15" type="UINT">
+							<descr>15th Holding Register</descr>
+						</var>
+						<var name="object16" type="UINT">
+							<descr>16th Holding Register</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC02" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Read Inputs Status - Function 02 (0x02).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation.
+After function block execution, unless an error occurred, you can use a subset of its output variables (from object1 to objectN, where N equals the value of no input variable) to get the Modbus objects read from the communication bus. If an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first Input to be read</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous Inputs to be read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+						<var name="object1" type="BOOL">
+							<descr>1st Input</descr>
+						</var>
+						<var name="object2" type="BOOL">
+							<descr>2nd Input</descr>
+						</var>
+						<var name="object3" type="BOOL">
+							<descr>3rd Input</descr>
+						</var>
+						<var name="object4" type="BOOL">
+							<descr>4th Input</descr>
+						</var>
+						<var name="object5" type="BOOL">
+							<descr>5th Input</descr>
+						</var>
+						<var name="object6" type="BOOL">
+							<descr>6th Input</descr>
+						</var>
+						<var name="object7" type="BOOL">
+							<descr>7th Input</descr>
+						</var>
+						<var name="object8" type="BOOL">
+							<descr>8th Input</descr>
+						</var>
+						<var name="object9" type="BOOL">
+							<descr>9th Input</descr>
+						</var>
+						<var name="object10" type="BOOL">
+							<descr>10th Input</descr>
+						</var>
+						<var name="object11" type="BOOL">
+							<descr>11th Input</descr>
+						</var>
+						<var name="object12" type="BOOL">
+							<descr>12th Input</descr>
+						</var>
+						<var name="object13" type="BOOL">
+							<descr>13th Input</descr>
+						</var>
+						<var name="object14" type="BOOL">
+							<descr>14th Input</descr>
+						</var>
+						<var name="object15" type="BOOL">
+							<descr>15th Input</descr>
+						</var>
+						<var name="object16" type="BOOL">
+							<descr>16th Input</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="sysMbMRtu_FC01" version="1.0.0" creationDate="0" lastModifiedDate="1564576283">
+				<descr>Read Coil Status - Function 01 (0x01).
+This function block can be used in the Background task only.
+You have to assure that all input variables are properly set before invoking the function block. In particular, the addr input variable must be set to the physical address of an existing Modbus Slave target of this operation.
+After function block execution, unless an error occurred, you can use a subset of its output variables (from object1 to objectN, where N equals the value of no input variable) to get the Modbus objects read from the communication bus. If an error did occur, you can read its code from the errorCode output variable.</descr>
+				<vars>
+					<inputVars>
+						<var name="chn" type="MbChn">
+							<descr>Identify which one of the two serial will be used</descr>
+						</var>
+						<var name="addr" type="USINT">
+							<descr>Physical address of the target slave</descr>
+						</var>
+						<var name="base" type="UINT">
+							<descr>Address of the first coil to be read</descr>
+						</var>
+						<var name="no" type="UINT">
+							<descr>Number of contiguous coils to be read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Polling time [ms] (Reserved for future use)</descr>
+						</var>
+						<var name="waitBeforeSend" type="UINT">
+							<descr>Time to wait before sending the message [ms]</descr>
+						</var>
+						<var name="timeout" type="UINT">
+							<descr>Timeout [ms]</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="errorCode" type="MbRqErr">
+							<descr>Exception Code</descr>
+						</var>
+						<var name="error" type="BOOL">
+							<descr>TRUE = error occurred; FALSE = no error</descr>
+						</var>
+						<var name="object1" type="BOOL">
+							<descr>1st Coil</descr>
+						</var>
+						<var name="object2" type="BOOL">
+							<descr>2nd Coil</descr>
+						</var>
+						<var name="object3" type="BOOL">
+							<descr>3rd Coil</descr>
+						</var>
+						<var name="object4" type="BOOL">
+							<descr>4th Coil</descr>
+						</var>
+						<var name="object5" type="BOOL">
+							<descr>5th Coil</descr>
+						</var>
+						<var name="object6" type="BOOL">
+							<descr>6th Coil</descr>
+						</var>
+						<var name="object7" type="BOOL">
+							<descr>7th Coil</descr>
+						</var>
+						<var name="object8" type="BOOL">
+							<descr>8th Coil</descr>
+						</var>
+						<var name="object9" type="BOOL">
+							<descr>9th Coil</descr>
+						</var>
+						<var name="object10" type="BOOL">
+							<descr>10th Coil</descr>
+						</var>
+						<var name="object11" type="BOOL">
+							<descr>11th Coil</descr>
+						</var>
+						<var name="object12" type="BOOL">
+							<descr>12th Coil</descr>
+						</var>
+						<var name="object13" type="BOOL">
+							<descr>13th Coil</descr>
+						</var>
+						<var name="object14" type="BOOL">
+							<descr>14th Coil</descr>
+						</var>
+						<var name="object15" type="BOOL">
+							<descr>15th Coil</descr>
+						</var>
+						<var name="object16" type="BOOL">
+							<descr>16th Coil</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_WriteMultCoils2" version="1.0.0" creationDate="1676903813" lastModifiedDate="1677077481" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Write multiple coils - FC 15 Modbus function</title>
+				<descr>&lt;HTML&gt;Write multiple coils to a Modbus slave using FC 15 Modbus function.&lt;br&gt;
+Values will be taken from the provided pDataIn buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="coilStart" type="UINT">
+							<descr>First coil address</descr>
+						</var>
+						<var name="coilsNum" type="UINT">
+							<descr>Number of coils</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+						<var name="pDataIn" type="PVOID">
+							<descr>Address of the input buffer</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=write continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="packedBits" type="BOOL">
+							<descr>If FALSE, pDataIn should be a @BOOL and contains splitted bits to write; if TRUE, pDataIn should be a @WORD and contains unsplitted raw values to write (NOT IMPLEMENTED YET)</descr>
+						</var>
+						<var name="_reserved" type="BYTE"/>
+					</inputVars>
+					<outputVars>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_WriteSingleReg2" version="1.0.0" creationDate="1676903574" lastModifiedDate="1677071813" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Write single register - FC 06 Modbus function</title>
+				<descr>&lt;HTML&gt;Write single register to a Modbus slave using FC 06 Modbus function.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="regAddr" type="UINT">
+							<descr>Register address</descr>
+						</var>
+						<var name="regValue" type="UINT">
+							<descr>Register value</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=write continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_WriteSingleCoil2" version="1.0.0" creationDate="1676903321" lastModifiedDate="1677071813" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Write single coil - FC 05 Modbus function</title>
+				<descr>&lt;HTML&gt;Write single coil to a Modbus slave using FC 05 Modbus function.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="coilAddr" type="UINT">
+							<descr>Coil address</descr>
+						</var>
+						<var name="coilValue" type="BOOL">
+							<descr>Coil value</descr>
+						</var>
+						<var name="_reserved" type="BYTE"/>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=write continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_ReadDiscrInputs2" version="1.0.0" creationDate="1676901845" lastModifiedDate="1677077892" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Read discrete inputs - FC 02 Modbus function</title>
+				<descr>&lt;HTML&gt;Read discrete inputs from a Modbus slave using FC 02 Modbus function.&lt;br&gt;
+Input values will be written to the provided pDataOut buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="discrInputStart" type="UINT">
+							<descr>Discrete input start address</descr>
+						</var>
+						<var name="discrInputsNum" type="UINT">
+							<descr>Number of discrete inputs to read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=read continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="pDataOut" type="PVOID">
+							<descr>Address of the output buffer (@BOOL or @WORD, see packedBits)</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+						<var name="packedBits" type="BOOL">
+							<descr>If FALSE, pDataOut should be a @BOOL and will recevice each splitted bit; if TRUE, pDataOut should be a @WORD and will recevice raw unsplitted values (NOT IMPLEMENTED YET)</descr>
+						</var>
+						<var name="_reserved" type="BYTE" dim0="3"/>
+					</inputVars>
+					<outputVars>
+						<var name="sizeOut" type="UINT">
+							<descr>Size in bytes of the data written to the pDataOut buffer</descr>
+						</var>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_ReadCoils2" version="1.0.0" creationDate="1676900708" lastModifiedDate="1677077867" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Read multiple coils - FC 01 Modbus function</title>
+				<descr>&lt;HTML&gt;Read coils from a Modbus slave using FC 01 Modbus function.&lt;br&gt;
+Coil values will be written to the provided pDataOut buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="coilAddrStart" type="UINT">
+							<descr>Coil start address</descr>
+						</var>
+						<var name="coilsNum" type="UINT">
+							<descr>Number of coils to read</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=read continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="pDataOut" type="PVOID">
+							<descr>Address of the output buffer (@BOOL or @WORD, see packedBits)</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+						<var name="packedBits" type="BOOL">
+							<descr>If FALSE, pDataOut should be a @BOOL and will recevice each splitted bit; if TRUE, pDataOut should be a @WORD and will recevice raw unsplitted values (NOT IMPLEMENTED YET)</descr>
+						</var>
+						<var name="_reserved" type="BYTE" dim0="3"/>
+					</inputVars>
+					<outputVars>
+						<var name="sizeOut" type="UINT">
+							<descr>Size in bytes of the data written to the pDataOut buffer</descr>
+						</var>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_ReadInputRegs2" version="1.0.0" creationDate="1676902921" lastModifiedDate="1677071813" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Read input registers - FC 04 Modbus function</title>
+				<descr>&lt;HTML&gt;Read input registers from a Modbus slave using FC 04 Modbus function.&lt;br&gt;
+Register values will be written to the provided pDataOut buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="regAddrStart" type="UINT">
+							<descr>Register start address</descr>
+						</var>
+						<var name="regNum" type="UINT">
+							<descr>Number of registers</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=read continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="pDataOut" type="PVOID">
+							<descr>Address of the output buffer</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="sizeOut" type="UINT">
+							<descr>Size in bytes of the data written to the pDataOut buffer</descr>
+						</var>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_WriteMultRegs2" version="1.0.0" creationDate="1676904458" lastModifiedDate="1677077531" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Write multiple registers - FC 16 Modbus function</title>
+				<descr>&lt;HTML&gt;Write multiple registers to a Modbus slave using FC 16 Modbus function.&lt;br&gt;
+Values will be taken from the provided pDataIn buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="regAddrStart" type="UINT">
+							<descr>First register address</descr>
+						</var>
+						<var name="regNum" type="UINT">
+							<descr>Number of registers</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+						<var name="pDataIn" type="PVOID">
+							<descr>Address of the input buffer</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=write continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="_reserved" type="WORD"/>
+					</inputVars>
+					<outputVars>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_ReadHoldingRegs2" version="1.0.0" creationDate="1676902500" lastModifiedDate="1677071742" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Read holding registers - FC 03 Modbus function</title>
+				<descr>&lt;HTML&gt;Read holding registers from a Modbus slave using FC 03 Modbus function.&lt;br&gt;
+Register values will be written to the provided pDataOut buffer.&lt;br&gt;&lt;br&gt;
+The slave does not need to configured in Modbus master network.&lt;br&gt;&lt;br&gt;
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="regAddrStart" type="UINT">
+							<descr>Register start address</descr>
+						</var>
+						<var name="regNum" type="UINT">
+							<descr>Number of registers</descr>
+						</var>
+						<var name="pollingTime" type="UINT">
+							<descr>Minimum polling time in ms. 0=read continuously; if &gt;0, command will be executed only if this minimum time has passed after the previous call</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+						<var name="pDataOut" type="PVOID">
+							<descr>Address of the output buffer</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="sizeOut" type="UINT">
+							<descr>Size in bytes of the data written to the pDataOut buffer</descr>
+						</var>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="timestamp" type="UDINT">
+							<descr>Message timestamp [ms]</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+			<functionBlock name="ModbusRTU_ReadDeviceIdent" version="1.0.0" creationDate="1678094952" lastModifiedDate="1678094960" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Read device identification - FC 43/14 Modbus function</title>
+				<descr>Read device identification of a Modbus slave using FC 43/14 Modbus function.
+Only individual object access is implemented.
+
+The slave does not need to configured in Modbus master network.
+
+This function block can be used in Background task only.</descr>
+				<vars>
+					<inputVars>
+						<var name="netId" type="MB_RTU_NETWORK_ID">
+							<descr>Modbus serial port number</descr>
+						</var>
+						<var name="modbusAddr" type="UINT">
+							<descr>Modbus node address</descr>
+						</var>
+						<var name="readDeviceIDCode" type="USINT">
+							<descr>Read access type (NOT IMPLEMENTED, only 4=individual access)</descr>
+							<initValue>4</initValue>
+						</var>
+						<var name="objectID" type="USINT">
+							<descr>Object to read</descr>
+						</var>
+						<var name="pDataOut" type="PVOID">
+							<descr>Address of the output buffer</descr>
+						</var>
+						<var name="sizeIn" type="UINT">
+							<descr>Size in bytes of the output buffer pDataOut</descr>
+						</var>
+						<var name="timeoutMs" type="UINT">
+							<descr>Timeout in ms</descr>
+						</var>
+						<var name="waitBeforeSendMs" type="UINT">
+							<descr>Wait before send in ms</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="sizeOut" type="UINT">
+							<descr>Size in bytes of the data written to the pDataOut buffer</descr>
+						</var>
+						<var name="result" type="MB_RESULT_VALUE">
+							<descr>Result of the command</descr>
+						</var>
+					</outputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="EMBEDDED"/>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs>
+			<struct name="MbMRtuStatus" version="1.0.0">
+				<descr>Status of Modbus Master RTU</descr>
+				<vars>
+					<var name="cfg" type="BOOL">
+						<descr>Modbus Master configured</descr>
+					</var>
+					<var name="chn" type="USINT">
+						<descr>Modbus master RTU channel, returned from sysMbMRtu_OpenChn</descr>
+					</var>
+					<var name="numSlaves" type="USINT">
+						<descr>Total number of Configurated Slave in Net list</descr>
+					</var>
+					<var name="reserved" type="USINT">
+						<descr>Reserved field</descr>
+					</var>
+					<var name="status" type="MbStatus">
+						<descr>Modbus master state machine, referred to enumerative MbStatus</descr>
+					</var>
+					<var name="error" type="MbError">
+						<descr>Modbus master last error, referred to enumerative MbError</descr>
+					</var>
+					<var name="numMsg" type="UINT">
+						<descr>Total number of Configurated Broadcast and Single Slave Message</descr>
+					</var>
+					<var name="numBroadcastMsg" type="UINT">
+						<descr>Total number of Configurated Broadcast Message</descr>
+					</var>
+					<var name="numBusMsgCount" type="UINT">
+						<descr>Bus Message Count</descr>
+					</var>
+					<var name="numBusCommErrCount" type="UINT">
+						<descr>Bus Communication Error Count</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="MbMRtuNetList" version="1.0.0">
+				<descr>Modbus Master RTU Netlist</descr>
+				<vars>
+					<var name="chn" type="USINT">
+						<descr>Modbus master RTU channel, returned from sysMbMRtu_OpenChn</descr>
+					</var>
+					<var name="adr" type="USINT">
+						<descr>Modbus slave address</descr>
+					</var>
+					<var name="cfg" type="BOOL">
+						<descr>Modbus slave is added to netlist</descr>
+					</var>
+					<var name="pres" type="BOOL">
+						<descr>Modbus slave is present on network</descr>
+					</var>
+					<var name="active" type="BOOL">
+						<descr>Modbus slave is concurrent in communication</descr>
+					</var>
+					<var name="swapWordsMode" type="USINT">
+						<descr>Swap Mode field</descr>
+					</var>
+					<var name="numParamMsg" type="UINT">
+						<descr>Total number of Parametrization Slave Message</descr>
+					</var>
+					<var name="numQueuedMsg" type="UINT">
+						<descr>Total number of Configurated Slave Message</descr>
+					</var>
+					<var name="minPollingTime" type="UINT">
+						<descr>Minimum polling time (ms)</descr>
+					</var>
+					<var name="status" type="MbStatus">
+						<descr>Modbus slave state machine, referred to enumerative MbStatus</descr>
+					</var>
+					<var name="error" type="MbError">
+						<descr>Modbus slave last error, referred to enumerative MbError</descr>
+					</var>
+					<var name="exception" type="MbException">
+						<descr>Modbus slave last exception, referred to enumerative MbException</descr>
+					</var>
+					<var name="slaveExceptionCount" type="UINT">
+						<descr>Slave Exception Error Count</descr>
+					</var>
+					<var name="slaveMessageCount" type="UINT">
+						<descr>Slave Message Count</descr>
+					</var>
+					<var name="slaveNoResponseCount" type="UINT">
+						<descr>Slave No Response Count</descr>
+					</var>
+					<var name="slaveNoAckCount" type="UINT">
+						<descr>Slave NAK Count</descr>
+					</var>
+					<var name="slaveBusyCount" type="UINT">
+						<descr>Slave Busy Count</descr>
+					</var>
+					<var name="slaveChrOvrCount" type="UINT">
+						<descr>Slave Character Overrun Count</descr>
+					</var>
+					<var name="maxRetries" type="UINT">
+						<descr>Maximum number of retries</descr>
+					</var>
+					<var name="disableWrite" type="BOOL">
+						<descr>TRUE if write commands are disabled</descr>
+					</var>
+					<var name="reserved" type="USINT">
+						<descr></descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="MbRtuDiagnostics" version="1.0.0">
+				<descr>Standard Modbus diagnostic for both slave and master (referred to current channel)</descr>
+				<vars>
+					<var name="busMsgCount" type="UINT">
+						<descr>Generic counter for messages successfully sent/received on the bus</descr>
+					</var>
+					<var name="busCommErrCount" type="UINT">
+						<descr>Generic counter for failed messages sent/received on the bus</descr>
+					</var>
+					<var name="exceptionCount" type="UINT">
+						<descr>Generic exception error counter</descr>
+					</var>
+					<var name="messageCount" type="UINT">
+						<descr>If master: counter of messages sent. If slave: counter of messages received</descr>
+					</var>
+					<var name="noResponseCount" type="UINT">
+						<descr>Counter of messages without response</descr>
+					</var>
+					<var name="slaveRspNoAckCount" type="UINT">
+						<descr>(Only if master) Counter of slave NAK response messages</descr>
+					</var>
+					<var name="slaveRspBusyCount" type="UINT">
+						<descr>(Only if master) Counter of slave BUSY response messages</descr>
+					</var>
+					<var name="chrOvrCount" type="UINT">
+						<descr>Counter of character overrun</descr>
+					</var>
+				</vars>
+			</struct>
+			<struct name="MbInpOutCmdStruct" version="1.0.0">
+				<descr>Function to manage input output command</descr>
+				<vars>
+					<var name="StartupCmd" type="MbInpOutCmdMode">
+						<descr>Startup command</descr>
+					</var>
+					<var name="CurrentCmd" type="MbInpOutCmdMode">
+						<descr>Current command</descr>
+					</var>
+					<var name="FnzRead" type="INT">
+						<descr>Function used to read</descr>
+					</var>
+					<var name="FnzWrite" type="INT">
+						<descr>Function used to write</descr>
+					</var>
+					<var name="PValue" type="DWORD">
+						<descr>Pointer to current value</descr>
+					</var>
+					<var name="Reserved" type="DWORD">
+						<descr>Reserved for further usage</descr>
+					</var>
+					<var name="ImageRead" type="LWORD">
+						<descr>Image read</descr>
+					</var>
+					<var name="ImageWrite" type="LWORD">
+						<descr>Image write</descr>
+					</var>
+				</vars>
+			</struct>
+		</structs>
+		<typedefs/>
+		<enums>
+			<enum name="MbStatus" version="1.0.0">
+				<descr>Modbus Master Status decoding, use for master and slave state</descr>
+				<elements>
+					<element name="MbStatus_NotConfigured">
+						<descr>Not configured</descr>
+						<value>0</value>
+					</element>
+					<element name="MbStatus_Configured">
+						<descr>Configured, waiting for go running</descr>
+						<value>1</value>
+					</element>
+					<element name="MbStatus_Configuring">
+						<descr>Configuration in progress</descr>
+						<value>2</value>
+					</element>
+					<element name="MbStatus_Stopped">
+						<descr>Stopped</descr>
+						<value>3</value>
+					</element>
+					<element name="MbStatus_Starting">
+						<descr>Start, waiting for running</descr>
+						<value>4</value>
+					</element>
+					<element name="MbStatus_Running">
+						<descr>Running</descr>
+						<value>5</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbRqErr" version="1.0.0">
+				<descr>List of possible errors obtained after a Modbus Master request</descr>
+				<elements>
+					<element name="MbRqErr_Ok">
+						<descr>No error occurred</descr>
+						<value>0</value>
+					</element>
+					<element name="MbRqErr_IllegalFunction">
+						<descr>Invalid request message</descr>
+						<value>1</value>
+					</element>
+					<element name="MbRqErr_IllegalDataAddress">
+						<descr>Illegal data address</descr>
+						<value>2</value>
+					</element>
+					<element name="MbRqErr_IllegalDataValue">
+						<descr>Illegal data value</descr>
+						<value>3</value>
+					</element>
+					<element name="MbRqErr_SlaveDeviceFailure">
+						<descr>Salve device failure</descr>
+						<value>4</value>
+					</element>
+					<element name="MbRqErr_Acknowledge">
+						<descr>Acknowledge error</descr>
+						<value>5</value>
+					</element>
+					<element name="MbRqErr_SlaveDeviceBusy">
+						<descr>Slave device busy</descr>
+						<value>6</value>
+					</element>
+					<element name="MbRqErr_ParityError">
+						<descr>Memory parity error</descr>
+						<value>7</value>
+					</element>
+					<element name="MbRqErr_CommChn">
+						<descr>Communication channel configuration error</descr>
+						<value>8</value>
+					</element>
+					<element name="MbRqErr_InvalidSlaveAddress">
+						<descr>Invalid slave address (address range 0 - 247)</descr>
+						<value>9</value>
+					</element>
+					<element name="MbRqErr_GatewayPathUnavailable">
+						<descr>Gateway path unavailable</descr>
+						<value>10</value>
+					</element>
+					<element name="MbRqErr_GatewayDeviceFailed">
+						<descr>Gateway target device failed to respond</descr>
+						<value>11</value>
+					</element>
+					<element name="MbRqErr_MsgMaxElements">
+						<descr>Invalid number of element for this function</descr>
+						<value>12</value>
+					</element>
+					<element name="MbRqErr_MsgRequestInvalid">
+						<descr>Cannot correctly build the request message</descr>
+						<value>13</value>
+					</element>
+					<element name="MbRqErr_MsgResponseInvalid">
+						<descr>Invalid response message</descr>
+						<value>14</value>
+					</element>
+					<element name="MbRqErr_MsgSize">
+						<descr>Response size error</descr>
+						<value>15</value>
+					</element>
+					<element name="MbRqErr_Timeout">
+						<descr>Timeout reached</descr>
+						<value>16</value>
+					</element>
+					<element name="MbRqErr_TaskInvalid">
+						<descr>Function invoked by an invalid task</descr>
+						<value>17</value>
+					</element>				
+					<element name="MbRqErr_Sys">
+						<descr>Generic modbus error</descr>
+						<value>18</value>
+					</element>
+					<element name="MbRqErr_CommOpen">
+						<descr>Communication port not yet opened</descr>
+						<value>19</value>
+					</element>
+					<element name="MbRqErr_CommTx">
+						<descr>Failed to send message</descr>
+						<value>20</value>
+					</element>
+					<element name="MbRqErr_SlaveMax">
+						<descr>Maximum number of slave has been reached</descr>
+						<value>21</value>
+					</element>
+					<element name="MbRqErr_SlaveNotExists">
+						<descr>Could not get requested slave handle</descr>
+						<value>22</value>
+					</element>
+					<element name="MbRqErr_SlaveExists">
+						<descr>Slave already existing in the same network</descr>
+						<value>23</value>
+					</element>
+					<element name="MbRqErr_SlaveLoss">
+						<descr>Slave loss</descr>
+						<value>24</value>
+					</element>
+					<element name="MbRqErr_MSGDB">
+						<descr>Invalid datablock physical address</descr>
+						<value>33</value>
+					</element>
+					<element name="MbRqErr_PrmInvalid">
+						<descr>Invalid parametrization</descr>
+						<value>40</value>
+					</element>
+					<element name="MbRqErr_PrmException">
+						<descr>Invalid parametrization</descr>
+						<value>41</value>
+					</element>
+					<element name="MbRqErr_PrmTmo">
+						<descr>Parametrization timeout</descr>
+						<value>42</value>
+					</element>
+					<element name="MbRqErr_MemoryCfg">
+						<descr>Not enough memory available</descr>
+						<value>43</value>
+					</element>
+					<element name="MbRqErr_PollingTime">
+						<descr>Time since last request is not respecting the minimum polling time</descr>
+						<value>44</value>
+					</element>
+					<element name="MbRqErr_Stopped">
+						<descr>Request made before modbus is fully running</descr>
+						<value>45</value>
+					</element>
+					<element name="MbRqErr_WriteDisabled">
+						<descr>Write commands are disabled for the slave</descr>
+						<value>46</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbParam" version="1.0.0">
+				<descr>Modbus Parametrization Request Status decoding</descr>
+				<elements>
+					<element name="MbParam_Init">
+						<descr>Initialization</descr>
+						<value>0</value>
+					</element>
+					<element name="MbParam_Busy">
+						<descr>Busy</descr>
+						<value>1</value>
+					</element>
+					<element name="MbParam_SendRequest">
+						<descr>Send request</descr>
+						<value>2</value>
+					</element>
+					<element name="MbParam_WaitResponse">
+						<descr>Wait response</descr>
+						<value>3</value>
+					</element>
+					<element name="MbParam_Ended">
+						<descr>Terminated</descr>
+						<value>4</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbMode" version="1.0.0">
+				<descr>Modbus RTU communication mode</descr>
+				<elements>
+					<element name="MbMode_8N1">
+						<descr>8 bit, no parity, 1 stop bit</descr>
+						<value>0</value>
+					</element>
+					<element name="MbMode_8E1">
+						<descr>8 bit, even parity, 1 stop bit</descr>
+						<value>1</value>
+					</element>
+					<element name="MbMode_8O1">
+						<descr>8 bit, odd parity, 1 stop bit</descr>
+						<value>2</value>
+					</element>
+					<element name="MbMode_8N2">
+						<descr>8 bit, no parity, 2 stop bit</descr>
+						<value>3</value>
+					</element>
+					<element name="MbMode_8E2">
+						<descr>8 bit, even parity, 2 stop bit</descr>
+						<value>4</value>
+					</element>
+					<element name="MbMode_8O2">
+						<descr>8 bit, odd parity, 2 stop bit</descr>
+						<value>5</value>
+					</element>
+					<element name="MbMode_8S1">
+						<descr>8 bit, space parity, 1 stop bit</descr>
+						<value>6</value>
+					</element>			
+					<element name="MbMode_8M1">
+						<descr>8 bit, mark parity, 1 stop bit</descr>
+						<value>7</value>
+					</element>						
+					<element name="MbMode_8S2">
+						<descr>8 bit, space parity, 2 stop bit</descr>
+						<value>8</value>
+					</element>			
+					<element name="MbMode_8M2">
+						<descr>8 bit, mark parity, 2 stop bit</descr>
+						<value>9</value>
+					</element>						
+					<element name="MbMode_Auto">
+						<descr>Selected by low level driver</descr>
+						<value>255</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbFunction" version="1.0.0">
+				<descr>Modbus Function</descr>
+				<elements>
+					<element name="MbFunc_ReadCoils">
+						<descr>0x01 Read Coils</descr>
+						<value>1</value>
+					</element>
+					<element name="MbFunc_ReadDiscreteInputs">
+						<descr>0x02 Read Discrete Inputs</descr>
+						<value>2</value>
+					</element>
+					<element name="MbFunc_ReadHoldingRegs">
+						<descr>0x03 Read Holding Registers</descr>
+						<value>3</value>
+					</element>
+					<element name="MbFunc_ReadInputRegs">
+						<descr>0x04 Read Input Registers</descr>
+						<value>4</value>
+					</element>
+					<element name="MbFunc_WriteSingleCoil">
+						<descr>0x05 Write Single Coil</descr>
+						<value>5</value>
+					</element>
+					<element name="MbFunc_WriteSingleReg">
+						<descr>0x06 Write Single Register</descr>
+						<value>6</value>
+					</element>
+					<element name="MbFunc_WriteMultipleCoils">
+						<descr>0x0F Write Multiple Coils</descr>
+						<value>15</value>
+					</element>
+					<element name="MbFunc_WriteMultipleRegs">
+						<descr>0x10 Write Multiple Registers</descr>
+						<value>16</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbException" version="1.0.0">
+				<descr>Modbus Exception code</descr>
+				<elements>
+					<element name="MbExc_Ok">
+						<descr>No Error</descr>
+						<value>0</value>
+					</element>
+					<element name="MbExc_IllegalFunction">
+						<descr>Illegal function</descr>
+						<value>1</value>
+					</element>
+					<element name="MbExc_IllegalDataAddress">
+						<descr>Illegal data address</descr>
+						<value>2</value>
+					</element>
+					<element name="MbExc_IllegalDataValue">
+						<descr>Illegal data value</descr>
+						<value>3</value>
+					</element>
+					<element name="MbExc_SlaveDeviceFailure">
+						<descr>Slave device failure</descr>
+						<value>4</value>
+					</element>
+					<element name="MbExc_Acknowledge">
+						<descr>Acknowledge</descr>
+						<value>5</value>
+					</element>
+					<element name="MbExc_SlaveDeviceBusy">
+						<descr>Slave device busy</descr>
+						<value>6</value>
+					</element>
+					<element name="MbExc_MemoryParityError">
+						<descr>Memory parity error</descr>
+						<value>7</value>
+					</element>
+					<element name="MbExc_GatewayPathUnavailable">
+						<descr>Gateway path unavailable</descr>
+						<value>10</value>
+					</element>
+					<element name="MbExc_GatewayTargetDevice">
+						<descr>Gateway target device failed to respond</descr>
+						<value>11</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbError" version="1.0.0">
+				<descr>Modbus Master Error decoding, use for master and slave error</descr>
+				<elements>
+					<element name="MbError_Ok">
+						<descr>No error</descr>
+						<value>0</value>
+					</element>
+					<element name="MbError_System">
+						<descr>System, internal error</descr>
+						<value>1</value>
+					</element>
+					<element name="MbError_CommChn">
+						<descr>Error on communication channel</descr>
+						<value>8</value>
+					</element>
+					<element name="MbError_CommHdl">
+						<descr>Invalid communication handle</descr>
+						<value>11</value>
+					</element>
+					<element name="MbError_CommTx">
+						<descr>Impossible to send request</descr>
+						<value>12</value>
+					</element>
+					<element name="MbError_CommOpen">
+						<descr>Cannot open communication port</descr>
+						<value>19</value>
+					</element>
+					<element name="MbError_SlaveMaxNum">
+						<descr>Maximum number of slave</descr>
+						<value>20</value>
+					</element>
+					<element name="MbError_SlaveAddrressInvalid">
+						<descr>Invalid slave address</descr>
+						<value>21</value>
+					</element>
+					<element name="MbError_SlaveNotCfg">
+						<descr>Slave not exist in netlist</descr>
+						<value>22</value>
+					</element>
+					<element name="MbError_SlaveInUse">
+						<descr>Slave address already in use</descr>
+						<value>23</value>
+					</element>
+					<element name="MbError_SlaveLoss">
+						<descr>Slave loss</descr>
+						<value>24</value>
+					</element>
+					<element name="MbError_MsgMaxNum">
+						<descr>Maximum number of modbus message</descr>
+						<value>30</value>
+					</element>
+					<element name="MbError_MsgFnzInvalid">
+						<descr>Invalid modbus function</descr>
+						<value>31</value>
+					</element>
+					<element name="MbError_MsgFnzSize">
+						<descr>Invalid modbus function dimension</descr>
+						<value>32</value>
+					</element>
+					<element name="MbError_MsgDatablockInvalid">
+						<descr>Invalid datablock</descr>
+						<value>33</value>
+					</element>
+					<element name="MbError_ParamInvalid">
+						<descr>System, internal error</descr>
+						<value>40</value>
+					</element>
+					<element name="MbError_ParamException">
+						<descr>Exception occured</descr>
+						<value>41</value>
+					</element>
+					<element name="MbError_ParamTimeout">
+						<descr>Timeout</descr>
+						<value>42</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbChn" version="1.0.0">
+				<descr>Handler to identify which serial use, for example in modbus master function block</descr>
+				<elements>
+					<element name="MbChn_0">
+						<descr>Handler for use serial 1</descr>
+						<value>0</value>
+					</element>
+					<element name="MbChn_1">
+						<descr>Handler for use serial 2</descr>
+						<value>1</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbBaudrate" version="1.0.0">
+				<descr>Modbus RTU communication baudrate</descr>
+				<elements>
+					<element name="MbBaud_600">
+						<descr>600 bit/s</descr>
+						<value>600</value>
+					</element>
+					<element name="MbBaud_1200">
+						<descr>1200 bit/s</descr>
+						<value>1200</value>
+					</element>
+					<element name="MbBaud_2400">
+						<descr>2400 bit/s</descr>
+						<value>2400</value>
+					</element>
+					<element name="MbBaud_4800">
+						<descr>4800 bit/s</descr>
+						<value>4800</value>
+					</element>
+					<element name="MbBaud_9600">
+						<descr>9600 bit/s</descr>
+						<value>9600</value>
+					</element>
+					<element name="MbBaud_19200">
+						<descr>19200 bit/s</descr>
+						<value>19200</value>
+					</element>
+					<element name="MbBaud_38400">
+						<descr>38400 bit/s</descr>
+						<value>38400</value>
+					</element>
+					<element name="MbBaud_57600">
+						<descr>57600 bit/s</descr>
+						<value>57600</value>
+					</element>
+					<element name="MbBaud_76800">
+						<descr>76800 bit/s</descr>
+						<value>76800</value>
+					</element>
+					<element name="MbBaud_115200">
+						<descr>115200 bit/s</descr>
+						<value>115200</value>
+					</element>
+					<element name="MbBaud_Auto">
+						<descr>Selected by low level driver</descr>
+						<value>0</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MbRSMode" version="1.0.0">
+				<descr>Serial port RS mode</descr>
+				<elements>
+					<element name="RSMode_Auto">
+						<descr>Automatic configuration</descr>
+						<value>0</value>
+					</element>
+					<element name="RSMode_485">
+						<descr>RS485 mode</descr>
+						<value>1</value>
+					</element>
+					<element name="RSMode_422">
+						<descr>RS422 mode</descr>
+						<value>2</value>
+					</element>
+					<element name="RSMode_232">
+						<descr>RS232 mode</descr>
+						<value>3</value>
+					</element>
+				</elements>
+			</enum>
+			<enum name="MB_RESULT_VALUE" baseType="DINT" version="1.0.0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Return value from modbus function call</title>
+				<descr>Return value from modbus function call</descr>
+				<elements>
+					<element name="MB_E_OK">
+						<descr>Successful command</descr>
+						<value>0</value>
+					</element>
+					<element name="MB_E_WRITE_DISABLED">
+						<descr>Write commands are disabled</descr>
+						<value>-349</value>
+					</element>
+					<element name="MB_E_POLLINGTIME">
+						<descr>Polling time not respected</descr>
+						<value>-348</value>
+					</element>
+					<element name="MB_E_REQUESTMISMATCH">
+						<descr>Request mismatch</descr>
+						<value>-347</value>
+					</element>
+					<element name="MB_E_NOCONNSYSTEMBUSY">
+						<descr>System busy</descr>
+						<value>-346</value>
+					</element>
+					<element name="MB_E_NOCONNSLOTAVAILABLE">
+						<descr>Connection error</descr>
+						<value>-345</value>
+					</element>
+					<element name="MB_E_CMDPARAMERROR">
+						<descr>Invalid parameter specified</descr>
+						<value>-344</value>
+					</element>
+					<element name="MB_E_CMDSAMEBUFFER">
+						<descr>Same buffer specified</descr>
+						<value>-343</value>
+					</element>
+					<element name="MB_E_CMDBUFFERTOOSMALL">
+						<descr>Buffer too small</descr>
+						<value>-342</value>
+					</element>
+					<element name="MB_E_CMDBUFFERERROR">
+						<descr>Invalid command buffer error</descr>
+						<value>-341</value>
+					</element>
+					<element name="MB_E_CMDBUFFERSIZEERROR">
+						<descr>Invalid command buffer size error</descr>
+						<value>-340</value>
+					</element>
+					<element name="MB_E_NETWORK">
+						<descr>Invalid network id specified</descr>
+						<value>-339</value>
+					</element>
+					<element name="MB_E_CHECKSUM">
+						<descr>Checksum</descr>
+						<value>-338</value>
+					</element>
+					<element name="MB_E_NEGATIVEACKNOWLEDGE">
+						<descr>Negative acknowledge</descr>
+						<value>-337</value>
+					</element>
+					<element name="MB_E_NOTALLOWEDINTIMEDTASK">
+						<descr>Function cannot be called in a timed task</descr>
+						<value>-336</value>
+					</element>
+					<element name="MB_E_SWITCHEDOFF">
+						<descr>Node is switched off</descr>
+						<value>-335</value>
+					</element>
+					<element name="MB_E_ILLEGALDATAPROTOCOL">
+						<descr>Illegal data value in protocol</descr>
+						<value>-332</value>
+					</element>
+					<element name="MB_E_TIMEOUT">
+						<descr>Time out request</descr>
+						<value>-331</value>
+					</element>
+					<element name="MB_E_GATEWAYDEVICEFAILED">
+						<descr>Gateway target device failed to respond</descr>
+						<value>-330</value>
+					</element>
+					<element name="MB_E_GATEWAYPATHUNAV">
+						<descr>Gateway path unavailable</descr>
+						<value>-329</value>
+					</element>
+					<element name="MB_E_MEMORYPARITYERROR">
+						<descr>Memory parity error</descr>
+						<value>-328</value>
+					</element>
+					<element name="MB_E_SLAVEDEVICEBUSY">
+						<descr>Slave device busy</descr>
+						<value>-327</value>
+					</element>
+					<element name="MB_E_ACKNOWLEDGE">
+						<descr>Acknowledge</descr>
+						<value>-326</value>
+					</element>
+					<element name="MB_E_SLAVEDEVICEFAILURE">
+						<descr>Slave device failure</descr>
+						<value>-325</value>
+					</element>
+					<element name="MB_E_ILLEGALDATAVALUE">
+						<descr>Illegal data value</descr>
+						<value>-324</value>
+					</element>
+					<element name="MB_E_ILLEGALDATAADDR">
+						<descr>Illegal data address</descr>
+						<value>-323</value>
+					</element>
+					<element name="MB_E_ILLEGALFUNCTION">
+						<descr>Illegal function</descr>
+						<value>-322</value>
+					</element>
+					<element name="MB_E_IDE">
+						<descr>Ide doesn't match</descr>
+						<value>-321</value>
+					</element>
+					<element name="MB_E_PROTOCOL">
+						<descr>Protocol error</descr>
+						<value>-320</value>
+					</element>
+					<element name="MB_E_STOPPED">
+						<descr>Master not running</descr>
+						<value>-317</value>
+					</element>
+					<element name="MB_E_DATATYPE">
+						<descr>Data type parameter not valid</descr>
+						<value>-311</value>
+					</element>
+					<element name="MB_E_NODENOTEXIST">
+						<descr>Not assigned node</descr>
+						<value>-303</value>
+					</element>
+					<element name="MB_E_NODE">
+						<descr>Not valid node</descr>
+						<value>-301</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="MB_RTU_NETWORK_ID" baseType="DINT" version="1.0.0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Modbus RTU Network ID</title>
+				<descr>Modbus RTU Network ID</descr>
+				<elements>
+					<element name="MB_RTU_NETWORK_0">
+						<descr>Network 0</descr>
+						<value>0</value>
+					</element>
+					<element name="MB_RTU_NETWORK_1">
+						<descr>Network 1</descr>
+						<value>1</value>
+					</element>
+					<element name="MB_RTU_NETWORK_2">
+						<descr>Network 2</descr>
+						<value>2</value>
+					</element>
+					<element name="MB_RTU_NETWORK_3">
+						<descr>Network 3</descr>
+						<value>3</value>
+					</element>
+					<element name="MB_RTU_NETWORKS">
+						<descr>Maximum number of networks supported</descr>
+						<value>4</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="MbSlaveAddressConfigMode" baseType="DINT" version="1.0.0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Slave address configuration mode</title>
+				<descr>Slave address configuration mode</descr>
+				<elements>
+					<element name="MbSlaveAddressConfigMode_Static">
+						<descr>Static</descr>
+						<value>0</value>
+					</element>
+					<element name="MbSlaveAddressConfigMode_ByVariableAddress">
+						<descr>Address specified by variable address</descr>
+						<value>1</value>
+					</element>
+					<element name="MbSlaveAddressConfigMode_By16BitKeyValue">
+						<descr>Address specified by 16 bit key value</descr>
+						<value>2</value>
+					</element>
+					<element name="MbSlaveAddressConfigMode_By32BitKeyValue">
+						<descr>Address specified by 32 bit key value</descr>
+						<value>4</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>
+			<enum name="MbInpOutCmdMode" baseType="DINT" version="1.0.0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Input output command mode</title>
+				<descr>Input output command mode</descr>
+				<elements>
+					<element name="MbInpOutCmdMode_Read">
+						<descr>Read</descr>
+						<value>0</value>
+					</element>
+					<element name="MbInpOutCmdMode_Write">
+						<descr>Write</descr>
+						<value>1</value>
+					</element>
+				</elements>
+				<iecDeclaration active="FALSE"/>
+			</enum>			
+		</enums>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

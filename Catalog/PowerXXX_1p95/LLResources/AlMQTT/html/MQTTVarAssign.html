@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Assign variable</title>
+
+	<script>
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/Polyfills.js' type='text/javascript'></" + "SCRIPT>")
+
+		var app = window.external;
+	</script>
+
+	<style>
+		.buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	</style>
+</head>
+<body onload="InitGrid(datapath.value)">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	<div class="fill-height-container">
+		<div class="buttons tableHeader">
+			<span>
+				<button onClick="grid_AddRowXML()" class="ll-button">
+					<img id="imgPlus" alt="Add">
+					<span class="label"><t:t>Add</t:t></span>
+				</button>
+
+				<button onClick="grid_DeleteRowXML()" class="ll-button">
+					<img id="imgMinus" alt="Delete">
+					<span class="label"><t:t>Remove</t:t></span>
+				</button>
+
+				<button onClick="Assign()" class="ll-button">
+					<img id="imgIn" alt="Assign">
+					<span class="label"><t:t>Assign</t:t></span>
+				</button>
+
+				<!-- visibile solo con payload JSON -->
+				<button onClick="ShowJSONPreview()" id="spanJSONPreview" class="ll-button">
+					<img id="imgPreview" alt="Preview">
+					<span class="label"><t:t>JSON preview</t:t></span>
+				</button>
+
+				<!-- visibili sono con payload BIN -->
+				<button onClick="GridMoveUp(grid, gridDatapath)" id="spanMoveUp" class="ll-button">
+					<img id="imgUp" alt="Up" src="">
+					<span class="label"><t:t>Up</t:t></span>
+				</button>
+				<button onClick="GridMoveDown(grid, gridDatapath)" id="spanMoveDown" class="ll-button">
+					<img id="imgDown" alt="Down" src="">
+					<span class="label"><t:t>Down</t:t></span>
+				</button>
+			</span>
+
+			<button class="ll-button" onclick="CloseDlg()">
+				<img id="imgClose" alt="Close">
+				<label><t:t>Close</t:t></label>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="grid" classid="clsid:D62247DB-3391-4236-936F-80EF7F4EA476" width="100%" height="100%" border="0">
+				<param name="margin" value="40">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+
+	<script src="MQTTVarAssign.js"></script>
+	<script>InitPage()</script>
+</body>
+</html>

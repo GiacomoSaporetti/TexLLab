@@ -1,0 +1,22 @@
+<LogicLabConfiguration>
+	<ProcExt>
+		<processor name="x86" dll="LLCGX86.dll"/>
+		<processor name="PowerPC_E200" dll="LLCGPowerPC.dll" init="2"/>
+	</ProcExt>
+	<TargetExt>
+		<target name="POWERZ" dll="LLGenericComm.dll" init="0" isBigEndian="true" simtarget="POWERZ_SIM"/>
+		<target name="POWERZ_HMI" dll="LLGenericComm.dll" init="1" isBigEndian="true" simtarget="POWERZ_HMI_SIM"/>
+		<target name="POWERZ_SIM" dll="LLPCTComm.dll" init="10" desc="POWERZ PLC Simulator"/>
+		<target name="POWERZ_HMI_SIM" dll="LLPCTComm.dll" init="11" desc="POWERZ HMI Simulator"/>
+		
+		<target name="POWERQ" dll="LLGenericComm.dll" init="0" isBigEndian="true" simtarget="POWERQ_SIM"/>
+		<target name="POWERQ_SIM" dll="LLPCTComm.dll" init="10" desc="POWERQ PLC Simulator"/>
+		
+		<target name="POWERB" dll="LLGenericComm.dll" init="0" isBigEndian="true" simtarget="POWERB_SIM"/>
+		<target name="POWERB_SIM" dll="LLPCTComm.dll" init="10" desc="POWERB PLC Simulator"/>
+		
+		<target name="POWERI" dll="LLGenericComm.dll" init="0" isBigEndian="true" simtarget="POWERI_SIM"/>
+		<target name="POWERI_SIM" dll="LLPCTComm.dll" init="10" desc="POWERI PLC Simulator"/>
+	</TargetExt>
+	<Simulator proc="x86" proc64="x64" defaulttarget="PCT2"/>
+</LogicLabConfiguration>

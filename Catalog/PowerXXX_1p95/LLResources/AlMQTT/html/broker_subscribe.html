@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Home</title>
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/PLCVars.js' type='text/javascript'></" + "SCRIPT>")
+
+
+		var tablePath = "subscribe[1]"		// path relativo della tabella
+
+		var m_disableDefaultTopic = true;
+		// definizione delle colonne e datapath
+		var m_columnsDefinition = ["@variable", "@topic", "@qos", "@payload"];
+	</script>
+
+	<script type="text/javascript" src="gridcommon.js"></script>
+	<script type="text/javascript" src="broker_common.js"></script>
+
+	<style>
+		.enable-label {
+			width: 115px;
+			display: inline-block;
+		}
+	</style>
+</head>
+<body onload="InitGrid(datapath.value)" scroll="no">
+	<input type="hidden" name=".DATAPATH" id="datapath">
+
+	<div class="fill-height-container">
+		<div class="TitlePag">
+			<span id="pageTitle" class="html5"><t:t>publish configuration</t:t></span>
+		</div>
+
+		<div class="menu html5">
+			<div class="menu_off"> <a href="broker_connection.html"><t:t>Connection</t:t></a> </div>
+			<div class="menu_off"> <a href="broker_publish.html"><t:t>Publish</t:t></a></div>
+			<div class="menu_on"> <a href="#"><t:t>Subscribe</t:t></a></div>
+			<div class="menu_off"> <a href="broker_diagnostics.html"><t:t>Diagnostics</t:t></a></div>
+		</div>
+
+		<div class="tableHeader html5">
+			<button class="ll-button" onClick="grid_AddRowXML()">
+				<img id="imgPlus" alt="Add">
+				<span class="label"><t:t>Add</t:t></span>
+			</button>
+
+			<button class="ll-button" onClick="grid_DeleteRowXML()">
+				<img id="imgMinus" alt="Delete">
+				<span class="label"><t:t>Remove</t:t></span>
+			</button>
+		</div>
+
+		<div class="fill-height">
+			<object id="grid" classid="clsid:D62247DB-3391-4236-936F-80EF7F4EA476" width="100%" height="100%" border="0">
+				<param name="margin" value="40">
+				<param name="multiselect" value="1">
+			</object>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="gridEvents.js"></script>
+
+	<script>InitPage();</script>
+</body>
+</html>

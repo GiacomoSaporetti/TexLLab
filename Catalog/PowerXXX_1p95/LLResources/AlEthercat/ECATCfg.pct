@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- #DEFINE PREFIX ECATCfg -->
+<template>
+	<hmi>
+		<menu name="menuECATSlave">
+			<command caption="Remove" handler="PREFIX.RemoveNode_ECAT" statusmsg="Removes a node from the tree"/>
+			<command caption="Enable / Disable" handler="PREFIX.EnableDisableNode_ECAT"/>
+			<separator/>
+			<command caption="Cut" handler="PREFIX.TreeCut_ECAT"/>
+			<command caption="Copy" handler="PREFIX.TreeCopy_ECAT"/>
+			<command caption="Export to file..." handler="PREFIX.ExportSlaveToFile"/>
+			<separator/>
+			<command caption="Move up" handler="PREFIX.MoveUpNode_ECAT" />
+			<command caption="Move down" handler="PREFIX.MoveDownNode_ECAT" />
+		</menu>
+	
+		<menu name="menuECATSlaveList">
+			<command caption="Add..." handler="PREFIX.AddECATSlaveFromMenu" statusmsg="Add a new node in the tree"/>
+			<separator/>
+			<command caption="Paste" handler="PREFIX.TreePaste_ECAT" updatehandler="PREFIX.UpdateTreePaste_ECAT"/>
+			<command caption="Import from file..." handler="PREFIX.ImportSlaveFromFile"/>
+		</menu>
+		
+		<menu name="menuECATMaster">
+			<command caption="Add HotConnect group" handler="PREFIX.AddECATHotConnectGroupFromMenu" statusmsg="Add a new HotConnect group"/>
+		</menu>
+		
+		<menu name="menuECATHotConnectGroup">
+			<command caption="Remove group" handler="PREFIX.RemoveNode_ECAT" statusmsg="Removes a node from the tree"/>
+			<separator/>
+			<command caption="Add..." handler="PREFIX.AddECATSlaveFromMenu" statusmsg="Add a new node in the tree"/>
+			<separator/>
+			<command caption="Paste" handler="PREFIX.TreePaste_ECAT" updatehandler="PREFIX.UpdateTreePaste_ECAT"/>
+			<command caption="Import from file..." handler="PREFIX.ImportSlaveFromFile"/>
+		</menu>
+		
+		<menu resourceName="&amp;Tools">
+			<separator/>
+			<command caption="Import ESI..." handler="PREFIX.ImportESI"/>
+		</menu>
+
+		<window type="com" link="ECATCfgGUI.ECATActiveXCtrl" onclose="ECATCtrl.OnClose" helpContext="EtherCATPage">ECATCtrl</window>
+
+		<tree name="tree1">
+			<node name="EtherCAT_slave" caption="EtherCAT_slave" icon="img\EtherCAT_slave.ico" onclick="PREFIX.OnTreeClick_ECAT" onkeydown="PREFIX.OnTreeKeyDown_ECAT" menu="menuECATSlave" captionedit="true" onendcaptionedit="PREFIX.OnEndCaptionEdit_ECAT"/>
+			
+			<node name="EtherCAT_subNetwork" caption="EtherCAT_subNetwork" icon="img\EtherCAT_subnet.ico" onclick="PREFIX.OnTreeClick_ECAT" ondrop="PREFIX.OnTreeDrop_ECAT" menu="menuECATSlaveList"/>
+			
+			<node name="EtherCAT_HotConnectGroup" caption="EtherCAT_HotConnectGroup" icon="img\EtherCAT_hotConnect.ico" onclick="PREFIX.OnTreeClick_ECAT" ondrop="PREFIX.OnTreeDrop_ECAT" menu="menuECATHotConnectGroup" captionedit="true" onendcaptionedit="PREFIX.OnEndCaptionEdit_ECAT"/>
+		</tree>
+	</hmi>
+	
+	<extensions>
+		<!-- normalmente questo script è incluso nelle pagine html, ma EtherCAT ha bisogno di chiamarlo da script interno! -->
+		<script alias="PLCVars">%CATALOG%\..\Common\Script\PLCVars.js</script>
+		
+		<script alias="PREFIX">ECATCfg.js</script>
+		
+		<eventhandler event="OnMessage" filter="configComm">PREFIX.OnMessage_ConfigComm</eventhandler>
+	</extensions>
+	
+	<templatedata>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			
+			<xs:complexType name="TEtherCATMaster">
+				<xs:sequence>
+					<xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+				</xs:sequence>
+				<xs:attribute name="SyncShiftTimePercent" type="xs:integer"/>
+				<xs:attribute name="DivergenceThreshold" type="xs:integer"/>
+			</xs:complexType>
+
+		</xs:schema>
+	</datadef>
+</template>
+

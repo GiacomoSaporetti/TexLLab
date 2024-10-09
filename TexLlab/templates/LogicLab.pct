@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<template title="TexLlab">
+	<config>
+		<alternativeroot>/devicetemplate/plcconfig</alternativeroot>
+		<validation>true</validation>
+		<templatesdir>..\..\Catalog</templatesdir>
+		<htmlAcceptTextImmediate>false</htmlAcceptTextImmediate>
+		
+		<loadExternalTemplate>%APPPATH%\templates\LLUtils\LLUtils.pct</loadExternalTemplate>
+	</config>
+
+	<hmi>
+		<!-- __________ menu standard per add/remove elementi _________ -->
+		<menu name="menuAddRemove" >
+			<command caption="Add" handler="common.AddNode" statusmsg="Add a new node in the tree"/>
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+			<command caption="Paste" handler="common.TreePaste" updatehandler="common.UpdateTreePaste"/>
+			<separator/>
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+		</menu>
+		<menu name="menuAdd">
+			<command caption="Add" handler="common.AddNode" statusmsg="Add a new node in the tree"/>
+			<separator/>
+			<command caption="Paste" handler="common.TreePaste" updatehandler="common.UpdateTreePaste"/>
+		</menu>
+		<menu name="menuChangeRemove">
+			<!--<command caption="Change" handler="script.ChangeMasterNode" statusmsg="Changes a node in the tree"/>-->
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+		</menu>
+		<menu name="menuRemove">
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+			<separator/>
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+		</menu>
+		<menu name="menuRemoveEnableDisable">
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<command caption="Enable / Disable" handler="common.EnableDisableNode" statusmsg="Disable a node"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+			<separator/>
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+		</menu>
+		
+		<menu name="menuAddRemoveEnableDisable">
+			<command caption="Add" handler="common.AddNode" statusmsg="Add a new node in the tree"/>
+			<command caption="Remove" handler="common.RemoveNode" statusmsg="Removes a node from the tree"/>
+			<command caption="Enable / Disable" handler="common.EnableDisableNode" statusmsg="Disable a node"/>
+			<separator/>
+			<command caption="Copy" handler="common.TreeCopy"/>
+			<separator/>
+			<command caption="Move up" handler="common.MoveUpNode" />
+			<command caption="Move down" handler="common.MoveDownNode" />
+		</menu>
+		
+		<menu name="gridColumnsPopup">
+			<command caption="Show columns..." handler="common.ShowGridColumns"/>
+			<command caption="Hide column" handler="common.HideGridColumn"/>
+		</menu>
+		
+		<menu name="menuRefactoring">
+			<command caption="Refactoring" handler="script.DoRefactoring"/>
+		</menu>
+
+
+		<!-- __________ finestre e dialog generiche _________ -->
+		<window type="html" link="emptypage.html">emptypage</window>
+		<form type="html" link="PLCVarsList.html" xsize="420" ysize="340" modal="true">PLCVarsList</form>
+		<form type="html" link="PLCVarsListArray.html" xsize="420" ysize="340" modal="true">PLCVarsListArray</form>
+		<form type="html" link="VarsList.html" xsize="420" ysize="340" modal="true">VarsList</form>
+		<form type="html" link="GenericList.html" xsize="420" ysize="350" modal="true">GenericList</form>
+		<form type="html" link="GenericListShortcut.html" xsize="420" ysize="350" modal="true">GenericListShortcut</form>
+		<form type="html" link="NewPLCVar.html" xsize="300" ysize="165" modal="true">NewPLCVar</form>
+
+		<form type="html" link="LLScanInternal.html" modal="true" resizable="true" xsize="600" ysize="350">LLScanInternal</form>
+
+		<!-- __________ dockbar ospitate da logiclab, albero e output_________ -->
+		<!-- ma serve per onesw? --> <!--<dockbar caption="Resources" name="dockResources" position="left" size="250" icon="img\resources.bmp">-->
+		<dockbar caption="Resources" name="dockResources" position="attach" size="200" relativeto="59433" icon="img\resources.bmp">
+			<tree name="tree1" iconsizex="16" iconsizey="16" uniquecaptions="true" bordertype="single" linesAtRoot="true" onclick="common.OnTreeClick" ondrop="common.OnTreeDrop" onkeydown="common.OnTreeKeyDown" ctrlID="100">
+				<overlayimg index="1">img\disabled.ico</overlayimg>
+				<node name="ROOT" data="/" default="true" icon="img\resources.ico" window="emptypage"/>
+			</tree>
+		</dockbar>
+		
+		<containerWnd id="output">
+			<output name="output" bordertype="single" ondblclick="common.OutputClick"/>
+		</containerWnd>
+	</hmi>
+
+	<templatedata>
+		<project_config nextID="0">
+			<datacomment/>
+		</project_config>
+		
+		<!-- ___________________   MODBUS e CAN CUSTOM EDITOR  ___________________ -->
+		<par ipa="1" readonly="false" name="" typepar="short" typetarg="short" form="" descr="">
+			<protocol name="Modbus" commaddr="0" commsubindex="0"/>
+		</par>
+		
+		<machineParameter>
+			<pageNumber>0</pageNumber>
+			<uniqueID>0</uniqueID>
+			<value/>
+			<enumValues/>
+			<descr/>
+			<visible>0</visible>
+		</machineParameter>
+		
+		<machineParameters caption="" enabled="0"/>
+		
+		<enum_value>
+			<value>0</value>
+			<descr/>
+		</enum_value>
+		
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		
+<!-- _______________________________________________ DEFINIZIONE TIPI DI DATO I DEVICES MASTER / SLAVES _______________________________________________ -->
+			<xs:complexType name="masterDevice">
+				<xs:sequence>
+					<xs:any minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+				<xs:attribute name="protocol" type="xs:string"/>
+				<xs:attribute name="maxSlaves" type="xs:integer" default="-1"/>
+			</xs:complexType>
+			
+			<xs:complexType name="insertableDevice">
+				<xs:attribute name="onloadnode" type="xs:string"/>
+				<xs:attribute name="onpastenode" type="xs:string"/>
+				<xs:attribute name="ondeletenode" type="xs:string"/>
+				<xs:attribute name="template" type="xs:string"/>
+				<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+				<xs:attribute name="insertable" type="xs:boolean" default="true"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="name" type="xs:string"/>
+				<xs:attribute name="version" type="xs:decimal"/>
+				<xs:attribute name="uniqueID" type="xs:integer"/>
+			</xs:complexType>
+
+			<xs:complexType name="masterInsertableDevice">
+				<xs:sequence>
+					<xs:any minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+				<xs:attribute name="protocol" type="xs:string"/>
+				<xs:attribute name="onloadnode" type="xs:string"/>
+				<xs:attribute name="onpastenode" type="xs:string"/>
+				<xs:attribute name="ondeletenode" type="xs:string"/>
+				<xs:attribute name="template" type="xs:string"/>
+				<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+				<xs:attribute name="insertable" type="xs:boolean" default="true"/>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="name" type="xs:string"/>
+				<xs:attribute name="version" type="xs:decimal"/>
+				<xs:attribute name="uniqueID" type="xs:integer"/>
+			</xs:complexType>
+
+<!-- _______________________________________________ DEFINIZIONE ELEMENTI BASE _______________________________________________ -->
+
+			<xs:element name="project_config">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="datacomment" type="xs:string"/>
+					</xs:sequence>
+					<xs:attribute name="nextID" type="xs:integer"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- configuration è il nodo radice dei documenti; il sottonodo template è presente solo per compatibilità con i vecchi GFN (<= 1.0),è infatti opz
+			caption (=PROJECT) e ExtensionName (=script) servono per l'aggiornamento del progetto (es nuovi campi project_config) -->
+			<xs:element name="configuration">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="data" type="masterDevice" />
+					</xs:sequence>
+					<xs:attribute name="caption" type="xs:string" fixed="PROJECT"/>
+					<xs:attribute name="ExtensionName" type="xs:string" fixed="script"/>
+					<xs:attribute name="template" type="xs:string"/>
+					<xs:attribute name="version" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:simpleType name="inoutEnum">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="in"/>
+					<xs:enumeration value="out"/>
+					<xs:enumeration value="inOut"/>
+					<xs:enumeration value="none"/> 
+				</xs:restriction>
+			</xs:simpleType>
+			
+			<xs:complexType name="ioObjectType">
+				<xs:attribute name="objtype" type="xs:string" use="required"/>
+				<xs:attribute name="name" type="xs:string" use="required" />
+				<xs:attribute name="inout" type="inoutEnum" use="required" />
+				<xs:attribute name="subindex" type="xs:integer" use="required" />
+				
+				<xs:attribute name="modbusAddress" type="xs:integer" default="0"/>
+				<xs:attribute name="objectIndex" type="xs:integer" default="0"/>
+				<xs:attribute name="objectSubIndex" type="xs:integer" default="0"/>
+				<xs:attribute name="PDONumber" type="xs:integer" default="0"/>
+				<xs:attribute name="PDOStartBit" type="xs:integer" default="0"/>
+				<xs:attribute name="COBID" type="xs:string" default=""/>
+				<xs:attribute name="comment" type="xs:string" default=""/>
+			</xs:complexType>
+			
+
+
+			<!-- ____________________________________ DEFINIZIONE PORTE E PERIFERICHE ____________________________________ -->
+			<xs:complexType name="Tmaster_modbus_tcp">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="protocol" type="xs:string" fixed="modbus_tcp" />
+					<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="Tmaster_modbus_rtu">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="protocol" type="xs:string" fixed="modbus_rtu" />
+					<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+
+			<xs:complexType name="Tmaster_canopen">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="protocol" type="xs:string" fixed="canopen" />
+					<xs:attribute name="hasDatalink" type="xs:boolean" default="true"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+			
+			<xs:complexType name="TRS485Port">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="mode" type="xs:integer"/>
+					<xs:attribute name="baudRate" type="xs:integer"/>
+					<xs:attribute name="serialMode" type="xs:string"/>
+					<xs:attribute name="COMnumber" type="xs:integer"/>			<!-- Numero porta -->
+					<xs:attribute name="slaveAddress" type="xs:integer"/>
+					<xs:attribute name="COMdev" type="xs:string"/>				<!-- Nome del device (se specificato comanda COMdev e non COMnumber) -->
+					<xs:attribute name="rsmode" type="xs:string"/>				<!-- tipo porta 232/485 -->
+					<xs:attribute name="rsmodeEditable" type="xs:boolean"/>		<!-- se true il tipo porta è modificabile -->
+					<xs:attribute name="netId" type="xs:integer"/>				<!-- utilizzato in configurazione multi master -->
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+			
+			<xs:complexType name="TCANopenPort">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="id" type="xs:integer"/>
+					<xs:attribute name="mode" type="xs:integer"/>
+					<xs:attribute name="nodeID" type="xs:integer"/>
+					<xs:attribute name="baudRate" type="xs:integer"/>
+					<xs:attribute name="hbTime" type="xs:integer"/>
+					<xs:attribute name="syncCOBID" type="xs:integer"/>
+					<xs:attribute name="syncCycle" type="xs:integer"/>
+					<xs:attribute name="networkID" type="xs:integer"/>
+					<xs:attribute name="IsCANopenPort"  type="xs:boolean" fixed="true"/>
+					
+					<xs:attribute name="slaveNodeID" type="xs:integer"/>
+					<xs:attribute name="slaveDeviceType" type="xs:integer"/>					
+					<xs:attribute name="slaveSyncCOBID" type="xs:integer"/>
+					<xs:attribute name="slaveSyncCycle" type="xs:integer"/>					
+					<xs:attribute name="slaveManufacturerDeviceName" type="xs:string"/>
+					<xs:attribute name="slaveManufacturerHardwareVer" type="xs:string"/>
+					<xs:attribute name="slaveManufacturerSoftwareVer" type="xs:string"/>
+					<xs:attribute name="slaveGuardTime" type="xs:integer"/>
+					<xs:attribute name="slaveLifeTimeFactor" type="xs:integer"/>
+					<xs:attribute name="slaveConsumerHeartbeatTime" type="xs:integer"/>
+					<xs:attribute name="slaveProducerHeartbeatTime" type="xs:integer"/>
+					<xs:attribute name="slaveVendorID" type="xs:integer"/>
+					<xs:attribute name="slaveProductCode" type="xs:integer"/>
+					<xs:attribute name="slaveRevisionNumber" type="xs:integer"/>
+					<xs:attribute name="slaveSerialNumber" type="xs:integer"/>
+					<xs:attribute name="slaveCfgGranularity" type="xs:integer"/>
+					<xs:attribute name="slaveCfgCOBIDAutoAssignment" type="xs:integer"/>
+					<xs:attribute name="slaveCfgMaxTPDONum" type="xs:integer"/>
+					<xs:attribute name="slaveCfgMaxRPDONum" type="xs:integer"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+			
+			<xs:complexType name="TEthernetPort">
+				<xs:complexContent>	<xs:extension base="masterDevice">
+					<xs:attribute name="enableMaster" type="xs:boolean"/>
+					<xs:attribute name="enableSlave" type="xs:boolean"/>
+					<xs:attribute name="enableSlaveRtuGateway" type="xs:boolean"/>
+					<xs:attribute name="rtuGatewayDefaultTimeout" type="xs:integer"/>
+					<xs:attribute name="rtuGatewayDefaultTimeoutPacketCommand" type="xs:integer" fixed="29000"/>
+					<xs:attribute name="rtuGatewayNetId" type="xs:integer" default="0"/>
+					<xs:attribute name="slavePort" type="xs:integer"/>
+					<xs:attribute name="IsEthernetPort"  type="xs:boolean" fixed="true"/>
+				</xs:extension> </xs:complexContent>
+			</xs:complexType>
+			
+			
+			<xs:complexType name="TMachineParameter_enum_value">
+				<xs:sequence>
+					<xs:element name="value" type="xs:integer"/>
+					<xs:element name="descr" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="TMachineParameter_enum">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="enum_value" type="TMachineParameter_enum_value"/>
+				</xs:sequence>
+			</xs:complexType>
+			
+			<xs:complexType name="TMachineParameter">
+				<xs:sequence>
+					<xs:element name="pageNumber" type="xs:integer"/>
+					<xs:element name="uniqueID" type="xs:integer"/>
+					<xs:element name="value" type="xs:string"/>
+					<xs:element name="enumValues" type="TMachineParameter_enum"/>
+					<xs:element name="descr" type="xs:string"/>
+					<xs:element name="visible" type="xs:boolean"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TMachineParameters">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="machineParameter" type="TMachineParameter"/>
+				</xs:sequence>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="enabled" type="xs:boolean" default="false"/>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="stopNodeParsing" type="xs:boolean" fixed="true"/>
+				<xs:attribute name="insertable" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			
+			<xs:complexType name="TMachineConfiguration">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="machineParameters" type="TMachineParameters"/>
+				</xs:sequence>
+				<xs:attribute name="name" type="xs:string"/>
+				<xs:attribute name="version" type="xs:string"/>
+			</xs:complexType>
+		
+		</xs:schema>
+	</datadef>
+
+	<extensions>
+		<dll alias="extfunct">%APPEXENAME%</dll>
+		<script alias="common">..\..\Common\Extensions\Common.js</script>
+		<script>compiler.js</script>
+		<script alias="ConfiguratorIntf">ConfiguratorIntf.js</script>
+		<script>script.js</script>
+		<com alias="logiclab">AlPlc.AlCommand</com>
+		<dll alias="GDBFileTransfer">GDBFileTransfer.dll</dll>
+		<dll alias="commonDLL">AlFramework.dll</dll>
+		<dll alias="LLScan">LLScanClientLib.dll</dll>
+		
+		<eventhandler event="OnBeforeLoad">script.OnBeforeLoad</eventhandler>
+		<eventhandler event="OnLoad">script.OnLoad</eventhandler>
+		<eventhandler event="OnBeforeSave">script.OnBeforeSave</eventhandler>
+		<eventhandler event="OnMessage">script.OnMessage</eventhandler>
+		<eventhandler event="OnLoadTemplate">ConfiguratorIntf.OnLoadTemplate</eventhandler>
+	</extensions>
+</template>

@@ -1,0 +1,89 @@
+/************************************************************************************
+*                                                                                   *
+*                   !!!! MODIFICARE IL FILE .less E NON .css !!!!                   *
+*                                                                                   *
+*************************************************************************************/
+
+@import (reference) "common.less";
+
+// stati licenza
+.lic-status.ok:before {
+	.color-dot(#32CD32);
+}
+
+.lic-status.demo:before {
+	.color-dot(#FFFF00);
+}
+
+.lic-status.no:before {
+	.color-dot(#FF0000);
+}
+
+.lic-status.error:before {
+	.color-dot(darkred);
+}
+
+.lic-status.pending-restart:before {
+	.color-dot(rgb(27, 27, 189));
+}
+
+.lic-status {
+	text-transform: uppercase;
+	
+	&:before {
+		.dot-before-definition(10px);
+	}
+}
+
+// drop area nella quale trascinare il file di attivazione
+.drop-file-zone {
+	background-color: #eee;
+	border: #ccc 4px dashed;
+	width: 95%;
+	max-width: 300px;
+	height: 165px;
+	font-size: 20px;
+	margin: 4px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	user-select: none; 
+
+	* {
+		background-color: #eee;
+	}
+}
+
+.drag-upload-file {
+	#selectfile {
+		display: none;
+	}
+
+	p {
+		text-align: center;
+	}
+}
+
+// tabella in cui viene mostrata la lista di prodotti
+table.lic-tbl {
+	border-collapse: collapse;
+}
+
+table.lic-tbl > * {
+	font-size: 16px;
+
+	td {
+		border-bottom: 1px solid #ddd;
+		padding-right: 40px;
+
+		&.tab-head {
+			color: @header-color;
+			font-weight: bold;
+		}
+	}
+}
+
+#refreshBtn {
+	float: right;
+	display: none;
+}

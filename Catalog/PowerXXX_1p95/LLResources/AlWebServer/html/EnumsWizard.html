@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script type="text/javascript">
+        try
+        { csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+        catch (e)
+        { csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+        document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+        document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+    </script>
+
+    <script src="./EnumsWizard.js"></script>
+
+    <style>
+        body > * {
+            font-family: Arial;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input {
+            width: 250px;
+        }
+
+        input[type='checkbox'] {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .content {
+            align-self: center;
+        }
+
+        .window-btn {
+            width: 110px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, td {
+            border: 1px solid black;
+        }
+
+        td {
+            height: 30px;
+            padding: 0 3px 0 3px;
+        }
+
+        .th {
+            text-align: center;
+            color: white;
+            background-color: #225676;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-m">
+        <div class="content">
+            <table id="enumsContainer">
+                <tr class="th">
+                    <td><t:t>Value</t:t></td>
+                    <td><t:t>Name</t:t></td>
+                    <td><t:t>Enabled</t:t></td>
+                    <td><t:t>Description</t:t></td>
+                </tr>
+            </table>
+        </div>
+        <div class="content mt-m">
+            <button onclick="OnOK()" class="window-btn"><t:t>Ok</t:t></button>
+            <button onclick="CloseDlg()" class="window-btn"><t:t>Cancel</t:t></button>
+        </div>
+    </div>
+</body>
+</html>

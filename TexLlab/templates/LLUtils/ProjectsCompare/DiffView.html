@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Diff View</title>
+
+	<script>
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+		var app = window.external;
+	</script>
+
+	<style>
+		table, th, td {
+			border: 1px solid gray;
+			border-collapse: collapse;
+			font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+		}
+
+		th {
+			background-color: #dfdfdf;
+		}
+
+		td {
+			padding: 2px 5px 2px 5px;
+			font-size: 15px;
+		}
+
+		td > ul {
+			/* riduce il padding della lista */
+			padding-left: 15px;
+			margin: 5px 0 5px 0;
+		}
+
+		td:first-child {
+			width: 20%;
+			min-width: 200px;
+		}
+
+		td:nth-child(n+2) {
+			width: 40%;
+		}
+
+		td:nth-child(n+3) {
+			width: 40%;
+		}
+
+		/* per sovrascrivere style.css */
+		html, body {
+			margin: 4px;
+			height: auto;
+		}
+
+		#diffTbl td .ll-button {
+			width: 30px;
+			height: 25px;
+			padding: 0;
+		}
+	</style>
+
+	<script src="FieldNamesDef.js"></script>
+	<script src="DiffView.js"></script>
+</head>
+<body>
+	<table id="diffTbl">
+		<tr>
+			<th><t:t>Item</t:t></th>
+			<th><t:t>This value</t:t></th>
+			<th><t:t>Other value</t:t></th>
+		</tr>
+	</table>
+
+	<script>
+		// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+		InitPage()
+	</script>
+</body>
+</html>

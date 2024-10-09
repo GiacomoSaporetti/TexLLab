@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+<head>
+	<title>Web Custom Pages</title>
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'></link>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	
+	function InitPage()
+	{
+		var path = _DATAPATH
+		pageTitle.innerText = "'" + app.DataGet(path + "@caption", 0) + "' Web custom page"
+		
+		SearchError(path)
+	}
+
+	function ImportHtml()
+	{
+		var fso = app.CallFunction( "common.CreateObject", "Scripting.FileSystemObject" )
+		var webFolder = fso.GetParentFolderName(app.CallFunction("logiclab.get_ProjectPath")) + "\\website";
+		
+		var pathFile = app.CallFunction("commonDLL.ShowOpenFileDlg", "HTML files (*.html)|*.html|All files (*.*)|*.*|",".HTM", webFolder)
+		if (!pathFile) return
+
+        var fileMatchesPatterh = fso.GetFileName(pathFile).match(/^page\d*\.html$/i);
+        if (fileMatchesPatterh)
+		{
+            app.MessageBox(app.Translate("Invalid file name selected!\n'pageXX.html' files are reserved for auto-generation."), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return
+		}
+
+        var fileIsInWebsiteDirectory = (fso.GetParentFolderName(pathFile) == webFolder);
+		if (!fileIsInWebsiteDirectory)
+		{
+			app.MessageBox(app.Translate("The selected page must be in the 'website'\ndirectory of the current project."), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return
+		}
+		
+		namePage.focus()
+		namePage.value = pathFile
+		namePage.blur()
+	}
+
+	// id icone di overlay per l'albero
+	var TREE_OVERLAY_NONE = 0
+	var TREE_OVERLAY_DISABLED = 1
+	
+	function OnClickEnabled()
+	{
+		app.HMISetOverlayImg("tree1", app.HMIGetCurElementPath("tree1"), chkEnabled.checked ? TREE_OVERLAY_NONE : TREE_OVERLAY_DISABLED)
+	}
+	</script>
+	
+</head>
+
+<body>
+
+<input type="hidden" name=".DATAPATH" id="datapath">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle"><t:t>Web Custom Page</t:t></td>
+	</tr>
+	<tr>
+		<td class="Sfondo">
+			<fieldset style="width:650px">
+			<legend ><t:t>Settings</t:t></legend>
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3">
+						<input id="chkEnabled" type="checkbox" name=".D(@enabled)" onclick="OnClickEnabled()"><label for="chkEnabled"><t:t>Enable build</t:t></label>
+						<br><br>
+					</td>
+				</tr>
+				<tr class="labelEdit">
+					<td width="75"><label for="namePage"><t:t>HTML Page</t:t>:</label></td>
+					<td><input id="namePage" type="text" name=".D(@link)" size="90"/></td>
+					<td><button class="ll-button" onClick="ImportHtml()" style="width: 50px; margin-left: 5px;">...</button></td> 
+				</tr>
+			</table>
+        </fieldset>
+    </td>
+</tr>
+</table>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<window type="html" link="params.html">AlDatabase_params</window>
+		<window type="html" link="paramsRO.html">AlDatabase_paramsRO</window>
+		<window type="html" link="enum.html">AlDatabase_enum</window>
+		
+		<menu name="AlDatabase_menu_Enums">
+			<command caption="Add Enum" handler="AlDatabase.AddEnum"/>
+			<command caption="Paste Enum" handler="AlDatabase.EnumTreePaste" updatehandler="AlDatabase.EnumUpdateTreePaste"/>
+		</menu>
+		<menu name="AlDatabase_menu_Enum">
+			<command caption="Rename" handler="common.RenameNode" updatehandler="AlDatabase.OnUpdateEnumEdit"/>
+			<command caption="Move up" handler="common.MoveUpNode" updatehandler="AlDatabase.OnUpdateEnumEdit"/>
+			<command caption="Move down" handler="common.MoveDownNode" updatehandler="AlDatabase.OnUpdateEnumEdit"/>
+			<separator/>
+			<command caption="Delete Enum" handler="AlDatabase.RemoveEnum" updatehandler="AlDatabase.OnUpdateEnumEdit"/>
+			<command caption="Copy Enum" handler="AlDatabase.EnumTreeCopy"/>
+		</menu>
+		
+		<tree name="tree1">
+			<node name="AlDatabase_enum" caption="" icon="Img\enum.ico" window="AlDatabase_enum" datalink="enum" menu="AlDatabase_menu_Enum" captionedit="true" onendcaptionedit="AlDatabase.OnEndEnumEdit"/>
+		</tree>
+	</hmi>
+	<templatedata>
+		<AlDatabase>
+			<enum id="0" caption="">
+				<enum_value>
+					<value>0</value>
+					<name/>
+					<description/>
+				</enum_value>
+			</enum>
+		</AlDatabase>
+	</templatedata>
+	<datadef version="1.0">	
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:complexType name="TAlDatabase_enum_value">
+				<xs:sequence>
+					<xs:element name="value" type="xs:integer"/>
+					<xs:element name="name" type="xs:string"/>
+					<xs:element name="description" type="xs:string"/>
+				</xs:sequence>
+				<xs:attribute name="isTableRow" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			<xs:complexType name="TAlDatabase_enum">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="enum_value" type="TAlDatabase_enum_value"/>
+				</xs:sequence>
+				<xs:attribute name="caption" type="xs:string"/>
+				<xs:attribute name="id" type="xs:integer"/>
+				<xs:attribute name="hasDatalink" type="xs:boolean" fixed="true"/>
+			</xs:complexType>
+			<xs:complexType name="TAlDatabase_enums">
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="enum" type="TAlDatabase_enum"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</datadef>
+	<extensions>
+		<script alias="AlDatabase">AlDatabase.js</script>
+	</extensions>
+</template>

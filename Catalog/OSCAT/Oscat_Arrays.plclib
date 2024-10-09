@@ -1,0 +1,1117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Arrays" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Arrays" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="_ARRAY_MUL"/>
+				<Pou name="_ARRAY_INIT"/>
+				<Pou name="_ARRAY_ABS"/>
+				<Pou name="_ARRAY_MEDIAN"/>
+				<Pou name="_ARRAY_ADD"/>
+				<Pou name="_ARRAY_SORT"/>
+				<Pou name="_ARRAY_SHUFFLE"/>
+				<Pou name="ARRAY_TREND"/>
+				<Pou name="ARRAY_MIN"/>
+				<Pou name="ARRAY_MAX"/>
+				<Pou name="ARRAY_HAV"/>
+				<Pou name="ARRAY_GAV"/>
+				<Pou name="ARRAY_SUM"/>
+				<Pou name="ARRAY_AVG"/>
+				<Pou name="ARRAY_VAR"/>
+				<Pou name="ARRAY_SPR"/>
+				<Pou name="ARRAY_SDV"/>
+				<Pou name="IS_SORTED"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions>
+			<function name="_ARRAY_MUL" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+						<var name="X" type="REAL"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	2. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+this function will multiply each element of the array and stroe the result instead of the element.
+Array[i] := ARRAY[i] * X.
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+FOR i := 0 TO stop DO
+	@PT[i] := @PT[i] * X;
+END_FOR;
+_ARRAY_MUL := TRUE;
+
+
+(* revision history
+hm	2. apr 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_INIT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+						<var name="init" type="REAL"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.3	16 mar 2008
+programmer 	hugo
+tested by		tobias
+
+this function will initialize a given array with a value init.
+the function needs to be called:	_array_init(adr(array),sizeof(array));
+this function will manipulate a given array.
+the function manipulates the original array, it rerturnes true when finished.
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+FOR i := 0 TO stop DO
+	@pt[i] := init;
+END_FOR;
+
+_array_init := TRUE;
+
+(* revision History
+
+hm 6.1.2007		rev 1.1
+	change type of function to bool
+	added  array_init := true to set output true.
+
+hm	14.11.2007	rev 1.2
+	changed stop calculation to be more efficient
+
+hm	16.3. 2008		rev 1.3
+	changed type of input size to uint
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_ABS" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	2. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+this function will calculate the absolute value of each element of the array and stroe the result instead of the element.
+Array[i] := ABS(ARRAY[i]).
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+FOR i := 0 TO stop DO
+	@PT[i] := ABS(@PT[i]);
+END_FOR;
+_ARRAY_ABS := TRUE;
+
+
+(* revision history
+hm	2. apr 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_MEDIAN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	16 mar 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the median of a given array.
+in order to do so the ariginal array is sorted and stays sorted after the function finishes
+the function needs to be called:	_array_median(adr(array),sizeof(array));
+this function will manipulate a given array.
+the function will return the median of the original array.
+for example [12,0,4,7,1] the median is 4 and the array after the function is called is [0,1,4,7,12]
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+_ARRAY_SORT(pt,size);
+stop := SHR(size,2)-1;
+IF EVEN(TO_INT(stop)) THEN
+	_ARRAY_MEDIAN := @pt[SHR(stop,1)];
+ELSE
+	i := SHR(stop,1);
+	_ARRAY_MEDIAN := (@pt[i] + @pt[i+1]) * 0.5;
+END_IF;
+
+(* old code
+stop := (size - SIZEOF(pt)) / SIZEOF(pt);
+FOR i := 0 TO stop - 1 DO
+	FOR m := i + 1 TO stop DO
+		IF pt^[i] > pt^[m] THEN
+			temp := pt^[i];
+			pt^[i] := pt^[m];
+			pt^[m] := temp;
+		END_IF;
+	END_FOR;
+END_FOR;
+IF even(stop) THEN
+	_array_median := pt^[stop/2];
+ELSE
+	i := stop/2;
+	_array_median := (pt^[i] + pt^[i+1])/2;
+END_IF;
+*)
+(* revision history
+hm 	3.3.2007		rev 1.1
+	corrected an error, changed the statement line 14	i := TRUNC(stop/2); to i := stop/2;
+
+hm		22. sep 2007	rev 1.2
+	changed algorithm to use _array_soft for performance reasons
+
+hm		8. oct 2007		rev 1.3
+	deleted unused variables m and temp
+
+hm		14. nov 2007	rev 1.4
+	corrected a problem with size calculation
+
+hm		16.3. 2008		rev 1.5
+	changed type of input size to uint
+	performance improvements
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_ADD" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+						<var name="X" type="REAL"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	2. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+this function will add an offset X to each element of the array and stroe the result instead of the element.
+Array[i] := ARRAY[i] + X.
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+FOR i := 0 TO stop DO
+	@PT[i] := @PT[i] + X;
+END_FOR;
+_ARRAY_ADD := TRUE;
+
+
+(* revision history
+hm	2. apr 2008		rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_SORT" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="PT" type="@REAL"/>
+						<var name="SIZE" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="stack_count" type="UINT">
+							<descr>Laufvariable Stack</descr>
+						</var>
+						<var name="stack" type="UINT" dim0="32">
+							<descr>Stackgröße~ 1,6*Log(n)/log(2)</descr>
+						</var>
+						<var name="links" type="UINT">
+							<descr>Anfangselement des Arrays</descr>
+						</var>
+						<var name="rechts" type="UINT">
+							<descr>Endelement des Arrays</descr>
+						</var>
+						<var name="pivot" type="REAL">
+							<descr>temporärer Schwellwert für Tauschbedingung</descr>
+						</var>
+						<var name="i" type="UINT">
+							<descr>Laufvariable1</descr>
+						</var>
+						<var name="j" type="UINT">
+							<descr>Laufvariable2</descr>
+						</var>
+						<var name="ende_innen" type="BOOL">
+							<descr>Ende innere Schleife</descr>
+						</var>
+						<var name="ende_aussen" type="BOOL">
+							<descr>Ende äußere Schleife</descr>
+						</var>
+						<var name="tmp" type="REAL">
+							<descr>Hilfsvariable zum Tauschen von Werten</descr>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+
+(*
+version 2.0	19. jan. 2011
+programmer 	Alexander Trikitis
+tested by	oscat
+
+this function will sort a given array.
+the function needs to be called:	_array_sort(adr(array),sizeof(array));
+this function will manipulate a given array.
+the function will not return anything except true, it will instead manipulate the original array.
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+(* Startwerte zur Arraygröße *)
+links := 1;					(* Anfangselement des Arrays *)
+rechts := SHR(size,2);		(* Endelement des Arrays *)
+stack_count := 1;			(* Laufvariable Stack *)
+
+WHILE NOT ende_aussen DO						(* äußere Schleife *)
+	IF links < rechts THEN
+		pivot := @PT[SHR(rechts+links,1)];			(* Wert des mittleren Elements als Pivot-Wert *)
+		i := links -1;
+		j := rechts +1;
+
+		(* innere Schleife, teile Feld *)
+		ende_innen := FALSE;
+		REPEAT
+
+			(* steigende Reihenfolge *)
+			REPEAT	i := i+1;	UNTIL (@PT[i] >= pivot) OR NOT (i < rechts)	END_REPEAT;
+			REPEAT	j := j-1;	UNTIL (@PT[j] <= pivot) OR NOT (j > links)	END_REPEAT;
+
+
+			(*sinkende Reihenfolge *)
+(*			REPEAT	i := i+1;	UNTIL (PT^[i] <= pivot) OR NOT (i < rechts)	END_REPEAT	*)
+(*			REPEAT	j := j-1;	UNTIL (PT^[j] >= pivot) OR NOT (j > links)	END_REPEAT	*)
+
+			IF i >= j THEN
+				ende_innen := TRUE;
+			ELSE
+				   tmp := @PT[j];
+				@PT[j] := @PT[i];
+				@PT[i] := tmp;
+			END_IF;
+
+		UNTIL ende_innen END_REPEAT;
+
+		(* Push stack *)
+		stack[stack_count] := rechts;		(* rechten Teil später sortieren *)
+		IF Stack_count < 32 THEN
+			stack_count := stack_count +1;
+		ELSE
+			ende_aussen := TRUE;
+			_ARRAY_SORT := FALSE;					(* Fehler: Stack zu klein *)
+		END_IF;
+
+		(* linken Teil sortiern *)
+		rechts := MAX(links, i-1);
+
+	ELSE
+
+		IF stack_count = 1 THEN
+			ende_aussen := TRUE;
+		ELSE
+
+			links := rechts+1;
+
+			(* pop stack *)
+			stack_count := stack_count -1;		(* jetzt rechten Teil sortierne *)
+			rechts:= stack[stack_count];
+		END_IF;
+
+	END_IF;
+
+END_WHILE;
+
+_ARRAY_SORT := TRUE;				(* Sortierung beendet *)
+
+
+(* algorithm used before rev 2.0
+
+size := SHR(size,2);
+size2 := TO_INT(SHR(size,1));
+FOR i := SIZE2  TO 1 BY -1 DO
+	j:=i;
+    WHILE j <= SIZE2 DO
+     	stop := j * 2 + 1;
+        IF stop > TO_INT(SIZE) THEN stop := stop - 1;
+        ELSIF pt^[stop-1] > pt^[stop] THEN stop := stop - 1;
+		END_IF;
+        IF pt^[j] < pt^[stop] THEN
+         	temp := pt^[j];
+            pt^[j] := pt^[stop];
+            pt^[stop] := temp;
+        END_IF;
+        j := stop;
+    END_WHILE;
+END_FOR;
+
+*)
+
+(* heapsort
+FOR heapsize := TO_INT(size) TO 1 BY -1 DO
+	popmax := pt^[1];
+	pt^[1] := pt^[heapsize];
+   	i := 1;
+	hs2 := SHR(heapsize,1);
+	WHILE i <= hs2 DO
+       	stop := i * 2 + 1;  
+        	IF stop > heapsize THEN stop := stop - 1;
+        	ELSIF pt^[stop-1] > pt^[stop] THEN stop := stop - 1;
+	 	END_IF;
+        	IF pt^[i] < pt^[stop] THEN
+            		temp := pt^[i];
+            		pt^[i] := pt^[stop];
+            		pt^[stop] := temp;
+        	END_IF;
+        	i := stop;
+    	END_WHILE;
+	pt^[heapsize] := popmax;
+END_FOR;
+
+_ARRAY_SORT2 := TRUE;
+*)
+
+(* old algorithm bubble sort used before rev 1.2
+stop := (size - SIZEOF(pt)) / SIZEOF(pt);
+FOR i := 0 TO stop - 1 DO
+	FOR m := i + 1 TO stop DO
+		IF pt^[i] > pt^[m] THEN
+			temp := pt^[i];
+			pt^[i] := pt^[m];
+			pt^[m] := temp;
+		END_IF;
+	END_FOR;
+END_FOR;
+_array_sort := TRUE;
+
+*)
+
+
+(* revision history
+
+hm 	6.1.2007 	rev 1.1
+	changed return value to true
+
+hm	22. sep 2007	rev 1.2
+	changed sorting algorithm to heap sort for performance reasons
+
+hm 	14. nov 2007	rev 1.3
+	changed calculation of stop to be more efficient
+
+hm	15 dec 2007	rev 1.4
+	added function return true
+
+hm	5. jan 2008		rev 1.5
+	improved performance
+
+hm	16. mar. 2008	rev 1.6
+	changed type of input size to uint
+
+hm	28. mar. 2008	rev 1.7
+	changed input f to pt
+
+hm	19. jan. 2011	rev 2.0
+	new faster algorithm using qucksort (Alexander Drikitis)
+
+*)
+
+]]>
+				</sourceCode>
+			</function>
+			<function name="_ARRAY_SHUFFLE" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="temp" type="REAL"/>
+						<var name="pos" type="INT"/>
+						<var name="i" type="INT"/>
+						<var name="stop" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.2	30. mar. 2008
+programmer 	kurt
+tested by		hugo
+
+this function will randomly shuffle the elements of an array
+*)
+
+stop := TO_INT(SHR(size,2)-1);
+FOR i := 0 TO stop DO
+        pos := RDM2(i+pos,0,stop);
+        (* swap elements *)
+        temp := @pt[i];
+        @pt[i] := @pt[pos];
+        @pt[pos] := temp;
+END_FOR;
+
+_ARRAY_SHUFFLE := TRUE;
+
+
+(* revision History
+hm 	4. mar 2008	rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	changed type of input size to uint
+
+hm	30. mar. 2008	rev 1.2
+	changed last in rdm2 fromm pos to i + pos to allow for more randomness
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_TREND" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+						<var name="x" type="REAL"/>
+						<var name="stop2" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the trend of a given array.
+trend will calculate the avg of the first half of the array and then the avg of the second half, trend = avg2 - avg1.
+for example:  [0,1,4,5,3,4,6,3] = 4 - 2.5 = 1.5
+the function needs to be called:	array_trend(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+stop2 := SHR(stop,1);
+FOR i := 0 TO stop2 DO x := x - @pt[i]; END_FOR;
+IF EVEN(TO_INT(stop)) THEN
+	FOR i := stop2 TO stop DO X := X + @pt[i]; END_FOR;
+ELSE
+	FOR i := stop2 + 1 TO stop DO X := X + @pt[i]; END_FOR;
+END_IF;
+ARRAY_TREND := x / TO_REAL(stop2 + 1);
+
+(* revision history
+hm	2 oct 2007	rev 1.0
+	original version
+
+hm	12 dec 2007	rev 1.1
+	changed code for better performance
+
+hm	16. mar. 2008	rev 1.2
+	changed type of input size to uint
+
+hm	10. mar. 2009	rev 1.3
+	added type conversions for compatibility reasons
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_MIN" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the min value of a given array.
+the function needs to be called:	array_min(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := (size - SIZEOF(pt)) / SIZEOF(pt);
+array_min := @pt[0];
+FOR i := 1 TO stop DO
+	IF @pt[i] < array_min THEN array_min := @pt[i]; END_IF;
+END_FOR;
+
+
+(* revision history
+hm		2. oct. 2006
+	original version
+
+hm		16. mar. 2008
+	changed type of input size to uint
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_MAX" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the max value of a given array.
+the function needs to be called:	array_max(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := (size -SIZEOF(pt)) / SIZEOF(pt);
+array_max := @pt[0];
+FOR i := 1 TO stop DO
+	IF @pt[i] > array_max THEN array_max := @pt[i]; END_IF;
+END_FOR;
+
+(* revision history
+hm	2. oct 2006		rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	changed input size to uint
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_HAV" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the harmonic average of a given array.
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+FOR i := 0 TO stop DO
+	IF @pt[i] <> 0.0 THEN
+		ARRAY_HAV := ARRAY_HAV + 1.0 / @pt[i];
+	ELSE
+		ARRAY_HAV := 0.0;
+		RETURN;
+	END_IF;
+END_FOR;
+ARRAY_HAV := TO_REAL(stop + 1) / ARRAY_HAV;
+
+
+(* revision history
+hm	2. apr 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_GAV" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the geometric average of a given array.
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+ARRAY_GAV := 1.0;
+FOR i := 0 TO stop DO
+	IF @pt[i] > 0.0 THEN
+		ARRAY_GAV := ARRAY_GAV * @pt[i];
+	ELSE
+		ARRAY_GAV := 0.0;
+		RETURN;
+	END_IF;
+END_FOR;
+ARRAY_GAV := SQRTN(ARRAY_GAV,TO_INT(stop)+1);
+
+
+(* revision history
+hm	2. apr 2008	rev 1.0
+	original version
+
+hm	10. mar. 2009	rev 1.1
+	real constants updated to new systax using dot
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_SUM" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the sum of a given array.
+the function needs to be called:	array_sum(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := (size -SIZEOF(pt)) / SIZEOF(pt);
+array_sum := @pt[0];
+FOR i := 1 TO stop DO
+	array_sum := array_sum + @pt[i];
+END_FOR;
+
+(* revision history
+hm 	2. oct. 2006	rev 1.0
+	function created
+
+hm	16. mar. 2008	rev 1.1
+	changed type of input size to uint
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_AVG" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the average of a given array.
+the function needs to be called:	array_avg(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := SHR(size,2)-1;
+ARRAY_AVG := @pt[0];
+FOR i := 1 TO stop DO
+	ARRAY_AVG := ARRAY_AVG + @pt[i];
+END_FOR;
+ARRAY_AVG := ARRAY_AVG / TO_REAL(stop + 1);
+
+
+(* revision history
+hm	2. oct 2007		rev 1.0
+	original version
+
+hm	12. dec 2007	rev 1.1
+	chaged code for better performance
+
+hm	16. mar. 2008	rev 1.2
+	changed input size to uint
+
+hm	10. mar. 2009	rev 1.3
+	added type conversion for compatibility reasons
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_VAR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="avg" type="REAL"/>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	10. mar. 2009
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the variance of a given array.
+the function needs to be called:	array_var(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+(* at first we calualte the arithmetic average of the array *)
+
+stop := SHR(size,2)-1;
+avg := @pt[0];
+FOR i := 1 TO stop DO
+	avg := avg + @pt[i];
+END_FOR;
+avg := avg / TO_REAL(stop + 1);
+
+(* in a second run we calculate the variance of the array *)
+
+array_var := (@pt[0] - avg) * (@pt[0] - avg);
+FOR i := 1 TO stop DO
+	array_var := array_var + (@pt[i] - avg) * (@pt[i] - avg);
+END_FOR;
+ARRAY_VAR := ARRAY_VAR / TO_REAL(stop);
+
+(* revision history
+hm 	1.4.2007	rev 1.0
+	function created
+
+hm	12.12.2007	rev 1.1
+	changed code for better performance
+
+hm	16. mar. 2008	rev 1.2
+	changed type of input size to uint
+
+hm	10. mar. 2009	rev 1.3
+	added type conversions for compatibility reasons
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_SPR" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="i" type="UINT"/>
+						<var name="stop" type="UINT"/>
+						<var name="array_max" type="REAL"/>
+						<var name="array_min" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	16. mar. 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the spread of a given array.
+the function needs to be called:	array_spr(adr(array),sizeof(array));
+for example: spread of [12,0,4,1,7] is 12 - 0 = 12.
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := (size -SIZEOF(pt)) / SIZEOF(pt);
+array_min := @pt[0];
+array_max := @pt[0];
+FOR i := 1 TO stop DO
+	IF @pt[i] > array_max THEN array_max := @pt[i];
+	ELSIF @pt[i] < array_min THEN array_min := @pt[i];
+	END_IF;
+END_FOR;
+array_spr := array_max - array_min;
+
+
+(* revision history
+hm 	2. oct. 2006	rev 1.0
+	original version
+
+hm	16. mar. 2008	rev 1.1
+	changed type of input size to uint
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="ARRAY_SDV" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>REAL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+
+(*
+version 1.1	16. mar 2008
+programmer 	hugo
+tested by		tobias
+
+this function will calculate the standard deviation of a given array.
+the function needs to be called:	array_sdv(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+(* standard deviation is simply the square root of the variance *)
+
+array_sdv := SQRT(array_var(pt, size));
+
+(* revision history
+hm 	1.4.2007		rev 1.0
+	function created
+
+hm	16. mar. 2008	rev 1.1
+	changed type of input size to uint
+
+*)
+]]>
+				</sourceCode>
+			</function>
+			<function name="IS_SORTED" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<returnValue>BOOL</returnValue>
+				<vars>
+					<inputVars>
+						<var name="pt" type="@REAL"/>
+						<var name="size" type="UINT"/>
+					</inputVars>
+					<localVars>
+						<var name="stop" type="INT"/>
+						<var name="i" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	4. apr. 2008
+programmer 	hugo
+tested by	tobias
+
+this function will return true if the given array is sorted in an ascending order.
+the function needs to be called:	array_sorted(adr(array),sizeof(array));
+because this function works with pointers its very time efficient and it needs no extra memory.
+
+*)
+
+stop := TO_INT(SHR(size,2)-2);
+FOR i := 0 TO stop DO
+	IF @pt[i] > @pt[i+1] THEN
+		IS_SORTED := FALSE;
+		RETURN;
+	END_IF;
+END_FOR;
+
+IS_SORTED := TRUE;
+
+(* revision history
+
+hm 	29. mar. 2008 	rev 1.0
+	original version
+
+hm	4. apr. 2008	rev 1.1
+	added type conversion to avoid warnings under codesys 3.0
+*)
+
+]]>
+				</sourceCode>
+			</function>
+		</functions>
+		<functionBlocks/>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

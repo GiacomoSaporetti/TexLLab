@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<devicetemplate>
+	<deviceinfo caption="Modbus FC-23" name="23 (0x17) Read/Write Multiple Register" version="1.0" icon="img\FC.ico" deviceid="FC23">
+		<description>Read/Write Multiple Register - Function 23 (0x17)</description>
+		<protocols>
+			<protocol>modbus_message</protocol>
+		</protocols>
+	</deviceinfo>
+
+	<plcconfig>
+
+		<hmi>
+			<window type="html" link="html/FC23.html" helpContext="ModbusMessagePage">win_FC23</window>
+
+            <tree name="tree1">
+                <node name="FC23" caption="" icon="img\FC.ico" window="win_FC23" datalink="FC23" menu="menuAddRemove" captionedit="yes"/>
+            </tree>
+
+		</hmi>
+
+        <templatedata>
+
+            <FC23>
+
+                <FC_config>
+                    <block>inputoutput</block>
+                    <funcode>23</funcode>
+                    <type>word</type>
+                    <rdAddress>0</rdAddress>
+                    <wrAddress>0</wrAddress>
+                    <pollTime>0</pollTime>
+                    <tmo>1000</tmo>
+
+                    <FC_images_in> 
+                        <FC_image> 
+                            <label/> 
+                            <type/> 
+                            <description/> 
+                            <dataBlock/>
+                            <ioObject name="Register" subindex="0" objtype="WORD" inout="in"/>
+                        </FC_image> 
+                    </FC_images_in>
+
+                    <FC_images_out> 
+                        <FC_image> 
+                            <label/> 
+                            <type/> 
+                            <description/> 
+                            <dataBlock/>
+                            <ioObject name="Register" subindex="0" objtype="WORD" inout="out"/>
+                        </FC_image> 
+                    </FC_images_out>
+					<turnAround>0</turnAround>
+
+                </FC_config>
+
+            </FC23>
+
+		</templatedata>
+
+		<datadef version="2.0">
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                <xs:element name="FC23">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="insertableDevice">
+								<xs:sequence>
+                                    <xs:element name="FC_config">
+										<xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="block" type="xs:string"/>
+                                                <xs:element name="funcode" type="xs:integer"/>
+                                                <xs:element name="type" type="xs:string"/>
+                                                <xs:element name="rdAddress" type="xs:integer"/>
+                                                <xs:element name="wrAddress" type="xs:integer"/>
+                                                <xs:element name="pollTime" type="xs:integer"/>
+                                                <xs:element name="tmo" type="xs:integer"/>
+                                                <xs:element name="FC_images_in">
+                                                    <xs:complexType>
+            											<xs:sequence>
+            												<xs:element name="FC_image" type="FC_image" maxOccurs="125"/>
+            											</xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="FC_images_out">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element name="FC_image" type="FC_image" maxOccurs="121"/>
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="turnAround" type="xs:integer"/>
+                                            </xs:sequence>
+										</xs:complexType>
+									</xs:element>
+                                </xs:sequence>
+								<xs:attribute name="window" type="xs:string" fixed="win_FC23"/>
+								<xs:attribute name="ExtensionName" type="xs:string" fixed="ModbusFC"/>
+								<xs:attribute name="ondeletenode" type="xs:string" fixed="ModbusCustom.UnassignAllPLCVarsFromDevice"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+           </xs:schema>
+		</datadef>
+	</plcconfig>
+</devicetemplate>

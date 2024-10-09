@@ -1,0 +1,88 @@
+
+/* ------------------------------------------ GESTIONE BUS/SLOTS ------------------------------------ */
+.Textual_VeryBigSlot
+{
+	font-weight: bold;
+	font-size: 24px;
+	COLOR: #00529b;
+	font-family: Arial;
+	text-align: left;
+}
+
+.TabSlot
+{
+	background-color: white;
+	border-left: 1px outset #589fbd;
+	border-right: 2px outset #589fbd;
+	border-bottom: 2px outset #589fbd;
+}
+.SlotTable
+{
+	width: 100%;
+	height: 100%;
+}
+.SlotImage
+{
+	float:left; 
+	margin-left: 20px;
+}
+.SlotName
+{
+	font: 13px Arial;
+	color: #002157;
+	font-weight:bold;
+}
+.SlotPage
+{
+	padding: 20px; 
+	width: 100%;
+	height: 100%;
+}
+.SlotPage td
+{
+	padding: 10px;
+}
+
+.BodyTransparent
+{
+	background-color:transparent;
+}
+
+/* tabella per la rappresentazione dei bus */
+table#busTable {
+	table-layout: fixed;
+	height: 150px;
+	border-collapse: collapse;
+}
+
+table#busTable td {
+	border: 2 solid #c0c0c0;
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	width: 74px;
+}
+
+table#busTable img {
+	height: 133px;
+	width: 40px;
+}
+
+td.CANexpansion {
+	border: 1 solid black;
+	text-align: center;
+	width: 150px;
+}
+
+div#busTableContainer1 {
+	position: relative; 
+	width: 100%; 
+	height: 100%;
+	border:  1px solid #cccccc;
+}
+
+div#busTableContainer2 {
+	overflow-x: auto; 
+	position: absolute;
+	width: 100%; 
+	height: 100%;
+}

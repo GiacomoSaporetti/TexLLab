@@ -1,0 +1,562 @@
+/************************************************************************************
+*                                                                                   *
+*                   !!!! MODIFICARE IL FILE .less E NON .css !!!!                   *
+*                                                                                   *
+*************************************************************************************/
+
+@import (reference) "common.less";
+
+label {
+	font: normal 12px @base-font;
+	color: #002157;
+}
+
+fieldset {
+	border: solid 2px #9aaaba;
+	padding: 15px;
+	padding-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	display: block;
+
+	&[disabled] {
+		opacity: 0.85;
+		background-color: #ececec;
+
+		* {
+			color: #A6A6A6;
+			background-color: #ececec !important;
+			// importante su IE che non supporta nativamente l'attributo disabled sul fieldset
+			pointer-events: none;
+		}
+	}
+}
+
+legend {
+	font: bold 14px @base-font;
+	color: #4b7d9f;
+	margin-bottom: 5px;
+}
+
+input {
+	font: normal 12px @base-font;
+
+	&[type='text'], &[type='password'] {
+		border-radius: 5px;
+		border: 2px solid lightgray;
+		height: 16px;
+		padding: 3px;
+		// altrimenti risultano incollate tra di loro
+		margin-top: 1px;
+	}
+}
+
+select {
+	font: normal 12px @base-font;
+	border-radius: 5px;
+	box-shadow: none;
+	border: 2px solid lightgray;
+	padding: 3px;
+}
+
+html, body
+{
+	margin: 0;
+	height: 100%;
+}
+
+
+
+
+.Textual {
+	font: normal 14px @base-font;
+	color: #002157; 
+	margin-top: 9px; 
+	margin-bottom: 9px;
+	text-align: left;
+}
+
+.Textual_big {
+	font: bold 18px @base-font;
+	color: #4b7d9f;
+	text-align: justify;
+}
+
+.Titles_table {
+	font: bold 14px @base-font;
+	color: black; 
+	text-align: center;
+}
+
+.TitlesMinor_table {
+	font: 14px @base-font;
+	color: black; 
+	text-align: center;
+}
+
+.Cursor {cursor: pointer;}
+
+.menu {
+	// il riempimento funziona perché il nbsp che viene disegnato ha come dimensione di font la stessa dei tab!!!
+	// in questo modo il suo box occupa TUTTA la riga, da tutta sx (tab compresi) fino a tutta dx
+	font-size: 27px;
+	// border-bottom commentato perche' sulle pagine HTML5 non c'e' piu' modo di nasconderlo sotto alla tab attiva
+	// border-bottom: 1px solid #589fbd;
+	padding-left: 7px;
+	padding-top: 7px;
+	background-color: #cedfed;
+
+	.menu_on {
+		border-top: 1px solid #589fbd;
+		border-left: 1px solid #589fbd;
+		border-right: 1px solid #589fbd;
+		background-color: white;
+
+		a {
+			color: #002157;
+		}
+	}
+
+	.menu_off {
+		background-color: #086ca0;
+		border-bottom:1px solid #589fbd;
+		margin-left: 1px;
+		margin-right: 1px;
+
+		a {
+			color: #ffffff;
+
+			&:hover {
+				background-color: #589fbd;
+				color: #ffffff;
+			}
+		}
+	}
+
+	.menu_off, .menu_on {
+		float: left;
+
+		a {
+			width: 140px;
+			height: 29px;
+			padding-top: 5px;
+			font: bold 13px @base-font;
+			text-align: center;
+			display: block;
+		}
+	}
+
+	.menu_off a:link, .menu_off a:visited, .menu_on a:link, .menu_on a:visited {text-decoration:none;}
+
+	// lasciato qui per ragioni di retrocompatibilita'. usare il namespace!
+	&.html5 {
+		.menu_off a, .menu_on a {
+			height: 25px;
+		}
+	}
+}
+
+.InputReadonly {
+	background-color: #E0E0E0;
+}
+
+.TitlePag {
+	font: bold 24px @base-font;
+	color: white;
+	background-color: @header-color;
+	height: 40px; 
+	text-align: center;
+
+	// lasciato qui per ragioni di retrocompatibilita'. usare il namespace!
+	#pageTitle.html5 {
+		padding-top: 6px;
+		display: inline-block;
+	}
+}
+
+.tableHeader {
+	border-bottom: 1px solid #cccccc;
+	padding: 10px 0 10px 10px;
+	// va tenuta obbligatoriamente altrimenti deforma le pagine < HTML5
+	height: 45px;
+
+	// lasciato qui per ragioni di retrocompatibilita'. usare il namespace!
+	&.html5 {
+		height: auto;
+	}
+}
+
+.Sfondo {
+	vertical-align: top;
+	padding: 8px 20px 20px 20px;
+}
+
+.SfondoTab {
+	height: 35px;
+}
+
+.CompilerError {
+	border: solid red
+}
+
+button.ll-button {
+	// e' lo stesso colore dell'header della AxEditGrid
+	@bg-color: #f0f0f0;
+	// e' lo stesso colore del border della AxEditGrid
+	@border-color: #A0A0A0;
+
+	height: 28px;
+	box-sizing: border-box;
+	padding: 1px 13px 1px 13px;
+	background-color: @bg-color;
+	border-radius: 5px;
+	border: 1px solid @border-color;
+
+	> img {
+		top: 3px;
+		height: 16px;
+		width: 16px;
+		position: relative;
+		display: inline-block;
+		background: transparent 0 0 no-repeat;
+	}
+
+	> .label, > label {
+		margin-left: 4px;
+		white-space: nowrap;
+		display: inline-block;
+	}
+
+	&:not([disabled]) {
+		cursor: pointer;
+
+		&:hover {
+			background-color: #5ab7df;
+		}
+	}
+
+	&[disabled] > img {
+		opacity: 0.6;
+	}
+}
+
+/* testo di pseudo-bottoni sopra le griglie */
+.buttonText {
+	position: relative;
+	top: -4px;
+	margin-right: 30px;
+	cursor: pointer;
+}
+
+.buttonImg
+{
+	cursor: pointer;
+}
+
+.TabParametri, .InputTable {
+	background-color: #eaedef;
+	font-size: 11px; 
+	font-family: @base-font;
+	text-align: left; 
+}
+
+.InputTable
+{
+	border:none;
+	background-color: transparent;
+	width:335px;
+}
+
+.RigaBassaTab {
+	&:extend(label);	// crea una regola ".RigaBassaTab" adiacente alla regola "label" con le stesse proprieta' di label
+	border-bottom-color: #9aaaba;
+	border-bottom-style: solid;
+	border-bottom-width: 0.3pt;
+	margin-top:2px;
+}
+
+.TabParametri {
+	th {
+		vertical-align: middle;
+		background-color: #d4d9db;
+		border: 1px solid #000000;
+		border-width: 0px 1px 1px 0px;
+		text-align: center;
+		padding: 2px;
+		font-size: 12px;
+		font-family: @base-font;
+		font-weight: bold;
+		color: #000000;
+	}
+
+	td {
+		vertical-align: middle;
+		text-align: center;
+		background-color: #d4d9db;
+		border: 1px solid #000000;
+		border-width: 0px 1px 1px 0px;
+		text-align: center;
+		padding: 2px;
+		font-size: 12px;
+		font-family: @base-font;
+		font-weight: bold;
+		color: #000000;
+	}
+}
+
+.form{
+	background: rgb(255, 255, 255);
+}
+
+/* definizione dei margini (classi helper per settare i margin in fretta)*/
+.mt-xs{
+	margin-top: 5px;
+}
+
+.mt-s{
+	margin-top: 10px;
+}
+
+.mt-m{
+	margin-top: 20px;
+}
+
+.mt-l{
+	margin-top: 30px;
+}
+
+.mt-xl{
+	margin-top: 40px;
+}
+
+.FlatButton {
+	background-color: #f0f0f0;
+	border: 1px solid #dcdcdc;
+	display: inline-block;
+	color: #666666;
+	font-size: 12px;
+	padding: 6px;
+	text-decoration: none;
+	font: normal 12px @base-font;
+	color: #002157;
+
+	&[disabled] {
+		opacity: 0.6;
+	}
+
+	&:not([disabled]) {
+		&:hover {
+			background-color: #ffffff;
+			cursor: pointer;
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+		}
+	}
+}
+
+.fill-height-container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.fill-height-container-row {
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+}
+
+.fill-height {
+	/* workaround vecchi browser*/
+	display: block;
+	height: 100%;
+	/* nuovi browser con modalità flex */
+	flex: 1;
+}
+
+// namespace HTML5 da usare per applicare contemporaneamente tutte le modifiche "HTML5" sulle pagine aggiornate.
+// serve perche', essendo ancora diffuse le pagine che usano il HTML < 5, questo stile andrebbe a deformarle se non sono state aggiornate.
+// e' da applicare sul parent degli elementi che dovranno prendere questo stile, per non dover applicare la classe ad ogni singolo elemento.
+.html5 {
+	// per mantenere il titolo alla stessa altezza nelle pagine HTML5 come nelle pagine HTML < 5
+	.TitlePag #pageTitle {
+		white-space: nowrap;	// evita che il titolo sbordi su una nuova riga
+		padding-top: 6px;
+		display: inline-block;
+	}
+
+	// per fare in modo che l'altezza non sia inutilmente fissa (ha gia' il padding)
+	.tableHeader {
+		height: auto;
+	}
+
+	// per mantenere l'altezza delle tab nelle pagine HTML5 come nelle pagine HTML < 5 : funziona se il div contiene poi del testo (tipicamente un nbsp) che amplia l'altezza del div
+	// in mancanza del testo, per ragioni non note se all'interno di tabelle il div padre "collassa" e non si vede lo sfondo colorato
+	.menu {
+		.menu_off a, .menu_on a {
+			height: 25px;
+		}
+	}
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Toggle switch ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Toggle switch: https://www.w3schools.com/howto/howto_css_switch.asp
+// The switch - the box around the slider
+.switch {
+	@slider-width: 34px;
+	@slider-height: 16px;
+	@switch-size: @slider-height - 2px;
+
+	position: relative;
+	display: inline-block;
+	width: @slider-width;
+	height: @slider-height;
+
+	// Hide default HTML checkbox
+	input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	// The slider
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ccc;
+		transition: .3s;
+
+		&:before {
+			position: absolute;
+			content: "";
+			height: @switch-size;
+			width: @switch-size;
+			left: 1px;
+			bottom: 1px;
+			background-color: white;
+			transition: .3s;
+		}
+
+		// Rounded sliders
+		&.round {
+			border-radius: 99px;
+
+			&:before {
+				border-radius: 50%;
+			}
+		}
+	}
+
+	input {
+		&:checked + .slider {
+			background-color: @header-color;
+
+			&:before {
+				transform: translateX(@slider-width - @switch-size - 2px);
+			}
+		}
+
+		&[disabled] + .slider {
+			cursor: default !important;
+			background-color: #E7E7E7;
+		}
+	}
+}
+
+// regole specifiche per le classi figlie di bootstrap isolato
+.bootstrap {
+	// stile dei pannelli contenitori
+	*.panel {
+		border: 1px solid transparent;
+		border-radius: 4px;
+		box-shadow: 0 1px 1px rgba(0,0,0,.05);
+		border-color: #ddd;
+		padding: 0 15px 10px 15px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+
+		* {
+			.lbl {
+				display: inline-block !important;
+				width: 115px;
+				font-size: 15px;
+				font-weight: normal !important;
+			}
+		}
+
+		.form-control {
+			display: inline-block !important;
+		}
+
+		&[disabled] {
+			opacity: 0.85;
+			background-color: #ececec;
+
+			* {
+				// inibisco la possibilita' che l'utente interagisca con gli elementi contenuti nel pannelo disabilitato
+				pointer-events: none;
+				color: #A6A6A6;
+				background-color: #ececec !important;
+			}
+		}
+	}
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ design riga->colonne ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.row {
+	display: flex;
+	flex-direction: row;
+	padding-left: 15px;
+	padding-right: 15px;
+	overflow: auto;
+
+	&.j-between {
+		justify-content: space-between;
+	}
+
+	&.j-around {
+		justify-content: space-around;
+	}
+
+	&.j-center {
+		justify-content: center;
+	}
+
+	.column {
+		// per dare una dimensione di default alle colonne. ridefinire liberamente!
+		min-width: 0px;
+		max-width: 0px;
+
+		// margine tra una colonna e l'altra
+		&:nth-child(n+2) {
+			margin-left: 20px;
+		}
+	}
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ welcome page ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.welcome {
+	@import "welcome.less";
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ pagine varslist ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.varslist {
+	@import "varslist.less";
+}
+
+body.varslist {
+	overflow-y: hidden;
+	padding: 10px;
+}
+
+
+// IMPORTANTE: inserire qui le eventuali customizzazioni cliente, senza modificare il sorgente comune a tutti!
+@import "custom.less";

@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Main Configuration</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<!--<meta http-equiv="refresh" content="1">-->
+	<meta charset="UTF-8">
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "iso_bootstrap.min.css' rel='stylesheet' type='text/css'>")
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<LINK href='" + csspath + "license.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+	document.write("<SCRIPT src='" + csspath + "../script/commonlicense.js' type='text/javascript'></" + "SCRIPT>")
+
+	var path
+
+	var app = window.external;
+	var m_fso = app.CallFunction("common.CreateObject", "Scripting.FileSystemObject");
+	var shell = app.CallFunction("common.CreateObject", "WScript.Shell");
+
+	const GENERATED_ECAT_FILE_NAME = "EtherCAT_ENI.xml";
+	const DEST_ECAT_FILE_NAME = "ECAT.xml";
+
+	const MACHINE_CFG_REMOTE_PATH = "F:/fieldbus/";
+
+	const FTP_USER = "Tex_Flash_User";
+	const FTP_PASS = "48018";
+
+	function InitPage()
+	{
+		path = app.GetCurrentWindowData()
+		pageTitle.innerText = app.DataGet(path + "@caption", 0) 
+		
+		var deviceid = app.SelectNodesXML(path + ".")[0].nodeName
+
+		//immagine
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@image")
+		if (nodelist && nodelist.length != 0)
+			
+			deviceImage.src = nodelist[0].text
+		else
+			deviceImage.style.display = "none"
+			
+		//descrizione
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/longDescription")
+		if (nodelist && nodelist.length != 0)
+			deviceDescription.innerText = nodelist[0].text
+		else
+			deviceDescription.style.display = "none"
+			
+		//help	
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/@helpContext")
+		if (nodelist && nodelist.length != 0)
+		{
+			m_helpContext = nodelist[0].text
+			imgPDF.src = csspath + '../img/pdf_icon.png'
+		}
+		else
+			divHelp.style.display = "none"
+			
+		SearchError(path)
+		
+	}
+
+	function getDevice()
+	{
+		path = app.GetCurrentWindowData()
+		
+		var deviceid = app.SelectNodesXML(path + ".")[0].nodeName
+
+		//descrizione
+		var nodelist = app.CallFunction("catalog.Query", "//deviceinfo[@deviceid = '" + deviceid + "']/longDescription")
+		
+		return nodelist[0].text.concat("Table.html");
+	}
+	
+	function DownloadEcatConfiguration() {
+		if (app.ModifiedFlag) {
+			app.MessageBox(app.Translate("You must save the project before"), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return;
+		}
+
+		let isConnected = (app.CallFunction("logiclab.get_Connected") && !app.CallFunction("logiclab.get_ConnectedInError"));
+		if (!isConnected) {
+			app.MessageBox(app.Translate("Please connect to the target"), "", gentypes.MSGBOX.MB_ICONEXCLAMATION);
+			return;
+		}
+
+		var dir = m_fso.GetParentFolderName(app.CallFunction("logiclab.get_ProjectPath")) + "\\Build\\";
+		let filePath = dir + GENERATED_ECAT_FILE_NAME;
+		if (!m_fso.FileExists(filePath)) {
+			app.MessageBox(app.Translate("Cannot find EtherCAT configuration file to upload"), "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}
+
+		let result = FTPUploadToTarget(filePath, DEST_ECAT_FILE_NAME);
+		if (result !== 0)
+		{
+			app.MessageBox(app.Translate("Error uploading configuration to target"), "", gentypes.MSGBOX.MB_ICONERROR);
+			return;
+		}
+
+		app.MessageBox(app.Translate("EtherCAT configuration uploaded to target"), "", gentypes.MSGBOX.MB_ICONINFORMATION);
+	}
+
+	function GetTargetIP() {
+		let commString = app.CallFunction("logiclab.get_CommString");
+		let commStrObj = app.CallFunction("common.SplitCommString", commString);
+		return commStrObj.address;
+	}
+
+	function FTPUploadToTarget(filePath, destFileName) {
+		const ftpServer = GetTargetIP();
+		return FTPPut(ftpServer, FTP_USER, FTP_PASS, MACHINE_CFG_REMOTE_PATH, filePath, destFileName);
+	}
+</script>
+
+<style>
+	.input {
+		display: inline-block;
+		width: 220px !important;
+	}
+</style>
+</head>
+
+<body class="fill-height-container" >
+	<input type="hidden" name=".DATAPATH" id="datapath">
+	
+	<div class="TitlePag">
+		<span id="pageTitle" class="html5" colspan="4"></span>
+	</div>
+
+	<div class="row j-center bootstrap fill-height">
+		<div class="column col-padding">
+			<div>
+				<!-- manuale pdf -->
+				<div id="divHelp">
+					<img id="imgPDF" onclick="app.OpenHelp(m_helpContext)"><label style="margin-left: 10px" for="imgPDF"><t:t>User manual</t:t></label>
+				</div>
+				<!-- immagine -->
+				<div>
+					<img id="deviceImage" class="img-responsive"  width="490px" style="margin-top: 0px;"/>
+				</div>
+			</div>
+
+			<!-- descrizione -->
+			<div>
+				<div>
+					<div class="titleBox"><h3 class="titleBox">Device Info</h3></div>
+					<div id="deviceDescription" style="display: none;"></div>
+					<iframe id="PowerTable" width=100% height="220px" style="border:0; position:relative;" scrolling="no">
+					</iframe>
+						
+					<script>
+							var sourceHTML = getDevice();
+							document.getElementById('PowerTable').setAttribute("src",  sourceHTML);
+					</script>
+					<!--<img width="40px" src="..\img\target.jpg" alt="terget" />-->
+				</div>
+			</div>
+
+			<!-- descrizione -->
+			<div>
+				<div>
+					<div class="titleBox"><h3 class="titleBox"><t:t>Configuration</t:t></h3></div>
+					<div class="SaveECATButt">
+						<button class="SaveECATButt ll-button" onclick="DownloadEcatConfiguration()"><t:t>Save EtherCAT to Target</t:t></button>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+		InitPage()
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:t>
+<head>
+	<title>Main Configuration</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script type="text/javascript">
+		try
+		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+		catch (e)
+		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+		document.write("<SCRIPT src='" + csspath + "../script/polyfills.js' type='text/javascript'></" + "SCRIPT>")
+
+		try
+		{
+			if (window.external.IsDarkTheme())
+			{
+				document.write("<LINK href='" + csspath + "style_dark.css' rel='stylesheet' type='text/css'>");
+			}
+		}
+		catch (err)
+		{
+		}
+
+		function InitPage()
+		{
+			app.TempVar("$$LLSCAN_IPADDRESS_RESULT$$") = "";
+		}
+
+		function ValidateIPaddress(ipaddress) {
+			if (!ipaddress)
+				return false;
+
+			if (ipaddress.toLowerCase() == "localhost")
+				return true;
+
+			return app.CallFunction("common.IsValidIPAddress", ipaddress);
+		}
+
+		function prepareIPAddress(HTMLElem) {
+			let address = HTMLElem.value;
+			if (!ValidateIPaddress(address)) {
+				// label di errore adiacente
+				HTMLElem.nextElementSibling.style.display = "block";
+				return false;
+			}
+			else {
+				// label di errore adiacente
+				HTMLElem.nextElementSibling.style.display = "none";
+			}
+
+			if (address.toLowerCase() == "localhost")
+				address = "127.0.0.1";
+
+			return address;
+		}
+
+		function handleConfigTypeChange() {
+			if (dhcpRadio.checked) {
+				divManual.disabled = true;
+				IPTxt.value = "";
+				gatewayTxt.value = "";
+				netmaskTxt.value = "";
+				DNSTxt.value = "";
+			}
+			else if (manualRadio.checked) 
+				divManual.disabled = false;
+		}
+
+		function onOK() {
+			let dhcpSelected = dhcpRadio.checked;
+
+			if (!dhcpSelected) {
+				let res = [prepareIPAddress(IPTxt), prepareIPAddress(gatewayTxt), prepareIPAddress(netmaskTxt), prepareIPAddress(DNSTxt)];
+				if (res.includes(false))
+					return;
+			}
+
+			let result = {
+				ip: IPTxt.value,
+				gateway: gatewayTxt.value,
+				netmask: netmaskTxt.value,
+				dns: DNSTxt.value,
+				dhcp: dhcpSelected
+			}
+
+			app.TempVar("$$LLSCAN_NETWORKPARAMS_RESULT$$") = result;
+
+			CloseDlg();
+		}
+	</script>
+
+	<style>
+		html, body {
+			overflow: hidden;
+		}
+
+		.Sfondo {
+			padding: 20px;
+		}
+
+		label {
+			width: 120px;
+			display: inline-block;
+		}
+
+		.btn-container {
+			display: flex;
+			justify-content: space-around;
+			margin-bottom: 10px;
+		}
+
+		/* bottoni finestra */
+		.btn-container > button {
+			margin-top: 20px;
+			width: 120px;
+		}
+
+		label.invalid-ip-msg {
+			color:red;
+			margin-left: 115px;
+			margin-top: 3px;
+			width: 175px;
+			display: none;
+		}
+
+		.radio-container {
+			display: flex;
+			flex-direction: column;
+		}
+	</style>
+</head>
+
+<body class="Sfondo">
+	<div class="radio-container">
+		<span>
+			<input type="radio" id="dhcpRadio" name="ipType" value="dhcp" onchange="handleConfigTypeChange()" checked>
+			<label for="dhcpRadio">DHCP</label>
+		</span>
+	
+		<span class="mt-xs">
+			<input type="radio" id="manualRadio" name="ipType" value="manual" onchange="handleConfigTypeChange()">
+			<label for="manualRadio" style="width: 220px;"><t:t>Use the following address configuration</t:t></label>
+		</span>
+	</div>
+
+	<div id="divManual" class="mt-xs" disabled>
+		<div>
+			<label for="IPTxt"><t:t>New IP address</t:t>:</label>
+			<input type="text" class="form-control" id="IPTxt">
+			<label class="invalid-ip-msg"><t:t>Please enter a valid IP address</t:t></label>
+		</div>
+
+		<div class="mt-xs">
+			<label for="netmaskTxt"><t:t>New netmask</t:t>:</label>
+			<input type="text" class="form-control" id="netmaskTxt">
+			<label class="invalid-ip-msg"><t:t>Please enter a valid IP address</t:t></label>
+		</div>
+
+		<div class="mt-xs">
+			<label for="gatewayTxt"><t:t>New default gateway</t:t>:</label>
+			<input type="text" class="form-control" id="gatewayTxt">
+			<label class="invalid-ip-msg"><t:t>Please enter a valid IP address</t:t></label>
+		</div>
+
+		<div class="mt-xs">
+			<label for="DNSTxt"><t:t>New DNS</t:t>:</label>
+			<input type="text" class="form-control" id="DNSTxt">
+			<label class="invalid-ip-msg"><t:t>Please enter a valid IP address</t:t></label>
+		</div>
+	</div>
+
+	<div class="btn-container">
+		<button onclick="onOK()" class="FlatButton"><b><t:t>OK</t:t></b></button>
+		<button onclick="CloseDlg()" class="FlatButton"><b><t:t>Cancel</t:t></b></button>
+	</div>
+</body>
+
+<script>
+	InitPage()
+</script>
+</html>

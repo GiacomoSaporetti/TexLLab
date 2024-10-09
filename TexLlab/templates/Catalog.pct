@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+	<hmi>
+		<!-- __________ dockbar Catalog _________ -->
+		<menu name="catalogPopup">
+			<command caption="Edit device" handler="CatalogFuncs.OnCatalogEdit" updatehandler="CatalogFuncs.OnUpdateCatalogEdit"/>
+			<separator/>
+			<command caption="Delete from catalog" handler="CatalogFuncs.OnCatalogDelete" updatehandler="CatalogFuncs.OnUpdateCatalogDelete"/>
+			<separator/>
+			<command caption="Export source files..." handler="CatalogFuncs.OnExportSourceFiles" updatehandler="CatalogFuncs.OnUpdateExportSourceFiles"/>
+			<!--<separator/>
+			<command caption="Show all versions" handler="CatalogFuncs.OnShowAllVersions" updatehandler="CatalogFuncs.OnUpdateShowAllVersions"/>-->
+		</menu>
+
+		<window type="dll" link="catalog.GetCatalogListCtrl2" deletewnd="false" version="2" ctrlID="102" onclick="common.OnTreeClick" ondrop="common.OnTreeDrop" onkeydown="common.OnTreeKeyDown">catalogBrowser</window>
+		<dockbar caption="Catalog" name="catalogdock" position="right" size="200">
+			<dockedwindow bordertype="single">catalogBrowser</dockedwindow>
+		</dockbar>
+	</hmi>
+	
+	<templatedata>
+	</templatedata>
+	
+	<datadef version="1.0">
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+		</xs:schema>
+	</datadef>
+	
+	<extensions>
+		<script alias="CatalogFuncs">CatalogFuncs.js</script>
+	</extensions>
+</template>

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:simpleType name="enumYesNo">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="yes"/>
+		<xs:enumeration value="no"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- __________________________ sezione GF_eXpress con tutti i sottoelementi di primo livello __________________________ -->
+<xs:complexType name="Tdeviceconfig">
+	<xs:all>
+		<!-- estensione di TFrameworkSection, MSXML non permette di estendere <all> quindi ripete gli elementi base ! -->
+		<xs:element name="config" type="Tconfig_master" minOccurs="0"/>
+		<xs:element name="hmi" type="Thmi" minOccurs="0"/>
+		<xs:element name="extensions" type="Textensions" minOccurs="0"/>
+		<xs:element name="templatedata" type="Tany" minOccurs="0"/>
+		<xs:element name="datadef" type="Tdatadef" minOccurs="0"/>
+		
+		
+		<xs:element name="parameters" minOccurs="0">
+			<xs:complexType>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="par" type="Tpar"/>
+				</xs:sequence>
+				<xs:attribute name="nextIpa" type="xs:integer"/>
+			</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="settings" minOccurs="0">
+			<xs:complexType>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="item" type="Tany"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="enums" minOccurs="0">
+			<xs:complexType>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="enum" type="Tenum"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:element>
+	</xs:all>
+</xs:complexType>
+
+<xs:complexType name="Tenum">
+	<xs:sequence minOccurs="1" maxOccurs="unbounded">
+		<xs:element name="elem">
+			<xs:complexType>
+				<xs:attribute name="value" type="xs:integer" use="required"/>
+				<xs:attribute name="descr" type="xs:string" use="required"/>
+			</xs:complexType>
+		</xs:element>
+	</xs:sequence>
+	<xs:attribute name="id" type="xs:integer" use="required"/>
+</xs:complexType>
+
+<!-- __________________________ definizione parametro __________________________ -->
+<xs:complexType name="Tpar">
+	<xs:sequence minOccurs="0" maxOccurs="unbounded">
+		<xs:choice>
+			<xs:element name="menu">
+				<xs:complexType>
+					<xs:attribute name="id" type="xs:string" use="required"/>
+					<xs:attribute name="order" type="xs:integer"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="protocol">
+				<xs:complexType>
+					<xs:attribute name="name" type="xs:string" use="required"/>
+					<xs:attribute name="commaddr" type="xs:string" use="required"/>
+					<xs:attribute name="commsubindex" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="option" type="Tany"/>
+		</xs:choice>
+	</xs:sequence>
+	<xs:attribute name="ipa" type="xs:integer" use="required"/>
+	<xs:attribute name="name" type="xs:string" use="required"/>
+	<xs:attribute name="readonly" type="xs:boolean"/>
+	<xs:attribute name="hidden" type="xs:boolean"/>
+	<xs:attribute name="accesslevel" type="xs:integer"/>
+	<xs:attribute name="typepar" type="xs:string" use="required"/>
+	<xs:attribute name="typetarg" type="xs:string" use="required"/>
+	<xs:attribute name="descr" type="xs:string"/>
+	<xs:attribute name="min" type="xs:string"/>
+	<xs:attribute name="max" type="xs:string"/>
+	<xs:attribute name="form" type="xs:string"/>
+	<xs:attribute name="scale" type="xs:decimal"/>
+	<xs:attribute name="offs" type="xs:decimal"/>
+	<xs:attribute name="defval" type="xs:string"/>
+	<xs:attribute name="ipamin" type="xs:integer"/>
+	<xs:attribute name="ipamax" type="xs:integer"/>
+	<xs:attribute name="um" type="xs:string"/>
+	<xs:attribute name="note" type="xs:string"/>
+	<xs:attribute name="onbeforeread" type="xs:string"/>
+	<xs:attribute name="onafterread" type="xs:string"/>
+	<xs:attribute name="onafterwrite" type="xs:string"/>
+	<xs:attribute name="onbeforewrite" type="xs:string"/>
+	<xs:attribute name="onchange" type="xs:string"/>
+	<xs:attribute name="options" type="xs:string"/>
+	<xs:attribute name="graphVScale" type="xs:decimal"/>
+	<xs:attribute name="graphOffset" type="xs:decimal"/>
+	<xs:attribute name="shortdescr" type="xs:string"/>
+	<xs:attribute name="strsize" type="xs:integer"/>
+</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+
+<!-- __________________________ radice del documento __________________________ -->
+<xs:element name="devicetemplate">
+	<xs:complexType>
+		<xs:all>
+			<xs:element name="deviceinfo" type="Tdeviceinfo"/>
+			<xs:element name="networkconfig" type="TFrameworkSection" minOccurs="0"/>
+			<xs:element name="plcconfig" type="TFrameworkSection" minOccurs="0"/>
+			<xs:element name="deviceconfig" type="Tdeviceconfig" minOccurs="0"/>
+			<xs:element name="customconfig" type="Tany" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:element>
+
+
+<!-- __________________________ sezione generica deviceinfo __________________________ -->
+<xs:complexType name="Tdeviceinfo">
+	<xs:all>
+		<xs:element name="description" type="xs:string" minOccurs="0"/>
+		<xs:element name="protocols" minOccurs="0">
+			<xs:complexType>
+				<xs:sequence minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="protocol" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="targetdef" minOccurs="0">
+			<xs:complexType>
+				<xs:all>
+					<xs:element name="target" type="xs:string" minOccurs="1"/>
+					<xs:element name="image" type="xs:string" minOccurs="1"/>
+					<xs:element name="templateprj" type="xs:string" minOccurs="0"/>
+					<xs:element name="resources" minOccurs="0">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attribute name="class" type="xs:string"/>
+									<xs:attribute name="allowTargetChange" type="xs:string"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="libraries" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="library" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="files" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="file" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:all>
+				<xs:attribute name="visible" type="xs:boolean"/>
+				<xs:attribute name="alternativeName" type="xs:string"/>
+			</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="HMIdef" minOccurs="0">
+			<xs:complexType>
+				<xs:all>
+					<xs:element name="target" type="xs:string" minOccurs="1"/>
+					<xs:element name="image" type="xs:string" minOccurs="1"/>
+					<xs:element name="def" type="xs:string" minOccurs="1"/>
+					<xs:element name="templateprj" type="xs:string" minOccurs="0"/>
+					<xs:element name="bitmaps" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="bitmap" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="fonts" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="font" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="libraries" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="library" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="files" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="file" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:all>
+				<xs:attribute name="visible" type="xs:boolean"/>
+			</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="simulation" minOccurs="0">
+			<xs:complexType>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="simtarget" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:element>
+		
+		<!-- funzionalità di scan per EWDevice -->
+		<xs:element name="scan" minOccurs="0">
+			<xs:complexType>
+				<xs:attribute name="ProductCode" type="xs:string"/>
+				<xs:attribute name="MaxProductCode" type="xs:string"/>
+				<xs:attribute name="ParAppVersion1" type="xs:integer"/>
+				<xs:attribute name="ParAppVersion2" type="xs:integer"/>
+				<xs:attribute name="ParAppName" type="xs:integer"/>
+				<xs:attribute name="LenAppName" type="xs:integer"/>
+				<xs:attribute name="applRevScale" type="xs:decimal"/>
+				<xs:attribute name="applRevDecimals" type="xs:integer"/>
+			</xs:complexType>
+		</xs:element>
+	</xs:all>
+	<xs:attribute name="name" type="xs:string" use="required"/>
+	<xs:attribute name="caption" type="xs:string"/>
+	<xs:attribute name="description" type="xs:string"/>
+	<xs:attribute name="version" type="xs:string"/>
+	<xs:attribute name="numericver" type="xs:decimal"/>
+	<xs:attribute name="minversion" type="xs:decimal"/>
+	<xs:attribute name="maxversion" type="xs:decimal"/>
+	<xs:attribute name="icon" type="xs:string"/>
+	<xs:attribute name="image" type="xs:string"/>
+	<xs:attribute name="deviceid" type="xs:string"/>
+	
+	<xs:attribute name="devicetype" type="xs:string"/>
+	<xs:attribute name="importedFromEDS" type="xs:boolean"/>
+	<xs:attribute name="editingEnabled" type="xs:boolean"/>
+	<xs:attribute name="disableDelete" type="xs:boolean"/>
+	<xs:attribute name="PLCApplicationID" type="xs:string"/>
+</xs:complexType>
+
+</xs:schema>

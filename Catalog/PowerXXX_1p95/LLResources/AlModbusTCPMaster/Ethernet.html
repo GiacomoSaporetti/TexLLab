@@ -1,0 +1,125 @@
+﻿<html xmlns:t>
+<head>
+	<title>Ethernet Configuration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+
+	<script type="text/javascript">
+	try
+	{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+	catch (e)
+	{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+	document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+	document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
+
+	var PROTOCOL_MODBUSTCP_MASTER = "ModbusTCP_master"
+	
+	var m_isGatewaySupported = true
+	
+	function InitPage()
+	{
+		var NETWORK_ID_MAX = 3 // max di LLExec
+		var path = app.GetCurrentWindowData()
+
+		//	target device supporta SDO scheduling?
+		current_device = app.SelectNodesXML(path + ".")[0]
+		var targetDevice = current_device.selectSingleNode(XPATH_ROOTDEVICE)
+		var netIdMax = targetDevice.getAttribute("ModbusTCPGatewayNetIdMax")
+		if (!netIdMax) netIdMax = 0
+
+		var select = document.getElementById("selectRtuGatewayNetId")
+
+		//  tolgo voci non utilizzate
+		for (var i = NETWORK_ID_MAX; i > netIdMax; i--)
+		    select.remove(i)
+
+		if (netIdMax == 0)
+		{
+			m_isGatewaySupported = false
+		    select.disabled = true
+		}
+
+		SearchError(path)
+	}
+	
+	function onLoadPage()
+	{
+		EnableSlave_OnClick( chkEnableSlave.checked )
+		EnableSlaveRtuGateway_OnClick( chkEnableSlaveRtuGateway.checked )
+	}
+	
+	function EnableMaster_OnClick(enab)
+	{
+		var protocol = enab ? PROTOCOL_MODBUSTCP_MASTER : ""
+		
+		app.DataSet(app.GetCurrentWindowData() + "/@protocol", 0, protocol)
+		
+		// aggiorna il list control del catalogo
+		var query = "//deviceinfo[protocols/protocol = '" + protocol + "']"
+		app.CallFunction("catalog.UpdateCatalogListCtrl", query)
+	}
+
+	function EnableSlave_OnClick(enab)
+	{
+		spanEnableSlaveRtuGateway.style.display = ( enab && m_isGatewaySupported ) ? "" : "none"
+	}
+	
+	function EnableSlaveRtuGateway_OnClick(enab)
+	{
+		spanRtuGatewayDefaultTimeout.style.display = enab ? "" : "none"
+		spanRtuGatewayNetId.style.display = enab ? "" : "none"
+	}
+</script>
+
+</head>
+
+<body onload="onLoadPage()">
+
+<table style="height: 100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr class="TitlePag">
+		<td id="pageTitle"><t:t>Ethernet Configuration</t:t></td>
+	</tr>
+	<tr>
+		<td class="Sfondo">
+			<fieldset style="width:500px">
+				<legend ><t:t>Mode</t:t></legend>
+				<input type="checkbox" id="chkEnableMaster" name=".D(@enableMaster)" onclick="EnableMaster_OnClick(this.checked)">
+				<label for="chkEnableMaster"><t:t>Modbus TCP Master</t:t></label>
+				<br>
+				<br>
+				<input type="checkbox" id="chkEnableSlave" name=".D(@enableSlave)" onclick="EnableSlave_OnClick(this.checked)" disabled>
+				<label for="chkEnableSlave"><t:t>Modbus TCP Slave always enabled. Unit identifier: 255</t:t></label>
+				<br>
+
+				<span id="spanEnableSlaveRtuGateway" style="margin-left:40px">
+					<input type="checkbox" id="chkEnableSlaveRtuGateway" name=".D(@enableSlaveRtuGateway)" onclick="EnableSlaveRtuGateway_OnClick(this.checked)">
+					<label for="chkEnableSlaveRtuGateway"><t:t>Modbus RTU Gateway</t:t></label>
+					<div>
+						<span id="spanRtuGatewayDefaultTimeout" style="margin-left:80px">
+							<label for="editRtuGatewayDefaultTimeout"><t:t>Default timeout</t:t>:</label>
+							<input type="text" id="editRtuGatewayDefaultTimeout" name=".D(@rtuGatewayDefaultTimeout)" size="5">
+							<label for="editRtuGatewayDefaultTimeout"><t:t>ms</t:t></label>
+						</span><br>
+						<span id="spanRtuGatewayNetId" style="margin-left:80px">
+							<label for="selectRtuGatewayNetId"><t:t>RTU Network ID</t:t>:</label>
+							<select id="selectRtuGatewayNetId" name=".D(@rtuGatewayNetId)">
+								<option value="0">Network 0</option>
+								<option value="1">Network 1</option>
+								<option value="2">Network 2</option>
+								<option value="3">Network 3</option>
+							</select>
+						</span>
+					</div>
+				</span>
+			</fieldset>
+		</td>
+	</tr>
+</table>
+
+<script>
+	// la funzione verrà eseguita PRIMA della visualizzazione della pagina
+	InitPage()
+</script>
+
+</body>
+</html>

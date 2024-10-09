@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<targetImage fileVersion="1.1" is64bit="false">
+	<compilerSupport deviceFeatures="0x8FFFFFFF" extendedDeviceFeatures="0xFFFFFFF"/>
+	<info targetID="0x8E40293B" memoryID="0x5391" fullMemoryID="0x8653">
+		<features deviceFeatures="0x8E40293B" extendedDeviceFeatures="0xD1381"/>
+		<codeArea address="0x200B0A7C" size="0x186A0" addrArea1="0x2007FD3C" addrArea2="0x200B0A7C"/>
+		<dataArea address="0x200983DC" size="0x186A0"/>
+		<auxDataArea address="0x0" size="0x0"/>
+		<bitDataArea address="0x0" size="0x0"/>
+		<retainDataArea address="0x20023D02" size="0x3E8"/>
+		<debug address="0x0" size="0x0" traceAreaAddress="0x0" traceAreaSize="0x0"/>
+		<stack limit="0x0"/>
+		<dynTask dimDynTaskTCB="0x0"/>
+		<functionTable address="0x0"/>
+		<sourceCode supported="0" address="0x0" size="0x0"/>
+	</info>
+	<tasks controlBitsAddress="0x2004591C">
+		<task index="0" name="Fast" flags="0x178" period="0"/>
+		<task index="1" name="User" flags="0x178" period="0"/>
+		<task index="3" name="Bckg" flags="0x178" period="0"/>
+		<task index="4" name="Init" flags="0x178" period="0"/>
+	</tasks>
+	<dataBlocks address="0xC7F21C" size="8">
+		<dataBlock index="0" type="memory" address="0x200C9126" image="0" size="1024" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="0" type="input" address="0x200C9526" image="0" size="1792" elementSize="1" access="read" flags="0x00"/>
+		<dataBlock index="0" type="output" address="0x200C9C26" image="0" size="1792" elementSize="1" access="readWrite" flags="0x00"/>
+		<dataBlock index="1" type="input" address="0x200CA326" image="0" size="9" elementSize="2" access="read" flags="0x00"/>
+		<dataBlock index="1" type="output" address="0x20026740" image="0" size="4" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="200" type="memory" address="0x200CA338" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="201" type="memory" address="0x200CA738" image="0" size="512" elementSize="2" access="readWrite" flags="0x00"/>
+		<dataBlock index="60000" type="memory" address="0x20026724" image="0" size="1" elementSize="4" access="read" flags="0x00"/>
+	</dataBlocks>
+	<functions address="0xC7F38C" size="136" userSize="82">
+		<function name="_plcerror" address="0xC80BB4"/>
+		<function name="sysLogWriteMsg" address="0xC7D6D4"/>
+		<function name="strncpy" address="0xE7CC54"/>
+		<function name="sysDBase_SetExtTable" address="0xC83718"/>
+		<function name="sysWriteParBOOL" address="0xC83A8C"/>
+		<function name="sysWriteParUSINT" address="0xC826F4"/>
+		<function name="sysWriteParSINT" address="0xC8279C"/>
+		<function name="sysWriteParBYTE" address="0xC839E4"/>
+		<function name="sysWriteParUINT" address="0xC825A4"/>
+		<function name="sysWriteParINT" address="0xC8264C"/>
+		<function name="sysWriteParWORD" address="0xC8393C"/>
+		<function name="sysWriteParUDINT" address="0xC83894"/>
+		<function name="sysWriteParDINT" address="0xC824FC"/>
+		<function name="sysWriteParDWORD" address="0xC837EC"/>
+		<function name="sysWriteParREAL" address="0xC82854"/>
+		<function name="sysWriteParSTRING" address="0xC82930"/>
+		<function name="TexAlarm_FAL" address="0xE76CC4"/>
+		<function name="TexAlarm_clearFAL" address="0xE76CF4"/>
+		<function name="TexAlarm_currentAlarm" address="0xE76C8C"/>
+		<function name="Tex_setPosition" address="0xE781D4"/>
+		<function name="Tex_reset" address="0xE78080"/>
+		<function name="Tex_moveAbsolute" address="0xE76ED8"/>
+		<function name="Tex_jog" address="0xE7774C"/>
+		<function name="Tex_homing" address="0xE783AC"/>
+		<function name="Tex_agearOff" address="0xE78D30"/>
+		<function name="Tex_agearOn" address="0xE78944"/>
+		<function name="Tex_power" address="0xE79264"/>
+		<function name="Tex_readAxisInfo" address="0xE78E74"/>
+		<function name="Tex_readActualVelocity" address="0xE76E08"/>
+		<function name="Tex_readActualPosition" address="0xE76D28"/>
+		<function name="Tex_debugInformation" address="0xE7973C"/>
+		<function name="Tex_getBit" address="0xE799A4"/>
+		<function name="Tex_putBit" address="0xE79A64"/>
+		<function name="Tex_getWord" address="0xE79B44"/>
+		<function name="Tex_putWord" address="0xE79BE4"/>
+		<function name="Tex_getDword" address="0xE79C84"/>
+		<function name="Tex_putDword" address="0xE79D44"/>
+		<function name="Tex_getFixed" address="0xE79DE4"/>
+		<function name="Tex_putFixed" address="0xE79ECC"/>
+		<function name="Tex_getInfo" address="0xE79FC0"/>
+		<function name="Tex_putInfo" address="0xE7A0A8"/>
+		<function name="Tex_getSinfo" address="0xE7A200"/>
+		<function name="Tex_putSinfo" address="0xE7A288"/>
+		<function name="TexECAT_masterFrame" address="0xE7A378"/>
+		<function name="TexECAT_masterInformation" address="0xE7A484"/>
+		<function name="TexECAT_masterLink" address="0xE7A420"/>
+		<function name="TexECAT_masterResetNetwork" address="0xE7A588"/>
+		<function name="TexECAT_slaveGetName" address="0xE7A5F8"/>
+		<function name="TexHMI_openPMT" address="0xE7B4C4"/>
+		<function name="TexHMI_closePMT" address="0xE7B510"/>
+		<function name="TexHMI_openToPMT" address="0xE7B540"/>
+		<function name="TexHMI_infoPMT" address="0xE7B584"/>
+		<function name="TexHMI_setPixel" address="0xE7B5D4"/>
+		<function name="TexHMI_line" address="0xE7B608"/>
+		<function name="TexHMI_rectangle" address="0xE7B658"/>
+		<function name="TexHMI_gcursor" address="0xE7B6A8"/>
+		<function name="TexHMI_color" address="0xE7B6DC"/>
+		<function name="TexHMI_paper" address="0xE7B704"/>
+		<function name="TexHMI_font" address="0xE7B72C"/>
+		<function name="TexHMI_printString" address="0xE7B754"/>
+		<function name="TexHMI_printMsg" address="0xE7B784"/>
+		<function name="TexHMI_screen" address="0xE7B7B4"/>
+		<function name="TexFS_sysFileClose" address="0xE7A760"/>
+		<function name="TexFS_sysFileCopy" address="0xE7A79C"/>
+		<function name="TexFS_sysFileDelete" address="0xE7AA0C"/>
+		<function name="TexFS_sysFileDeleteByHandle" address="0xE7A91C"/>
+		<function name="TexFS_sysFileEOF" address="0xE7AAEC"/>
+		<function name="TexFS_sysFileFlush" address="0xE7AB64"/>
+		<function name="TexFS_sysFileGetName" address="0xE7AC00"/>
+		<function name="TexFS_sysFileGetPos" address="0xE7AC7C"/>
+		<function name="TexFS_sysFileGetSize" address="0xE7AD48"/>
+		<function name="TexFS_sysFileGetSizeByHandle" address="0xE7ACE8"/>
+		<function name="TexFS_sysFileGetStatus" address="0xE7AE04"/>
+		<function name="TexFS_sysFileGetTime" address="0xE7AEE0"/>
+		<function name="TexFS_sysFileGetTimeByHandle" address="0xE7AE3C"/>
+		<function name="TexFS_sysFileOpen" address="0xE7AF68"/>
+		<function name="TexFS_sysFileRead" address="0xE7B0A4"/>
+		<function name="TexFS_sysFileRename" address="0xE7B124"/>
+		<function name="TexFS_sysFileSetPos" address="0xE7B28C"/>
+		<function name="TexFS_sysFileWrite" address="0xE7B2EC"/>
+		<function name="TexFS_sysFileGetPath" address="0xE7B36C"/>
+		<function name="TexFS_sysFileSetPath" address="0xE7B468"/>
+		<function name="UDINT_TO_REAL" address="0xC7C034"/>
+		<function name="DINT_TO_REAL" address="0xC7C03C"/>
+		<function name="REAL_TO_UDINT" address="0xC7C044"/>
+		<function name="REAL_TO_DINT" address="0xC7C04C"/>
+		<function name="ADD_REAL" address="0xC7C054"/>
+		<function name="SUB_REAL" address="0xC7C05C"/>
+		<function name="MUL_REAL" address="0xC7C064"/>
+		<function name="DIV_REAL" address="0xC7C06C"/>
+		<function name="GT_REAL" address="0xC7C074"/>
+		<function name="GE_REAL" address="0xC7C08C"/>
+		<function name="EQ_REAL" address="0xC7C0A0"/>
+		<function name="LT_REAL" address="0xC7C0B8"/>
+		<function name="LE_REAL" address="0xC7C0D0"/>
+		<function name="NE_REAL" address="0xC7C0E4"/>
+		<function name="ST_STRING" address="0xC7C0F8"/>
+		<function name="EQ_STRING" address="0xC7C2A0"/>
+		<function name="NE_STRING" address="0xC7C2C8"/>
+		<function name="LE_STRING" address="0xC7C2F0"/>
+		<function name="LT_STRING" address="0xC7C318"/>
+		<function name="GE_STRING" address="0xC7C340"/>
+		<function name="GT_STRING" address="0xC7C368"/>
+		<function name="LEN" address="0xC7C1A4"/>
+		<function name="LEFT" address="0xC7C448"/>
+		<function name="RIGHT" address="0xC7C58C"/>
+		<function name="MID" address="0xC7C6FC"/>
+		<function name="CONCAT" address="0xC7C7F4"/>
+		<function name="INSERT" address="0xC7C9B0"/>
+		<function name="DELETE" address="0xC7CB1C"/>
+		<function name="REPLACE" address="0xC7CC54"/>
+		<function name="FIND" address="0xC7CCC0"/>
+		<function name="INT_TO_STRING" address="0xC7CDC0"/>
+		<function name="REAL_TO_STRING" address="0xC7CEBC"/>
+		<function name="STRING_TO_INT" address="0xC7CF6C"/>
+		<function name="STRING_TO_UINT" address="0xC7D06C"/>
+		<function name="STRING_TO_REAL" address="0xC7D230"/>
+		<function name="ST_STRING_SAFE" address="0xC7C144"/>
+		<function name="ABS_REAL" address="0xC7D32C"/>
+		<function name="SQRT" address="0xC7D334"/>
+		<function name="LN" address="0xC7D33C"/>
+		<function name="LOG" address="0xC7D35C"/>
+		<function name="EXP" address="0xC7D37C"/>
+		<function name="POW" address="0xC7D39C"/>
+		<function name="SIN" address="0xC7D3BC"/>
+		<function name="COS" address="0xC7D3DC"/>
+		<function name="TAN" address="0xC7D3FC"/>
+		<function name="ASIN" address="0xC7D41C"/>
+		<function name="ACOS" address="0xC7D43C"/>
+		<function name="ATAN" address="0xC7D45C"/>
+		<function name="ATAN2" address="0xC7D47C"/>
+		<function name="SINH" address="0xC7D49C"/>
+		<function name="COSH" address="0xC7D4BC"/>
+		<function name="TANH" address="0xC7D4DC"/>
+		<function name="CEIL" address="0xC7D4FC"/>
+		<function name="FLOOR" address="0xC7D51C"/>
+	</functions>
+</targetImage>

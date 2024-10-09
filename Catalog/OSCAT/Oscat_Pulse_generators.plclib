@@ -1,0 +1,2923 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plcLibrary schemaVersion="2.9">
+	<lib version="1.0.1" name="Oscat - Pulse generators" fullXml="true">
+		<descr>Author URL: http://oscat.de</descr>
+		<libWorkspace>
+			<folder name="Oscat - Pulse generators" excludeFromBuild="false" excludeFromBuildIfNotDef="">
+				<Pou name="A_TRIG"/>
+				<Pou name="B_TRIG"/>
+				<Pou name="CLICK_DEC"/>
+				<Pou name="CLICK_CNT"/>
+				<Pou name="D_TRIG"/>
+				<Pou name="CLK_DIV"/>
+				<Pou name="CLK_PRG"/>
+				<Pou name="CLK_N"/>
+				<Pou name="CLK_PULSE"/>
+				<Pou name="CYCLE_4"/>
+				<Pou name="GEN_SQ"/>
+				<Pou name="SCHEDULER_2"/>
+				<Pou name="GEN_BIT"/>
+				<Pou name="SEQUENCE_4"/>
+				<Pou name="SCHEDULER"/>
+				<Pou name="TONOF"/>
+				<Pou name="SEQUENCE_8"/>
+				<Pou name="TP_X"/>
+				<Pou name="TP_1D"/>
+			</folder>
+		</libWorkspace>
+		<globalVars/>
+		<retainVars/>
+		<constantVars/>
+		<functions/>
+		<functionBlocks>
+			<functionBlock name="A_TRIG" version="1.0.0" creationDate="0" lastModifiedDate="0" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Monitors an input value on change</title>
+				<descr>A_TRIG monitors an input value on change and every time when the input value changes by more than RES, the module generates an output pulse for a cycle so that the new value can be processed.
+						At the same time, the device remembers the current input value with which it compares with the input IN at the next cycle.
+						At the output D the difference between IN and the stored value is displayed.</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="REAL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="RES" type="REAL">
+							<descr>Inout change</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL"/>
+						<var name="D" type="REAL"/>
+					</outputVars>
+					<localVars>
+						<var name="last_in" type="REAL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	25. oct. 2008
+programmer 	hugo
+tested by	oscat
+
+this block is similar to the IEC Standard R_trig and F_trig but it monitors a REAL for change.
+if the valiue on IN changes more then D from the last value it will generate trigger and display the difference in output D.
+the trigger will only be active for one cycle.
+
+*)
+
+
+D := IN - LAST_IN;
+Q := ABS(D) > res;
+IF Q THEN last_in := IN; END_IF;
+D := IN - LAST_IN;
+
+
+(* revision history
+
+hm 	16. jul. 2008	rev 1.0
+	original version released
+
+hm	25. oct. 2008	rev 1.1
+	code optimization
+	a_trig now also works for res = 0
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="B_TRIG" version="1.0.0" creationDate="0" lastModifiedDate="1631006753" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>B_TRIG generates after a change of edge on the CLK input an output pulse for exactly one PLC cycle.
+						In contrast to the two standard modules R_TRIG and F_TRIG that produce only at falling or rising
+						edge of a pulse, B_TRIG generates at falling and rising edge of an output pulse.</descr>
+				<vars>
+					<inputVars>
+						<var name="CLK" type="BOOL">
+							<descr>Input signal</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="edge" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	4. aug. 2006
+programmer 	hugo
+tested by	tobias
+
+this block is similar to R_trig and F_trig but it generates a pulse on rising and falling edge.
+
+*)
+
+
+Q := CLK XOR edge;
+edge := CLK;
+
+
+(* revision history
+hm		4. aug. 2006	rev 1.0
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="CLICK_DEC" version="1.0.0" creationDate="0" lastModifiedDate="1631010064" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLICK_DEC decodes multiple keystrokes and signals to different outputs
+						for the number of pulses.&lt;/p&gt;
+						&lt;img src= click_dec.jpg &gt;
+						&lt;ul&gt;
+						&lt;li&gt;An input signal without falling edge within TC is issued
+						at Q0 and remains TRUE until IN goes on FALSE.&lt;/li&gt;
+						&lt;li&gt;A pulse followed by a TRUE is output to Q1 and so on.&lt;/li&gt;
+						&lt;li&gt;If a pulse registered within TC is followed by the state FALSE, then TRUE appears at the corresponding output
+						for a PLC cycle.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Input</descr>
+						</var>
+						<var name="TC" type="TIME">
+							<descr>Time in which the clicks must take place</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Output signal rising edge without falling edge</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Output signal of a pulse within TC</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Output signal of two pulses within TC</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Output signal of three pulses within TC</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="tx" type="TP"/>
+						<var name="edge" type="BOOL"/>
+						<var name="cnt" type="INT">
+							<initValue>-1</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	14. mar. 2009
+programmer 	hugo
+tested by	oscat
+
+this Module detects a rising edge on In and decodes the amount of falling edges (Pulses) within a specified time TC.
+the outputs Q0..Q3 will go true for one cycle and the amount of clicks within a specified time TC.
+if only a rising egde is detected within TC Q0 will respond, Q1 for 1 pulse and so on..
+
+*)
+
+
+(* Q shall only be active for one cycle only *)
+IF in = FALSE THEN
+	Q0 := FALSE;
+	Q1 := FALSE;
+	Q2:= FALSE;
+	Q3 := FALSE;
+END_IF;
+
+IF in AND NOT edge AND NOT tx.q THEN
+	(* a rising edge on in sets the counter to 0 *)
+	cnt := 0;
+ELSIF tx.Q AND NOT IN AND edge THEN
+	(* count falling edges when tp.q is true *)
+	cnt := cnt + 1;
+ELSIF NOT tx.Q THEN
+	CASE cnt OF
+		0 : Q0 := TRUE;
+		1 : Q1 := TRUE;
+		2 : Q2 := TRUE;
+		3 : Q3 := TRUE;
+	END_CASE;
+	cnt := -1;
+END_IF;
+
+(* remember the status of IN *)
+edge := IN;
+tx(in := IN, pt := TO_UDINT(TC));
+
+
+
+(* revision history
+
+hm 17. jul. 2008	rev 1.0
+	original version released
+
+hm	14. mar. 2009	rev 1.1
+	removed double assignments
+
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="click_dec.jpg" width="389" height="104" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABoAYUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigArgfg9/yC/Ev/AGMuqf8A
+pU9d9XA/B7/kF+Jf+xl1T/0qegDp/Emk3WuaJeWFnq93oV1cRlI9SsUiae3P95BKjoT/ALyk
+e1fMvh/VPiLpug2an4oatqeo+IPFt14UgvNYsNPMWnRQT3P+kRpFbx752jtdgDkpukztOAK+
+r9tcVqnwi8J614TvfDV7pfn6ReXkmoyRGeRXW5eYzmWOQMHjcSMWBQgr2xU9Sk1axV+GuleI
+fDOpazouu+OV8bRxCG4tJLyCCHU7dH3hluBAqRshZDsYRqeHBztzTrf/AJL1f/8AYtW//pVP
+Vz4efCfw38MIdQ/sO2ujdajIst7qGpX899eXTKu1PMnnd5GCrwoLYUdAKp2//Jer/wD7Fq3/
+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]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="CLICK_CNT" version="1.0.0" creationDate="0" lastModifiedDate="1631007120" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLICK_CNT determines the number of pulses within the unit time TC at input
+						IN.&lt;/p&gt;
+						&lt;img src= click_cnt.jpg &gt;
+						&lt;ul&gt;
+						&lt;li&gt;A rising edge at IN will start an internal timer with time TC.&lt;/li&gt;
+						&lt;li&gt;During the course of Timers the module counts the falling edges of IN and reviewes
+						after the expiry of the time TC whether N pulses are within the time TC.&lt;/li&gt;
+						&lt;li&gt;Just when exactly N pluses within TC will happen, the output Q is set for a PLC cycle to TRUE.&lt;/li&gt;
+						&lt;li&gt;The module decodes also N = 0, which corresponds to a rising edge but not falling edge within TC.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Input</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of clicks to decode</descr>
+						</var>
+						<var name="TC" type="TIME">
+							<descr>Time in which the clicks must take place</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="tx" type="TP"/>
+						<var name="edge" type="BOOL"/>
+						<var name="cnt" type="INT">
+							<initValue>-1</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	16. jul. 2008
+programmer 	hugo
+tested by	oscat
+
+this Module decodes a specified number of clicks.
+the output trig is high for one cycle if N clicks are present within a specified time TC.
+
+*)
+
+
+(* Q shall only be active for one cycle only *)
+Q := FALSE;
+
+IF in AND NOT edge AND NOT tx.q THEN
+	(* a rising edge on in sets the counter to 0 *)
+	cnt := 0;
+ELSIF tx.Q AND NOT IN AND edge THEN
+	(* count falling edges when tp.q is true *)
+	cnt := cnt + 1;
+ELSIF NOT tx.Q THEN
+	Q := cnt = N;
+	cnt := -1;
+END_IF;
+
+(* remember the status of IN *)
+edge := IN;
+tx(in := IN, pt := TO_UDINT(TC));
+
+
+(* revision history
+
+hm 	16. jul. 2008	rev 1.0
+	original version released
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="click_cnt.jpg" width="389" height="99" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABjAYUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigArg/Af/JQviV/2ErT/wBI
+Leu8rg/Af/JQviV/2ErT/wBILegDsNQhnuLG5itrj7JcvGyxXGwP5TkEBtp4ODg4PXFfL1r4
+n+LngpvG19qHxCs/Fp0PVrXQLLT7vQIbOCa4uktBFPNJE29Uje6yVX7wTGQTx9WVxeofCfw3
+rGneLrDUbN72w8UTi41KCWVgGcRRRAoVwUIEKEFTkMMgg1PUqNupl/DnSfiD4b165svF3i7S
+fGGmXFubi3uo9PGn3kEoYBo/KRmR4dpBD5DA8HcCCLl5/wAl00b/ALFu9/8ASq0qp8O/gjpH
+w51q61r+19f8T67PB9jXVPEmpNezwW27f5EZIAVNw3HjcxAyTgYt3n/JdNG/7Fu9/wDSq0qu
+hJ3tFFFABXBfGD/kD+H/APsZNJ/9LIq72uB+MH/IH8P/APYyaT/6WRUDR31eFftCN8Q9N1rw
+rc+EvH6eGNP1bU7XRpbF9DgvdrymQmcO7A5wFG3px717rXP+KfB2n+L20g34kP8AZeoQ6nb+
+W+399Hu27vUfMeKnsNWvqeKaXqXxc8aXGu3OheN9F0+HwjdtpDW+p6KCut3MMMbTTXMiuDbR
+u7kKIgdq/Md3Ar1b4qSNN8HvF7uEDtoN4zCNty5Nu/Q9x71zHjf9m3wz448QX2pXGp+ItLt9
+V2/2zpOkarJbWOrgKE/0mJeuUUIxQqWUAMSK6f4q28Vn8H/F8EEawwRaFeJGijCqot3AAHYA
+U43tqLS+h02g/wDID07/AK9o/wD0EVfqhoP/ACA9O/69o/8A0EVfpiGtXCfBH/kn8X/YS1P/
+ANL7iu7auE+CP/JP4v8AsJan/wCl9xQBu+N9L1rWvDV3Z+H9d/4RrV5Nvk6obNLvycMC37py
+FbIBHJ4zntXzb4B8bfFjVPC/g+1n8f2V/rnjm4uYrbULnw/FHHo8NqszTOkcbgTSPtjChyFX
+5id2MH6x7V5pqXwF8M6h4B0rwosuqafBpM7XWm6lY3rQ39lMS5Mkcy8g4ldSCCpViCCKl36F
+K3U1vhpa+L9M0+/03xhrem+I720uALfVNPt/s0k8LIrAzwAlY5AxYfISrKFOASRUHhv/AJLJ
+43/7Bulf+hXdWPhr8LdJ+F+m3kGn3Oo6pfahP9q1DVtYu2ur29lChA0sh67UVVCgBQFAAFV/
+Df8AyWTxv/2DdK/9Cu6ok72iiigAooooAKKKKACiiigAooooAKKKKACiiigDgvg//wAgfxB/
+2Mmrf+lktcF8arX4lw+PvC0Phj4lJ4b0nX77+zfsLeH7e8NuyWs8zSiR2BbcYQNp4G4+ld78
+H/8AkD+IP+xk1b/0slroNd8K2HiHVNBv7sSGfRrtr218t9o8wwyQncO42yvx64Pap7FK19Tx
+fRdW+LXi8X/iXSvF3h+y0vRtSuNMXQ9Q0vamopaymCee4uQ+6B3ZJWURqVQeWCG+bP0IOleQ
+eIv2ZPCfibxJd6jc3mvW2mahci91Pw3aanJHpOozjafMntx1JKIWClVcr8wbJz6990YAwKav
+ZXE7X0OE8N/8lk8b/wDYN0r/ANCu672uC8N/8lk8b/8AYN0r/wBCu672mIKKKKACiiigAooo
+oAKKKKACuD8B/wDJQviV/wBhK0/9ILeu8rPs9IstPvtQvLeBYrm/kWW5kXOZGVFjUn6Kij8K
+ANCik3D1o3D1pXAWuCvP+S6aN/2Ld7/6VWld5uHrVBtIspNYi1ZoEOoxW72qXHO4ROysy/Qs
+in8KLgaFFJuHrRuHrTAWuC+MH/IH8P8A/YyaT/6WRV3tZ+q6PZa1DBHewLPHDcRXUatn5ZY3
+Do3HcMAfwoA0KKTcPWjcPWlcBa5H4vf8kn8a/wDYEvf/AEQ9ddVLVdNtda0y70+8hW4s7uF7
+eeFs4eNlKspx6gkUwG6D/wAgPTv+vaP/ANBFX6ihhS3hjjjXbHGoVVHYAYAqWgArgvgj/wAk
+9h/7CWp/+l9xXe1n6PpNloNiLOwgW2thJJKI1zjdI7SOefVmY/jQBoUUlG4etAC1wXhv/ksn
+jf8A7Bulf+hXdd5uHrVC30eytdWvNSigVL28jjinmGcyLHu2A/Te/wCdK4GhRSbh60bh60XA
+Wik3D1o3D1ouAtFJuHqKNw9aYC0UUUAFFFFABRRRQAUUUUAcF8H/APkD+IP+xk1b/wBLJa72
+s/S9IstFhnjsoFt45riW6kVf4pZHLu3PcsSfxq/QAtFJuHrRkUAcH4b/AOSyeN/+wbpX/oV3
+Xe1n2+j2drq15qUUCpe3kccU8wzmRY92wH6b3/OtCgAooooAKKKKAKkd/bzSLGk8byNuIRXB
+J2kBsD2JAPoTT4biO4DNHIsgVihKkHDA4I+oNfHFv4L1rXvFnhzUfDha08VaC/i3UtJaXckM
+8n9sxh7aboPLnjLoSemVcfdr2n9lnWv+El+G+oawLC700ah4h1e5+x30RinhLXsuUdT0ZTkH
+6cVEZcyT8rlzjytrzsezUUlLVkDa8v0vRbnxtr/iea61vWLNbLUmtIYrC6MEYjWKNh8oHJy7
+c9+K9QP3a4b4c/8AIY8bD/qNv/6IhrirJSnCMtm3+RhUV3FPuH/CrI/+hm8Sf+DN/wDCj/hV
+kf8A0M3iT/wZv/hXdbaNoq/q9LsV7OHY4X/hVkf/AEM3iT/wZv8A4Uf8Ksj/AOhm8Sf+DN/8
+K7raKMUfV6XYPZw7HCn4WR/9DN4k/wDBm/8AhWHLY3fgv4leErC31rVL211RbtLiLULkzqRH
+GGUrkfKc9x9K9U9uted+N8f8Lb+Hf/b/AP8AokVy4ilClGMoaO6/FpGFaKhFSjo7r80ei461
+598YNRvLPT9AtLS8msRqOsW9nPLbttk8pixYK38J4HIr0Lua82+NA58G/wDYxWn/ALPW+LbV
+F2Na7apuxfHwtj25PibxIP8AuJv/AIVg+M/Cs/g7Q11Wz8Q67JcQ3dqqx3N+0kTBriNGDKRy
+CGPFerD7oHtXFfGL/kR5v+vyy/8ASqKsq9GEKUpRVmkRVhGNNyS1SO3X7o+lLTU+6v0p1eit
+jqCiiimAxuFP0ryjwb4Wn8YaE+rXniHXY7ia7ugY7a/aOJQtxIihVA4ACjivV2HyH6VxPwh/
+5EWL/r8vf/SqWuCtFTqxjLaz/Q5qi5qiT2s/0K/wZ1e91bwfI1/cyXk1tfXVqs0vLskcrKu4
+9zgdTWD4S0a78faj4our7XtXtjaaxPZww2N2YYliTaFG0Drzye9anwH/AORN1D/sL3//AKPe
+j4MH9540P/UxXf8A7JXFS/eQoRlqmn+RzU/fjSUtbr9DQ/4VZH/0M3iT/wAGb/4Uf8Ksj/6G
+bxJ/4M3/AMK7rAo2ivS+r0ux2+zh2OF/4VZH/wBDN4k/8Gb/AOFH/CrI/wDoZvEn/gzf/Cu6
+2ijaKPq9LsHs4djhf+FWR/8AQzeJP/Bm/wDhR/wqyP8A6GbxJ/4M3/wrutoowKPq9LsHs4dj
+hf8AhVkfX/hJvEn/AIM3/wAKyNU0W58E6/4Yltdb1i8W91FbSaG+ujPGY2ikY/KRwcovPbmv
+T+v0riPiR/yF/BX/AGG0/wDRE1YV6MIR5o6NNfmjKpCMVeOjuvzO6opKWvROoKKKKACiiigA
+pG+6fpS01/ut9KT2A8q8I+Gbjxrorave+IdbiuZrm5Qx2t8Y4lCTuihUAwPlUfjmug+Fd1cz
+aDfQXV3Netaand2qTXDbpDGkzBQzdyB3pPg//wAiLF/1+Xv/AKVS034U/wDIN1z/ALDd/wD+
+j2rycOrezl1a18zhpfYl1a1/AxdJ0G48Z+IPFM91rusWq2mptaww2N40MaxrDEQNoHXLHnvW
+x8PmurPWvFOkS311f22n3UKQSXknmSgPAjsC/U/Mxx6CnfDfjVPGv/Ycf/0RDS+C+fHnjw/9
+Pdt/6Sx06a5XCS3bd/uf+QR0cX1bf6nc0UUV6x3BRRRQAUUUUAJS0UUANPSuR1Tw54outQnm
+tPFxsrVmzHbf2bFJ5Yx03E5NdhTNmayqU41FaV/k2vyIlFSVn+djif8AhE/GLD/keP8AylRf
+41peC/Cc3hW31D7TqLand31013NcNEseWKquAq8AYQV0vFIV3VnHDwi1LVtd23+ZEaUYu+v3
+t/mPooorpNgooooAbjmuP8Z+Bp/E2q6Nqdnqsmk3+lmXyZFhSVSJFCsCrew4rselNIrGdONS
+PLLYmUVNWZxI8J+Mf+h4/wDKVF/jVK8+Gus6zfaXLrPip7+3sLyO9S3jsI4syJnblgSccnNe
+iij61i8LTl8V383/AJmToxe9/vY30rD8ZeGR4s0GfTftL2hdo5EmRQxRkdXU4PB5UcVu0dfr
+XTOKnFxezNZRUk09mcR/winjL/oeP/KVF/jR/wAIr4y/6Hj/AMpUX+NdvzRzXP8AVod397/z
+M/Yx7v73/mcR/wAIr4y/6Hj/AMpUX+NH/CK+Mv8AoeP/AClRf412+TRzR9Wh3f3v/MPYx7v7
+3/mcO3hPxi3Xxv8A+UqL/Gtvwf4Z/wCET0GDTBcteeW0kjTOoUuzuzscDgDLHitwD0paqFCE
+Jcyvfzbf5hGnGLur39WzzjSfhnrfhuO5t9H8XPaWU1zLciGXT4pSrSMWYbiRnkmt7wL4LPg2
+zv45L+TUri+u5L2ed41jzI+M4VeAOK6jA70MPephhqdNqUU9NtXp6CjRhBrlW22o+iiius3C
+iiigAooooATFcz418JzeKrbT/s2oNpl3Y3S3cNwsSyYYKy4KtwRhzXTZpPpWc4KpFxlsyZRU
+lZnEf8Ir4y/6Hj/ylRf40f8ACK+Mv+h4/wDKVF/jXb80c1h9Wh3f3v8AzM/Yx7v73/mcR/wi
+vjL/AKHj/wApUX+NH/CK+Mv+h4/8pUX+NdvzRzR9Wh3f3v8AzD2Me7+9/wCZxH/CK+Mv+h4/
+8pUX+NH/AAivjL/oeP8AylRf412/NHNH1aHd/e/8w9jHu/vf+ZxH/CK+Mv8AoeP/AClRf40f
+8Ir4x/6Hj/ylRf412/NHNH1aHd/e/wDMPYx7v73/AJmD4N8M/wDCJ+HYNM+1tesjSSPOyBC7
+PIzsdo4HLHiudh+H+u6VdXzaR4raxtbq6lu/IksI5djSMWYbiQSMk4rv/rRjrzkU5YenJKNm
+lHaza/LUHSi0l221Zzng3wrL4Vtr9bjUH1K7vrprue4aNY8uVVeFXgDCD9ayb3wHq8fiLVNU
+0jxM2lrqDRvLA1lHMNyRhAQzHPRRxXc4oxT+r03FQ1svN3+/cfsotKPbzOJ/4RXxl/0PH/lK
+i/xo/wCEV8Zf9Dx/5Sov8a7fmjJqfq0O7+9/5i9jHu/vf+ZxH/CK+Mv+h4/8pUX+NH/CK+Mv
++h4/8pUX+NdvzRzR9Wh3f3v/ADD2Me7+9/5nEf8ACK+Mv+h4/wDKVF/jRXcc0UfVod397/zD
+2Me7+9/5hS18paj448aH4eaj8X4vHtxYy29zcy2/gmS3tf7PktLe6aFrZsx+ebhgvMiyDDuB
+txwfqpW3KrcjIzg10ppo6JR5R9FFFUSFFFFABRRRQAnpXhnxB+K/jtfjdb/DnwPpvh57oaB/
+bs174gmnVCv2gw+WoiUkEHByc5yemOfcq+ev+b9v+6ef+5CunDxT5rq9k2RK+li34W+LXxF0
+v43aJ8P/AB1pnhk/2vplxqEF54enuT5flEAq4mUZznt0r3rvXzx42/5Pg+G//Ysal/6GK+h/
+bvRiIxXI4q11d/eyx1FFFcwBRRRQAlcv8TPFkvgP4c+KPEkMCXU2j6Zc36QOxVZGiiZwpI6A
+lcV1HrXnX7Rn/JAfiR/2Lmof+k0lXTSlNJ9WI89/4TL4+f8ACFjxObL4c/YvsH9o+T59/wCZ
+5fl+Zt+7jdjjrjNew/DXxY3j74e+GvEz2ws31jTbfUDbq+8RGWJX27sDON2M4HSuc/5t1/7l
+b/20qT9nP/kgPw4/7FzT/wD0mjroqWcG7JWdg6no1FFFcgwooooAb714Bf8AxX+Jnir4w+N/
+B3gbS/Csdr4VFkJ7nxBPch52uITKCgiUgAYIwfQHPOB7/wC1fPnwZ/5Ot/aB/wC4F/6RvXXh
+4xcKkmr2V196X6kO90v62On+D/xD8Y69468Z+E/GtjocGp6BDY3CT6DJM0MqXKynB80A5Hlf
+rXrorxj4ef8AJz3xe/7Bmg/+gXVez1GIiozXKrXSf3pMpbC0UUVzjCiiigAooooAKKKKACii
+igAooooAKKKKACiiigDw3xH8RfiXrXxa8S+EfAth4VW20Czsbi4uPEE1yHla5EpGwRKQAPKI
+59fy0Phn8R/G9z8UdW8D+ONP0CO/ttIh1iG78PzTtEY5Jni2Msqg7sxk5HGCKg+Hv/Jz3xf/
+AOwZoP8A6BdUmn/8nia5/wBiRZf+l1xXoyjHWFl8Kfzsiddz2qiiivOKCiiigDx7xb+yh8Mf
+GfiV/EGo6BNHq7XIv1ms9TurZI7sYP2pYY5RGJsqpMm3cdoyTXryrtUDJOBjJOTT6KPIBv4V
+5R4m+JXxG0rXr6z0v4QX2t6fDIUg1GPXrGFbhf74R3DL9DzxXq/40c+tXCUYu7Sfrf8ARoTR
+4v8A8Lb+Kv8A0QrUP/Cl07/4uj/hbfxV/wCiFah/4Uunf/F17RRW3tqf/Ppf+Tf5k8r7ni//
+AAtv4q/9EK1D/wAKXTv/AIuj/hbfxV/6IVqH/hS6d/8AF17RRR7an/z6X/k3+Ycr7ni//C3P
+ir/0QrUP/Cl07/4usX4d+GfG/ij9oy7+IviTwl/whmnQ+F10GOzudSgu5p5TdGbzFMJICgDB
+3EHJGM84+geRXk3x8+KXiD4Wx+EbrQ9Ij1yK81R49Ts9rG4ayjtZp5jb4IzMoi3KpyG2lepB
+pPERimowSvpfX9WPld97nN/GDwl4z0747eDfiJ4Y8Mf8Jda6Zpd3plxp0N/DaTK0pDCTMpCl
+eMcHOe1a3/C3Pir/ANEL1D/wpdO/+Lqj/wANK+TqWvPaeGtc8aaNHd26adceEtP+1kwSWVvc
+CSUmRcbjOdpHYdOK5/xd+0T4vW+1fWtF0q10nwx4WttMutZ0nxBZSLqlyLtzuRCku23aKPDf
+Msm5jjgc0/rEbRU4J20vr69GiuSUtmdd/wALb+Kv/RCtQ/8ACl07/wCLo/4W38Vf+iFah/4U
+unf/ABde0UUe1p/8+1/5N/mRyvueL/8AC2/ir/0QrUP/AApdO/8Ai6P+Ft/FX/ohWof+FLp3
+/wAXXtFFHtqf/Ppf+Tf5hyvueL/8Lc+K3/RCtQ/8KXTv/i65z4h+Kviv8QvAfiLwsnwYvNMb
+WtOuNN+2TeIrB44POjaPzGCsSVXdkgDJA4r6L+tL+FONaEWmqa09f8x8r7nIf8Ind/8ACqf+
+EZ3wm9/sb+zvMyfL8zyfLz0ztz7dK8f+G/i74seAfh74Z8NSfBS+vJNH02209rmPxHp6rKYo
+lQuAXyASucH1qh8P/wBqLX/EXhvRIdZ07T7DxVca5Y28kMQcwXWl3Vy8Ud1AC2Qw2mNgSdsi
+HPDLXoeifHS98UX+oafp3wz8a2uoW9vLLA2tWEdla3DpwIxOZGClieCR0z9KzhXSTUoppu+t
+9/k0VKDutSj/AMLc+K3/AEQrUP8AwpdO/wDi6P8AhbnxV/6IVqH/AIUunf8AxddX8DvG2rfE
+X4X6J4g1u2tLTVrsTC5t7BmaCN0nkjwhbkj5OpxnrgdK736Vp7an/wA+198v8yXFp2bPF/8A
+hbfxV/6IVqH/AIUunf8AxdH/AAtv4q/9EK1D/wAKXTv/AIuvaKKXtqf/AD6X/k3+YuV9zxb/
+AIW58Vf+iF6h/wCFLp3/AMXWZ8C/DviO0+LXxK8XeKtJh8JXfi42JsdCm1CG6uhHaQeVJKTE
+SpQtIvQ5GecZBPvfWvn745eA9X8XfGXwjqPh5zaeJtB0LUb/AEi8kDCD7QLizBt5SOPLmj3x
+sOoDbhyopSxFk4wglzaO19t+rfYpRu7t7Empf8Jr4J+M/jDxX4X8Gjx9pXiC1sbTdYavbWzW
+ctp5ySJIJSMkmT+HONpBwavt8ZPifHcRwt8Eb1Z5VZkibxRpodguNxA35IGRn0yPWvIdDb4p
+eKvAtnqvgvR/F+i/bda1u5vtPsdV0zTJbeR7+QhJlvbOcuw+YBkKjAzzkGvVtH8Fy6b8ePAn
+iC+g1KTX73wne22o3F9dfaTG0bWOI8oFhU7jIx8tEDsWOOgD+sKSXPBN2Svr0Xk7D9nq0n3L
+/wDwtv4q/wDRCtQ/8KXTv/i6P+Ft/FX/AKIVqH/hS6d/8XXtFFHtqf8Az7X/AJN/mRyvueL/
+APC2/ir/ANEK1D/wpdO/+Lo/4W38Vf8AohWof+FLp3/xde0UUe2p/wDPpf8Ak3+Ycr7ni/8A
+wtv4q/8ARCtQ/wDCl07/AOLo/wCFt/FX/ohWof8AhS6d/wDF17RRR7an/wA+l/5N/mHK+54v
+/wALb+Kv/RCtQ/8ACl07/wCLo/4W38Vf+iFah/4Uunf/ABde0UUe2p/8+l/5N/mHK+54v/wt
+v4q/9EK1D/wpdO/+Lo/4W38Vf+iFah/4Uunf/F17RRR7an/z6X/k3+Ycr7ni/wDwtv4q/wDR
+CtQ/8KXTv/i6P+Ft/FX/AKIVqH/hS6d/8XXtFFHtqf8Az6X/AJN/mHK+54v/AMLb+Kv/AEQr
+UP8AwpdO/wDi6P8AhbfxV/6IVqH/AIUunf8Axde0UUe2p/8APpf+Tf5hyvueL/8AC2/ir/0Q
+rUP/AApdO/8Ai6P+Ft/FX/ohWof+FLp3/wAXXtFFHtqf/Ppf+Tf5hyvueJfB2x8RTfFTxv4p
+8VaJF4RvPEVrYwWWiTalDdXTR2iyCSb90SuzNwg4OQeoGRmh4wXxj4d+PFz418J+D/8AhO9L
+u9Aj0WUWerW1s1tcQ3UzuG81hn74GB0IOcVD8cvAer+LvjJ4R1Lw85tPEug6FqN/pF5IGEH2
+gXFmDbykceXNHvjYdQG3DlRXlPh3/hbfijw2mr+DtG8ZaNaX2q6tc3Wn2er6TprW8zahOSks
+d7ZTuzAYG5WCkYwO5n6y3PmcVqrW1tZWS63/ABL5dNz10/tBePR4gGhn4RMNcMP2kaX/AMJd
+pf2oxZx5nleZu2543YxWn/wtz4q/9EK1D/wpdO/+LryW31b4eeJP2ltH0JLePRfE+kaumo6j
+ql1aTS6lq2pi08v7PFcCPYluin5zuVGK7UQDLV9hc1Xtof8APtffL/MmUWnu/wADxf8A4W38
+Vf8AohWof+FLp3/xdFe0UUe2p/8APpf+Tf5i5X3HUUUVzFhRRRQAUUUUAFFFFACfxV5l8Uv+
+SifCT/sO3P8A6bbuiioew0eQ/Bn4I+APFfiz4x6Nrvg3Rdd0rS/GbGwtNVskuo7TzdOs5ZFi
+EgbYpdidq4A4AAAArzH9phI/AP7V3wX+HvhyGHRPBPi5bW01vQ7GJY7a7itZy9um0D5ApJ+5
+t3DhsjiiinHeHy/It/aPvqiiiqMwooooAKRvumiigD4m1DR7Nvhr+zJqvk7dRt/GtvZJcKxV
+vIkkuGeM4PzKWijbBzygPUV9PeFfgX8OvAevPrnhvwL4d0HWXVkbUNO0yGCcq33hvVQcHvzz
+RRR39WUzE/Zf/wCSH6B/12vf/SyevVvWiipXwoqp8cvUWiiiqMwooooAKKKKACiiigAooooA
+KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA/9k=]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="D_TRIG" version="1.0.0" creationDate="0" lastModifiedDate="1631022953" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;The function module D_ TRIG generates an
+						output pulse for exactly one PLC cycle, after a change at the input IN.
+						&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The module works like the function blocks R_TRIG and F_TRIG and the library module
+						B_TRIG. While B_TRIG, R_TRIG and F_TRIG monitor a Boolean input, the
+						module D_TRIG triggers on any change in a DWORD type input.
+						&lt;/li&gt;
+						&lt;li&gt;If the input value changes, the output Q is set to TRUE for a PLC cycle, while the
+						output X indicates how much the IN input has changed.
+						&lt;/li&gt;
+						&lt;li&gt;The input and output are both DWORD, but the input can also process WORD and BYTE
+						types.
+						&lt;/li&gt;
+						&lt;li&gt;With regards to output X, it should be noted that DWORD is unsigned and
+						therefore a negative result is not possibile.
+						&lt;/li&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in" type="DWORD">
+							<descr>Input signal</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output</descr>
+						</var>
+						<var name="X" type="DWORD">
+							<descr>Output display of a change on the input signal</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="last_in" type="DWORD"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	19. feb 2008
+programmer 	hugo
+tested by	tobias
+
+This block is similar to the IEC Standard R_TRIG and F_TRIG but it monitors a DWORD, WORD or Byte Variable
+instead, and generates an Output Pulse for one cycle only when the input has changed.
+An additional output X shows the change of the input.
+Example: the input has chaged from 0001 to 0010 then the output x will be 2.
+
+*)
+
+
+Q := in <> last_in;
+X := in - last_in;
+last_in := in;
+
+
+(* revision history
+
+hm 	4.09.2007		rev 1.0
+	original version released
+
+hm	19. feb. 2008	rev 1.1
+	performance improvement
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="CLK_DIV" version="1.0.0" creationDate="0" lastModifiedDate="1631020351" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLK_DIV is a divider module and divides the input signal
+						CLK into 8 levels each divided by 2, so that the output Q0 is half
+						the frequency of the input CLK with 50% duty cycle available.
+						&lt;/p&gt;
+						&lt;img src= clk_div.jpg &gt;
+						&lt;ul&gt;
+						&lt;li&gt;The output Q1 is the halved frequency of Q0 available and so on, until at Q7 the available
+						frequency is divided by 256.&lt;/li&gt;
+						&lt;li&gt;A reset input RST asynchronously sets all outputs to FALSE.&lt;/li&gt;
+						&lt;li&gt;CLK is allowed to make only one cycle to TRUE.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="clk" type="BOOL">
+							<descr>Clock input</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Reset input</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Divider output CLK / 2</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Divider output CLK / 4</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Divider output CLK / 8</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Divider output CLK / 16</descr>
+						</var>
+						<var name="Q4" type="BOOL">
+							<descr>Divider output CLK / 32</descr>
+						</var>
+						<var name="Q5" type="BOOL">
+							<descr>Divider output CLK / 64</descr>
+						</var>
+						<var name="Q6" type="BOOL">
+							<descr>Divider output CLK / 128</descr>
+						</var>
+						<var name="Q7" type="BOOL">
+							<descr>Divider output CLK / 256</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="cnt" type="BYTE"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.1	2 jan 2008
+programmer 	hugo
+tested by	tobias
+
+This is a clock divider, each output divides the signal by 2
+Q0 = clk / 2 , Q1 = Q0 / 2 and so on.
+The outputs have a 50% duty cycle each.
+*)
+
+
+IF rst THEN
+	cnt:= 0;
+	Q0 := FALSE;
+	Q1 := FALSE;
+	Q2 := FALSE;
+	Q3 := FALSE;
+	Q4 := FALSE;
+	Q5 := FALSE;
+	Q6 := FALSE;
+	Q7 := FALSE;
+ELSIF clk THEN
+	cnt:= cnt +1;
+	Q0 := cnt.0;
+	Q1 := cnt.1;
+	Q2 := cnt.2;
+	Q3 := cnt.3;
+	Q4 := cnt.4;
+	Q5 := cnt.5;
+	Q6 := cnt.6;
+	Q7 := cnt.7;
+END_IF;
+
+(* revision history
+hm	4. aug. 2006	rev 1.0
+	original version
+
+hm	2. jan 2008		rev 1.1
+	improved performance
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="clk_div.jpg" width="277" height="112" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABwARUDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KK8RtdFuPjD4++Ii6j4g8QaJ/wiGsw
+aRog8P6rNYpAW0yxvWupYkby7uUy3m3ZcrLBsgjURfPOZgD26ivHPhr4ovte+M3iGOTxDb+I
+dNbwP4Y1CC40tmGmzyz3OseZdW0fmSBFlWKIgh3JVIwXfaDXAfDfx9q3xAE/ge81bWNEtLrx
+Z4ptLnxBcm4hn1BbfWL0ppWm3JA2stsFLSowZIYZEtsyRTy2IB9RUlLRQBBOTHBIc4wpP6V4
+B8Ovh3d/ELwfbeI7/wAWa/Be3TzM6W13sjBEjDhcYA4HA4HbAr368x9lmz/cP8q83/Z5x/wp
+/SCezXGf+/z18/jaUcRjqVKprHlm7Xa1ThZ/K7Plswo08VmVCjW1jyVHa7tdOmk9O1395D8B
+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
+ABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="CLK_PRG" version="1.0.0" creationDate="0" lastModifiedDate="1637663884" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLK_PRG generates clock pulses with a programmable period PT. The output
+						pulses are only one PLC cycle.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Cycle time</descr>
+							<initValue>t#10ms</initValue>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Clock output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="last" type="TIME"/>
+						<var name="tx" type="TIME"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.3	25. oct. 2008
+programmer 	hugo
+tested by	tobias
+
+CLK_PRG uses the internal sps time to generate a clock with a programmable period time.
+The first cycle after start is a clock pulse followed by a delay depending on the programmed period time.
+Every pulse is valid for one cycle only.
+The accuracy of CLK_PRG is depending on the accuracy of the system clock.
+
+*)
+
+(* read system time *)
+tx := TO_TIME(sysTimer);
+
+(* initialize on startup *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx - pt;
+END_IF;
+
+(* generate output pulse when next_pulse is reached *)
+Q := tx - last >= pt;
+IF Q THEN last := tx; END_IF;
+
+
+(* revision hiostory
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+	
+hm 25 feb 2007	rev 1.1
+	rewritten code for higher performance
+	pt can now be changed during runtime
+
+hm	17. sep 2007	rev 1.2
+	replaced time() with t_plc_ms() for compatibility reasons
+
+hm	25. oct. 2008	rev 1.3
+	optimized code
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="CLK_N" version="1.0.0" creationDate="0" lastModifiedDate="1637663842" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLK_N generates a pulse every X = 2&lt;sup&gt;N&lt;/sup&gt; milliseconds, based on the PLC internal 1
+						ms reference. The pulses are exactly one PLC cycle length.
+						The period is 1 ms for N = 0, 2ms for N = 1, 4ms for N=2 and so on.
+						&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="N" type="INT">
+							<descr>Clock divider</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Clock output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="edge" type="BOOL"/>
+						<var name="stime" type="DWORD"/>
+						<var name="clk" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.0	17 sep 2007
+programmer 	hugo
+tested by	tobias
+
+CLK_N uses the internal sps time to generate one pulse every N ms.
+Every pulse is only valid for one cycle, so that an edge trigger is not necessary.
+CLK_N generates pulses depending on the accuracy of the system clock.
+The N input controls the time period of the clock.
+N=0 equals 1ms, N=1 equals 2ms, N=2 equals 4ms, N=3 equals 8ms ....
+
+BE CAREFUL: 1ms clocks will only work on very powerful sps cpus
+*)
+
+stime := SHR(sysTimer,N);
+clk := stime.0;
+Q := clk XOR edge;
+edge := CLK;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	16. dec 2007		rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="CLK_PULSE" version="1.0.0" creationDate="0" lastModifiedDate="1637663911" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CLK_PULSE generates a defined number of clock pulses with a programmable
+						duty cycle. PT defines the duty cycle and N is the number of generated
+						pulses.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;With a reset input RST, the generator can be restarted at
+						any time.&lt;/li&gt;
+						&lt;li&gt;The output CNT counts the pulses generated and RUN = TRUE
+						indicates that the generator is currently generating pulses.&lt;/li&gt;
+						&lt;li&gt;An input value N = 0 generates an infinite pulse series, whereas the maximum number of pulses is limited
+						to 32767.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Cycle time</descr>
+						</var>
+						<var name="N" type="INT">
+							<descr>Number of pulses to be generated</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Clock output</descr>
+						</var>
+						<var name="CNT" type="INT">
+							<descr>Counter of output pulses</descr>
+						</var>
+						<var name="RUN" type="BOOL">
+							<descr>TRUE, if pulse generation is running</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="DWORD"/>
+						<var name="tn" type="DWORD"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.2		16 feb 2011
+programmer 	hugo
+tested by	oscat
+
+CLK_PULSE uses the internal sps time to generate a clock with a programmable period time.
+The period time is defined for 10ms .. 65s.
+Pulse generation is continuous if N = 0 and for n pulses otherwise.
+The first cycle after start is a clock pulse, followed by a delay depending on the programmed period time.
+Every pulse is only valid for one cycle so that a edge trigger is not necessary
+CLK_PULSE depends on the accuracy of the system clock.
+
+*)
+
+tx := sysTimer;			(* read system *)
+Q := FALSE;				(* reset Q we generate pulses only for one cycle *)
+RUN := CNT < N;
+
+IF NOT init OR RST THEN
+	init := TRUE;
+	CNT := 0;
+	tn := tx - TO_DWORD(PT);
+	RUN := FALSE;
+ELSIF (cnt < N OR N = 0) AND tx - tn >= TO_DWORD(PT) THEN		(* generate a pulse *)
+	CNT := CNT + 1;
+	Q := TRUE;
+	tn := tn + TO_DWORD(PT);
+END_IF;
+
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+	
+hm		4. aug 2006		rev 1.0
+	original version
+
+hm		17. sep 2007	rev 1.1
+	replaced time() with T_PLC_S() for compatblity reasons
+
+hm		16. feb. 2011	rev 1.2
+	fixed an error when timer overflows 
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="CYCLE_4" version="1.0.0" creationDate="0" lastModifiedDate="1637682552" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;CYCLE_4 generates the States 0..3 if E = TRUE. The duration of each State
+						is determined by the time constraints T0..T3.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The cycle starts from a predetermined State SX when SL is set to TRUE.&lt;/li&gt;
+						&lt;li&gt;The input E is set to TRUE as default, so that it can also be left open.&lt;/li&gt;
+						&lt;li&gt;After a rising edge on E, the module always starts from State 0, and if E = FALSE, the output
+						State returns to 0.&lt;/li&gt;
+						&lt;li&gt;If S0 is TRUE, the cyclic mode is turned on; if S0 is FALSE, the module stops at State = 3.&lt;/li&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="E" type="BOOL">
+							<descr>Enable input</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="T0" type="TIME">
+							<descr>Run time of state 0</descr>
+						</var>
+						<var name="T1" type="TIME">
+							<descr>Run time of state 1</descr>
+						</var>
+						<var name="T2" type="TIME">
+							<descr>Run time of state 2</descr>
+						</var>
+						<var name="T3" type="TIME">
+							<descr>Run time of state 3</descr>
+						</var>
+						<var name="S0" type="BOOL">
+							<descr>Continuous cycle enable</descr>
+						</var>
+						<var name="SX" type="INT">
+							<descr>Initial state if SL = TRUE</descr>
+						</var>
+						<var name="SL" type="BOOL">
+							<descr>State selector option</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="STATE" type="INT">
+							<descr>Current state output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="last" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.0	
+programmer 	hugo
+tested by	oscat
+
+CYCLE_4 generates a State machine assuming one of the States 0..3 if E = TRUE.
+The duration of each State is determined by the time constraints T0..T3 of each State.
+
+*)
+
+(* read system timer *)
+tx := TO_TIME(sysTimer);
+(* init on first cycle *)
+IF NOT init THEN
+	init := TRUE;
+	last := tx;
+END_IF;
+
+IF E THEN
+	IF SL THEN
+		(* when sx > 0 then the state sx is forced to start *)
+		state:= LIMIT(SX,0,3);
+		last := tx;
+		(* this is to avoid to reset sx from the calling programm it does work fine on codesys but i am not sure about other systems, because we are writing to an input *)
+		SL := FALSE;
+	ELSE
+		CASE state OF
+			0 :	(* wait for T0 and switch to next cycle *)
+				IF tx - last >= T0 THEN
+					state := 1;
+					last := tx;
+				END_IF;
+			1 : (* wait for T1 over 1st cycle *)
+				IF tx - last >= T1 THEN
+					state := 2;
+					last := tx;
+				END_IF;
+			2 : (* wait for T1 over 1st cycle *)
+				IF tx - last >= T2 THEN
+					state := 3;
+					last := tx;
+				END_IF;
+			3 : (* wait for T2 over 2nd cycle *)
+				IF tx - last >= T3 THEN
+					IF S0 THEN State := 0; END_IF; (* if S0 is false, the sequence stops at state 3 *)
+					last := tx;
+				END_IF;
+		END_CASE;
+	END_IF;
+ELSE
+	state := 0;
+	last := tx;
+END_IF;
+
+
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	3. nov. 2008	rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_SQ" version="1.0.0" creationDate="0" lastModifiedDate="1637664008" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;Gen_SQ is a square wave generator with a programmable time period and a fxed 50% duty
+						cycle. The input PT defines the time period and Q returns the output signal.&lt;/p&gt;
+						&lt;img src= gen_sq.PNG &gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="PT" type="TIME">
+							<descr>Time period</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Binary output</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tn" type="DWORD"/>
+						<var name="tx" type="DWORD"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.3	16. feb. 2011
+programmer 	hugo
+tested by	tobias
+
+GEN_SQ generates a square wave signal with a programmable time period.
+
+*)
+
+(* read system time *)
+tx := sysTimer;
+
+IF PT = T#0s THEN
+	Q := FALSE;	
+ELSIF NOT init THEN
+	init := TRUE;
+	tn := tx;
+	Q := TRUE;
+ELSIF tx - tn >= SHR(TO_DWORD(PT),1) THEN
+	Q := NOT Q;
+	tn := tn + SHR(TO_DWORD(pt),1);
+END_IF;
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	4. aug 2006	rev 1.0
+	original version
+
+hm	17. sep 2007	rev 1.1
+	replaced time() with T_PLC_MS() for compatibility reasons
+
+hm	18. jul. 2009	rev 1.2
+	improved accuracy
+
+hm	16. feb 2011	rev 1.3
+	corrected an error with timer overflow 
+*)
+
+
+
+
+]]>
+				</sourceCode>
+				<images>
+					<image name="gen_sq.png" width="246" height="59" icon="false">
+						<![CDATA[iVBORw0KGgoAAAANSUhEUgAAAPYAAAA7CAYAAABIZHeiAAAAAXNSR0IArs4c6QAAAARnQU1B
+AACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMnSURBVHhe7d0xT1NhFMbxDiRubgwk
+fIIODmxu3RydTDCKmyRikBhdnLq5OWjEwQ9AhOAHIJrUxMQQBieQkUCRwYkIiRDSHL3thcuL
+p7Yvevsejv9fckJuKeHhvH1CUwhUBIA7FBtwiGIDDlFswCGKDThEsQGHKDbgEMUGHKLYgEMU
+O0K9XpdKhZU1Go32HrK3sIlHaQSK3UGx7eNRGmHwxT6Qnfmx9uc8mdoTqX/5LIu3LoW3Z3Pn
+razmH1kmim0fxY6QpNhz1+TG8l5+LdJq1mXs7jvZya+Plm/L2PxmfjUYFNs+ih0hfbGPZG/t
+gVy5R7HxZxQ7wnGxy57C70/FhyZeytz2Yf5+vdin71/mUGy7KHYEC0/Fz+I7NjQUOwLF7qDY
+9lHsCBS7g2LbR7EjDL7YNlFs+3iURsgeyFm5/3cbGxvtPWRvYRPFBhyi2IBDFBtwiGIDDlFs
+wCGKDThEsQGHKDbgEMUGHKLYgEMXotjZr2dbGQu0XKkmNS1TqrHEWBydtsSUk5KWJ+WkpmVK
+OVYYitKdlaVZyMEuQuTQGYrSHYdXYBchcugMRemOwyuwixA5dIaidMfhFdhFiBw6Q1G64/AK
+7CJEDl1/Ub43ZOlFTWq/kmd/Emdo4pk8X9vN31k+K0uzkINdhMih6x2ltSKL48NSffpRVlvZ
+Dfvy9dNDmRmZkKkBlZvDK7CLEDl0PaO01qdkdPr9yX+e6DiSveWbMjJz9vZycHgFdhEih65H
+lAPZeXNVqgtb+fUpu7MyPfpaGu3v4uXi8ArsIkQOXY8oFPs0CznYRYgcup5Rwqfi+7L9YVYW
+mj94Kp4IuwiRQ9c7SvDi2WH7hbPJalWuj0xKvVn8c7gycXgFdhEih66/KK1VWXlV/LirUrsv
+j8Yvy/DjpfyV8nJZWZqFHOwiRA7dX0TZl63GunzLr8rE4RXYRYgcOkNRuuPwCuwiRA5d6VGO
+v+B/MalpmVJNalqmlJOalqmM6VfEXc9HC3eesUDLlWpS0zKlGgu0XGVMvyLuCuCioNiAQxQb
+cIhiAw5RbMAhig04RLEBhyg24BDFBhyi2IA7Ij8BPdWiq36Ll7gAAAAASUVORK5CYII=]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="SCHEDULER_2" version="1.0.0" creationDate="0" lastModifiedDate="1631092108" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SCHEDULER_2 activates an output &lt;b&gt;Q&lt;/b&gt;x, depending on the value of the variables &lt;b&gt;C&lt;/b&gt;x and &lt;b&gt;O&lt;/b&gt;x.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;
+						SCHEDULER_2 can enable an output &lt;b&gt;Q&lt;/b&gt;x for all &lt;b&gt;C&lt;/b&gt;x cycles, thus
+						launching the program items at different cycle times.&lt;/li&gt;
+						&lt;li&gt;An optional setup parameter &lt;b&gt;O&lt;/b&gt;x is a time offset used to prevent simultaneous
+						turns of the outputs.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="E0" type="BOOL">
+							<descr>Release signal for Q0</descr>
+						</var>
+						<var name="E1" type="BOOL">
+							<descr>Release signal for Q1</descr>
+						</var>
+						<var name="E2" type="BOOL">
+							<descr>Release signal for Q2</descr>
+						</var>
+						<var name="E3" type="BOOL">
+							<descr>Release signal for Q3</descr>
+						</var>
+						<var name="C0" type="UINT">
+							<descr>Cycle 0 (activates output Q0)</descr>
+						</var>
+						<var name="C1" type="UINT">
+							<descr>Cycle 1 (activates output Q1)</descr>
+						</var>
+						<var name="C2" type="UINT">
+							<descr>Cycle 2 (activates output Q2)</descr>
+						</var>
+						<var name="C3" type="UINT">
+							<descr>Cycle 3 (activates output Q3)</descr>
+						</var>
+						<var name="O0" type="UINT">
+							<descr>Delay for the output 0</descr>
+						</var>
+						<var name="O1" type="UINT">
+							<descr>Delay for the output 1</descr>
+						</var>
+						<var name="O2" type="UINT">
+							<descr>Delay for the output 2</descr>
+						</var>
+						<var name="O3" type="UINT">
+							<descr>Delay for the output 3</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Output signal 0</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Output signal 1</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Output signal 2</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Output signal 3</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="sx" type="UINT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+
+version 1.0	29. sep 2008
+programmer 	hugo
+tested by	tobias
+
+SCHEDULER_2 is used to call programs or function blocks at specific cycles.
+C0..C3 define after how many cycles the output becomes active.
+O0..O3 define a cycle offset at startup.
+
+*)
+
+
+IF C0 > 0 THEN
+	Q0 := E0 AND (sx MOD C0 - O0 = 0);
+ELSE
+	Q0 := FALSE;
+END_IF;
+
+
+IF C1 > 0 THEN
+	Q1 := E1 AND (sx MOD C1 - O1 = 0);
+ELSE
+	Q1 := FALSE;
+END_IF;
+
+
+IF C2 > 0 THEN
+	Q2 := E2 AND (sx MOD C2 - O2 = 0);
+ELSE
+	Q2 := FALSE;
+END_IF;
+
+
+IF C3 > 0 THEN
+	Q3 := E3 AND (sx MOD C3 - O3 = 0);
+ELSE
+	Q3 := FALSE;
+END_IF;
+
+(* increment cycle counter every cycle *)
+sx := sx + 1;
+
+
+(* revision history
+hm 29. sep. 2008		rev 1.0
+	original version
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="GEN_BIT" version="1.0.0" creationDate="0" lastModifiedDate="1631086136" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;GEN_BIT is a 4 bit sequential pattern generator with 4 DWORD inputs and 4 serial outputs.
+						&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;With a clock pulse caused by a reset or a power on, the lowest bit of each Input &lt;b&gt;IN&lt;/b&gt;x
+						is written to the Output &lt;b&gt;Q&lt;/b&gt;x, and then the procedure repeats until the number of iterations
+						(described by &lt;b&gt;cnt&lt;/b&gt;) is lower or equal than the number of &lt;b&gt;steps&lt;/b&gt;, with the inputs shifting
+						1 bit right at each iteration.&lt;/li&gt;
+						&lt;li&gt; &lt;b&gt;clk&lt;/b&gt; is the power on for the procedure of bit generation.&lt;/li&gt;
+						&lt;li&gt;The sequence can be repeated or not, depending on the value of &lt;b&gt;rep&lt;/b&gt; that defines the number of repetitions.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in0" type="DWORD">
+							<descr>32 Bit sequence for Q0</descr>
+						</var>
+						<var name="in1" type="DWORD">
+							<descr>32 Bit sequence for Q1</descr>
+						</var>
+						<var name="in2" type="DWORD">
+							<descr>32 Bit sequence for Q2</descr>
+						</var>
+						<var name="in3" type="DWORD">
+							<descr>32 Bit sequence for Q3</descr>
+						</var>
+						<var name="clk" type="BOOL">
+							<descr>Power on</descr>
+						</var>
+						<var name="steps" type="INT">
+							<descr>Number of steps to be considered in a sequence</descr>
+						</var>
+						<var name="rep" type="INT">
+							<descr>Number of repetitions of the sequence</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Output bit 0</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Output bit 1</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Output bit 2</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Output bit 3</descr>
+						</var>
+						<var name="cnt" type="INT">
+							<descr>Number of steps already generated</descr>
+						</var>
+						<var name="run" type="BOOL">
+							<descr>TRUE while the generator is running</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="r0" type="DWORD"/>
+						<var name="r1" type="DWORD"/>
+						<var name="r2" type="DWORD"/>
+						<var name="r3" type="DWORD"/>
+						<var name="rx" type="INT">
+							<initValue>1</initValue>
+						</var>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+
+version 1.2	14. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+GEN_BIT is a 4 bit sequential pattern generator with 4 DWORD inputs and 4 serial outputs.
+
+*)
+
+(* check if number of runs is finished or rep = 0 which means continuous *)
+
+IF clk AND NOT rst THEN
+	run := (rep = 0) OR (rx <= rep);
+	IF run THEN
+		(* check for step counter reached and reset to 0 if cnt = steps *)
+		IF cnt = steps THEN
+			cnt := 0;
+		END_IF;
+
+		(* when cnt = 0 then reload the inputs into the registers *)
+		IF cnt = 0 THEN
+			r0 := in0;
+			r1 := in1;
+			r2 := in2;
+			r3 := in3;
+		END_IF;
+
+		(* when cnt < steps, shift the lowest bits to the outputs *)
+		IF (cnt < steps) THEN
+			Q0 := r0.0;
+			Q1 := r1.0;
+			Q2 := r2.0;
+			Q3 := r3.0;
+			r0 := SHR(r0,1);
+			r1 := SHR(r1,1);
+			r2 := SHR(r2,1);
+			r3 := SHR(r3,1);
+		END_IF;
+
+		(* increment the step counter *)
+		cnt := cnt +1;
+		IF (cnt = steps) AND (rep <> 0) THEN rx := rx +1; END_IF;
+		IF (rx > rep) AND (rep <> 0) THEN run := FALSE; END_IF;
+	END_IF;
+ELSE
+	IF rst THEN
+		run := FALSE;
+		Q0 := FALSE;
+		Q1 := FALSE;
+		Q2 := FALSE;
+		Q3 := FALSE;
+		r0 := 0;
+		r1 := 0;
+		r2 := 0;
+		r3 := 0;
+		cnt := 0;
+		rx := 1;
+	END_IF;
+END_IF;
+
+
+
+(* revision histroy
+hm	4 aug 2006	rev 1.0
+	original version
+
+hm 15. oct. 2008	rev 1.1
+	improved performance
+
+hm	14. mar. 2009	rev 1.2
+	removed double assignments
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SEQUENCE_4" version="1.0.0" creationDate="0" lastModifiedDate="1637683335" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;SEQUENCE_4 is a 4-bit sequencer with control inputs.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;After a rising edge on START, RUN gets TRUE and the sequencer waits for the time Wait0 for a
+						TRUE signal at the input IN0. After the signal on IN0 is TRUE, the output
+						Q0 is set and waits the time Delay0. After the interval Delay0, in the next
+						cycle the module waits the time Wait1 for an input signal at in1, and Q0
+						remains TRUE until Q1 is set.&lt;/li&gt;
+						&lt;li&gt;The whole procedure is repeated until all 4
+						cycles have elapsed.&lt;/li&gt;
+						&lt;li&gt;If during the waiting time Wait0..3 the corresponding
+						input gets not true, an error is set, described by a corresponding Error Number at the
+						output STATUS, and the sequencer is stopped or not depending on the setup variable
+						STOP_ON_ERROR.&lt;/li&gt;
+						&lt;li&gt;The STATUS output is
+						110 for waiting to the start signal, and 111 for pass through. It also shows the
+						sequence with 1 .. 4 errors. An Error = 1 means that the signal at the input
+						in0 gets not active, a 2 corresponds to in1 etc .&lt;/li&gt;
+						&lt;li&gt;The outputs RUN and STEP indicate whether the sequencer is running and
+						in which cycle it is at the moment. The output QX is TRUE, if one of the
+						outputs Q0..Q3 are TRUE.&lt;/li&gt;
+						&lt;li&gt;An asynchronous reset input can always reset the sequencer. This reset input
+						can also be connected with a output Q0..Q3 to stop the sequencer before
+						the full sequence. The sequencer can be started at any time with a rising
+						edge on the START input, again and again. This is true, even if it has
+						not completed a sequence.&lt;/li&gt;
+						&lt;li&gt;If not an edge examination of one or more inputs IN are required, they may
+						simply be left open, because the default value for this input is TRUE.&lt;/li&gt;
+						&lt;li&gt;The initial state is compatible and ESR shows a value of 1-4 indicates that
+						an error has occurred. An error occurs if the corresponding input signal to
+						IN does not occur during the waiting period.&lt;/li&gt;
+						&lt;li&gt;Error = 1 means that in0 is not within the waiting time has become active.&lt;/li&gt;
+						&lt;li&gt;Error 2 .. 4 corresponds to inputs 1 .. 3.&lt;/li&gt;
+						&lt;li&gt;A status value of 110 means on hold and 111 means that just a sequence
+						is running.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in0" type="BOOL">
+							<descr>Enable signal for Q0</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in1" type="BOOL">
+							<descr>Enable signal for Q1</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in2" type="BOOL">
+							<descr>Enable signal for Q2</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in3" type="BOOL">
+							<descr>Enable signal for Q3</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="start" type="BOOL">
+							<descr>Starting edge for the sequencer</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Asynchronous reset input</descr>
+						</var>
+						<var name="wait0" type="TIME">
+							<descr>Wait for the input signal 0</descr>
+						</var>
+						<var name="delay0" type="TIME">
+							<descr>Delay time until the input signal in0 is being tested</descr>
+						</var>
+						<var name="wait1" type="TIME">
+							<descr>Wait for the input signal 1</descr>
+						</var>
+						<var name="delay1" type="TIME">
+							<descr>Delay time until the input signal in1 is being tested</descr>
+						</var>
+						<var name="wait2" type="TIME">
+							<descr>Wait for the input signal 2</descr>
+						</var>
+						<var name="delay2" type="TIME">
+							<descr>Delay time until the input signal in2 is being tested</descr>
+						</var>
+						<var name="wait3" type="TIME">
+							<descr>Wait for the input signal 3</descr>
+						</var>
+						<var name="delay3" type="TIME">
+							<descr>Delay time until the input signal in3 is being tested</descr>
+						</var>
+						<var name="stop_on_error" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Control output 0</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Control output 1</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Control output 2</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Control output 3</descr>
+						</var>
+						<var name="QX" type="BOOL">
+							<descr>TRUE if one of the outputs is active</descr>
+						</var>
+						<var name="run" type="BOOL">
+							<descr>TRUE if the sequencer is running</descr>
+						</var>
+						<var name="step" type="INT">
+							<descr>Current step</descr>
+							<initValue>-1</initValue>
+						</var>
+						<var name="status" type="BYTE">
+							<descr>Status output compliant to ESR</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="last" type="TIME"/>
+						<var name="edge" type="BOOL"/>
+						<var name="tx" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	13. mar. 2009
+programmer 	oscat
+tested by	hans
+
+SEQUENCE_4 enables 'run' when a low to high transition is present on start.
+A low to high transition on start will restart the sequencer at any time, while a 'rst' will hold the sequencer in reset while true.
+After 'run' is enabled with a rising edge on start, the sequencer waits for wait0 on in0 to enable q0 which stays on for delay0.
+The next cycle starts with wait1, continues with delay 1 and so on...
+If an edge is not detected during the wait period, the sequencer will then display the error number on the status output.
+The status numbers 1..4 are errors in step 0..3.
+After the last step that sets q3, the sequencer leaves q3 on for delay3 and then resets to the initial state.
+A step output will indicate the current step of the sequencer and will also be present with a fault condition.
+After the first output is turned on, the sequencer switches from q0 to q1 and so on, at any time there is only one output enabled.
+If an input signal is not detected during a wait period, the sequencer will display the error number ( 1 for in0, 2 for in1 .... ).
+when an error is present and the config variable stop_on_error is set, then the sequencer will stop. otherwise it will continue.
+The status output will also display 110 for waiting and 111 for sequence running.
+*)
+
+(* read sps timer *)
+tx := TO_TIME(sysTimer);
+
+(* initialize on startup *)
+IF NOT init THEN
+	last := tx;
+	init := TRUE;
+	status := 110;
+END_IF;
+
+(* asynchronous reset *)
+IF rst THEN
+	step := -1;
+	Q0 := FALSE;
+	Q1 := FALSE;
+	Q2 := FALSE;
+	Q3 := FALSE;
+	status := 110;
+	run := FALSE;
+
+(* edge on start input restarts the sequencer *)
+ELSIF start AND NOT edge THEN
+	step := 0;
+	last := tx;
+	status := 111;
+	Q0 := FALSE;
+	Q1 := FALSE;
+	Q2 := FALSE;
+	Q3 := FALSE;
+	run := TRUE;
+END_IF;
+edge := start;
+
+(* check if stop on status is necessary *)
+IF status > 0 AND status < 100 AND stop_on_error THEN RETURN; END_IF;
+
+(* sequence is running *)
+IF run AND step = 0 THEN
+	IF NOT q0 AND in0 AND tx - last <= wait0 THEN
+		Q0 := TRUE;
+		last := tx;
+	ELSIF NOT q0 AND tx - last > wait0 THEN
+		status := 1;
+		run := FALSE;
+	ELSIF q0 AND tx - last >= delay0 THEN
+		step := 1;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 1 THEN
+	IF NOT q1 AND in1 AND tx - last <= wait1 THEN
+		Q0 := FALSE;
+		Q1 := TRUE;
+		last := tx;
+	ELSIF NOT q1 AND Tx - last > wait1 THEN
+		status := 2;
+		q0 := FALSE;
+		run := FALSE;
+	ELSIF q1 AND tx - last >= delay1 THEN
+		step := 2;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 2 THEN
+	IF NOT q2 AND in2 AND tx - last <= wait2 THEN
+		Q1 := FALSE;
+		Q2 := TRUE;
+		last := tx;
+	ELSIF NOT q2 AND Tx - last > wait2 THEN
+		status := 3;
+		q1 := FALSE;
+		run := FALSE;
+	ELSIF q2 AND tx - last >= delay2 THEN
+		step := 3;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 3 THEN
+	IF NOT q3 AND in3 AND tx - last <= wait3 THEN
+		Q2 := FALSE;
+		Q3 := TRUE;
+		last := tx;
+	ELSIF NOT q3 AND Tx - last > wait3 THEN
+		status := 4;
+		q2 := FALSE;
+		run := FALSE;
+	ELSIF q3 AND tx - last >= delay3 THEN
+		step := -1;
+		q3 := FALSE;
+		run := FALSE;
+		status := 110;
+	END_IF;
+END_IF;
+QX := q0 OR q1 OR q2 OR q3;
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 1.10.06		rev 1.1
+	corrected delay logic to be after event and not before
+	added any output
+
+hm 1.12.06		rev 1.2
+	corrected failure in sequence logic.
+	added init at startup to prevent from initial error after start.
+
+hm 17.1.2007		rev 1.3
+	changed output fault to status for better compatibility with other modules (ESR).
+	added stop on error functionality and setup variable
+	default for inputs in0..3 is true.
+	renamed variable state to step
+
+hm	17.sep 2007	rev 1.4
+	replaced time() with T_PLC_MS() for compatibility reasons
+
+hm	13. mar. 2009	rev 1.5
+	renamed output any to qx for compatibility resons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="SCHEDULER" version="1.0.0" creationDate="0" lastModifiedDate="1637664044" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;
+						SCHEDULER is used to call time dependent program parts. For example,
+						complex calculations that are needed only rarely can be called at fixed intervals of time.
+						&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;The outputs &lt;b&gt;Q&lt;/b&gt;x of the module are activated only for one cycle and
+						they release the execution of the program part.&lt;/li&gt;
+						&lt;li&gt;The setup time &lt;b&gt;T&lt;/b&gt;x specify at which intervals the outputs are enabled.&lt;/li&gt;
+						&lt;li&gt;Only one output is checked per CPU cycle, so that at most one output per cycle can be active.&lt;/li&gt;
+						&lt;li&gt;When all times &lt;b&gt;T&lt;/b&gt;x are equal to T#0s, only one output is set on each cycle, going from Q0 to Q3, and then the procedure repeats.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="E0" type="BOOL">
+							<descr>Release signal for Q0</descr>
+						</var>
+						<var name="E1" type="BOOL">
+							<descr>Release signal for Q1</descr>
+						</var>
+						<var name="E2" type="BOOL">
+							<descr>Release signal for Q2</descr>
+						</var>
+						<var name="E3" type="BOOL">
+							<descr>Release signal for Q3</descr>
+						</var>
+						<var name="T0" type="TIME">
+							<descr>Cycle time 0</descr>
+						</var>
+						<var name="T1" type="TIME">
+							<descr>Cycle time 1</descr>
+						</var>
+						<var name="T2" type="TIME">
+							<descr>Cycle time 2</descr>
+						</var>
+						<var name="T3" type="TIME">
+							<descr>Cycle time 3</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Output signal 0</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Output signal 1</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Output signal 2</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Output signal 3</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="init" type="BOOL"/>
+						<var name="s0" type="TIME"/>
+						<var name="s1" type="TIME"/>
+						<var name="s2" type="TIME"/>
+						<var name="s3" type="TIME"/>
+						<var name="tx" type="TIME"/>
+						<var name="c" type="INT"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[(*
+
+version 1.1	14. mar. 2009
+programmer 	hugo
+tested by	tobias
+
+SCHEDULER is used to call programs or function blocks at specific intervals of time.
+T0..T3 define the interval times.
+
+*)
+
+
+(* read system_time *)
+tx := TO_TIME(sysTimer);
+
+IF NOT init THEN
+	init := TRUE;
+	s0 := tx - T0;
+	s1 := tx - T1;
+	s2 := tx - T2;
+	s3 := tx - T3;
+END_IF;
+
+Q0 := FALSE;
+Q1 := FALSE;
+Q2 := FALSE;
+Q3 := FALSE;
+
+CASE c OF
+	0: 	IF tx - s0 >= T0 THEN
+			Q0 := E0;
+			s0 := tx;
+		END_IF;
+		c := 1;
+	1: 	IF tx - s1 >= T1 THEN
+			Q1 := E1;
+			s1 := tx;
+		END_IF;
+		c := 2;
+	2: 	IF tx - s2 >= T2 THEN
+			Q2 := E2;
+			s2 := tx;
+		END_IF;
+		c := 3;
+	3: 	IF tx - s3 >= T3 THEN
+			Q3 := E3;
+			s3 := tx;
+		END_IF;
+		c := 0;
+END_CASE;
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 28. sep. 2008	rev 1.0
+	original version
+
+hm	14. mar. 2009	rev 1.1
+	removed double assignments
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TONOF" version="1.0.0" creationDate="0" lastModifiedDate="1631103687" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;TONOF creates a ON delay T1 and an OFF delay T2&lt;/p&gt;
+						&lt;p&gt;The rising edge of the input signal IN is delayed by T1 and the falling edge
+						of IN is delayed by T2.&lt;/p&gt;
+						&lt;img src= tonof.jpg &gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Input pulse</descr>
+						</var>
+						<var name="T_ON" type="TIME">
+							<descr>ON delay</descr>
+						</var>
+						<var name="T_OFF" type="TIME">
+							<descr>OFF delay</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output pulse</descr>
+						</var>
+					</outputVars>
+					<localVars>
+						<var name="X" type="TON"/>
+						<var name="old" type="BOOL"/>
+						<var name="mode" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.2	21. jul 2009
+programmer 	hugo
+tested by	tobias
+
+TONOF generated a TON and TOF Delay for the Input N TON (T1) and TOF (T2) can be configured separately
+
+*)
+
+IF IN XOR old THEN
+  X(IN := FALSE, PT := TO_UDINT(SEL(IN,T_OFF,T_ON)));
+  mode := IN;
+  old := IN;
+END_IF;
+X(IN := TRUE);
+IF X.Q THEN Q := mode;END_IF;
+
+(* revision history
+hm	10. dec 2007	rev 1.0
+	original version
+
+hm	17. sep. 2007	rev 1.1
+	improved performance
+
+hm	21. jul. 2009	rev 1.2
+	fixed a timing probelm
+*)
+
+]]>
+				</sourceCode>
+				<images>
+					<image name="tonof.jpg" width="203" height="59" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CAA7AMsDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9UV/Wj8K8G8H/AAr8ZaDr+i3txc+Zb/a7
+JtQiN6zgRw2DR71B6nzWZWX+IFW/hr3rmgclZ6MSvKfDOvXFj8UviTb22kXupEXVjIz2zQqq
+5sowAd8inPynoK9D/wCEo0cf8xWy/wDAhP8AGuB+Gt3DffFr4pS280c0ZuNNw8bBgf8AQ17i
+sJSUrRT+4hu+iZ1v/CUan/0Keqf9/bX/AOPVwvgzxDqEfxG+Ibr4a1KRmurItGJLbKf6JHwf
+32OevGa9grgPA/8AyU74k/8AX1Y/+kcdHs5fzP8AD/Inlf8AMzZ/4SfVP+hT1T/v7a//AB6j
+/hJ9U/6FPVP+/tr/APHq6Xijij2cv5n+H+Qcr/m/I8t8Wa/c3Hjb4cR3Wi32nI2uTBZrhoWU
+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]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="SEQUENCE_8" version="1.0.0" creationDate="0" lastModifiedDate="1637664106" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;A functional description of SEQUENCE_8 can be found at SEQUENCE_4. SEQUENCE_
+						8 function is identical to SEQUENCE_4. It has 8 channels instead of 4.
+						SEQUENCE_8 is used in the OSCAT library module Legionella.&lt;/p&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="in0" type="BOOL">
+							<descr>Enable signal for Q0</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in1" type="BOOL">
+							<descr>Enable signal for Q1</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in2" type="BOOL">
+							<descr>Enable signal for Q2</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in3" type="BOOL">
+							<descr>Enable signal for Q3</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in4" type="BOOL">
+							<descr>Enable signal for Q4</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in5" type="BOOL">
+							<descr>Enable signal for Q5</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in6" type="BOOL">
+							<descr>Enable signal for Q6</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="in7" type="BOOL">
+							<descr>Enable signal for Q7</descr>
+							<initValue>TRUE</initValue>
+						</var>
+						<var name="start" type="BOOL">
+							<descr>Starting edge for the sequencer</descr>
+						</var>
+						<var name="rst" type="BOOL">
+							<descr>Asynchronous reset input</descr>
+						</var>
+						<var name="wait0" type="TIME">
+							<descr>Wait for the input signal 0</descr>
+						</var>
+						<var name="delay0" type="TIME">
+							<descr>Delay time until the input signal in0 is being tested</descr>
+						</var>
+						<var name="wait1" type="TIME">
+							<descr>Wait for the input signal 1</descr>
+						</var>
+						<var name="delay1" type="TIME">
+							<descr>Delay time until the input signal in1 is being tested</descr>
+						</var>
+						<var name="wait2" type="TIME">
+							<descr>Wait for the input signal 2</descr>
+						</var>
+						<var name="delay2" type="TIME">
+							<descr>Delay time until the input signal in2 is being tested</descr>
+						</var>
+						<var name="wait3" type="TIME">
+							<descr>Wait for the input signal 3</descr>
+						</var>
+						<var name="delay3" type="TIME">
+							<descr>Delay time until the input signal in3 is being tested</descr>
+						</var>
+						<var name="wait4" type="TIME">
+							<descr>Wait for the input signal 4</descr>
+						</var>
+						<var name="delay4" type="TIME">
+							<descr>Delay time until the input signal in4 is being tested</descr>
+						</var>
+						<var name="wait5" type="TIME">
+							<descr>Wait for the input signal 5</descr>
+						</var>
+						<var name="delay5" type="TIME">
+							<descr>Delay time until the input signal in5 is being tested</descr>
+						</var>
+						<var name="wait6" type="TIME">
+							<descr>Wait for the input signal 6</descr>
+						</var>
+						<var name="delay6" type="TIME">
+							<descr>Delay time until the input signal in6 is being tested</descr>
+						</var>
+						<var name="wait7" type="TIME">
+							<descr>Wait for the input signal 7</descr>
+						</var>
+						<var name="delay7" type="TIME">
+							<descr>Delay time until the input signal in7 is being tested</descr>
+						</var>
+						<var name="stop_on_error" type="BOOL"/>
+					</inputVars>
+					<outputVars>
+						<var name="Q0" type="BOOL">
+							<descr>Control output 0</descr>
+						</var>
+						<var name="Q1" type="BOOL">
+							<descr>Control output 1</descr>
+						</var>
+						<var name="Q2" type="BOOL">
+							<descr>Control output 2</descr>
+						</var>
+						<var name="Q3" type="BOOL">
+							<descr>Control output 3</descr>
+						</var>
+						<var name="Q4" type="BOOL">
+							<descr>Control output 4</descr>
+						</var>
+						<var name="Q5" type="BOOL">
+							<descr>Control output 5</descr>
+						</var>
+						<var name="Q6" type="BOOL">
+							<descr>Control output 6</descr>
+						</var>
+						<var name="Q7" type="BOOL">
+							<descr>Control output 7</descr>
+						</var>
+						<var name="QX" type="BOOL">
+							<descr>TRUE if one of the outputs is active</descr>
+						</var>
+						<var name="run" type="BOOL">
+							<descr>TRUE if the sequencer is running</descr>
+						</var>
+						<var name="step" type="INT">
+							<descr>Current step</descr>
+							<initValue>-1</initValue>
+						</var>
+						<var name="status" type="BYTE">
+							<descr>0 if no error, otherwise &gt; 0</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="last" type="TIME"/>
+						<var name="edge" type="BOOL"/>
+						<var name="tx" type="TIME"/>
+						<var name="init" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+
+(*
+version 1.5	13. mar. 2009
+programmer 	oscat
+tested by	hans
+
+SEQUENCE_8 enables 'run' when a low to high transition is present on start.
+A low to high transition on start will restart the sequencer at any time, while a 'rst' will hold the sequencer in reset while true.
+After run is enabled with a rising edge on start the sequencer waits for wait0 on in0 to enable q0 which stays on for delay0.
+The next cycle starts with wait1, continues with delay 1 and so on...
+If an edge is not detected during the wait period, the sequencer will then display the error number on the status output.
+The status numbers are 1 .. 8 for erros in step 0..7.
+After the last step that sets q7, the sequencer leaves q7 on for delay7 and then resets to the initial state.
+A step output will indicate the current step of the sequencer and will also be present with a fault condition.
+After the first output is turened on the sequencer switches from q0 to q1 and so on, at any time there is only one output enabled.
+If an input signal is not detected during a wait period, the sequencer will display the error number ( 1 for in0, 2 for in1 .... ).
+When an error is present and the config variable stop_on_error is set then the sequencer will stop. otherwise it will continue.
+The status output will also display 110 for waiting and 111 sequece running.
+
+*)
+
+(* read sps timer *)
+tx := TO_TIME(sysTimer);
+
+(* initialize on startup *)
+IF NOT init THEN
+	last := tx;
+	init := TRUE;
+	status := 110;
+END_IF;
+
+(* asynchronous reset *)
+IF rst THEN
+	step := -1;
+	Q0 := TO_BOOL(0);
+	Q1 := TO_BOOL(0);
+	Q2 := TO_BOOL(0);
+	Q3 := TO_BOOL(0);
+	Q4 := TO_BOOL(0);
+	Q5 := TO_BOOL(0);
+	Q6 := TO_BOOL(0);
+	Q7 := TO_BOOL(0);
+	status := 110;
+	run := TO_BOOL(0);
+
+(* edge on start input restarts the sequencer *)
+ELSIF start AND NOT edge THEN
+	step := 0;
+	last := tx;
+	status := 111;
+	Q0 := TO_BOOL(0);
+	Q1 := TO_BOOL(0);
+	Q2 := TO_BOOL(0);
+	Q3 := TO_BOOL(0);
+	Q4 := TO_BOOL(0);
+	Q5 := TO_BOOL(0);
+	Q6 := TO_BOOL(0);
+	Q7 := TO_BOOL(0);
+	run := TO_BOOL(1);
+END_IF;
+edge := start;
+
+(* check if stop on error is necessary *)
+IF status > 0 AND status < 100 AND stop_on_error THEN RETURN; END_IF;
+
+(* sequence is running *)
+IF run AND step = 0 THEN
+	IF NOT q0 AND in0 AND tx - last <= wait0 THEN
+		Q0 := TRUE;
+		last := tx;
+	ELSIF NOT q0 AND tx - last > wait0 THEN
+		status := 1;
+		run := FALSE;
+	ELSIF q0 AND tx - last >= delay0 THEN
+		step := 1;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 1 THEN
+	IF NOT q1 AND in1 AND tx - last <= wait1 THEN
+		Q0 := FALSE;
+		Q1 := TRUE;
+		last := tx;
+	ELSIF NOT q1 AND Tx - last > wait1 THEN
+		status := 2;
+		q0 := FALSE;
+		run := FALSE;
+	ELSIF q1 AND tx - last >= delay1 THEN
+		step := 2;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 2 THEN
+	IF NOT q2 AND in2 AND tx - last <= wait2 THEN
+		Q1 := FALSE;
+		Q2 := TRUE;
+		last := tx;
+	ELSIF NOT q2 AND Tx - last > wait2 THEN
+		status := 3;
+		q1 := FALSE;
+		run := FALSE;
+	ELSIF q2 AND tx - last >= delay2 THEN
+		step := 3;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 3 THEN
+	IF NOT q3 AND in3 AND tx - last <= wait3 THEN
+		Q2 := FALSE;
+		Q3 := TRUE;
+		last := tx;
+	ELSIF NOT q3 AND Tx - last > wait3 THEN
+		status := 4;
+		q2 := FALSE;
+		run := FALSE;
+	ELSIF q3 AND tx - last >= delay3 THEN
+		step := 4;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 4 THEN
+	IF NOT q4 AND in4 AND tx - last <= wait4 THEN
+		Q3 := FALSE;
+		Q4 := TRUE;
+		last := tx;
+	ELSIF NOT q4 AND Tx - last > wait4 THEN
+		status := 5;
+		q3 := FALSE;
+		run := FALSE;
+	ELSIF q4 AND tx - last >= delay4 THEN
+		step := 5;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 5 THEN
+	IF NOT q5 AND in5 AND tx - last <= wait5 THEN
+		Q4 := FALSE;
+		Q5 := TRUE;
+		last := tx;
+	ELSIF NOT q5 AND Tx - last > wait5 THEN
+		status := 6;
+		q4 := FALSE;
+		run := FALSE;
+	ELSIF q5 AND tx - last >= delay5 THEN
+		step := 6;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 6 THEN
+	IF NOT q6 AND in6 AND tx - last <= wait6 THEN
+		Q5 := FALSE;
+		Q6 := TRUE;
+		last := tx;
+	ELSIF NOT q6 AND Tx - last > wait6 THEN
+		status := 7;
+		q5 := FALSE;
+		run := FALSE;
+	ELSIF q6 AND tx - last >= delay6 THEN
+		step := 7;
+		last := tx;
+	END_IF;
+END_IF;
+IF run AND step = 7 THEN
+	IF NOT q7 AND in7 AND tx - last <= wait7 THEN
+		Q6 := FALSE;
+		Q7 := TRUE;
+		last := tx;
+	ELSIF NOT q7 AND Tx - last > wait7 THEN
+		status := 8;
+		q6 := FALSE;
+		run := FALSE;
+	ELSIF q7 AND tx - last >= delay7 THEN
+		step := -1;
+		Q7 := FALSE;
+		Run := FALSE;
+		status := 110;
+	END_IF;
+END_IF;
+QX := q0 OR q1 OR q2 OR q3 OR q4 OR q5 OR q6 OR q7;
+
+(*
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm 1.10.06		rev 1.1
+	corrected delay logic to be after event and not before
+	added any output
+
+hm 1.12.06		rev 1.2
+	corrected failure in sequence logic.
+	added init at startup to prevent from initial statuss after start.
+
+hm 17.1.2007		rev 1.3
+	changed output fault to status for better compatibility with other modules (ESR)
+	added stop on error functionality and setup variable
+	default for inputs in0..7 is true.
+	renames variable state to step
+
+hm	17.sep 2007	rev 1.4
+	replaced time() with T_PLC_MS() for compatibility reasons
+
+hm	13. mar. 2009	rev 1.5
+	renamed output any to qx for compatibility resons
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+			<functionBlock name="TP_X" version="1.0.0" creationDate="0" lastModifiedDate="1637664134" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<descr>&lt;HTML&gt;&lt;p&gt;TP_X is a multiple triggerable pulse generator. In contrast to the standard
+						module TP, this template can be triggered multiple times and thus the output
+						pulse can be extended.&lt;/p&gt;
+						&lt;img src= tp_x.jpg &gt;
+						&lt;ul&gt;
+						&lt;li&gt;The output &lt;b&gt;Q&lt;/b&gt; remains ON after the last trigger event (rising edge of &lt;b&gt;IN&lt;/b&gt;), for the period of &lt;b&gt;PT&lt;/b&gt;.&lt;/li&gt;
+						&lt;li&gt;While &lt;b&gt;Q&lt;/b&gt; is true, by a further edge at the &lt;b&gt;IN&lt;/b&gt;, the Timer can be triggered again and the output
+						pulse can be extended.&lt;/li&gt;
+						&lt;li&gt;In contrast to TOF, at TP_X the time &lt;b&gt;PT&lt;/b&gt; is measured
+						from the last rising edge, regardless of how long &lt;b&gt;IN&lt;/b&gt; remains at TRUE.
+						This means that the output &lt;b&gt;Q&lt;/b&gt;, after the time &lt;b&gt;PT&lt;/b&gt;, is measured from the last
+						rising edge of &lt;b&gt;IN&lt;/b&gt; from a FALSE value, even if the input &lt;b&gt;IN&lt;/b&gt; was TRUE.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Input signal</descr>
+						</var>
+						<var name="PT" type="TIME">
+							<descr>Pulse duration</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output pulse</descr>
+						</var>
+						<var name="ET" type="TIME">
+							<descr>Counter of the enlapsed time of the output pulse</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="edge" type="BOOL"/>
+						<var name="start" type="TIME"/>
+						<var name="tx" type="TIME"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[
+(*
+version 1.3	17. dec. 2008
+programmer 	hugo
+tested by	oscat
+
+Retriggerable edge triggered pulse similar to TP but with a retrigger function.
+If the 'PT' input is 0 then output is always low.
+
+*)
+
+
+(* read system_time *)
+tx := TO_TIME(sysTimer);
+
+(* rising edge trigger *)
+IF PT = TIME#0s THEN
+	IN := FALSE;
+	Q := FALSE;
+ELSIF IN AND NOT edge THEN
+	start := tx;
+	Q := PT > t#0ms;
+ELSIF Q THEN
+	ET := tx - start;
+	IF ET >= PT THEN
+		Q := FALSE;
+		ET := t#0ms;
+	END_IF;
+END_IF;
+edge := IN;
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	4. aug 2006		rev 1.0
+	original version
+
+hm	17. sep 2007	rev 1.1
+	replaced time() with T_PLC_MS() for compatibility reasons
+
+hm	19. oct. 2008	rev 1.2
+	renamed to TP_R to TP_X for compatibility reasons
+
+hm	17. dec. 2008	rev 1.3
+	code optimized
+*)
+]]>
+				</sourceCode>
+				<images>
+					<image name="tp_x.jpg" width="372" height="101" icon="false">
+						<![CDATA[/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoM
+DAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsN
+FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAAR
+CABlAXQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKAPKPh38cv8A
+hPfjp8W/hydE+w/8ID/ZH/Ez+1+Z9v8At1q0/wDqtg8rZt2/ebdnPy9K9Xr498B/AmXxZ+2Z
++0lrfiOz8YaRot5/wjf9k6jpes6polvf7NOZJ9klrNCtx5bKqnJfyySPlLHPtn/DNPhL/oMf
+ED/w4/iH/wCTqAPVqK8p/wCGafCX/QY+IH/hx/EP/wAnVY0n9n7wxourWl/b6p43kuLSZLiN
+brx7rtzCzKwYB4pL1kkXI5R1KsMgggkUAaup/G34daL4yXwjqHj3wxY+LHmhtl0G51m2jvml
+lCmKMQM4cs4dNq4y25cZyKydW/aY+EGg6te6ZqnxX8EadqVnM9tdWd34js4poJUYq8bo0gKs
+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
+FABRRRQB/9k=]]>
+					</image>
+				</images>
+			</functionBlock>
+			<functionBlock name="TP_1D" version="1.0.0" creationDate="1629387207" lastModifiedDate="1637664153" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<title>Edge-triggered pulse generator</title>
+				<descr>&lt;HTML&gt;&lt;p&gt;TP_1D is an edge-triggered pulse generator which generates, at a rising edge at &lt;b&gt;IN&lt;/b&gt;,  an output pulse at &lt;b&gt;Q&lt;/b&gt; with the duration of &lt;b&gt;PT1&lt;/b&gt;.&lt;/p&gt;
+						&lt;ul&gt;
+						&lt;li&gt;During the output pulse an another rising edge to &lt;b&gt;IN&lt;/b&gt; is created,
+						the output pulse will be extended so that remains TRUE after the last rising edge of the output
+						for the duration of &lt;b&gt;PT&lt;/b&gt;.&lt;/li&gt;
+						&lt;li&gt; After the end of the pulse duration &lt;b&gt;PT1&lt;/b&gt;, the module blocks the output for a &lt;b&gt;PTD&lt;/b&gt; time.&lt;/li&gt;
+						&lt;li&gt;A new impulse can be restarted only after the time &lt;b&gt;PTD&lt;/b&gt;. The module can be reset at any time with a TRUE at the &lt;b&gt;RST&lt;/b&gt; input.&lt;/li&gt;
+						&lt;li&gt;The output &lt;b&gt;W&lt;/b&gt; shows that the module is in the waiting cycle, and as long as &lt;b&gt;W&lt;/b&gt; = TRUE, no new impulses can start.&lt;/li&gt;
+						&lt;/ul&gt;</descr>
+				<vars>
+					<inputVars>
+						<var name="IN" type="BOOL">
+							<descr>Input activation flag</descr>
+						</var>
+						<var name="PT1" type="TIME">
+							<descr>Pulse duration</descr>
+						</var>
+						<var name="PTD" type="TIME">
+							<descr>Delay after which a new pulse can be generated</descr>
+						</var>
+						<var name="RST" type="BOOL">
+							<descr>Asynchronous reset</descr>
+						</var>
+					</inputVars>
+					<outputVars>
+						<var name="Q" type="BOOL">
+							<descr>Output pulse</descr>
+						</var>
+						<var name="W" type="BOOL">
+							<descr>Module in the waiting cycle</descr>
+						</var>
+					</outputVars>
+					<externalVars>
+						<var name="sysTimer" type="UDINT"/>
+					</externalVars>
+					<localVars>
+						<var name="tx" type="TIME"/>
+						<var name="start" type="TIME"/>
+						<var name="ix" type="BOOL"/>
+					</localVars>
+				</vars>
+				<iecDeclaration active="FALSE"/>
+				<interfaces/>
+				<methods/>
+				<sourceCode type="ST">
+					<![CDATA[(*
+version 1.0	28. jun. 2008
+programmer 	hugo
+tested by	oscat
+
+TP_1D generates a pulse every time it is called with IN = TRUE.
+The module will reset 'IN' by itself so no clearing of 'IN' is necessary.
+In addition the timer can be cleared asynchronously with 'RST' (it is also cleared by the module itself).
+The timer can be retriggered as often as necessary, and it waits 'PTD' from the last trigger.
+After the time 'PT1' is elapsed, the timer blocks itself for 'PTD' and only allow new sequences after 'PTD' has elapsed.
+
+*)
+
+(* @END_DECLARATION := '0' *)
+(* read system timer *)
+tx := TO_TIME(sysTimer);
+
+IF PT1 = TIME#0s THEN
+	Q := FALSE;
+	W := FALSE;
+ELSIF RST THEN
+	Q := FALSE;
+	rst := FALSE;
+	W := FALSE;
+ELSIF W THEN
+	IF tx - start >= PTD THEN
+		W := FALSE;
+	END_IF;
+ELSIF IN AND NOT ix THEN
+	Q := TRUE;
+	start := tx;
+	IN := FALSE;
+ELSIF tx - start >= PT1 THEN
+	Q := FALSE;
+	W := TRUE;
+	start := tx;
+END_IF;
+
+ix := IN;
+
+
+
+(* revision history
+AXEL	23 nov 2021
+	replaced T_PLC_MS with sysTimer to avoid dependencies
+
+hm	28. jun. 2008
+	original version
+
+*)
+]]>
+				</sourceCode>
+			</functionBlock>
+		</functionBlocks>
+		<programs/>
+		<macros/>
+		<structs/>
+		<typedefs/>
+		<enums/>
+		<subranges/>
+		<interfaces/>
+	</lib>
+</plcLibrary>

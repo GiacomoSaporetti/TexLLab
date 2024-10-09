@@ -1,0 +1,121 @@
+body {
+	font: normal 12px Arial;
+	color: #000000; 
+	padding: 0px 5px 5px 5px;
+}
+th {
+	background-color: #eceded;
+	background-color: #eceded;
+}
+th, td {
+	padding: 5px;
+	border: 1px solid #a0a0a0;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table2 th {
+	background-color: #D6DBE9 !important;
+}
+.table2 th, .table2 td {
+	padding: 5px;
+	border: 1px solid #a0a0a0;
+}
+.table2 table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.Textual_big {
+	font: 14px Arial;
+	color: #4b7d9f;
+	text-transform: capitalize;
+	margin-right: 5px;
+}
+
+.Textual {
+	font: 12px Arial;
+	color: black;
+}
+
+.Textual_Header {
+	font: bold 16px Arial;
+	color: #4b7d9f;
+	text-transform: capitalize;
+}
+.langImg {
+	margin-left: 5px; 
+	vertical-align: middle;
+}
+
+.InterfaceImg {
+	vertical-align: middle;
+}
+
+.interface {
+    border-radius: 5px;
+    background: #C6C6C6;
+	padding: 2px 12px 2px 12px;
+    width: auto;
+	min-width: 12px;
+	border: 1px solid black;
+	text-align: center;
+	display: inline-block;
+	color:black;
+}
+.baseInterface {
+	background: #ededed;	
+}
+
+.extends {
+	border-radius: 5px;
+    background: #79C7EB;
+	padding: 2px 12px 2px 12px;
+    width: auto;
+	min-width: 12px;
+	border: 1px solid black;
+	text-align: center;
+	display: inline-block;
+	color:black;
+}
+
+.inherited {
+	background: #CCF3FF;	
+}
+
+.tableDescr {
+	border: none;
+}
+
+.tableDescr td {
+   border:none;
+   outline:none;
+}
+
+.noBorderTop > th{border-top: 0 !important;}
+.noBorderTop > td{border-top: 0 !important;}
+.noBorderBottom > th{border-bottom: 0 !important;}
+.noBorderBottom > td{border-bottom: 0 !important;}
+
+.dateTable td,
+.dateTable td tr,
+.dateTable td tbody td,
+.dateTable td thead th,
+.dateTable td tfoot th {
+	border: none;
+}
+
+.dateTable td {
+   padding:2px; margin:0;
+}
+
+.dateTable {
+   border-collapse: collapse;
+}
+
+.cell-breakWord {
+   word-wrap: break-word;
+   max-width: 1px;
+}

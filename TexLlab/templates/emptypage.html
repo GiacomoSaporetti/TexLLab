@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns:t>
+<head>
+    <title>Empty page</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta charset="UTF-8">
+    <script type="text/javascript">
+        try
+        { csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
+        catch (e)
+        { csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
+
+        document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
+
+        try
+        {
+            if (window.external.IsDarkTheme())
+            {
+                document.write("<LINK href='" + csspath + "style_dark.css' rel='stylesheet' type='text/css'>");
+            }
+        }
+        catch (err)
+        {
+        }
+    </script>
+</head>
+
+<body class="Sfondo">
+</body>
+</html>
