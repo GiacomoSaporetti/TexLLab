@@ -45,7 +45,7 @@
 			<libraries>
 				<library>%APPPATH%\Libraries\Standard.plclib</library>
 <!-- #IFDEF USE_DATABASE -->
-				<!-- <library>..\LLResources\AlDatabase\Libraries\AlDatabase.pll</library> -->
+				<library>..\LLResources\AlDatabase\Libraries\AlDatabase.pll</library>
 <!-- #ENDIF -->
 <!-- #IFDEF USE_MODBUSRTU_MASTER -->
 				<!-- <library>..\LLResources\AlModbusRTU\Libraries\AlModbusRTU.plclib</library> -->
@@ -76,6 +76,7 @@
 				<library>Libraries\MODELNAME\TexFileSystem.plclib</library>
 				<library>Libraries\MODELNAME\TexHMI.plclib</library>
 				<library>Libraries\MODELNAME\TexMotion.plclib</library>
+				<library>Libraries\MODELNAME\TexTime.plclib</library>
 				<library>Libraries\MODELNAME\TexVariable.plclib</library>
 			</libraries>
 		</targetdef>
@@ -213,9 +214,8 @@
 					<node name="PREFIX_webmenus" caption="Web Site" icon="..\LLResources\AlWebServer\img\website.ico" menu="menu_AddWebMenu" data="webmenus[1]"/>
 <!-- #ENDIF -->
 <!-- #IFDEF USE_MACHINECFG -->
-				<node name="PREFIX_MessageConfig" caption="Message Configuration" icon="..\LLResources\MachineCFG\img\machineConf.ico" data="machineConfiguration[1]" window="MessageConfiguration"/>
-
-				<node name="PREFIX_MachineConfig" caption="Machine Configuration" icon="..\LLResources\MachineCFG\img\machineConf.ico" data="machineConfiguration[1]" window="MachineConfiguration"/>
+					<node name="PREFIX_MachineConfig" caption="Machine Configuration" icon="..\LLResources\MachineCFG\img\machineConf.ico" data="machineConfiguration[1]" window="MachineConfiguration"/>
+					<node name="PREFIX_MachineConfig" caption="Message Configuration" icon="..\LLResources\MachineCFG\img\machineConf.ico" data="machineConfiguration[1]" window="MessageConfiguration"/>
 <!-- #ENDIF -->
 					<node name="PREFIX_ActiveXTest_AlFramework" caption="ActiveX Test AlFramework" icon="..\LLResources\ActiveXTest_AlFramework\img\ico.ico" data="." window="ActiveXTest_AlFramework"/>
 

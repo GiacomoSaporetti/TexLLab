@@ -12,7 +12,6 @@ var gridErrorPos = { row: -1, col: -1 }
 
 function InitGrid(datapath)
 {	
-	app.MessageBox(datapath);
 	columns = { pageNumber: 0, uniqueID: 1, value: 2, descr: 3 }
 	m_columnsNodes = ["pageNumber", "uniqueID", "value", "descr"]
 	gridDatapath = datapath + tablePath
@@ -54,7 +53,6 @@ function InitGrid(datapath)
 
 function InitGridAlert(datapath)
 {	
-	app.MessageBox(datapath);
 	columns = {  uniqueID: 0, descr: 1 }
 	m_columnsNodes =[ "uniqueID", "descr"]
 

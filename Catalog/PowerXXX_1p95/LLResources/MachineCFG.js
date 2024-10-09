@@ -13,7 +13,6 @@ function MachineParameter()
 	this.visible = false;
 }
 
-
 function MachineConfiguration()
 {
 	this.name = ""
@@ -33,7 +32,7 @@ function LoadMachineConfiguration(str)
 	// caricamento nel pcn del progetto
 	var device = app.SelectNodesXML("/" + app.CallFunction("logiclab.get_TargetID"))[0];
 	var machineConfigurationNode = device.selectSingleNode("machineConfiguration");
-
+	
 	var childNode = machineConfigurationNode.firstChild;
 	while (childNode)
 	{
@@ -103,6 +102,7 @@ function LoadParameters(path, paramsList, installedAxis)
 MachineConfiguration.prototype.Parse = function (str)
 {
 	var rows = str.split(/\r?\n/);
+
 	// almeno 2 righe
 	if(rows.length < 2)
 	{
@@ -112,7 +112,7 @@ MachineConfiguration.prototype.Parse = function (str)
 	
 	this.name = rows.shift().substring(1);
 	this.version = rows.shift().substring(1);
-
+	
 	var currParametersSection = null
 	for(var i = 0; i < rows.length; i++)
 	{
@@ -192,8 +192,6 @@ MachineConfiguration.prototype.Parse = function (str)
 	
 	return true;
 }
-
-
 
 function SaveMachineConfiguration(fileName)
 {

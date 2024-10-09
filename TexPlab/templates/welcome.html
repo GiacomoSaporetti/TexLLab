@@ -1,239 +1,94 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<title>Welcome page</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!--<meta http-equiv="refresh" content="1">-->
-	<script src="LLScan.js"></script>
-	<script src="LLScan_settings.js"></script>
-	<script type="text/javascript">
-
-		try
-		{ csspath = "file://" + window.external.CatalogPath + "../Common/CSS/" }  // chiede il csspath all'applicazione host
-		catch (e)
-		{ csspath = document.cookie.slice(8) }  // ricava il csspath dal cookie chiamato 'csspath'
-
-		document.write("<LINK href='" + csspath + "style.css' rel='stylesheet' type='text/css'>")
-		document.write("<SCRIPT src='" + csspath + "../script/common.js' type='text/javascript'></" + "SCRIPT>")
-		document.write("<SCRIPT src='" + csspath + "../script/LLScanCommon.js' type='text/javascript'></" + "SCRIPT>")
-
-		var MSGBOX;
-		// da resource.h
-		var IDM_NEWPRJ = 32794
-		var IDM_OPENPRJ = 32777
-		var ID_FILE_IMPORTPROJECTFROMTARGET = 33040
-		// da winuser.h
-		var WM_COMMAND = 0x0111
-		// da afxres.h
-		var ID_FILE_MRU_FIRST = 0xE110
-		
-		function NewPrj()
-		{
-			window.external.SendWindowsMessage(WM_COMMAND, IDM_NEWPRJ, 0, false)
-		}
-	</script>
+	<title>Welcome page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 
 	<script src="welcome.js"></script>
 
 	<style>
-	
-		.Sfondo {
-			background: url(./img/sfondo_llab.jpg) no-repeat;
+		.sfondo {
+			background: url(./img/sfondo.png) no-repeat top right; 
 		}
-
-		.Sfondo.dark {
-			background: url(./img/sfondo_llab_dark.jpg) no-repeat;
-		}
-
-	
-		.Buttons{
-		position: absolute;
-		position: 5% 5%;
-		height: 10%;
-		}
-		
 
 		.hoverButton, .hoverButton:link, .hoverButton:visited {
-			border-radius:30px;
 			background: url(./img/buttonBG.png) no-repeat top left;
-			margin-top: 20px;
-			margin-left:25px;
 		}
 
 		.hoverButton:hover {
-		border-radius: 30px;
 			background: url(./img/buttonBGHover.png) no-repeat top left;
-			margin-top: 20px;
-			margin-left:25px;
-		}
-
-		#disabled{
-			background: url(./img/buttonDisabled.png) no-repeat top left;
-		}
-
-
-		/* serve allo scan */
-		.functionBtn {
-			cursor: pointer;
-		}
-
-		html {
-			height: auto;
-		}
-		
-		#LLScanButton {
-			display:none;
-		}
-		
-
-
-		.invisible{
-		display: none;
-		}
-		 
-		.target-box{
-			border: 1px solid black;
-			position: absolute;
-			top: 150px;
-			left: 66px;
-			max-width: 550px;
-		}
-		
-		.target-box-intern{
-			max-width: 550px;
-		}
-
-		.project-box{
-			border: 1px solid black;
-			position: absolute;
-			top: 150px;
-			left: 509px;
-			max-width: 1000px;
-		}
-
-		.project-box-intern{
-		max-width: 50px;
 		}
 	</style>
+
+	<link rel="stylesheet" href="welcome.css">
 </head>
 
-<body class="Sfondo welcome">
+<body class="sfondo" scroll="auto">
+	<input type="hidden" name=".DATAPATH" id="datapath">
 
-<!--	<input type="hidden" name=".DATAPATH" id="datapath">-->
-	
-	
-	<div class="Buttons">
-	
-		<script>
-				function updateButton()
-				{
-					if(!m_selectedTargetForFilter)
-					{
-						var elem = document.getElementById("enabled");
-						if(elem)
-							elem.id = "disabled";
-					}
-					else
-					{
-						var elem = document.getElementById("disabled");
-						if(elem)
-							elem.id = "enabled";
-					}
-				}
-		</script>
-		
-		<a class="hoverButton" id="disabled" href="#" onclick="CreateNewPrj(m_selectedTargetForFilter, EMPTY_TEMPLATE_ID)" >
-			<img src="img/newPrj.png">
-			<span style="color:white"><t:t>New Project</t:t></span>
-		</a>
-		
-		<a class="hoverButton" href="#" onclick="OpenPrj()">
+	<img src="img/LogoPLab.png">
+
+	<div>
+		<a class="hoverButton" style="margin-top: 20px" href="#" onclick="OpenPrj()">
 			<img src="img/openPrj.png">
-			<span style="color:white" id="test"><t:t>Open Project </t:t></span>
-		</a>
-
-		<a class="hoverButton"  href="#" onclick="LLScan()" id="LLScanButton">
-			<img src="img/LLScan.png">
-			<span style="color:white"><t:t>Scan Network</t:t></span>
+			<span style="position:relative;top:-5px"><t:t>Open project ...</t:t></span>
 		</a>
 	</div>
 
+	<div class="row" style="margin-top: 10px;">
+		<div class="column">
+			<div class="row">
+				<div class="box box-targets">
+					<div class="title"><t:t>Target selection</t:t></div>
 
-	
-		<div class="target-box box box-targets" onclick="updateButton()">
-			<div class="title target-box-intern"><t:t>Target selection</t:t></div>
-			<div class="new-prj-container target-box-intern">
-				<div id="showAllVersionsContainer target-box-intern" >
-					<label class="switch target-box-intern">
-						<input type="checkbox" onclick="OnShowAllVersions(this.checked)" id="chkShowAllVersions">
-							<span class="slider round target-box-intern"></span>
-					</label>
-					<label class="enable-label target-box-intern" for="chkShowAllVersions"><t:t>Show all versions</t:t></label>
+					<div class="new-prj-container">
+						<table class="list-catalog-table" id="catalogTbl">
+						</table>
+					</div>
 				</div>
-				<table class="list-catalog-table target-box-intern" id="catalogTbl">
-				</table>
-			</div>	
-		</div>	
 
+				<div class="box box-targets" style="border-left: none;">
+					<div class="title"><t:t>new project...</t:t></div>
 
-
-		<div class="project-box box" onclick="updateButton()">
-			<div class="title singlebox">
-				<span><t:t>open recent projects</t:t></span>
-				<span id="mruFilterContainer">
-				<t:t>Filtered by</t:t>:
-				<span class="filter" title="Selected target">
-				<span id="mruFilterName"></span>
-				<span onclick="RemoveTargetFilter()" title="Remove filter">&times;</span>
-				</span>
-				</span>
+					<div class="new-prj-container">
+						<table class="list-catalog-table" id="templatesTbl">
+							<tr>
+								<td class="catalog-item template disabled">
+									<div>
+										<span>No target selected</span>
+										<span>Select a target to see the avaiable templates</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
-			<table id="mru" class="mruTable">
-					<tr>
-					<td><b><t:t>File name</t:t></b></td>
-					<td><b><t:t>Target name</t:t></b></td>
-					<td><b><t:t>Version</t:t></b></td>
-					<td><b><t:t>App name</t:t></b></td>
-					<td><b><t:t>App ver.</t:t></b></td>
-					<td><b><t:t>App author</t:t></b></td>
-				</tr>
-			</table>
-		</div>
 
-
-		
-		
-		<div class="column invisible">
-			<div class="box noborder" id="scanResultContainer">
+			<div class="box noborder" style="margin-top: 10px;">
 				<div class="title singlebox">
-					<span><t:t>Network Scan results</t:t></span>
+					<span><t:t>open recent projects</t:t>...</span>
 
-					<span id="scanFilterContainer">
+					<span id="mruFilterContainer">
 						<t:t>Filtered by</t:t>:
 						<span class="filter" title="Selected target">
-							<span id="scanFilterName"></span>
+							<span id="mruFilterName"></span>
 							<span onclick="RemoveTargetFilter()" title="Remove filter">&times;</span>
 						</span>
 					</span>
 				</div>
-				<table id="scanResult" class="mruTable" style="display:none">
+				<table id="mru" class="mruTable">
 					<tr>
-						<td width="150px"><b><t:t>Target name</t:t></b></td>
+						<td width="150px"><b><t:t>File name</t:t></b></td>
+						<td width="220px"><b><t:t>Target name</t:t></b></td>
 						<td width="60px"><b><t:t>Version</t:t></b></td>
-						<td width="100px" colspan="2"><b><t:t>IP Address</t:t></b></td>
-						<td width="50px"><b><t:t>New prj</t:t></b></td>
-						<td width="50px"><b><t:t>Import prj</t:t></b></td>
-						<td width="100px"><b><t:t>Application name</t:t></b></td>
-						<td width="82px"><b><t:t>Application ver</t:t></b></td>
 					</tr>
 				</table>
 			</div>
 		</div>
-
-	
-	
-	<div class="invisible"   id="templatesTbl"> </div>
+	</div>
+		
 	<script>
 		InitPage()
 	</script>
